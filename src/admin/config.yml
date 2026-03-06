@@ -1,7 +1,7 @@
 backend:
   name: github
   repo: hypermobility-md/hypermobility-md.github.io  # Update if repo name differs
-  branch: main
+  branch: master
 
 media_folder: "src/Guests"
 public_folder: "/Guests"
