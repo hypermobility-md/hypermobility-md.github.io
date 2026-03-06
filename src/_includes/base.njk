@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="warm">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} — Hypermobility MD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+  {% if extraCss %}<link rel="stylesheet" href="/css/{{ extraCss }}">{% endif %}
+</head>
+<body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}>
+
+{% include "nav.njk" %}
+
+{{ content | safe }}
+
+{% include "footer.njk" %}
+
+<div class="theme-switcher">
+  <button class="theme-btn" onclick="setTheme('warm')">Warm</button>
+  <button class="theme-btn" onclick="setTheme('purple')">Purple</button>
+</div>
+
+<script>
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('hmd-theme', theme);
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === theme);
+  });
+}
+const saved = localStorage.getItem('hmd-theme') || 'warm';
+setTheme(saved);
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

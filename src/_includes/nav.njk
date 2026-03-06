@@ -1,0 +1,27 @@
+{% set pages = [
+  { href: '/', label: 'Home', id: 'home' },
+  { href: '/about/', label: 'About', id: 'about' },
+  { href: '/services/', label: 'Services', id: 'services' },
+  { href: '/podcast/', label: 'Podcast', id: 'podcast' },
+  { href: '/projects/', label: 'Projects We Love', id: 'projects' }
+] %}
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-brand">
+      <img src="/assets/BBLogo.svg" alt="Bendy Bodies" class="nav-logo">
+      Hypermobility MD
+    </a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle navigation">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+    <ul class="nav-links">
+      {% for p in pages %}
+      <li><a href="{{ p.href }}" class="{% if p.id == activePage %}active{% endif %}">{{ p.label }}</a></li>
+      {% endfor %}
+      <li><a href="/services/" class="nav-cta">Start Here</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="zebra-bar"></div>

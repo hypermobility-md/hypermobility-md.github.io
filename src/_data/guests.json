@@ -1,0 +1,969 @@
+{
+  "images": {
+    "dacre knight": "Guests/Darce_Knight.jpg",
+    "ina stephens": "Guests/Ina_Stephens.jpeg",
+    "lawrence afrin": "Guests/Lawrence_Afrin.jpg",
+    "larry afrin": "Guests/Lawrence_Afrin.jpg",
+    "paldeep atwal": "Guests/Paldeep_Atwal.jpg",
+    "patrick agnew": "Guests/Patrick_Agnew.jpeg",
+    "linda bluestein": "Guests/Linda_Bluestein.png",
+    "tania dempsey": "Guests/Tania_Dempsey.jpg",
+    "pradeep chopra": "Guests/Pradeep_Chopra.jpg",
+    "clair francomano": "Guests/Clair_Francomano.jpg",
+    "adam hansen": "Guests/Adam_Hansen.jpg",
+    "adriaan louw": "Guests/Adriaan_Louw.jpg",
+    "alan hakim": "Guests/Alan_Hakim.jpg",
+    "alan pocinki": "Guests/Alan_Pocinki.jpg",
+    "alexis cutchins": "Guests/Alexis_Cutchins.jpg",
+    "andrea zujko": "Guests/Andrea_Zujko.jpg",
+    "andrew goldstein": "Guests/Andrew_Goldstein.jpg",
+    "anne maitland": "Guests/Anne_Maitland.jpg",
+    "audrey kershaw": "Guests/Audrey_Kershaw.jpg",
+    "beth darnall": "Guests/Beth_Darnall.jpg",
+    "betsy grunch": "Guests/Betsy_Grunch.jpg",
+    "bonnie robson": "Guests/Bonnie_Robson.jpg",
+    "brayden yellman": "Guests/Brayden_Yellman.jpg",
+    "brayden p. yellman": "Guests/Brayden_Yellman.jpg",
+    "brianna cardenas": "Guests/Brianna_Cardenas.jpg",
+    "carrie skony": "Guests/Carrie_Skony.jpg",
+    "chelsea pierotti": "Guests/Chelsea_Pierotti.jpg",
+    "colin halverson": "Guests/Colin_Halverson.jpg",
+    "david kaufman": "Guests/David_Kaufman.jpg",
+    "dwight mckee": "Guests/Dwight_McKee.jpg",
+    "emily bohan": "Guests/Emily_Bohan.jpg",
+    "emily scherb": "Guests/Emily_Scherb.jpg",
+    "eric singman": "Guests/Eric_Singman.jpg",
+    "frank feigenbaum": "Guests/Frank_Feigenbaum.jpg",
+    "heather tick": "Guests/Heather_Tick.jpg",
+    "ilene ruhoy": "Guests/Ilene_Ruhoy.jpg",
+    "john pitts": "Guests/John_Pitts.jpg",
+    "kristin koskinen": "Guests/Kristin_Koskinen.jpg",
+    "laurence kinsella": "Guests/Laurence_Kinsella.jpg",
+    "leonard weinstock": "Guests/Leonard_Weinstock.jpg",
+    "leslie russek": "Guests/Leslie_Russek.jpg",
+    "lilian holm": "Guests/Lilian_Holm.jpg",
+    "mandy blackmon": "Guests/Mandy_Blackmon.jpg",
+    "matthew watto": "Guests/Matthew_Watto.jpg",
+    "monica lorenzo": "Guests/Monica_Lorenzo.jpg",
+    "natasha trujillo": "Guests/Natasha_Trujillo.jpg",
+    "patty stott": "Guests/Patty_Stott.jpg",
+    "patricia stott": "Guests/Patty_Stott.jpg",
+    "pejman katiraei": "Guests/Pejman_Katiraei.jpg",
+    "petra klinge": "Guests/Petra_Klinge.jpg",
+    "rachel rubin": "Guests/Rachel_Rubin.jpg",
+    "robert hacker": "Guests/Robert_Hacker.jpg",
+    "roger seheult": "Guests/Roger_Seheult.jpg",
+    "rudrani banik": "Guests/Rudrani_Banik.jpg",
+    "satish raj": "Guests/Satish_Raj.jpg",
+    "selina shah": "Guests/Selina_Shah.jpg",
+    "shanda dorff": "Guests/Shanda_Dorff.jpg",
+    "shimi kang": "Guests/Shimi_Kang.jpg",
+    "stephanie greenspan": "Guests/Stephanie_Greenspan.jpg",
+    "sue goldstein": "Guests/Sue_Goldstein.jpg",
+    "svetlana blitshteyn": "Guests/Svetlana_Blitshteyn.jpg",
+    "theoharis theoharides": "Guests/Theoharis_Theoharides.jpg",
+    "tina wang": "Guests/Tina_Wang.jpg",
+    "zachary spiritos": "Guests/Zachary_Spiritos.jpg",
+    "adji cissoko": "Guests/Adji_Cissoko.jpg",
+    "aidan leslie": "Guests/Aidan_Leslie.jpg",
+    "allysa seely": "Guests/Allysa_Seely.jpg",
+    "andrew dettelbach": "Guests/Andrew_Dettelbach.jpg",
+    "ashok gupta": "Guests/Ashok_Gupta.jpg",
+    "beckanne sisk": "Guests/Beckanne_Sisk.jpg",
+    "cailey brandon": "Guests/Cailey_Brandon.jpg",
+    "camille schrier": "Guests/Camille_Schrier.jpg",
+    "corinne mclees": "Guests/Corinne_McLees.jpg",
+    "emily rich": "Guests/Emily_Rich.jpg",
+    "gigi robinson": "Guests/Gigi_Robinson.jpg",
+    "heather purdin": "Guests/Heather_Purdin.jpg",
+    "isabelle ramirez burnett": "Guests/Isabelle_Ramirez_Burnett.jpg",
+    "jazz bynum": "Guests/Jazz_Bynum.jpg",
+    "jeanice mitchell": "Guests/Jeanice_Mitchell.jpg",
+    "jeannie dibon": "Guests/Jeannie_DiBon.jpg",
+    "jeevan mann": "Guests/Jeevan_Mann.jpg",
+    "jenelle manzi": "Guests/Jenelle_Manzi.jpg",
+    "jill brook": "Guests/Jill_Brook.jpg",
+    "jill miller": "Guests/Jill_Miller.jpg",
+    "jo-anne la flèche": "Guests/Jo-Anne_La_Fleche.jpg",
+    "kate colbert": "Guests/Kate_Colbert.jpg",
+    "kathleen mcguire gaines": "Guests/Kathleen_McGuire_Gaines.jpg",
+    "katie dettelbach": "Guests/Katie_Dettelbach.jpg",
+    "keeya steel": "Guests/Keeya_Steel.jpg",
+    "lara bloom": "Guests/Lara_Bloom.jpg",
+    "lara heimann": "Guests/Lara_Heimann.jpg",
+    "lisa ralston": "Guests/Lisa_Ralston.jpg",
+    "marimba gold-watts": "Guests/Marimba_Gold-Watts.jpg",
+    "melissa dickinson": "Guests/Melissa_Dickinson.jpg",
+    "moira mccormack": "Guests/Moira_McCormack.jpg",
+    "terry hyde": "Guests/Terry_Hyde.jpg",
+    "tiffany lee": "Guests/Tiffany_Lee.jpg",
+    "tilly rose": "Guests/Tilly_Rose.jpg",
+    "victor montori": "Guests/Victor_Montori.jpg",
+    "wendy wagner": "Guests/Wendy_Wagner.jpg",
+    "amanda cassil": "Guests/Amanda_Cassil.jpg",
+    "cortney gensemer": "Guests/Cortney_Gensemer.jpg",
+    "eva nagy": "Guests/Eva_Nagy.jpg",
+    "irwin goldstein": "Guests/Irwin_Goldstein.jpg",
+    "janet settle": "Guests/Janet_Settle.jpg",
+    "jen crane": "Guests/Jen_Crane.jpg",
+    "jennifer gaudiani": "Guests/Jennifer_Gaudiani.jpg",
+    "jennifer milner": "Guests/Jennifer_Milner.jpg",
+    "jessica eccles": "Guests/Jessica_Eccles.jpg",
+    "jill carnahan": "Guests/Jill_Carnahan.jpg",
+    "jill schofield": "Guests/Jill_Schofield.jpg",
+    "joel wells": "Guests/Joel_Wells.jpg",
+    "josh spell": "Guests/Josh_Spell.jpg",
+    "julie robinson-smith": "Guests/Julie_Robinson-Smith.jpg",
+    "kara wada": "Guests/Kara_Wada.jpg",
+    "karen herbst": "Guests/Karen_Herbst.jpg",
+    "kelly casperson": "Guests/Kelly_Casperson.jpg",
+    "paolo bolognese": "Guests/Paolo_Bolognese.jpg",
+    "rachel neville": "Guests/Rachel_Neville.jpg",
+    "rebekah rotstein": "Guests/Rebekah_Rotstein.jpg",
+    "shu das": "Guests/Shu_Das.jpg",
+    "skylar brandt": "Guests/Skylar_Brandt.jpg",
+    "stacy menton": "Guests/Stacey_Menton.jpg",
+    "stacey menton": "Guests/Stacey_Menton.jpg",
+    "summer dashe": "Guests/Summer_Dashe.jpg",
+    "susan chalela": "Guests/Susan_Chalela.jpg",
+    "tara renton": "Guests/Tara_Renton.jpg",
+    "aiko callahan": "Guests/Aiko_Callahan.jpg",
+    "kaitlin touza": "Guests/Kaitlin_Touza.jpg",
+    "lauren vasko": "Guests/Lauren_Vasko.jpg",
+    "lisa howell": "Guests/Lisa_Howell.jpg",
+    "lorna ryan": "Guests/Lorna_Ryan.jpg",
+    "mariaelena ruiz": "Guests/Mariaelena_Ruiz.jpg",
+    "victoria daylor": "Guests/Victoria_Daylor.jpg",
+    "vita bachman": "Guests/Vita_Bachman.jpg"
+  },
+  "profiles": {
+    "dacre knight": {
+      "bio": "Dr. Dacre Knight is the Medical Director of the EDS & Hypermobility Disorders Center at the University of Virginia, where he also serves as Associate Professor of Medicine. He previously founded and directed the Mayo Clinic EDS Clinic for six years and served four years as a U.S. Air Force physician.",
+      "credentials": "MD, MS, FACP",
+      "affiliation": "UVA Health",
+      "website": "https://www.uvahealth.com/providers/dacre-knight-1255695433"
+    },
+    "lawrence afrin": {
+      "bio": "Dr. Lawrence Afrin is a hematologist/oncologist and one of the world's foremost experts on Mast Cell Activation Syndrome (MCAS). He is the author of over 73 peer-reviewed articles and the first book about MCAS, 'Never Bet Against Occam.'",
+      "credentials": "MD",
+      "affiliation": "AIM Center for Personalized Medicine",
+      "website": "https://drtaniadempsey.com/lawrence-afrin/"
+    },
+    "tania dempsey": {
+      "bio": "Dr. Tania Dempsey is a board-certified internal medicine and integrative medicine physician internationally recognized for her expertise in MCAS, EDS, and autoimmune disease. She founded the AIM Center for Personalized Medicine in Purchase, NY.",
+      "credentials": "MD",
+      "affiliation": "AIM Center for Personalized Medicine",
+      "website": "https://drtaniadempsey.com/tania-dempsey/"
+    },
+    "pradeep chopra": {
+      "bio": "Dr. Pradeep Chopra is a Harvard-trained, board-certified pain medicine specialist with over 25 years of experience treating complex chronic pain and multisystem disorders. He specializes in EDS, POTS, MCAS, CRPS, and central sensitization disorders.",
+      "credentials": "MD, MHCM",
+      "affiliation": "The Center for Complex Conditions",
+      "website": "https://www.painri.com/doctors/pradeep-chopra-md"
+    },
+    "clair francomano": {
+      "bio": "Dr. Clair Francomano is a medical geneticist and Professor of Medical & Molecular Genetics at Indiana University School of Medicine. She spearheaded a 20+ year longitudinal study on EDS at the NIH and has published over 130 peer-reviewed articles on hereditary connective tissue disorders.",
+      "credentials": "MD",
+      "affiliation": "Indiana University School of Medicine",
+      "website": "https://medicine.iu.edu/faculty/44791/francomano-clair"
+    },
+    "adam hansen": {
+      "bio": "Dr. Adam Hansen is a thoracic surgeon at WVU Medicine known for developing the Hansen repair technique for slipping rib syndrome. He has treated close to 1,000 slipping rib syndrome patients, many of whom have Ehlers-Danlos Syndrome.",
+      "credentials": "MD",
+      "affiliation": "WVU Medicine United Hospital Center",
+      "website": "https://www.slippingribsyndrome.org/"
+    },
+    "adriaan louw": {
+      "bio": "Adriaan Louw is a physical therapist, pain scientist, and leading authority on pain neuroscience education. He has published over 70 peer-reviewed papers and serves as Senior Faculty and Pain Science Director for Evidence in Motion.",
+      "credentials": "PT, PhD",
+      "affiliation": "Evidence in Motion, UNLV",
+      "website": "https://whyyouhurt.com/"
+    },
+    "aiko callahan": {
+      "bio": "Aiko Callahan is a board-certified orthopedic physical therapist with over 13 years of experience treating performing artists and hypermobility-related conditions. She co-created a new hypermobility assessment tool for clinicians.",
+      "credentials": "DPT, OCS",
+      "affiliation": "Aiko Callahan Physical Therapy LLC",
+      "website": "https://www.aikocallahanpt.com/"
+    },
+    "alan hakim": {
+      "bio": "Dr. Alan Hakim is a UK-based consultant rheumatologist with over 32 years of experience in connective tissue disorders. He serves as Chief Medical Officer and Director of Research for The Ehlers Danlos Society.",
+      "credentials": "MA, FRCP",
+      "affiliation": "The Ehlers Danlos Society",
+      "website": "https://alanhakim.com/"
+    },
+    "alan pocinki": {
+      "bio": "Dr. Alan Pocinki is a general internist and Associate Clinical Professor of Medicine at George Washington University. He has specialized in joint hypermobility syndromes and related autonomic and sleep disorders since the late 1990s.",
+      "credentials": "MD, FACP",
+      "affiliation": "George Washington University",
+      "website": "https://drpocinki.com/"
+    },
+    "alexis cutchins": {
+      "bio": "Dr. Alexis Cutchins is a board-certified cardiologist and expert in POTS, dysautonomia, and Long COVID. She founded Cutchins Cardiovascular Medicine specializing in the care of patients with POTS, MCAS, and hypermobility disorders.",
+      "credentials": "MD",
+      "affiliation": "Cutchins Cardiovascular Medicine",
+      "website": "https://cutchinscvm.com/"
+    },
+    "amanda cassil": {
+      "bio": "Dr. Amanda Cassil is a licensed clinical psychologist and founder of STEM Psychological Services. She specializes in supporting women in STEM fields and is the author of The Empowered Highly Sensitive Person.",
+      "credentials": "PhD",
+      "affiliation": "STEM Psychological Services",
+      "website": "https://www.stempsychology.com/"
+    },
+    "andrea zujko": {
+      "bio": "Andrea Zujko is a board-certified orthopedic physical therapist and dance medicine specialist. She has been the senior physical therapist at Westside Dance Physical Therapy since 2002, providing care for the New York City Ballet.",
+      "credentials": "PT, DPT, OCS, COMT",
+      "affiliation": "Westside Dance Physical Therapy",
+      "website": "https://www.dancemedei.com/"
+    },
+    "andrew goldstein": {
+      "bio": "Dr. Andrew Goldstein is a board-certified gynecologist and Director of the Centers for Vulvovaginal Disorders. A past president of ISSWSH, he has published over 100 peer-reviewed articles on vulvodynia and female sexual pain.",
+      "credentials": "MD, FACOG",
+      "affiliation": "Centers for Vulvovaginal Disorders",
+      "website": "https://vulvodynia.com/"
+    },
+    "anne maitland": {
+      "bio": "Dr. Anne Maitland is an allergist/immunologist and Medical Director for the Ehlers Danlos Syndrome Institute at MUSC. She is recognized for her expertise in MCAS and its intersection with EDS and hypermobility disorders.",
+      "credentials": "MD, PhD",
+      "affiliation": "Medical University of South Carolina",
+      "website": "https://www.drannemaitland.net/"
+    },
+    "audrey kershaw": {
+      "bio": "Dr. Audrey Kershaw is an oral surgeon who founded Oral Surgery Scotland. She has uncovered hundreds of hidden EDS cases through dental presentations, lecturing widely on connective tissue disorders in dentistry.",
+      "credentials": "BDS, FDS RCSEd",
+      "affiliation": "Oral Surgery Scotland",
+      "website": "https://www.oralsurgery.scot/"
+    },
+    "beth darnall": {
+      "bio": "Dr. Beth Darnall is a Professor at Stanford University School of Medicine and Director of the Stanford Pain Relief Innovations Lab. She created Empowered Relief, a single-session pain intervention now delivered in 26 countries.",
+      "credentials": "PhD",
+      "affiliation": "Stanford University School of Medicine",
+      "website": "https://bethdarnall.com/"
+    },
+    "betsy grunch": {
+      "bio": "Dr. Betsy Grunch is a board-certified neurosurgeon who completed her spine fellowship at Duke University. She specializes in minimally invasive spine surgery and is known for her educational social media presence with over 3 million followers.",
+      "credentials": "MD, FAANS, FACS",
+      "affiliation": "Southern Neurosurgery",
+      "website": "https://www.drgrunch.com/"
+    },
+    "bonnie robson": {
+      "bio": "Dr. Bonnie Robson is a retired psychiatrist in Toronto who pioneered performance psychiatry for dancers at the National Ballet of Canada. She received lifetime achievement awards for her contributions to dance medicine.",
+      "credentials": "MD",
+      "affiliation": "National Ballet of Canada (retired)",
+      "website": "https://www.jorgendance.ca/team/bonnie-e-robson/"
+    },
+    "brayden yellman": {
+      "bio": "Dr. Brayden Yellman is a board-certified internist and rheumatologist at the Bateman Horne Center. He specializes in ME/CFS, fibromyalgia, and orthostatic intolerance syndromes including POTS.",
+      "credentials": "MD",
+      "affiliation": "Bateman Horne Center",
+      "website": "https://batemanhornecenter.org/about/staff/brayden-yellman-md/"
+    },
+    "brayden p. yellman": {
+      "bio": "Dr. Brayden Yellman is a board-certified internist and rheumatologist at the Bateman Horne Center. He specializes in ME/CFS, fibromyalgia, and orthostatic intolerance syndromes including POTS.",
+      "credentials": "MD",
+      "affiliation": "Bateman Horne Center",
+      "website": "https://batemanhornecenter.org/about/staff/brayden-yellman-md/"
+    },
+    "brianna cardenas": {
+      "bio": "Brianna Cardenas is a Physician Assistant with a Doctorate in Medical Science, specializing in hypermobility, EDS, MCAS, and dysautonomia. As someone living with hEDS herself, she combines allopathic and functional medicine approaches.",
+      "credentials": "DMSc, PA-C, ATC",
+      "affiliation": "Neuroveda Health",
+      "website": "https://www.healedandempowered.com/"
+    },
+    "carrie skony": {
+      "bio": "Dr. Carrie Skony is a Chiropractic Physician and Certified Chiropractic Sports Physician specializing in dance medicine. She has been treating dancers and athletes since 2006 with expertise in hypermobility.",
+      "credentials": "DC, CCSP",
+      "affiliation": "PERFORM Active Wellness + Dance Medicine",
+      "website": "https://www.performactivewellness.com/"
+    },
+    "chelsea pierotti": {
+      "bio": "Dr. Chelsea Pierotti is a sport and performance psychologist, Teaching Associate Professor at the University of Colorado Boulder, and former professional dancer. She is a founding member of DanseMedica.",
+      "credentials": "PhD",
+      "affiliation": "Passionate Coach LLC",
+      "website": "https://www.chelseapierotti.com/"
+    },
+    "colin halverson": {
+      "bio": "Colin Halverson is a bioethicist and Assistant Professor of Medicine at Indiana University School of Medicine. His research focuses on the ethical care of patients with rare diseases, particularly Ehlers-Danlos Syndrome.",
+      "credentials": "PhD",
+      "affiliation": "Indiana University Center for Bioethics",
+      "website": "https://bioethics.iu.edu/people/colin-halverson.html"
+    },
+    "cortney gensemer": {
+      "bio": "Dr. Cortney Gensemer is a postdoctoral scholar at MUSC researching the genetic basis of hypermobile EDS. As a person living with hEDS herself, she co-discovered a gene mutation associated with the condition.",
+      "credentials": "PhD",
+      "affiliation": "Medical University of South Carolina",
+      "website": "https://www.drgensemer.com/"
+    },
+    "david kaufman": {
+      "bio": "Dr. David Kaufman is an internal medicine specialist and founder of the Center for Complex Diseases, with expertise in ME/CFS, Long Covid, dysautonomia, POTS, MCAS, and autoimmune disease.",
+      "credentials": "MD",
+      "affiliation": "Center for Complex Diseases",
+      "website": "https://www.centerforcomplexdiseases.com/"
+    },
+    "dwight mckee": {
+      "bio": "Dr. Dwight McKee is a board-certified oncologist-hematologist also certified in nutrition and integrative/holistic medicine, with over 45 years of medical experience. He authored After Cancer Care.",
+      "credentials": "MD",
+      "affiliation": "Independent practice",
+      "website": "https://re-enliven.info/dwight-mckee/"
+    },
+    "emily bohan": {
+      "bio": "Dr. Emily Bohan is a physical therapist specializing in pelvic floor and orthopedic rehabilitation, with expertise in hypermobility and EDS. She has worked with the U.S. Olympic Rowing Team and founded Pelvic Wisdom.",
+      "credentials": "PT, DPT",
+      "affiliation": "Pelvic Wisdom",
+      "website": "https://www.pelvicwisdom.com/"
+    },
+    "emily scherb": {
+      "bio": "Dr. Emily Scherb is a physical therapist and circus arts specialist known as 'The Circus Doc.' She wrote the bestselling Applied Anatomy of Aerial Arts, the first book on biomechanics of circus training.",
+      "credentials": "PT, DPT",
+      "affiliation": "Pure Motion Physical Therapy",
+      "website": "https://www.thecircusdoc.com/"
+    },
+    "eric singman": {
+      "bio": "Dr. Eric Singman is a neuro-ophthalmologist and Division Chief of General Eye Services at the Wilmer Eye Institute at Johns Hopkins. He has particular expertise in the impact of Ehlers-Danlos Syndromes on vision.",
+      "credentials": "MD, PhD",
+      "affiliation": "Wilmer Eye Institute, Johns Hopkins",
+      "website": "https://www.umms.org/find-a-doctor/profiles/dr-eric-lowell-singman-md-1881654804"
+    },
+    "eva nagy": {
+      "bio": "Dr. Eva Nagy is a breast surgeon based in Sydney, Australia, specializing in breast implant illness and its connection to mast cell activation syndrome. She is recognized as a leading surgeon for explant surgery.",
+      "credentials": "MD, PhD",
+      "affiliation": "Sydney Oncoplastic Surgery",
+      "website": "https://www.oncoplasticsurgery.com.au/"
+    },
+    "frank feigenbaum": {
+      "bio": "Dr. Frank Feigenbaum is a Board-Certified Neurosurgeon who has treated over 2,000 Tarlov and meningeal cyst patients. He developed refined surgical techniques with proven outcomes and serves on the Tarlov Cyst Foundation advisory board.",
+      "credentials": "MD, FACS, FAANS",
+      "affiliation": "Feigenbaum Neurosurgery",
+      "website": "https://www.frankfeigenbaum.com/"
+    },
+    "heather tick": {
+      "bio": "Dr. Heather Tick holds the Gunn-Loke Endowed Professorship of Integrative Pain Medicine at the University of Washington. She specializes in non-pharmacologic pain treatments and authored Holistic Pain Relief.",
+      "credentials": "MD, MA",
+      "affiliation": "University of Washington",
+      "website": "https://heathertickmd.com/"
+    },
+    "ilene ruhoy": {
+      "bio": "Dr. Ilene Ruhoy is a board-certified neurologist and founder of the Center for Healing Neurology. She serves as Medical Director at the Chiari EDS Center at Mount Sinai South Nassau.",
+      "credentials": "MD, PhD",
+      "affiliation": "Chiari EDS Center at Mount Sinai South Nassau",
+      "website": "https://chiarieds.com/ilene-s-ruhoy-md-phd/"
+    },
+    "ina stephens": {
+      "bio": "Dr. Ina Stephens is a Professor of Pediatrics at UVA School of Medicine, specializing in integrative medicine and medical yoga. She co-directs the Autonomic Dysfunction clinic and serves as Interim Medical Director for the EDS Center at UVA Health.",
+      "credentials": "MD, e-RYT, C-IAYT",
+      "affiliation": "University of Virginia Health",
+      "website": "https://uvahealth.com/findadoctor/Ina-Stephens-1043251499"
+    },
+    "irwin goldstein": {
+      "bio": "Dr. Irwin Goldstein is a pioneer in sexual medicine and founder of San Diego Sexual Medicine. He is a Clinical Professor of Urology at UC San Diego with over 360 publications and multiple lifetime achievement awards.",
+      "credentials": "MD",
+      "affiliation": "San Diego Sexual Medicine",
+      "website": "https://www.sdsm.info/meet-dr-goldstein"
+    },
+    "janet settle": {
+      "bio": "Dr. Janet Settle is an integrative psychiatrist in Denver with over 35 years of experience, board certified in psychiatry, holistic medicine, and integrative medicine. She draws from a broad range of modalities to address root causes of psychiatric symptoms.",
+      "credentials": "MD",
+      "affiliation": "Integrative Psychiatric Care",
+      "website": "https://janetsettle.com/"
+    },
+    "jen crane": {
+      "bio": "Dr. Jen Crane is a physical therapist and athletic trainer specializing in circus arts, pelvic floor therapy, and hypermobility. She herself scores 9/9 on the Beighton hypermobility scale.",
+      "credentials": "PT, DPT, OCS, ATC",
+      "affiliation": "Cirque Physio",
+      "website": "https://www.cirquephysio.com"
+    },
+    "jennifer gaudiani": {
+      "bio": "Dr. Jennifer Gaudiani is the Founder and Medical Director of the Gaudiani Clinic, specializing in medical complications of eating disorders. She is one of the only outpatient internists in the U.S. who is a Certified Eating Disorder Specialist-Consultant.",
+      "credentials": "MD, CEDS-S, FAED",
+      "affiliation": "Gaudiani Clinic",
+      "website": "https://www.gaudianiclinic.com"
+    },
+    "jennifer milner": {
+      "bio": "Jennifer Milner is a Nationally Certified Pilates Teacher and former professional ballet and musical theatre performer who specializes in training dancers and hypermobile populations. She is a co-founder and co-host of the Bendy Bodies Podcast.",
+      "credentials": "NCPT",
+      "affiliation": "Bodies In Motion, Bendy Bodies Podcast",
+      "website": "https://www.jennifer-milner.com/"
+    },
+    "jessica eccles": {
+      "bio": "Dr. Jessica Eccles is a Reader in Brain-Body Medicine at Brighton and Sussex Medical School and a Consultant Neurodevelopmental Psychiatrist who co-leads the world's first Neurodivergent Brain-Body Clinic.",
+      "credentials": "MB ChB, MRCPsych, PhD",
+      "affiliation": "Brighton and Sussex Medical School",
+      "website": "https://www.bsms.ac.uk/about/contact-us/staff/dr-jessica-eccles.aspx"
+    },
+    "jill carnahan": {
+      "bio": "Dr. Jill Carnahan is a functional medicine physician and founder of Flatiron Functional Medicine. A survivor of both breast cancer and Crohn's disease, she is board certified in Integrative Holistic Medicine.",
+      "credentials": "MD, ABIHM, IFMCP",
+      "affiliation": "Flatiron Functional Medicine",
+      "website": "https://www.jillcarnahan.com/"
+    },
+    "jill schofield": {
+      "bio": "Dr. Jill Schofield is a physician and researcher who founded the Center for Multisystem Disease. She is one of the first physicians to complete fellowship training in multi-specialty autoimmune disease, specializing in dysautonomia and MCAS.",
+      "credentials": "MD",
+      "affiliation": "Center for Multisystem Disease",
+      "website": "https://www.centerformultisystemdisease.com/"
+    },
+    "joel wells": {
+      "bio": "Dr. Joel Wells is a fellowship-trained hip surgeon and orthopedic specialist. He specializes in hip preservation, periacetabular osteotomy, and hip dysplasia, with expertise in hip care for hypermobile patients.",
+      "credentials": "MD, MPH, FAAOS",
+      "affiliation": "Baylor Scott & White Health",
+      "website": "https://www.bswhealth.com/physician/joel-wells"
+    },
+    "josh spell": {
+      "bio": "Josh Spell is a licensed clinical social worker who specializes in eating disorders and the mental health of performing artists. He is the consulting mental health therapist for Pacific Northwest Ballet and owner of Flexible Mind Counseling.",
+      "credentials": "MSW, LICSW",
+      "affiliation": "Flexible Mind Counseling",
+      "website": "https://flexiblemindcounseling.org/"
+    },
+    "julie robinson-smith": {
+      "bio": "Dr. Julie Robinson-Smith is a dentist specializing in orofacial pain and oral medicine, with diplomate status from the American Board of Oral Medicine and American Board of Orofacial Pain. She treats TMJ/TMD, neuropathic pain, and headaches.",
+      "credentials": "DDS",
+      "affiliation": "Orofacial Pain Associates of Colorado Springs",
+      "website": "https://www.ofpcos.com/"
+    },
+    "kaitlin touza": {
+      "bio": "Dr. Kaitlin Touza is a pain psychologist and Acting Assistant Professor at the University of Washington School of Medicine. She completed training in Clinical Pain Psychology at Stanford.",
+      "credentials": "PhD",
+      "affiliation": "University of Washington Medicine",
+      "website": "https://www.uwmedicine.org/bios/kaitlin-touza"
+    },
+    "kara wada": {
+      "bio": "Dr. Kara Wada is a board-certified allergist, immunologist, and lifestyle medicine physician. She founded The Immune Confidence Institute and lives with Sjogren's disease and dysautonomia herself.",
+      "credentials": "MD",
+      "affiliation": "The Immune Confident MD",
+      "website": "https://www.drkarawada.com/"
+    },
+    "karen herbst": {
+      "bio": "Dr. Karen Herbst is an endocrinologist and leading researcher in lipedema and rare adipose tissue disorders. She led the NIH-sponsored conference establishing the U.S. standard of care for lipedema.",
+      "credentials": "PhD, MD",
+      "affiliation": "The Roxbury Institute",
+      "website": "https://www.advancedlipedematreatment.com/karen-herbst-phd-md"
+    },
+    "kelly casperson": {
+      "bio": "Dr. Kelly Casperson is a board-certified urologic surgeon and founder of The Casperson Clinic. She is the host of the podcast 'You Are Not Broken' and a bestselling author on hormones and sexual health.",
+      "credentials": "MD",
+      "affiliation": "The Casperson Clinic",
+      "website": "https://kellycaspersonmd.com/"
+    },
+    "kristin koskinen": {
+      "bio": "Kristin Koskinen is a registered dietitian nutritionist specializing in nutrition for dancers, artistic athletes, and hypermobile individuals. She focuses on connective tissue recovery and inflammation-related gut issues.",
+      "credentials": "RDN, LDN, LD, CD",
+      "affiliation": "Eat Well, Live Well, LLC",
+      "website": "https://eatwellpros.com/"
+    },
+    "laurence kinsella": {
+      "bio": "Dr. Laurence Kinsella is a board-certified neurologist specializing in autonomic dysfunction, neuropathy, and complex neurological issues at the intersection of dysautonomia, hypermobility, and MCAS.",
+      "credentials": "MD",
+      "affiliation": "SSM Neuroscience Institute, Saint Louis University",
+      "website": "https://psnmo.net/member-providers/dr-laurence-kinsella-neurology/"
+    },
+    "leonard weinstock": {
+      "bio": "Dr. Leonard Weinstock is a board-certified gastroenterologist recognized as a leading expert on MCAS and SIBO. He is an associate professor at Washington University School of Medicine with over 80 publications.",
+      "credentials": "MD",
+      "affiliation": "Specialists in Gastroenterology",
+      "website": "https://www.gidoctor.net/leonard-weinstock/"
+    },
+    "leslie russek": {
+      "bio": "Dr. Leslie Russek is Professor Emeritus of Physical Therapy at Clarkson University with over 30 years of clinical experience, including 25 years working with patients with hypermobile EDS.",
+      "credentials": "PT, DPT, PhD, OCS",
+      "affiliation": "Clarkson University",
+      "website": "https://www.clarkson.edu/people/leslie-russek"
+    },
+    "lilian holm": {
+      "bio": "Lilian Holm is a physical therapist with over 30 years of experience who has focused exclusively on patients with hypermobility spectrum disorders and Ehlers-Danlos syndromes.",
+      "credentials": "PT, DPT, CHC",
+      "affiliation": "Lilian Holm Wellness",
+      "website": "https://www.lilianholm.com/"
+    },
+    "mandy blackmon": {
+      "bio": "Mandy Blackmon is a board-certified orthopaedic physical therapist serving as head physical therapist for the Atlanta Ballet. She specializes in treating performing artists and the hypermobile population.",
+      "credentials": "PT, DPT, OCS, CMTPT",
+      "affiliation": "Atlanta Dance Medicine",
+      "website": "https://www.mandydancept.com/"
+    },
+    "matthew watto": {
+      "bio": "Dr. Matthew Watto is a Clinical Assistant Professor at the University of Pennsylvania and co-founder of The Curbsiders, a weekly internal medicine podcast with over 100,000 active monthly listeners.",
+      "credentials": "MD, FACP",
+      "affiliation": "University of Pennsylvania, The Curbsiders",
+      "website": "https://www.mattwattomd.com"
+    },
+    "monica lorenzo": {
+      "bio": "Monica Lorenzo is a certified athletic trainer and founder of ROMO Fit who developed the first Athletic Training Program for NBA entertainment teams at Madison Square Garden. She has served as athletic trainer for the Radio City Rockettes and Cirque du Soleil.",
+      "credentials": "MS, ATC, CES",
+      "affiliation": "ROMO Fit, Inc.",
+      "website": "https://doctorsfordancers.com/directory/monica-lorenzo/"
+    },
+    "natasha trujillo": {
+      "bio": "Dr. Natasha Trujillo is a licensed counseling and sport psychologist specializing in chronic illness, grief and loss, eating disorders, and performance concerns for athletes. She is on the U.S. Olympic and Paralympic Committee Mental Health Registry.",
+      "credentials": "PhD",
+      "affiliation": "Natasha P. Trujillo, PhD",
+      "website": "https://npttherapy.com/"
+    },
+    "paldeep atwal": {
+      "bio": "Dr. Paldeep Atwal is a board-certified clinical and medical biochemical geneticist and director of Atwal Clinic for Genomic and Personalized Medicine. He has co-discovered two new genetic connective tissue syndromes and published over 100 publications.",
+      "credentials": "MD",
+      "affiliation": "Atwal Clinic for Genomic & Personalized Medicine",
+      "website": "https://atwalclinic.com/"
+    },
+    "patrick agnew": {
+      "bio": "Dr. Patrick Agnew is a podiatric surgery specialist board certified in foot and ankle surgery. He serves on the Medical and Scientific Board of The Ehlers-Danlos Society.",
+      "credentials": "DPM",
+      "affiliation": "The Ehlers-Danlos Society",
+      "website": "https://www.ehlers-danlos.com/patrick-agnew/"
+    },
+    "patty stott": {
+      "bio": "Patricia Stott is a physical therapist, athletic trainer, and certified hand therapist who treats primarily those with HSD/EDS. She is the co-author of 'Taming the Zebra,' a definitive physical therapy guide to managing HSD/EDS.",
+      "credentials": "PT, DPT, MS, ATC, CHT",
+      "affiliation": "Elevation Wellness",
+      "website": "https://www.ehlers-danlos.com/patricia-stott/"
+    },
+    "patricia stott": {
+      "bio": "Patricia Stott is a physical therapist, athletic trainer, and certified hand therapist who treats primarily those with HSD/EDS. She is the co-author of 'Taming the Zebra,' a definitive physical therapy guide to managing HSD/EDS.",
+      "credentials": "PT, DPT, MS, ATC, CHT",
+      "affiliation": "Elevation Wellness",
+      "website": "https://www.ehlers-danlos.com/patricia-stott/"
+    },
+    "pejman katiraei": {
+      "bio": "Dr. Pejman Katiraei is a board-certified pediatrician fellowship-trained in integrative and holistic medicine. He founded Wholistic Kids and Wholistic Minds in Santa Monica, specializing in children with complex conditions.",
+      "credentials": "DO",
+      "affiliation": "Wholistic Kids, Wholistic Minds",
+      "website": "https://wholistickids.com/people/dr-pejman-katiraei/"
+    },
+    "petra klinge": {
+      "bio": "Dr. Petra Klinge is a neurosurgeon and professor of neurosurgery at Brown University, specializing in Chiari malformation, tethered cord syndrome, and spinal malformations in EDS patients.",
+      "credentials": "MD, PhD",
+      "affiliation": "Brown University, Rhode Island Hospital",
+      "website": "https://www.brownhealth.org/providers/petra-m-klinge-md-phd"
+    },
+    "rachel rubin": {
+      "bio": "Dr. Rachel Rubin is a board-certified urologist with fellowship training in sexual medicine for all genders. She completed her sexual medicine fellowship with Dr. Irwin Goldstein and serves as education chair for ISSWSH.",
+      "credentials": "MD",
+      "affiliation": "Rachel Rubin MD Urology and Sexual Medicine",
+      "website": "https://www.rachelrubinmd.com/"
+    },
+    "robert hacker": {
+      "bio": "Dr. Robert Hacker is a double board-certified vascular surgeon specializing in MALS, Nutcracker Syndrome, May-Thurner Syndrome, and pelvic venous congestion syndrome affecting EDS patients.",
+      "credentials": "MD",
+      "affiliation": "St. Louis Vascular Surgical Specialists",
+      "website": "https://stlvascular.com/about/dr-robert-hacker/"
+    },
+    "roger seheult": {
+      "bio": "Dr. Roger Seheult is a quadruple board-certified physician specializing in pulmonary medicine, critical care, internal medicine, and sleep medicine. He co-founded MedCram, a medical education platform with over 1 million YouTube subscribers.",
+      "credentials": "MD",
+      "affiliation": "MedCram",
+      "website": "https://www.medcram.com"
+    },
+    "rudrani banik": {
+      "bio": "Dr. Rudrani Banik is a Board-certified Ophthalmologist, fellowship-trained Neuro-Ophthalmologist, and Functional Medicine expert. She is fully trained in ophthalmic surgery and Botox, and she has a special interest in treating Headache and Migraine. Dr. Banik manages a wide spectrum of conditions affecting vision, as well as the complex connections between the eye and brain.",
+      "credentials": "MD, IFMCP",
+      "affiliation": "enVision Health NYC",
+      "website": "https://www.drranibanik.com"
+    },
+    "satish raj": {
+      "bio": "Dr. Satish Raj is a Professor of Cardiac Science at the University of Calgary and a global leader in POTS research. He founded the Calgary Autonomic Investigation & Management Clinic and was named Dysautonomia International Physician of the Year.",
+      "credentials": "MD, MSCI, FRCPC",
+      "affiliation": "University of Calgary, Libin Cardiovascular Institute",
+      "website": "https://libin.ucalgary.ca/node/240"
+    },
+    "selina shah": {
+      "bio": "Dr. Selina Shah is a board-certified sports medicine physician and Director of Dance Medicine at the Center for Sports Medicine in San Francisco. She serves as team physician for USA Synchronized Swimming, USA Weight Lifting, and USA Figure Skating.",
+      "credentials": "MD, FACP, FAMSSM",
+      "affiliation": "BASS Medical Group",
+      "website": "https://selinashah.com"
+    },
+    "shanda dorff": {
+      "bio": "Dr. Shanda Dorff is a board-certified family medicine physician who founded Complex Cares LLC to focus on treating EDS, MCAS, and POTS. She practices in the Minneapolis/St. Paul area.",
+      "credentials": "MD, FAAFP",
+      "affiliation": "Complex Cares LLC",
+      "website": "https://www.complexcaresmn.com"
+    },
+    "shimi kang": {
+      "bio": "Dr. Shimi Kang is an award-winning psychiatrist, Clinical Associate Professor at UBC, and bestselling author of 'The Dolphin Parent' and 'The Tech Solution.' She received the Queen Elizabeth II Diamond Jubilee Medal.",
+      "credentials": "MD",
+      "affiliation": "University of British Columbia",
+      "website": "https://www.drshimikang.com"
+    },
+    "stephanie greenspan": {
+      "bio": "Dr. Stephanie Greenspan is a physical therapist specializing in circus artists and dancers, and founder of Artletic Science. She co-authored clinical guidelines for management of hypermobility in performing artists.",
+      "credentials": "PT, DPT, OCS, NCS",
+      "affiliation": "Artletic Science",
+      "website": "https://artleticscience.com/about"
+    },
+    "sue goldstein": {
+      "bio": "Sue Goldstein is a certified sexuality educator and Clinical Research Manager at San Diego Sexual Medicine. She is President-Elect of ISSWSH and managing editor of Sexual Medicine Reviews.",
+      "credentials": "AASECT Certified",
+      "affiliation": "San Diego Sexual Medicine",
+      "website": "https://www.sdsm.info"
+    },
+    "svetlana blitshteyn": {
+      "bio": "Dr. Svetlana Blitshteyn is a neurologist and founder of the Dysautonomia Clinic, specializing in POTS, small fiber neuropathy, and related conditions. She is a Clinical Associate Professor of Neurology at the University at Buffalo.",
+      "credentials": "MD, FAAN",
+      "affiliation": "Dysautonomia Clinic",
+      "website": "http://www.dysautonomiaclinic.com"
+    },
+    "theoharis theoharides": {
+      "bio": "Dr. Theoharis Theoharides is the world's foremost mast cell researcher with 493 publications. He is Professor and Executive Director of the Institute for Neuro-Immune Medicine at Nova Southeastern University.",
+      "credentials": "MD, PhD",
+      "affiliation": "Nova Southeastern University",
+      "website": "https://www.mastcellmaster.com"
+    },
+    "tina wang": {
+      "bio": "Dr. Tina Wang is a Physical Medicine & Rehabilitation physician specializing in fascia and founder of Tupelo Pointe Healing Arts. Her research focuses on ultrasound diagnostics for fascial dysfunction in EDS patients.",
+      "credentials": "MD",
+      "affiliation": "Tupelo Pointe Healing Arts",
+      "website": "https://tupelopointe.com"
+    },
+    "zachary spiritos": {
+      "bio": "Dr. Zachary Spiritos is a neurogastroenterologist and founder of EverBetter Medicine, treating complex digestive conditions, dysautonomia, and MCAS. He specializes in GI complications of hypermobility syndromes.",
+      "credentials": "MD, MPH",
+      "affiliation": "EverBetter Medicine",
+      "website": "https://everbettermedicine.health"
+    },
+    "john pitts": {
+      "bio": "Dr. John Pitts is a Physical Medicine & Rehabilitation physician specializing in regenerative medicine and interventional orthopedics at the Centeno-Schultz Clinic. He is the chief editor of the Atlas of Interventional Orthopedics.",
+      "credentials": "MD",
+      "affiliation": "Centeno-Schultz Clinic",
+      "website": "https://centenoschultz.com/our-staff/john-pitts-md/"
+    },
+    "adji cissoko": {
+      "bio": "Adji Cissoko is a German-born dancer and Associate Artistic Director at Alonzo King LINES Ballet, where she has originated many central roles and guested at galas worldwide since joining in 2014. She trained at the Ballet Academy Munich and the Jacqueline Kennedy Onassis School at American Ballet Theatre on full scholarship.",
+      "credentials": "Diploma in Dance (Ballet Academy Munich)",
+      "affiliation": "Alonzo King LINES Ballet",
+      "website": "https://linesballet.org/person/adji-cissoko/"
+    },
+    "aidan leslie": {
+      "bio": "Aiden Leslie is an American pop singer, songwriter, and two-time Billboard-charting artist best known for his hit 'World's Away,' which reached No. 1 on Logo TV's Click List. He is an LGBT advocate who works with the organization Live Out Loud connecting LGBTQ youth with mentorship.",
+      "credentials": null,
+      "affiliation": "Ashea Records",
+      "website": "https://www.instagram.com/aidenleslie/"
+    },
+    "allysa seely": {
+      "bio": "Allysa Seely is a two-time Paralympic gold medalist in paratriathlon (Rio 2016, Tokyo 2020) and three-time World Paratriathlon Champion. She was diagnosed with Chiari II Malformation, basilar invagination, and Ehlers-Danlos Syndrome, which led to a below-knee amputation in 2013.",
+      "credentials": null,
+      "affiliation": "Team USA, US Paralympics Triathlon",
+      "website": "https://www.teamusa.com/profiles/allysa-seely-817537"
+    },
+    "andrew dettelbach": {
+      "bio": "Andrew Dettelbach is the co-founder of Whealth, a coaching program that has helped over 22,000 people overcome chronic pain since 2012. He has hypermobile Ehlers-Danlos Syndrome and recovered from a severe disc herniation without surgery.",
+      "credentials": "BS in Kinesiology, FRCms",
+      "affiliation": "Whealth",
+      "website": "https://spreadwhealth.com"
+    },
+    "ashok gupta": {
+      "bio": "Ashok Gupta is the founder of the Gupta Program, a neuroplasticity-based brain retraining program for chronic conditions including ME/CFS, fibromyalgia, and long COVID. He contracted ME/CFS while studying economics at Cambridge University and developed recovery techniques he has taught for over 15 years.",
+      "credentials": "MA (Cantab), MSc",
+      "affiliation": "Gupta Program, Harley Street Solutions",
+      "website": "https://guptaprogram.com"
+    },
+    "beckanne sisk": {
+      "bio": "Beckanne Sisk is a principal ballet dancer now with the National Ballet of Canada, having previously spent 12 years at Ballet West. She has scoliosis and hypermobility that have both challenged and shaped her career, and her accolades include the Jerome Robbins Award and a Princess Grace Dance Fellowship.",
+      "credentials": null,
+      "affiliation": "National Ballet of Canada",
+      "website": "https://www.instagram.com/beckannesisk/"
+    },
+    "bonnie moore southgate": {
+      "bio": "Bonnie Moore Southgate is a former elite ballet dancer who performed as a soloist with American Ballet Theatre and the Royal Ballet, winning the Prix de Lausanne. After being diagnosed with Ehlers-Danlos Syndrome, she transitioned into a career as a neurokinetic therapist and Pilates trainer specializing in hypermobility.",
+      "credentials": "Sports Therapist, Neurokinetic Therapist",
+      "affiliation": "Movement Anatomy Essentials, SEDSConnective",
+      "website": "https://movementanatomyessentials.co.uk"
+    },
+    "cailey brandon": {
+      "bio": "Cailey Brandon is the founder of Verb Movement Rehabilitation, bridging physical therapy and Pilates methodology for clients with chronic pain and neurological conditions. She founded Verb after her own diagnosis with a connective tissue disorder and autonomic disease.",
+      "credentials": "MS Cognitive Neuroscience, NCPT",
+      "affiliation": "Verb Movement Rehabilitation",
+      "website": "https://www.verb-madetomove.com"
+    },
+    "camille schrier": {
+      "bio": "Camille Schrier is Miss America 2020, a Doctor of Pharmacy, and an EDS advocate who was diagnosed with Ehlers-Danlos Syndrome at age 11. She won the Miss America title with a chemistry demonstration and has used her platform to raise awareness of EDS and promote STEM education.",
+      "credentials": "PharmD, BS in Biochemistry",
+      "affiliation": "The Ehlers Danlos Society",
+      "website": "https://www.camilleschrier.com"
+    },
+    "corinne mclees": {
+      "bio": "Corinne McLees is an occupational therapist turned hand coach specializing in helping people with chronic hand pain and hypermobility. She has nearly 8 years of experience in hand therapy, including 5 years in a Level 1 trauma hospital, and has a connective tissue disorder herself.",
+      "credentials": "MS in Occupational Therapy, OTR/L",
+      "affiliation": "Hand Coach Corinne, Mobile OT & Wellness Group",
+      "website": "https://www.handcoachcorinne.com"
+    },
+    "delaney kenney": {
+      "bio": "Delaney Kenney is a neuroscience graduate from Haverford College diagnosed with hypermobile Ehlers-Danlos Syndrome. She conducted EDS research at the University of Colorado Anschutz Medical Campus, working on reprogramming hEDS patient fibroblasts into induced pluripotent stem cells.",
+      "credentials": "BA in Neuroscience (Haverford College)",
+      "affiliation": "Haverford College",
+      "website": "https://www.linkedin.com/in/delaneykenney/"
+    },
+    "emily rich": {
+      "bio": "Emily Rich is an occupational therapist, researcher, and educator specializing in POTS, Ehlers-Danlos syndromes, and chronic conditions at Tucson Medical Center. She earned her PhD studying POTS rehabilitation and is also a patient with hypermobile EDS and POTS.",
+      "credentials": "PhD, MOT, OTR/L",
+      "affiliation": "Tucson Medical Center, Dysautonomia International, The Ehlers-Danlos Society",
+      "website": "https://www.otemily.com"
+    },
+    "gigi robinson": {
+      "bio": "Gigi Robinson is a content creator, chronic illness advocate, and Sports Illustrated Swim model diagnosed with Ehlers-Danlos Syndrome and endometriosis. She founded Hosts of Influence and works with organizations including The Trevor Project and UN Women.",
+      "credentials": "MS, BFA (University of Southern California)",
+      "affiliation": "Hosts of Influence, Endometriosis Foundation of America",
+      "website": "https://www.gigirobinson.com"
+    },
+    "heather purdin": {
+      "bio": "Heather Purdin is a physical therapist and owner of Good Health Physical Therapy & Wellness in Portland, Oregon, specializing in hypermobility spectrum disorders and EDS. She is President of the Oregon Area Ehlers-Danlos Society and co-authored the book 'Taming the Zebra.'",
+      "credentials": "MS, PT, CMPT",
+      "affiliation": "Good Health Physical Therapy & Wellness, Oregon Area Ehlers-Danlos Society",
+      "website": "https://goodhealthphysicaltherapy.com/"
+    },
+    "isabelle ramirez burnett": {
+      "bio": "Isabel Ramirez-Burnett is a systems engineer, board-certified health coach, and CEO of Renegade Research, a patient-led nonprofit focused on complex multi-system chronic conditions like ME/CFS and long COVID. Diagnosed with ME/CFS at age 7, she also serves as Project Director of Remission Biome.",
+      "credentials": "Systems Engineer, Board-Certified Health Coach",
+      "affiliation": "Renegade Research, Remission Biome",
+      "website": "https://www.remissionbiome.org/"
+    },
+    "jazz bynum": {
+      "bio": "Jazz Khai Bynum is a professional ballet dancer with Ballet West who was diagnosed with hypermobile Ehlers-Danlos Syndrome. She graduated from The Boston Conservatory with a BFA in Contemporary Performance with an emphasis in Ballet, cum laude.",
+      "credentials": "BFA (Boston Conservatory)",
+      "affiliation": "Ballet West",
+      "website": "https://www.balletwest.org/dancers/detail/jazz-khai-bynum"
+    },
+    "jeanice mitchell": {
+      "bio": "Jeanice Mitchell is a pelvic health physical therapist and president of Integrity Rehab & Home Health in Texas, specializing in pelvic floor rehabilitation with particular expertise in the hypermobile population. She founded myPFM, a nonprofit pelvic health public service campaign.",
+      "credentials": "PT, MPT, WCS, BCB-PMD",
+      "affiliation": "Integrity Rehab & Home Health, myPFM",
+      "website": "https://integrityrehab.net/"
+    },
+    "jeannie dibon": {
+      "bio": "Jeannie Di Bon is an internationally recognized movement therapist specializing in hypermobility, EDS, and chronic pain with over 16 years of experience. She is the creator of the Integral Movement Method and founder of The Zebra Club app, drawing from her own diagnoses of hEDS, MCAS, POTS, and CFS.",
+      "credentials": "MSc (Pain Management)",
+      "affiliation": "The Zebra Club, London Hypermobility Network of Excellence, The Ehlers Danlos Society",
+      "website": "https://jeanniedibon.com"
+    },
+    "jeevan mann": {
+      "bio": "Jeevan Mann is a professional research assistant at the University of Colorado Anschutz Medical Campus diagnosed with classical-like Ehlers-Danlos Syndrome, an ultra-rare form affecting approximately 1 in 1 million people. He graduated from UC Davis in 2.5 years and plans to pursue a dual MD-PhD in regenerative medicine.",
+      "credentials": "BS (Psychology/Biology, UC Davis)",
+      "affiliation": "University of Colorado Anschutz Medical Campus",
+      "website": "https://chronicdiseasecoalition.org/get-involved/ambassadors/jeevan-mann"
+    },
+    "jenelle manzi": {
+      "bio": "Jenelle Manzi is a professional ballet dancer with the New York City Ballet who was diagnosed with Ehlers-Danlos syndrome at age 18. She launched a recipe blog and founded Get Golden, a snack bar company, after re-evaluating her nutrition approach.",
+      "credentials": null,
+      "affiliation": "New York City Ballet, Get Golden",
+      "website": "http://ballerinajournal.com/"
+    },
+    "jill brook": {
+      "bio": "Jill Brook is a nutritionist, POTS patient, host of The POTScast, and volunteer research assistant to several POTS experts. She earned degrees from Princeton University and UCLA and serves as nutrition consultant to the Dysautonomia Clinic.",
+      "credentials": "MA",
+      "affiliation": "Standing Up to POTS, Dysautonomia Clinic, PatientsCount.org",
+      "website": "https://www.standinguptopots.org/"
+    },
+    "jill miller": {
+      "bio": "Jill Miller is the co-founder of Tune Up Fitness Worldwide and creator of Yoga Tune Up and The Roll Model Method. With over 30 years of study in anatomy and movement, she is the author of the bestselling books 'The Roll Model' and 'Body by Breath.'",
+      "credentials": "C-IAYT, ERYT",
+      "affiliation": "Tune Up Fitness Worldwide",
+      "website": "https://www.tuneupfitness.com/"
+    },
+    "jo-anne la flèche": {
+      "bio": "Jo-Anne La Flèche is a clinical and performance psychologist with an MA in Dance and graduate studies in Somatics, based in Montreal. She is the resident psychologist at L'Ecole Superieure de Ballet du Quebec and has worked across the dance field for over 25 years.",
+      "credentials": "MA (Dance), Clinical Psychologist",
+      "affiliation": "L'Ecole Superieure de Ballet du Quebec, Healthy Dancer Canada",
+      "website": "https://www.esbq.ca/en/profiles/jo-anne-lafleche/"
+    },
+    "kate colbert": {
+      "bio": "Kate Colbert is the founder, executive director, and board president of EDS Guardians, Inc., the world's first patient-to-patient pay-it-forward organization for EDS patients. Diagnosed with hEDS at age 45, she is also CEO of Silver Tree Communications and a bestselling author.",
+      "credentials": "MA, MBA",
+      "affiliation": "EDS Guardians Inc., Silver Tree Communications",
+      "website": "https://www.edsguardians.org/"
+    },
+    "kathleen mcguire gaines": {
+      "bio": "Kathleen McGuire Gaines is a former professional ballet dancer and the founder of Minding the Gap, an organization dedicated to making dancers' mental health as important as their physical health. Her 2017 Dance Magazine article 'Why Are We Still So Bad at Addressing Dancers' Mental Health?' went viral.",
+      "credentials": "BA (Writing, University of Pittsburgh)",
+      "affiliation": "Minding the Gap",
+      "website": null
+    },
+    "katie dettelbach": {
+      "bio": "Katie Dettelbach is a former critical care cardiac registered nurse and co-founder of Whealth, helping people with hypermobility and chronic pain build strength and manage their conditions. Diagnosed with hEDS, she combined her nursing background with movement to develop specialized programming.",
+      "credentials": "RN, Certified Pilates Instructor, FRCms",
+      "affiliation": "Whealth",
+      "website": "https://spreadwhealth.com/"
+    },
+    "keeya steel": {
+      "bio": "Keeya Steel is a chronic illness advocate and creator of Hell's Bells and Mast Cells, raising awareness about MCAS, EDS, and dysautonomia through humor and education. She lives with hEDS, POTS, and MCAS, and achieved MCAS remission in 2021.",
+      "credentials": null,
+      "affiliation": "Hell's Bells and Mast Cells",
+      "website": "https://hellsbellsandmastcells.com/"
+    },
+    "kyle thompson": {
+      "bio": "Kyle Thompson is a professional dancer who appeared on the Bendy Bodies Podcast in the round table episode 'Conquering the Wall,' discussing struggles with anxiety and the importance of supporting mental health as a hypermobile performer.",
+      "credentials": null,
+      "affiliation": null,
+      "website": null
+    },
+    "lara bloom": {
+      "bio": "Lara Bloom is the President and CEO of The Ehlers-Danlos Society, leading global efforts in awareness, research funding, and medical collaboration for EDS and hypermobility spectrum disorders. She is an Academic Affiliate Professor of Practice at Penn State College of Medicine and a Fellow of the Royal Society of Medicine.",
+      "credentials": "Fellow of the Royal Society of Medicine",
+      "affiliation": "The Ehlers-Danlos Society, Penn State College of Medicine",
+      "website": "https://www.larabloom.com/"
+    },
+    "lara heimann": {
+      "bio": "Lara Heimann is a physical therapist and the founder of the LYT Yoga Method, combining physiology, kinesiology, neurology, and functional movement into a cohesive yoga practice. She has over 25 years of teaching experience and has trained thousands of students in more than 50 countries.",
+      "credentials": "PT, E-RYT 500, MS Physical Therapy (Duke University)",
+      "affiliation": "LYT Yoga",
+      "website": "https://lytyoga.com/"
+    },
+    "lauren vasko": {
+      "bio": "Lauren Vasko is an EDS patient advocate and the very first patient of Dr. Linda Bluestein. She navigated life in a wheelchair due to cranial-cervical instability and POTS before regaining independence and earning a degree in entrepreneurship and marketing from Marquette University.",
+      "credentials": null,
+      "affiliation": "West Nairobi School",
+      "website": "https://laurenvasko.substack.com/"
+    },
+    "lisa howell": {
+      "bio": "Lisa Howell is a physiotherapist, author, and creator of The Ballet Blog, revolutionizing how dancers approach injury prevention and performance enhancement. She founded Perfect Form Physiotherapy in Sydney and has authored over 20 programs translated into more than five languages.",
+      "credentials": "B.Phty (Otago University)",
+      "affiliation": "The Ballet Blog, Perfect Form Physiotherapy",
+      "website": "https://theballetblog.com/"
+    },
+    "lisa ralston": {
+      "bio": "Lisa Ralston is a physical therapist with over 32 years of experience specializing in orthopedics, sports medicine, and connective tissue disorders. She served as the physical therapist for Team USA figure skating at the 2022 Winter Olympics in Beijing.",
+      "credentials": "PT",
+      "affiliation": "Ralston Physical Therapy and Wellness, Jackson County Physical Therapy",
+      "website": "https://lisaralstonpt.janeapp.com/"
+    },
+    "lorna ryan": {
+      "bio": "Lorna Ryan is an internationally recognized specialist in clinical nutrition and lifestyle medicine for hypermobility and EDS, and the founder of Lorna Ryan Health. She chairs the Diet and Nutrition Working Group of the International Consortium on EDS and HSD.",
+      "credentials": "DipION, mBANT, rCNHC",
+      "affiliation": "Lorna Ryan Health, The London Hypermobility Network, The Ehlers-Danlos Society",
+      "website": "https://lornaryanhealth.com/"
+    },
+    "mariaelena ruiz": {
+      "bio": "Mariaelena Ruiz is the Director of the Professional Training Program at Cary Ballet Conservatory and recipient of the 2019 Youth America Grand Prix Outstanding Teacher Award. Born in Caracas, Venezuela, she trained under Prima Ballerina Nina Novak and at the School of American Ballet.",
+      "credentials": "2019 YAGP Outstanding Teacher Award",
+      "affiliation": "Cary Ballet Conservatory, Cary Ballet Company",
+      "website": "https://www.mariaelenaruiz.com/"
+    },
+    "mariana j. plick": {
+      "bio": "Mariana J. Plick is a contortionist, fire dancer, aerialist, actor, and director based in New York and Montreal. She trained in the Circus Warehouse professional program and has performed worldwide.",
+      "credentials": null,
+      "affiliation": null,
+      "website": "https://www.youtube.com/watch?v=2j9NZsq9dUw"
+    },
+    "marimba gold-watts": {
+      "bio": "Marimba Gold-Watts is an award-winning Pilates trainer on Apple Fitness+ and a former professional dancer who has taught Horton technique at the Ailey School since 2005. She won the 2018 Pilates Anytime Next Instructor Competition and founded Articulating Body Inc.",
+      "credentials": "PMA Certified, BA Art History (Barnard College, Columbia University)",
+      "affiliation": "Apple Fitness+, Articulating Body Inc., The Ailey School",
+      "website": "https://www.pilatesanytime.com/instructor-bio/233/Marimba-Gold-Watts-Pilates-Teacher"
+    },
+    "melissa dickinson": {
+      "bio": "Melissa Dickinson is a Licensed Professional Counselor specializing in gender and sexuality counseling, chronic illness, and EDS-informed psychotherapy. After being diagnosed with EDS herself, she founded the Georgia EDS and Hypermobility Network serving over 1,500 people.",
+      "credentials": "LPC",
+      "affiliation": "Wellspring Counseling Coaching & Transitions Center, Georgia EDS and Hypermobility Network",
+      "website": "https://www.melissadickinson.com/"
+    },
+    "moira mccormack": {
+      "bio": "Moira McCormack is a physiotherapist and former professional ballet dancer who served as Head of Physiotherapy at The Royal Ballet Company for eighteen years. She holds a PhD from UCL researching young dancer profiling and lectures internationally on dance injuries and hypermobility.",
+      "credentials": "MS, PhD, MCSP",
+      "affiliation": "The Royal Ballet Company, Institute of Sport Exercise and Health",
+      "website": "https://www.bapam.org.uk/practitioner-search/dr-moira-mccormack/"
+    },
+    "paolo bolognese": {
+      "bio": "Dr. Paolo Bolognese is a neurosurgeon and Surgical Director of the Chiari EDS Center, specializing in Chiari malformation, craniocervical instability, and tethered cord surgery. He co-founded The Chiari Institute and is a global authority on the surgical management of EDS-related neurological conditions.",
+      "credentials": "MD",
+      "affiliation": "Chiari EDS Center",
+      "website": "https://chiarieds.com/dr-paolo-a-bolognese/"
+    },
+    "rachel neville": {
+      "bio": "Rachel Neville is an award-winning dance and movement photographer based in New York City with over two decades of experience shooting for companies including Boston Ballet, Atlanta Ballet, and Dance Theatre of Harlem.",
+      "credentials": null,
+      "affiliation": "Rachel Neville Studios",
+      "website": "https://rachelneville.com/"
+    },
+    "rebekah rotstein": {
+      "bio": "Rebekah Rotstein is a movement educator and certified Pilates instructor who created the medically-endorsed Buff Bones system for bone health, now offered in over 30 countries. Diagnosed with osteoporosis at age 28, she serves on the Ambassador Leadership Council for the Bone Health and Osteoporosis Foundation.",
+      "credentials": null,
+      "affiliation": "Buff Bones",
+      "website": "https://rebekahrotstein.com/"
+    },
+    "scott borjeson": {
+      "bio": "Scott Borjeson is an executive at Bauerfeind USA with over 30 years of international medical device and management experience. Bauerfeind is the founding sponsor of the Bendy Bodies Podcast, working to increase awareness of hypermobility spectrum disorders.",
+      "credentials": null,
+      "affiliation": "Bauerfeind USA",
+      "website": "https://www.linkedin.com/in/scott-borjeson-ab228411/"
+    },
+    "shu das": {
+      "bio": "Dr. Subinoy (Shu) Das is a board-certified otolaryngologist, Fellow of the American College of Surgeons, and CEO of the U.S. Institute for Advanced Sinus Care and Research. He has expertise in how EDS impacts the ears, nose, throat, vocal cords, and hearing.",
+      "credentials": "MD, FACS",
+      "affiliation": "U.S. Institute for Advanced Sinus Care and Research",
+      "website": "http://www.usasinus.org/meet-dr-das"
+    },
+    "skylar brandt": {
+      "bio": "Skylar Brandt is a principal dancer with the American Ballet Theatre who joined ABT's Studio Company at age 14 and rose through the ranks to principal in 2020. A two-time Youth America Grand Prix silver medalist and Princess Grace Fellowship recipient.",
+      "credentials": null,
+      "affiliation": "American Ballet Theatre",
+      "website": "https://www.skylarbrandt.com/"
+    },
+    "stacy menton": {
+      "bio": "Stacey Menton is a speech-language pathologist and classically trained soprano specializing in voice disorders, with particular expertise in treating patients with EDS and hypermobility spectrum disorders.",
+      "credentials": "MS, CCC-SLP",
+      "affiliation": "Mayo Clinic Jacksonville",
+      "website": "https://staceymenton.com/"
+    },
+    "summer dashe": {
+      "bio": "Summer Dashe is an Emmy-winning former news anchor turned chronic illness advocate after POTS derailed her broadcasting career. She works in science communications for the U.S. Department of Energy and teaches journalism at the University of Tennessee.",
+      "credentials": null,
+      "affiliation": "Emmy-winning news anchor",
+      "website": "https://www.summerdashe.com/"
+    },
+    "susan chalela": {
+      "bio": "Susan Chalela is a physical therapist with over 30 years of experience and founder of the Chalela Physical Therapy Institute for EDS and Cervical Instabilities. Living with hypermobile EDS herself, she created the Finding Functional Foundations program.",
+      "credentials": "MPT",
+      "affiliation": "Chalela Physical Therapy Institute",
+      "website": "https://www.chalelapt.com/"
+    },
+    "tara renton": {
+      "bio": "Professor Tara Renton is an Emeritus Professor of Oral Surgery at King's College London and a leading international authority on trigeminal nerve injuries and chronic orofacial pain. She has published over 250 peer-reviewed articles.",
+      "credentials": "BDS, MDSc, PhD",
+      "affiliation": "King's College London",
+      "website": "https://tararenton.co.uk/"
+    },
+    "terry hyde": {
+      "bio": "Terry Hyde is a psychotherapist and former professional ballet dancer who performed for 22 years with the Royal Ballet, English National Ballet, and in London's West End. He is the CEO of STEPPS, a charity improving access to mental health support in dance.",
+      "credentials": "MA, MBACP",
+      "affiliation": "Counselling for Dancers, STEPPS Charity",
+      "website": "https://www.counsellingfordancers.com/"
+    },
+    "tiffany lee": {
+      "bio": "Tiffany Lee is an adjunct professor of law at Washington and Lee University School of Law, teaching disability law, healthcare law, and bioethics. She lives with hypermobile Ehlers-Danlos Syndrome, POTS, and chronic migraines.",
+      "credentials": "JD",
+      "affiliation": "Washington and Lee University School of Law",
+      "website": "https://law.wlu.edu/faculty/adjunct-faculty/tiffany-lee"
+    },
+    "tilly rose": {
+      "bio": "Tilly Rose is an author and patient advocate who spent 20 years searching for a diagnosis before being identified with hypermobile Ehlers-Danlos Syndrome. Her debut memoir 'Be Patient' offers an account of her patient journey, and she founded @thatpatientcollective.",
+      "credentials": null,
+      "affiliation": "The Patient Collective",
+      "website": "https://linktr.ee/bepatientbook"
+    },
+    "tom query": {
+      "bio": "Tom Query is a psychotherapist and change agent with 30 years of professional counseling experience, including expertise in chronic illness, substance abuse, and grief counseling. He appeared on Bendy Bodies to discuss how EDS can test and transform a relationship.",
+      "credentials": null,
+      "affiliation": "Wellspring Counseling Coaching and Transitions Center",
+      "website": "https://www.tomquery.com/"
+    },
+    "victor montori": {
+      "bio": "Dr. Victor M. Montori is an endocrinologist, health services researcher, and care activist at the Mayo Clinic. He is the author of more than 750 peer-reviewed publications and a pioneer in shared decision making and minimally disruptive medicine.",
+      "credentials": "MD",
+      "affiliation": "Mayo Clinic",
+      "website": "https://www.mayoclinic.org/biographies/montori-victor-m-m-d/bio-20054635"
+    },
+    "victoria daylor": {
+      "bio": "Victoria Daylor is a patient scientist with hEDS who graduated from the Boston Conservatory and Columbia University's Postbac Premed Program. She serves as a Clinical Research Coordinator in the Norris Lab at MUSC and co-authored the 'Hope for Hypermobility' CME series.",
+      "credentials": null,
+      "affiliation": "The Norris Lab",
+      "website": "https://www.thenorrislab.com/meet-the-lab"
+    },
+    "vita bachman": {
+      "bio": "Vita Bachman is a former international Ukrainian rhythmic gymnast and coach who trained with Natalia Kiseleva in Kiev. She is the owner and head coach of Stretching Beyond Limits, a cross-training program for dancers, gymnasts, aerialists, and contortionists.",
+      "credentials": "MBA",
+      "affiliation": "Stretching Beyond Limits",
+      "website": "http://www.stretchingbeyondlimits.com/"
+    },
+    "wendy wagner": {
+      "bio": "Dr. Wendy Wagner Franklin is a board-certified physical therapist specializing in connective tissue disorders and hypermobility. She personally manages hEDS, POTS, and MCAS, and trains medical providers to recognize and treat hypermobility spectrum disorders.",
+      "credentials": "DPT",
+      "affiliation": "Wendy4Therapy",
+      "website": "https://www.wendy4therapy.com/"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+node_modules/
+_site/
+.DS_Store
+*.DS_Store
+Old Site/
+Old Site Photos/
+scripts/

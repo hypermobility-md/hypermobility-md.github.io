@@ -1,0 +1,65 @@
+backend:
+  name: github
+  repo: hypermobility-md/hypermobility-md.github.io  # Update if repo name differs
+  branch: main
+
+media_folder: "src/Guests"
+public_folder: "/Guests"
+
+collections:
+  - name: "episodes"
+    label: "Podcast Episodes"
+    folder: "src/episodes"
+    create: true
+    slug: "{{fields.num}}"
+    sortable_fields: ["num", "date", "title"]
+    view_groups:
+      - label: Year
+        field: date
+        pattern: \d{4}
+    fields:
+      - { label: "Episode Number", name: "num", widget: "number", value_type: "int" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Duration", name: "duration", widget: "string", hint: "e.g. 1h 7m" }
+      - { label: "Description", name: "description", widget: "text" }
+      - label: "Tags"
+        name: "tags"
+        widget: "select"
+        multiple: true
+        options:
+          - "EDS"
+          - "POTS"
+          - "MCAS"
+          - "Pain"
+          - "Nutrition"
+          - "Mental Health"
+          - "Exercise"
+          - "Diagnosis"
+          - "Treatment"
+          - "Neurology"
+          - "Genetics"
+          - "Research"
+          - "Surgery"
+          - "Hypermobility"
+      - { label: "Audio URL", name: "audioUrl", widget: "string", required: false }
+      - { label: "Video URL", name: "videoUrl", widget: "string", required: false, hint: "YouTube URL" }
+      - label: "YouTube Snippets/Shorts"
+        name: "snippets"
+        widget: "list"
+        required: false
+      - label: "Guests"
+        name: "guests"
+        widget: "list"
+        required: false
+      - label: "Guest Photo"
+        name: "guestImage"
+        widget: "image"
+        required: false
+        hint: "Upload a photo for the guest (saved to /Guests/)"
+      - label: "Guest Photo Paths"
+        name: "guestImages"
+        widget: "list"
+        required: false
+        hint: "Auto-filled paths (e.g. Guests/Name.jpg)"
+      - { label: "Transcript", name: "body", widget: "markdown", required: false, hint: "Full episode transcript — paste the text here" }
