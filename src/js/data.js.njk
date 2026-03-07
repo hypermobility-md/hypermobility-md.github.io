@@ -7,10 +7,10 @@ permalink: /js/data.js
 // Last built: {{ "now" | isoDate }}
 
 // Guest name → photo lookup (normalized: strip Dr./Prof., strip credentials, lowercase)
-const GUEST_IMAGES = {{ guests.images | jsonify | safe }};
+const GUEST_IMAGES = {{ guestData.images | jsonify | safe }};
 
 // Guest name → professional profile data
-const GUEST_PROFILES = {{ guests.profiles | jsonify | safe }};
+const GUEST_PROFILES = {{ guestData.profiles | jsonify | safe }};
 
 const EPISODES = [
 {%- for ep in collections.episodes %}
