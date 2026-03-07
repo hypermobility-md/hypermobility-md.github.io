@@ -28,14 +28,14 @@
   --teal: #5a7d6a;
   --teal-dark: #3d5c4a;
   --teal-light: #8fb39e;
-  --podcast-zebra-bg: url('assets/green_zebra.png');
+  --podcast-zebra-bg: url('/assets/green_zebra.png');
 }
 
 [data-theme="purple"] {
   --teal: #2a9d8f;
   --teal-dark: #1e7a6e;
   --teal-light: #3dc9b8;
-  --podcast-zebra-bg: url('assets/purple_zebra.png');
+  --podcast-zebra-bg: url('/assets/purple_zebra.png');
 }
 
 /* ---- Zebra Background ---- */
