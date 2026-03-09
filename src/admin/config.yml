@@ -4,8 +4,6 @@ backend:
   branch: master
   auth_type: pkce
   app_id: Ov23li5o3OxXftXIkYZb
-  base_url: https://github.com
-  auth_endpoint: /login/oauth/authorize
 
 media_folder: "src/Guests"
 public_folder: "/Guests"
