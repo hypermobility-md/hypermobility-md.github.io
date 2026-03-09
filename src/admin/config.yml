@@ -2,8 +2,8 @@ backend:
   name: github
   repo: hypermobility-md/hypermobility-md.github.io
   branch: master
-  auth_type: pkce
-  app_id: Ov23li5o3OxXftXIkYZb
+  base_url: https://sveltia-cms-auth.hypermobility-md.workers.dev
+  auth_endpoint: /auth
 
 media_folder: "src/Guests"
 public_folder: "/Guests"
