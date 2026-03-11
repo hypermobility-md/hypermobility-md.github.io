@@ -17,7 +17,7 @@ permalink: /services/
 <section class="section section-alt" id="medical">
   <div class="container">
     <div class="service-detail" style="background: var(--card-bg);">
-      <h2>Medical Services</h2>
+      <h2><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="service-header-icon"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg> Medical Services</h2>
       <p>Dr. Bluestein uses integrative medicine to identify the source of your pain and the biochemical imbalances that may be making it worse. She utilizes personalized medicine to treat the root cause — not just the symptoms.</p>
       <p>Using cutting-edge testing and the latest research, Dr. Bluestein provides modern treatments including supplements, lifestyle changes, and medications to restore your health in the best way possible.</p>
       <p><strong>Note:</strong> Dr. Bluestein works as an integrative pain medicine consultant in conjunction with your current health care team. All patients must have a primary care physician for emergencies and routine care.</p>
@@ -44,24 +44,51 @@ permalink: /services/
     <h3 class="mb-2">Clinic Locations</h3>
     <p style="color: var(--text-muted); margin-bottom: 20px;">The Hypermobility MD clinic serves existing patients in three locations:</p>
     <div class="clinic-grid">
-      <a href="https://www.google.com/maps/search/?api=1&query=8091+Shaffer+Parkway+Littleton+CO" target="_blank" rel="noopener" class="clinic-card clinic-address">
+      <div class="clinic-card">
         <h4>Littleton, CO</h4>
         <p>8091 Shaffer Parkway</p>
         <p class="clinic-inside">Inside Integral PT</p>
-        <span class="clinic-map-hint">Open in Google Maps &rarr;</span>
-      </a>
-      <a href="https://www.google.com/maps/search/?api=1&query=8795+Ralston+Rd+Suite+115+Arvada+CO" target="_blank" rel="noopener" class="clinic-card clinic-address">
+        <div class="clinic-actions">
+          <a href="https://www.google.com/maps/search/?api=1&query=8091+Shaffer+Parkway+Littleton+CO" target="_blank" rel="noopener" class="clinic-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+            Google Maps
+          </a>
+          <button class="clinic-btn" onclick="copyAddress('8091 Shaffer Parkway, Littleton, CO', this)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            Copy
+          </button>
+        </div>
+      </div>
+      <div class="clinic-card">
         <h4>Arvada, CO</h4>
         <p>8795 Ralston Rd, Suite 115</p>
         <p class="clinic-inside">Inside Elevation Wellness</p>
-        <span class="clinic-map-hint">Open in Google Maps &rarr;</span>
-      </a>
-      <a href="https://www.google.com/maps/search/?api=1&query=2304+Lineville+Rd+Suite+112+Green+Bay+WI" target="_blank" rel="noopener" class="clinic-card clinic-address">
+        <div class="clinic-actions">
+          <a href="https://www.google.com/maps/search/?api=1&query=8795+Ralston+Rd+Suite+115+Arvada+CO" target="_blank" rel="noopener" class="clinic-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+            Google Maps
+          </a>
+          <button class="clinic-btn" onclick="copyAddress('8795 Ralston Rd, Suite 115, Arvada, CO', this)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            Copy
+          </button>
+        </div>
+      </div>
+      <div class="clinic-card">
         <h4>Green Bay, WI</h4>
         <p>2304 Lineville Rd, Suite 112</p>
         <p class="clinic-inside">Inside ATI PT</p>
-        <span class="clinic-map-hint">Open in Google Maps &rarr;</span>
-      </a>
+        <div class="clinic-actions">
+          <a href="https://www.google.com/maps/search/?api=1&query=2304+Lineville+Rd+Suite+112+Green+Bay+WI" target="_blank" rel="noopener" class="clinic-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+            Google Maps
+          </a>
+          <button class="clinic-btn" onclick="copyAddress('2304 Lineville Rd, Suite 112, Green Bay, WI', this)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            Copy
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -70,7 +97,7 @@ permalink: /services/
 <section class="section" id="coaching">
   <div class="container">
     <div class="service-detail">
-      <h2>Education &amp; Coaching</h2>
+      <h2><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="service-header-icon"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Education &amp; Coaching</h2>
       <p>Bendy Bodies offers EduCoaching — a unique process combining personalized information with one-on-one coaching with Dr. Linda Bluestein, MD and Rebecca Gluck, PA-C.</p>
       <p>Joint hypermobility and related conditions are often missed by the standard healthcare system. Our EduCoaching program enables individuals worldwide to benefit from the expertise of the Bendy Bodies team from the comfort of your own home.</p>
       <p>Rebecca Gluck, PA-C brings a unique blend of clinical expertise and a background in leading global education and support programs, enabling her to inform, validate, and support clients as they navigate life with hypermobility.</p>
@@ -100,7 +127,7 @@ permalink: /services/
 <section class="section section-alt" id="mentorship">
   <div class="container">
     <div class="service-detail" style="background: var(--card-bg);">
-      <h2>Professional Mentorship</h2>
+      <h2><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="service-header-icon"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg> Professional Mentorship</h2>
       <p>Mentorship for healthcare providers, coaches, and movement professionals who work with individuals navigating complex conditions like EDS, HSD, POTS, MCAS, chronic pain, and more.</p>
       <p>Whether you&rsquo;re early in your career or an experienced professional looking for a fresh perspective, these sessions offer a supportive space to gain clarity, deepen your knowledge, and elevate your practice.</p>
       <div style="margin-top: 24px;">
@@ -114,7 +141,7 @@ permalink: /services/
 <section class="section" id="medico-legal">
   <div class="container">
     <div class="service-detail">
-      <h2>Medico-Legal Services</h2>
+      <h2><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="service-header-icon"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg> Medico-Legal Services</h2>
       <p>Dr. Bluestein is available for medico-legal consultations related to hypermobility disorders, Ehlers-Danlos Syndromes, and associated conditions.</p>
       <p style="color: var(--text-light); font-style: italic;">More information coming soon. Please contact us for inquiries.</p>
       <div style="margin-top: 24px;">
@@ -128,7 +155,7 @@ permalink: /services/
 <section class="section section-alt">
   <div class="container">
     <div class="section-header">
-      <h2>Other Services</h2>
+      <h2><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="service-header-icon"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 12h8"/><path d="M12 8v8"/></svg> Other Services</h2>
     </div>
     <div class="icon-cards">
 
@@ -165,3 +192,15 @@ permalink: /services/
     </div>
   </div>
 </section>
+
+{% block scripts %}
+<script>
+function copyAddress(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+    setTimeout(() => { btn.innerHTML = orig; }, 2000);
+  });
+}
+</script>
+{% endblock %}

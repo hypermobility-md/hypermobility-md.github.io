@@ -28,7 +28,7 @@
   --teal: #5a7d6a;
   --teal-dark: #3d5c4a;
   --teal-light: #8fb39e;
-  --podcast-zebra-bg: url('/assets/green_zebra.png');
+  --podcast-zebra-bg: url('/assets/podcast-hero-warm.png');
 }
 
 [data-theme="purple"] {
@@ -145,25 +145,25 @@
 
 /* ---- Sponsor Banner ---- */
 .sponsor-banner {
-  background: #1a1a2e;
-  padding: 10px 0;
+  background: var(--section-alt, #f0ece4);
+  padding: 12px 0;
   text-align: center;
 }
 .sponsor-banner .container {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
 }
 .sponsor-text {
-  color: #f37321;
-  font-size: 0.95rem;
+  color: var(--text-muted, #6b6b5f);
+  font-size: 1rem;
   font-weight: 600;
   font-family: var(--body-font);
   letter-spacing: 0.03em;
 }
 .sponsor-logo {
-  height: 22px;
+  height: 18px;
   width: auto;
   object-fit: contain;
 }
