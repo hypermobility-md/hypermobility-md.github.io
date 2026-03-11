@@ -157,13 +157,13 @@
 }
 .sponsor-text {
   color: #f37321;
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   font-weight: 600;
   font-family: var(--body-font);
   letter-spacing: 0.03em;
 }
 .sponsor-logo {
-  height: 28px;
+  height: 22px;
   width: auto;
   object-fit: contain;
 }
