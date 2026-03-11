@@ -282,10 +282,7 @@ a:hover { color: var(--accent); }
   line-height: 1.7;
 }
 .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
-.hero-cta { text-align: center; }
-@media (max-width: 768px) {
-  .hero-cta { width: 100%; }
-}
+.hero-cta { text-align: center; flex: 1; min-width: 240px; }
 .hero-image-wrap {
   display: flex;
   justify-content: center;
@@ -567,7 +564,7 @@ a:hover { color: var(--accent); }
   margin-bottom: 20px;
 }
 .about-bio p { color: var(--text-muted); }
-.about-bio a { font-weight: 700; }
+.about-bio a { font-weight: 700; text-decoration: underline; }
 
 @media (max-width: 768px) {
   .about-hero { grid-template-columns: 1fr; text-align: center; }
@@ -825,13 +822,13 @@ a.logo-card:hover {
 .service-header-icon {
   width: 28px;
   height: 28px;
-  color: var(--primary);
+  color: var(--primary-dark);
   flex-shrink: 0;
 }
 .section-header h2 .service-header-icon {
   width: 28px;
   height: 28px;
-  color: var(--primary);
+  color: var(--primary-dark);
   flex-shrink: 0;
   vertical-align: middle;
 }

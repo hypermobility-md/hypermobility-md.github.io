@@ -28,7 +28,7 @@
   --teal: #5a7d6a;
   --teal-dark: #3d5c4a;
   --teal-light: #8fb39e;
-  --podcast-zebra-bg: url('/assets/podcast-hero-warm.png');
+  --podcast-zebra-bg: url('/assets/green_zebra.png');
 }
 
 [data-theme="purple"] {
