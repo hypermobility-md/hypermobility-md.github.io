@@ -17,7 +17,8 @@ permalink: /faq/
 <!-- FAQ Section Navigation -->
 <div class="faq-section-nav">
   <div class="container">
-    <a href="#general" class="faq-nav-link active" onclick="scrollToSection(event, 'general')">General</a>
+    <a href="#who" class="faq-nav-link active" onclick="scrollToSection(event, 'who')">Who This is For</a>
+    <a href="#general" class="faq-nav-link" onclick="scrollToSection(event, 'general')">General</a>
     <a href="#medical" class="faq-nav-link" onclick="scrollToSection(event, 'medical')">Medical Services</a>
     <a href="#coaching" class="faq-nav-link" onclick="scrollToSection(event, 'coaching')">Coaching Services</a>
     <a href="#mentorship" class="faq-nav-link" onclick="scrollToSection(event, 'mentorship')">Professional Mentorship</a>
@@ -25,8 +26,80 @@ permalink: /faq/
   </div>
 </div>
 
+<!-- Who This is For -->
+<section class="section" id="who">
+  <div class="container faq-container">
+    <h2 class="faq-section-title">Who This is For</h2>
+    <p style="color: var(--text-muted); margin-bottom: 32px;">Whether you&rsquo;re a patient seeking answers, a parent supporting a child, or a clinician expanding your knowledge &mdash; we&rsquo;re here to help.</p>
+
+    <div class="who-cards">
+      <div class="who-card">
+        <div class="who-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <h3>Patients &amp; Individuals</h3>
+        <ul>
+          <li>You&rsquo;ve been dismissed by doctors and need someone who understands complex pain</li>
+          <li>You suspect EDS or HSD but don&rsquo;t know where to start</li>
+          <li>You&rsquo;re looking for an integrative approach that goes beyond symptom management</li>
+        </ul>
+        <div class="who-services">
+          <strong>Recommended:</strong>
+          <a href="/services/#coaching">EduCoaching</a> &bull;
+          <a href="/services/#medical">Medical Consultations</a>
+        </div>
+      </div>
+
+      <div class="who-card">
+        <div class="who-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+            <path d="M12 11h4"/><path d="M12 16h4"/>
+            <path d="M8 11h.01"/><path d="M8 16h.01"/>
+          </svg>
+        </div>
+        <h3>Healthcare Practitioners</h3>
+        <ul>
+          <li>You&rsquo;re a clinician wanting guidance on treating hypermobility patients</li>
+          <li>You want to build or grow a practice focused on complex conditions</li>
+          <li>You need support interpreting symptoms, labs, or treatment planning</li>
+        </ul>
+        <div class="who-services">
+          <strong>Recommended:</strong>
+          <a href="/services/#mentorship">Professional Mentorship</a>
+        </div>
+      </div>
+
+      <div class="who-card">
+        <div class="who-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg>
+        </div>
+        <h3>Legal Professionals</h3>
+        <ul>
+          <li>You need an independent medical expert witness for hypermobility or connective tissue disorders</li>
+          <li>You require medico-legal consultation for a case involving EDS or related conditions</li>
+        </ul>
+        <div class="who-services">
+          <strong>Recommended:</strong>
+          <a href="/services/#medico-legal">Medico-legal Consulting</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 32px;">
+      <a href="/services/" class="btn btn-primary">Find the Right Support for You</a>
+    </div>
+  </div>
+</section>
+
 <!-- General / Medical and Coaching Services -->
-<section class="section" id="general">
+<section class="section section-alt" id="general">
   <div class="container faq-container">
     <h2 class="faq-section-title">Medical &amp; Coaching Services</h2>
 
@@ -97,7 +170,7 @@ permalink: /faq/
 </section>
 
 <!-- Medical Services -->
-<section class="section section-alt" id="medical">
+<section class="section" id="medical">
   <div class="container faq-container">
     <h2 class="faq-section-title">Medical Services</h2>
 
@@ -150,7 +223,7 @@ permalink: /faq/
 </section>
 
 <!-- Coaching Services -->
-<section class="section" id="coaching">
+<section class="section section-alt" id="coaching">
   <div class="container faq-container">
     <h2 class="faq-section-title">Coaching Services</h2>
 
@@ -197,7 +270,7 @@ permalink: /faq/
 </section>
 
 <!-- Professional Mentorship -->
-<section class="section section-alt" id="mentorship">
+<section class="section" id="mentorship">
   <div class="container faq-container">
     <h2 class="faq-section-title">Professional Mentorship</h2>
 
@@ -266,158 +339,58 @@ permalink: /faq/
 </section>
 
 <!-- Other Questions -->
-<section class="section" id="other">
+<section class="section section-alt" id="other">
   <div class="container faq-container">
     <h2 class="faq-section-title">Other Questions</h2>
+    <p style="color: var(--text-muted); margin-bottom: 24px;">Explore in-depth articles on common questions about hypermobility, EDS, and related conditions.</p>
 
-    <div class="faq-item">
-      <button class="faq-question" onclick="toggleFaq(this)">
+    <div class="faq-article-list">
+      <a href="/faq/heds-gene/" class="faq-article-link">
         <span>Is there a gene for hypermobile Ehlers-Danlos syndrome?</span>
-        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer">
-        <p>Research is making significant progress. In 2024, the Norris Lab at the Medical University of South Carolina published a preprint identifying variants in kallikrein genes (particularly KLK15) on chromosome 19 that appear to be associated with hypermobile EDS. In their study, about 32.8% of 197 hEDS patients carried at least one kallikrein variant.</p>
-        <p>Kallikrein genes encode serine proteases &mdash; enzymes that break down proteins &mdash; and may affect collagen processing, mast cell activation, and the complement system, which could help explain the wide range of symptoms seen in hEDS.</p>
-        <p>While this is an exciting advance, clinical diagnosis remains the standard of care. There is no commercially available genetic test for hEDS at this time, and having a variant of uncertain significance (VUS) on whole exome sequencing does not confirm or rule out hEDS.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-article-cta">Read more &rarr;</span>
+      </a>
+      <a href="/faq/kallikrein-gene/" class="faq-article-link">
         <span>What do kallikrein gene findings mean for people with hEDS?</span>
-        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer">
-        <p>These early research findings are promising but still preliminary. In studies with genetically altered mice, researchers observed connective tissue defects and mitral valve prolapse in 83% of affected animals, supporting a biological mechanism.</p>
-        <p>However, not all hEDS patients carry kallikrein variants, suggesting that hEDS is likely caused by multiple genes. If you have had whole exome sequencing, you could ask your genetic counselor to check your results for kallikrein gene variants &mdash; but a VUS in this area does not change your clinical diagnosis or treatment plan.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-article-cta">Read more &rarr;</span>
+      </a>
+      <a href="/faq/navigating-healthcare/" class="faq-article-link">
         <span>How should I navigate the healthcare system with EDS or HSD?</span>
-        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer">
-        <p>Navigating healthcare with EDS or HSD can be challenging, but education and self-advocacy are powerful tools. Here are some key strategies:</p>
-        <ul>
-          <li><strong>Educate yourself</strong> &mdash; Understanding your condition empowers you to have more productive conversations with your healthcare team</li>
-          <li><strong>Document your medical history</strong> &mdash; Keep organized records, including a timeline of symptoms, diagnoses, and treatments</li>
-          <li><strong>Advocate for yourself</strong> &mdash; If a provider is unfamiliar with your condition, be prepared to share educational resources and ask for referrals</li>
-          <li><strong>Diversify your care team</strong> &mdash; Consider specialists such as rheumatologists, geneticists, PM&amp;R physicians, pain medicine specialists, and physical therapists experienced with hypermobility</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-article-cta">Read more &rarr;</span>
+      </a>
+      <a href="/faq/why-providers-dismiss-eds/" class="faq-article-link">
         <span>Why do some healthcare providers dismiss EDS and HSD?</span>
-        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer">
-        <p>Unfortunately, many healthcare providers still receive limited education about EDS and HSD during their training. Some may not recognize the wide range of symptoms these conditions can cause, or they may underestimate their impact on daily life. This is one of the reasons that patient education and self-advocacy are so important &mdash; and why resources like the <a href="/podcast/">Bendy Bodies Podcast</a> and organizations like The Ehlers-Danlos Society exist to help bridge the knowledge gap.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-article-cta">Read more &rarr;</span>
+      </a>
+      <a href="/faq/is-eds-benign/" class="faq-article-link">
         <span>Is EDS really &ldquo;benign&rdquo;?</span>
-        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer">
-        <p>No &mdash; calling EDS or HSD &ldquo;benign&rdquo; is one of the most persistent and harmful myths about these conditions. The older term &ldquo;Benign Joint Hypermobility Syndrome&rdquo; has been abandoned because it does not reflect the significant impact these conditions can have.</p>
-        <p>People with EDS and HSD can experience persistent pain, over 20 different causes of headache pain, and involvement of virtually every bodily system. Comorbid conditions such as dysautonomia, POTS, and mast cell activation syndrome are common. While EDS/HSD may not be &ldquo;malignant&rdquo; in the traditional sense, it is far from benign.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-article-cta">Read more &rarr;</span>
+      </a>
+      <a href="/faq/eds-myths/" class="faq-article-link">
         <span>What are the most common myths about EDS and HSD?</span>
-        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer">
-        <p>Some of the most common myths include:</p>
-        <ul>
-          <li><strong>&ldquo;It&rsquo;s just flexible joints&rdquo;</strong> &mdash; EDS and HSD affect connective tissue throughout the entire body, not just the joints</li>
-          <li><strong>&ldquo;It&rsquo;s benign&rdquo;</strong> &mdash; These conditions can cause significant pain, fatigue, and dysfunction across multiple body systems</li>
-          <li><strong>&ldquo;You&rsquo;ll grow out of it&rdquo;</strong> &mdash; While some symptoms may change over time, these are lifelong conditions</li>
-          <li><strong>&ldquo;If you can&rsquo;t do party tricks, you don&rsquo;t have it&rdquo;</strong> &mdash; Many people with hypermobility disorders lose flexibility over time or may never have been dramatically flexible</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-article-cta">Read more &rarr;</span>
+      </a>
+      <a href="/faq/should-i-pursue-diagnosis/" class="faq-article-link">
         <span>Should I pursue a hypermobility disorder diagnosis?</span>
-        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer">
-        <p>A formal diagnosis can be very helpful. While the process may require time, effort, and cost, having a diagnosis can:</p>
-        <ul>
-          <li>Help you access appropriate medical care and specialists</li>
-          <li>Provide validation for your symptoms and experiences</li>
-          <li>Guide treatment decisions and help avoid potentially harmful interventions</li>
-          <li>Connect you with a supportive community of others with similar conditions</li>
-          <li>Be important for disability accommodations, insurance, and legal purposes</li>
-        </ul>
-        <p>If you suspect you may have hEDS, HSD, or another connective tissue disorder, consider scheduling an evaluation with a knowledgeable provider.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-article-cta">Read more &rarr;</span>
+      </a>
+      <a href="/faq/diagnostic-criteria/" class="faq-article-link">
         <span>What are the diagnostic criteria for hypermobile EDS?</span>
-        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer">
-        <p>The 2017 International Classification for hEDS requires meeting <strong>all three</strong> of the following criteria:</p>
-        <ol>
-          <li><strong>Generalized joint hypermobility</strong> &mdash; Typically assessed using the Beighton score (a 9-point scale measuring mobility at specific joints)</li>
-          <li><strong>Two or more of the following features:</strong>
-            <ul>
-              <li>Systemic manifestations of a connective tissue disorder (e.g., unusually soft skin, mild skin hyperextensibility, unexplained stretch marks)</li>
-              <li>Positive family history</li>
-              <li>Musculoskeletal complications (e.g., chronic pain, recurrent dislocations)</li>
-            </ul>
-          </li>
-          <li><strong>Exclusion of other diagnoses</strong> &mdash; Including other types of EDS (via genetic testing) and alternative diagnoses that may explain the symptoms</li>
-        </ol>
-        <p>A knowledgeable clinician can walk you through the full checklist. Dr. Bluestein offers guidance on understanding and applying these criteria through her <a href="/services/#coaching">EduCoaching</a> program.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-article-cta">Read more &rarr;</span>
+      </a>
+      <a href="/faq/helping-teens-hypermobility/" class="faq-article-link">
         <span>How can I help my teen who has hypermobility?</span>
-        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer">
-        <p>Supporting a teen with a hypermobility disorder involves several important strategies:</p>
-        <ul>
-          <li><strong>Stay calm and be their advocate</strong> &mdash; Your child will mirror your emotional state. Remaining steady helps them feel secure</li>
-          <li><strong>Help them build resilience</strong> &mdash; Encourage self-advocacy, positive self-talk, and avoiding comparison with peers</li>
-          <li><strong>Set realistic goals</strong> &mdash; Use SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) to create manageable milestones</li>
-          <li><strong>Organize medical records</strong> &mdash; Keep a one-page medical summary to bring to appointments</li>
-          <li><strong>Explore resources</strong> &mdash; Books like <em>Disjointed</em> and <em>Conquering Your Child's Chronic Pain</em>, plus the <a href="/podcast/">Bendy Bodies Podcast</a>, offer practical guidance</li>
-        </ul>
-        <p>Many teens with hypermobility disorders go on to lead fulfilling, functional lives. Some symptoms, such as POTS, may even improve over time.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-article-cta">Read more &rarr;</span>
+      </a>
+      <a href="/faq/child-normal-life/" class="faq-article-link">
         <span>Can my child with EDS or HSD lead a normal life?</span>
-        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer">
-        <p>Yes. While a hypermobility disorder may require adjustments, many people with these conditions live active, fulfilling lives. Many go on to have successful careers, families, and hobbies. The key is finding the right management strategies, building a supportive care team, and learning to listen to your body. Some symptoms like POTS may also improve with time and appropriate treatment.</p>
-      </div>
+        <span class="faq-article-cta">Read more &rarr;</span>
+      </a>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="section section-alt" style="text-align: center;">
+<section class="section" style="text-align: center;">
   <div class="container">
     <h2>Still Have Questions?</h2>
     <p style="color: var(--text-muted); max-width: 500px; margin: 12px auto 24px;">Don&rsquo;t hesitate to reach out. We&rsquo;re happy to help you understand your options.</p>
@@ -454,7 +427,7 @@ function scrollToSection(e, id) {
 
 // Highlight active section on scroll
 window.addEventListener('scroll', () => {
-  const sections = ['general', 'medical', 'coaching', 'mentorship', 'other'];
+  const sections = ['who', 'general', 'medical', 'coaching', 'mentorship', 'other'];
   let current = sections[0];
   for (const id of sections) {
     const el = document.getElementById(id);
