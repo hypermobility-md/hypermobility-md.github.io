@@ -20,7 +20,7 @@
     "anne maitland": "/Guests/Anne_Maitland.jpg",
     "audrey kershaw": "/Guests/Audrey_Kershaw.jpg",
     "beth darnall": "/Guests/Beth_Darnall.jpg",
-    "betsy grunch": "/Guests/Betsy_Grunch.jpg",
+    "betsy grunch": "/Guests/Betsy_Grunch.png",
     "bonnie robson": "/Guests/Bonnie_Robson.jpg",
     "brayden yellman": "/Guests/Brayden_Yellman.jpg",
     "brayden p. yellman": "/Guests/Brayden_Yellman.jpg",
@@ -30,14 +30,14 @@
     "colin halverson": "/Guests/Colin_Halverson.jpg",
     "david kaufman": "/Guests/David_Kaufman.jpg",
     "dwight mckee": "/Guests/Dwight_McKee.jpg",
-    "emily bohan": "/Guests/Emily_Bohan.jpg",
+    "emily bohan": "/Guests/Emily_Bohan.png",
     "emily scherb": "/Guests/Emily_Scherb.jpg",
     "eric singman": "/Guests/Eric_Singman.jpg",
     "frank feigenbaum": "/Guests/Frank_Feigenbaum.jpg",
     "heather tick": "/Guests/Heather_Tick.jpg",
     "ilene ruhoy": "/Guests/Ilene_Ruhoy.jpg",
     "john pitts": "/Guests/John_Pitts.jpg",
-    "kristin koskinen": "/Guests/Kristin_Koskinen.jpg",
+    "kristin koskinen": "/Guests/Kristin_Koskinen.png",
     "laurence kinsella": "/Guests/Laurence_Kinsella.jpg",
     "leonard weinstock": "/Guests/Leonard_Weinstock.jpg",
     "leslie russek": "/Guests/Leslie_Russek.jpg",
@@ -80,7 +80,7 @@
     "jazz bynum": "/Guests/Jazz_Bynum.jpg",
     "jeanice mitchell": "/Guests/Jeanice_Mitchell.jpg",
     "jeannie dibon": "/Guests/Jeannie_DiBon.jpg",
-    "jeevan mann": "/Guests/Jeevan_Mann.jpg",
+    "jeevan mann": "/Guests/Jeevan_Mann.png",
     "jenelle manzi": "/Guests/Jenelle_Manzi.jpg",
     "jill brook": "/Guests/Jill_Brook.jpg",
     "jill miller": "/Guests/Jill_Miller.jpg",
@@ -97,7 +97,7 @@
     "moira mccormack": "/Guests/Moira_McCormack.jpg",
     "terry hyde": "/Guests/Terry_Hyde.jpg",
     "tiffany lee": "/Guests/Tiffany_Lee.jpg",
-    "tilly rose": "/Guests/Tilly_Rose.jpg",
+    "tilly rose": "/Guests/Tilly_Rose.png",
     "victor montori": "/Guests/Victor_Montori.jpg",
     "wendy wagner": "/Guests/Wendy_Wagner.jpg",
     "amanda cassil": "/Guests/Amanda_Cassil.jpg",
@@ -105,7 +105,7 @@
     "eva nagy": "/Guests/Eva_Nagy.jpg",
     "irwin goldstein": "/Guests/Irwin_Goldstein.jpg",
     "janet settle": "/Guests/Janet_Settle.jpg",
-    "jen crane": "/Guests/Jen_Crane.jpg",
+    "jen crane": "/Guests/Jen_Crane.png",
     "jennifer gaudiani": "/Guests/Jennifer_Gaudiani.jpg",
     "jennifer milner": "/Guests/Jennifer_Milner.jpg",
     "jessica eccles": "/Guests/Jessica_Eccles.jpg",
@@ -122,8 +122,8 @@
     "rebekah rotstein": "/Guests/Rebekah_Rotstein.jpg",
     "shu das": "/Guests/Shu_Das.jpg",
     "skylar brandt": "/Guests/Skylar_Brandt.jpg",
-    "stacy menton": "/Guests/Stacey_Menton.jpg",
-    "stacey menton": "/Guests/Stacey_Menton.jpg",
+    "stacy menton": "/Guests/Stacey_Menton.png",
+    "stacey menton": "/Guests/Stacey_Menton.png",
     "summer dashe": "/Guests/Summer_Dashe.jpg",
     "susan chalela": "/Guests/Susan_Chalela.jpg",
     "tara renton": "/Guests/Tara_Renton.jpg",
@@ -134,7 +134,10 @@
     "lorna ryan": "/Guests/Lorna_Ryan.jpg",
     "mariaelena ruiz": "/Guests/Mariaelena_Ruiz.jpg",
     "victoria daylor": "/Guests/Victoria_Daylor.jpg",
-    "vita bachman": "/Guests/Vita_Bachman.jpg"
+    "vita bachman": "/Guests/Vita_Bachman.jpg",
+    "delaney kenney": "/Guests/Delaney_Kenney.jpg",
+    "scott borjeson": "/Guests/Scott_Borjeson.png",
+    "tom query": "/Guests/Tom_Query.jpg"
   },
   "profiles": {
     "dacre knight": {
@@ -306,10 +309,10 @@
       "website": "https://re-enliven.info/dwight-mckee/"
     },
     "emily bohan": {
-      "bio": "Dr. Emily Bohan is a physical therapist specializing in pelvic floor and orthopedic rehabilitation, with expertise in hypermobility and EDS. She has worked with the U.S. Olympic Rowing Team and founded Pelvic Wisdom.",
+      "bio": "Emily Bohan is the founder of Bohan PT & Training, PLLC, with nearly a decade of experience as a physical therapist, personal trainer, and nutrition coach. She specializes in orthopedic injuries, hypermobility disorders (HSD, hEDS), pelvic floor therapy, and sports conditioning. Certified through Herman and Wallace and PIPER for pelvic health, she takes an integrative, whole-body approach to care.",
       "credentials": "PT, DPT",
-      "affiliation": "Pelvic Wisdom",
-      "website": "https://www.pelvicwisdom.com/"
+      "affiliation": "Bohan PT & Training, PLLC",
+      "website": "https://bohanpttraining.netlify.app/about"
     },
     "emily scherb": {
       "bio": "Dr. Emily Scherb is a physical therapist and circus arts specialist known as 'The Circus Doc.' She wrote the bestselling Applied Anatomy of Aerial Arts, the first book on biomechanics of circus training.",
@@ -515,12 +518,6 @@
       "affiliation": "Elevation Wellness",
       "website": "https://www.ehlers-danlos.com/patricia-stott/"
     },
-    "patricia stott": {
-      "bio": "Patricia Stott is a physical therapist, athletic trainer, and certified hand therapist who treats primarily those with HSD/EDS. She is the co-author of 'Taming the Zebra,' a definitive physical therapy guide to managing HSD/EDS.",
-      "credentials": "PT, DPT, MS, ATC, CHT",
-      "affiliation": "Elevation Wellness",
-      "website": "https://www.ehlers-danlos.com/patricia-stott/"
-    },
     "pejman katiraei": {
       "bio": "Dr. Pejman Katiraei is a board-certified pediatrician fellowship-trained in integrative and holistic medicine. He founded Wholistic Kids and Wholistic Minds in Santa Monica, specializing in children with complex conditions.",
       "credentials": "DO",
@@ -630,10 +627,10 @@
       "website": "https://linesballet.org/person/adji-cissoko/"
     },
     "aidan leslie": {
-      "bio": "Aiden Leslie is an American pop singer, songwriter, and two-time Billboard-charting artist best known for his hit 'World's Away,' which reached No. 1 on Logo TV's Click List. He is an LGBT advocate who works with the organization Live Out Loud connecting LGBTQ youth with mentorship.",
+      "bio": "Aidan Leslie is a professional ballet dancer who has openly shared her experience of navigating a dance career while living with hypermobility. Through her advocacy, she raises awareness about the intersection of performing arts and connective tissue conditions, helping others in the dance community feel seen and supported.",
       "credentials": null,
-      "affiliation": "Ashea Records",
-      "website": "https://www.instagram.com/aidenleslie/"
+      "affiliation": null,
+      "website": "https://www.linkedin.com/in/aidan-leslie-a554b5235"
     },
     "allysa seely": {
       "bio": "Allysa Seely is a two-time Paralympic gold medalist in paratriathlon (Rio 2016, Tokyo 2020) and three-time World Paratriathlon Champion. She was diagnosed with Chiari II Malformation, basilar invagination, and Ehlers-Danlos Syndrome, which led to a below-knee amputation in 2013.",

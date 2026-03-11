@@ -143,6 +143,31 @@
 .podcast-page-hero h1 { color: #fff; font-size: 2rem; margin-bottom: 8px; }
 .podcast-page-hero p { color: rgba(255,255,255,0.75); font-size: 0.95rem; margin-bottom: 0; }
 
+/* ---- Sponsor Banner ---- */
+.sponsor-banner {
+  background: #1a1a2e;
+  padding: 10px 0;
+  text-align: center;
+}
+.sponsor-banner .container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.sponsor-text {
+  color: #f37321;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: var(--body-font);
+  letter-spacing: 0.03em;
+}
+.sponsor-logo {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+}
+
 /* ---- Episode Cards ---- */
 .episode-grid {
   display: grid;
@@ -380,6 +405,8 @@
 .modal-ep-num { font-size: 0.82rem; font-family: var(--body-font); color: rgba(255,255,255,0.6); font-weight: 700; margin-bottom: 8px; }
 .modal-title { color: white; font-size: 1.5rem; margin-bottom: 8px; font-family: var(--heading-font); }
 .modal-guest { color: var(--teal-light); font-size: 0.95rem; font-family: var(--body-font); font-weight: 600; }
+.modal-guest-link { color: var(--teal-light); text-decoration: none; }
+.modal-guest-link:hover { text-decoration: underline; }
 .modal-guest-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .modal-meta { color: rgba(255,255,255,0.6); font-size: 0.82rem; font-family: var(--body-font); margin-top: 8px; }
 .modal-body { padding: 32px; }

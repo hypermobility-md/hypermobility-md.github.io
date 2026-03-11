@@ -1,64 +1,417 @@
 ---
 layout: base.njk
-title: "FAQ"
-activePage: "services"
+title: "Frequently Asked Questions"
+activePage: "faq"
 permalink: /faq/
 ---
 
-<!-- Page Header -->
-<div class="page-header">
+<section class="hero">
   <div class="container">
-    <h1>Frequently Asked Questions</h1>
-    <p>Common questions about our medical services, coaching, and how we can help.</p>
+    <div class="faq-hero">
+      <h1>Frequently Asked Questions</h1>
+      <p>Find answers about our medical services, EduCoaching, professional mentorship, and common questions about hypermobility and EDS.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ Section Navigation -->
+<div class="faq-section-nav">
+  <div class="container">
+    <a href="#general" class="faq-nav-link active" onclick="scrollToSection(event, 'general')">General</a>
+    <a href="#medical" class="faq-nav-link" onclick="scrollToSection(event, 'medical')">Medical Services</a>
+    <a href="#coaching" class="faq-nav-link" onclick="scrollToSection(event, 'coaching')">Coaching Services</a>
+    <a href="#mentorship" class="faq-nav-link" onclick="scrollToSection(event, 'mentorship')">Professional Mentorship</a>
+    <a href="#other" class="faq-nav-link" onclick="scrollToSection(event, 'other')">Other Questions</a>
   </div>
 </div>
 
-<section class="section">
-  <div class="container">
-    <div class="faq-list">
+<!-- General / Medical and Coaching Services -->
+<section class="section" id="general">
+  <div class="container faq-container">
+    <h2 class="faq-section-title">Medical &amp; Coaching Services</h2>
 
-      <details class="faq-item" open>
-        <summary class="faq-question">What services are offered by Dr. Linda Bluestein, the Hypermobility MD?</summary>
-        <div class="faq-answer">
-          <p>We are accepting new clients for EduCoaching, a unique process developed by Dr. Bluestein, that combines personalized information with one-on-one coaching. All sessions are with Dr. Bluestein. EduCoaching is available worldwide.</p>
-          <p>We have a waiting list for patients that you can join. Dr. Linda Bluestein is also the founder and host of the <a href="/podcast/">Bendy Bodies with the Hypermobility MD podcast</a>. Listen and learn from Dr. Bluestein and other specialists with diverse areas of medical and scientific expertise.</p>
-          <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap;">
-            <a href="/services/#coaching" class="btn btn-secondary">Learn About EduCoaching</a>
-            <a href="/services/" class="btn btn-secondary">Join the Patient Waiting List</a>
-          </div>
-        </div>
-      </details>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>What services are offered by Dr. Linda Bluestein, the Hypermobility MD?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Dr. Bluestein is currently accepting new clients for <strong>EduCoaching</strong>, which combines personalized information with one-on-one coaching. All sessions are live, interactive video calls with Dr. Bluestein. EduCoaching is available worldwide through Bendy Bodies, LLC.</p>
+        <p>She is also accepting a very limited number of new <strong>patients</strong> for medical services. You can join the waiting list by completing the patient intake form on the <a href="/services/">Services</a> page.</p>
+        <p>Dr. Bluestein is also the founder and host of the <a href="/podcast/">Bendy Bodies Podcast</a>, featuring expert conversations on hypermobility and related conditions.</p>
+      </div>
+    </div>
 
-      <details class="faq-item">
-        <summary class="faq-question">Does Hypermobility MD offer virtual appointments?</summary>
-        <div class="faq-answer">
-          <p>Virtual appointments are available for clients and some patient follow-up visits. New and existing clients can schedule virtual appointments for EduCoaching through Bendy Bodies, LLC. Existing patients may schedule medical appointments through the patient portal.</p>
-        </div>
-      </details>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>Does Hypermobility MD offer virtual appointments?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Yes. Virtual appointments are available for EduCoaching clients and for some patient follow-up visits. New and existing EduCoaching clients can schedule through Bendy Bodies, LLC. Existing patients can schedule through the patient portal.</p>
+      </div>
+    </div>
 
-      <details class="faq-item">
-        <summary class="faq-question">What are the payment options?</summary>
-        <div class="faq-answer">
-          <p>Clients and patients are directly responsible for payment for services. We accept credit cards and Venmo (@Linda-Bluestein).</p>
-        </div>
-      </details>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>What are the payment options?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Clients and patients are directly responsible for payment. We accept credit cards and Venmo (@Linda-Bluestein).</p>
+      </div>
+    </div>
 
-      <details class="faq-item">
-        <summary class="faq-question">What is the difference between being a patient (medical services) and being an EduCoaching client (coaching services)?</summary>
-        <div class="faq-answer">
-          <p><strong>Medical Services:</strong> Patients must meet Dr. Bluestein in person for their first appointment, which can take place in Colorado or Wisconsin. During this appointment, they can receive prescriptions for medications, lab orders, or imaging orders. After the initial visit, Dr. Bluestein becomes one of your doctors. Follow-up appointments can be virtual for up to one year, but you must be located in Colorado or Wisconsin for these sessions.</p>
-          <p><strong>Coaching Services:</strong> Clients can live anywhere in the world and do not need to travel for appointments. They receive coaching from Dr. Bluestein, but they do not become her patients. All coaching sessions are conducted online, one-on-one with Dr. Bluestein. She provides information to help you work with your own local healthcare team. As a coach, Dr. Bluestein cannot write prescriptions or orders for medications, labs, or imaging.</p>
-        </div>
-      </details>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>What is the difference between being a patient and being an EduCoaching client?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p><strong>Medical Services (Patient):</strong></p>
+        <ul>
+          <li>Patients must meet Dr. Bluestein in person for their first appointment in Colorado or Wisconsin</li>
+          <li>Dr. Bluestein can write prescriptions, order lab work, and order imaging</li>
+          <li>Follow-up visits can be virtual for up to one year (patients must reside in CO or WI)</li>
+        </ul>
+        <p><strong>EduCoaching (Client):</strong></p>
+        <ul>
+          <li>Clients can live anywhere in the world</li>
+          <li>No travel is needed &mdash; all sessions are conducted online one-on-one</li>
+          <li>Dr. Bluestein provides information and guidance to work with your local healthcare team</li>
+          <li>Dr. Bluestein cannot write prescriptions or order lab work/imaging in this setting</li>
+        </ul>
+      </div>
+    </div>
 
-      <details class="faq-item">
-        <summary class="faq-question">How does Hypermobility MD prioritize creating an inclusive environment?</summary>
-        <div class="faq-answer">
-          <p>At Hypermobility MD, PLLC, and Bendy Bodies, LLC, we are dedicated to fostering an inclusive atmosphere where individuals from diverse backgrounds feel not only welcomed but truly supported. Recognizing the potential disparities within the healthcare system, especially for those managing chronic and/or complex conditions, we strive to treat each patient or client with the utmost respect and sincerity.</p>
-          <p>Your unique conditions and experiences are valued, and our commitment is to provide a healthcare experience that is considerate, empathetic, and tailored to your individual needs.</p>
-        </div>
-      </details>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>How does Hypermobility MD create an environment where a diverse range of patients and clients feel comfortable seeking care?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Hypermobility MD is dedicated to fostering an inclusive atmosphere, recognizing the potential disparities in healthcare &mdash; especially for chronic and complex conditions. Every patient and client is treated with respect, sincerity, and empathy, receiving considerate and tailored care.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- Medical Services -->
+<section class="section section-alt" id="medical">
+  <div class="container faq-container">
+    <h2 class="faq-section-title">Medical Services</h2>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>Is Hypermobility MD currently accepting new patients?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Hypermobility MD accepts a very small number of patients, and you can join the waiting list by completing the intake form on the <a href="/services/">Services</a> page. Prefer not to wait? Dr. Bluestein is accepting new clients for <a href="/services/#coaching">EduCoaching</a> through Bendy Bodies, LLC.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>What medical treatments does Hypermobility MD offer?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Current patients are evaluated at each visit and prescribed a comprehensive treatment plan which may include medications, supplements, physical therapy, and occupational therapy. Laboratory studies and imaging will be ordered where medically indicated.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>How do I know which medical package to choose?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>We offer three session options to fit different needs:</p>
+        <p><strong>Gold Package</strong> (Least Intensive)</p>
+        <ul>
+          <li>Best for routine check-ups or a specific, limited health concern</li>
+          <li>Typically 90 minutes for the first appointment and 25 minutes for follow-up</li>
+        </ul>
+        <p><strong>Platinum Package</strong> (Moderate Intensity)</p>
+        <ul>
+          <li>Designed for patients who need a deeper review or have multiple related concerns</li>
+          <li>Typically 150 minutes for the first appointment and 50 minutes for follow-up</li>
+        </ul>
+        <p><strong>Diamond Package</strong> (Most Intensive)</p>
+        <ul>
+          <li>For thorough evaluations, extensive assessments, or complex medical histories</li>
+          <li>Recommended for most patients with EDS, HSD, POTS, and MCAS</li>
+          <li>Typically 210 minutes for the first appointment and 90 minutes for follow-up</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Coaching Services -->
+<section class="section" id="coaching">
+  <div class="container faq-container">
+    <h2 class="faq-section-title">Coaching Services</h2>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>What is EduCoaching?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>EduCoaching is a unique process developed by Dr. Bluestein that combines personalized information with one-on-one coaching. All sessions are live, interactive video calls with Dr. Bluestein, available worldwide through Bendy Bodies, LLC.</p>
+        <p>Through EduCoaching, you receive information and guidance to help you self-manage your condition. You will learn how to advocate for yourself more effectively in healthcare settings. Dr. Bluestein empowers you to receive better healthcare from your own medical team, coaches you through the health, dietary, and emotional aspects of these conditions, and provides specific suggestions for improving the quality of your life.</p>
+        <p><em>Coaching services are for educational and informational purposes only and do not take the place of medical care. Dr. Bluestein will not be able to prescribe medications or order laboratory testing in this setting.</em></p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>What are the differences between the EduCoaching session levels, and which one is right for me?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p><strong>Bronze</strong> (20 minutes) &mdash; Personalized one-on-one coaching focused on a single issue.</p>
+        <p><strong>Silver</strong> (45 minutes) &mdash; Includes everything in Bronze, plus:</p>
+        <ul>
+          <li>Detailed review of 2&ndash;3 issues</li>
+          <li>Review of up to 10 pages of medical records</li>
+          <li>Discount code for supplements</li>
+        </ul>
+        <p><strong>Gold</strong> (100 minutes) &mdash; Includes everything in Silver, plus:</p>
+        <ul>
+          <li>Review of complex, multi-system problems</li>
+          <li>Review of up to 30 pages of medical records</li>
+          <li>Complimentary follow-up call (up to 15 minutes) within 30 days</li>
+          <li>Custom handouts designed by Dr. Bluestein</li>
+        </ul>
+        <p><strong>Platinum</strong> (100 minutes) &mdash; Includes everything in Gold, plus:</p>
+        <ul>
+          <li>Peer-to-peer consultation with your primary care provider (up to 15 minutes)</li>
+          <li>Access to Dr. Bluestein&rsquo;s trusted resources</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Professional Mentorship -->
+<section class="section section-alt" id="mentorship">
+  <div class="container faq-container">
+    <h2 class="faq-section-title">Professional Mentorship</h2>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>Who is professional mentorship for?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Professional mentorship is designed for healthcare providers, coaches, and movement professionals who work with individuals navigating complex conditions like EDS, HSD, POTS, MCAS, chronic pain, and more. Whether you&rsquo;re early in your career or an experienced professional looking for a fresh perspective, these sessions offer a supportive space to gain clarity, deepen your knowledge, and elevate your practice.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>What kinds of topics will be covered?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p><strong>Clinical mentorship topics:</strong></p>
+        <ul>
+          <li>Diagnosing and managing EDS and HSD</li>
+          <li>Navigating complex comorbidities (POTS, MCAS, CCI, etc.)</li>
+          <li>Improving patient care in under-recognized conditions</li>
+        </ul>
+        <p><strong>Business mentorship topics:</strong></p>
+        <ul>
+          <li>Building a niche, mission-driven practice</li>
+          <li>Ethical entrepreneurship and sustainable growth</li>
+          <li>Finding balance in a high-demand field</li>
+        </ul>
+        <p>Each session is tailored to your needs. You can bring a challenging patient case, questions about treatment planning, help interpreting symptoms or lab results, concerns about scope of practice, or guidance on growing your practice.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>Is this a medical consultation?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>No. Professional mentoring is not a substitute for medical advice or patient care. These sessions are intended for educational and professional development purposes only. Dr. Bluestein does not provide direct clinical recommendations for patients who are not under her medical care.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>How long is each session and how do I book?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Sessions can be 20, 50, or 80 minutes and are held on the coaching platform, Jane. You can book directly through the <a href="https://bendybodies.janeapp.com/" target="_blank" rel="noopener">coaching portal</a>, where you&rsquo;ll also find available time slots and payment details.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>Can I book more than one session?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Absolutely. While a single session can be incredibly valuable, some professionals prefer ongoing mentorship. You&rsquo;re welcome to book sessions as needed, or select a package for longer-term support.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Other Questions -->
+<section class="section" id="other">
+  <div class="container faq-container">
+    <h2 class="faq-section-title">Other Questions</h2>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>Is there a gene for hypermobile Ehlers-Danlos syndrome?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Research is making significant progress. In 2024, the Norris Lab at the Medical University of South Carolina published a preprint identifying variants in kallikrein genes (particularly KLK15) on chromosome 19 that appear to be associated with hypermobile EDS. In their study, about 32.8% of 197 hEDS patients carried at least one kallikrein variant.</p>
+        <p>Kallikrein genes encode serine proteases &mdash; enzymes that break down proteins &mdash; and may affect collagen processing, mast cell activation, and the complement system, which could help explain the wide range of symptoms seen in hEDS.</p>
+        <p>While this is an exciting advance, clinical diagnosis remains the standard of care. There is no commercially available genetic test for hEDS at this time, and having a variant of uncertain significance (VUS) on whole exome sequencing does not confirm or rule out hEDS.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>What do kallikrein gene findings mean for people with hEDS?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>These early research findings are promising but still preliminary. In studies with genetically altered mice, researchers observed connective tissue defects and mitral valve prolapse in 83% of affected animals, supporting a biological mechanism.</p>
+        <p>However, not all hEDS patients carry kallikrein variants, suggesting that hEDS is likely caused by multiple genes. If you have had whole exome sequencing, you could ask your genetic counselor to check your results for kallikrein gene variants &mdash; but a VUS in this area does not change your clinical diagnosis or treatment plan.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>How should I navigate the healthcare system with EDS or HSD?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Navigating healthcare with EDS or HSD can be challenging, but education and self-advocacy are powerful tools. Here are some key strategies:</p>
+        <ul>
+          <li><strong>Educate yourself</strong> &mdash; Understanding your condition empowers you to have more productive conversations with your healthcare team</li>
+          <li><strong>Document your medical history</strong> &mdash; Keep organized records, including a timeline of symptoms, diagnoses, and treatments</li>
+          <li><strong>Advocate for yourself</strong> &mdash; If a provider is unfamiliar with your condition, be prepared to share educational resources and ask for referrals</li>
+          <li><strong>Diversify your care team</strong> &mdash; Consider specialists such as rheumatologists, geneticists, PM&amp;R physicians, pain medicine specialists, and physical therapists experienced with hypermobility</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>Why do some healthcare providers dismiss EDS and HSD?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Unfortunately, many healthcare providers still receive limited education about EDS and HSD during their training. Some may not recognize the wide range of symptoms these conditions can cause, or they may underestimate their impact on daily life. This is one of the reasons that patient education and self-advocacy are so important &mdash; and why resources like the <a href="/podcast/">Bendy Bodies Podcast</a> and organizations like The Ehlers-Danlos Society exist to help bridge the knowledge gap.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>Is EDS really &ldquo;benign&rdquo;?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>No &mdash; calling EDS or HSD &ldquo;benign&rdquo; is one of the most persistent and harmful myths about these conditions. The older term &ldquo;Benign Joint Hypermobility Syndrome&rdquo; has been abandoned because it does not reflect the significant impact these conditions can have.</p>
+        <p>People with EDS and HSD can experience persistent pain, over 20 different causes of headache pain, and involvement of virtually every bodily system. Comorbid conditions such as dysautonomia, POTS, and mast cell activation syndrome are common. While EDS/HSD may not be &ldquo;malignant&rdquo; in the traditional sense, it is far from benign.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>What are the most common myths about EDS and HSD?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Some of the most common myths include:</p>
+        <ul>
+          <li><strong>&ldquo;It&rsquo;s just flexible joints&rdquo;</strong> &mdash; EDS and HSD affect connective tissue throughout the entire body, not just the joints</li>
+          <li><strong>&ldquo;It&rsquo;s benign&rdquo;</strong> &mdash; These conditions can cause significant pain, fatigue, and dysfunction across multiple body systems</li>
+          <li><strong>&ldquo;You&rsquo;ll grow out of it&rdquo;</strong> &mdash; While some symptoms may change over time, these are lifelong conditions</li>
+          <li><strong>&ldquo;If you can&rsquo;t do party tricks, you don&rsquo;t have it&rdquo;</strong> &mdash; Many people with hypermobility disorders lose flexibility over time or may never have been dramatically flexible</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>Should I pursue a hypermobility disorder diagnosis?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>A formal diagnosis can be very helpful. While the process may require time, effort, and cost, having a diagnosis can:</p>
+        <ul>
+          <li>Help you access appropriate medical care and specialists</li>
+          <li>Provide validation for your symptoms and experiences</li>
+          <li>Guide treatment decisions and help avoid potentially harmful interventions</li>
+          <li>Connect you with a supportive community of others with similar conditions</li>
+          <li>Be important for disability accommodations, insurance, and legal purposes</li>
+        </ul>
+        <p>If you suspect you may have hEDS, HSD, or another connective tissue disorder, consider scheduling an evaluation with a knowledgeable provider.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>What are the diagnostic criteria for hypermobile EDS?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>The 2017 International Classification for hEDS requires meeting <strong>all three</strong> of the following criteria:</p>
+        <ol>
+          <li><strong>Generalized joint hypermobility</strong> &mdash; Typically assessed using the Beighton score (a 9-point scale measuring mobility at specific joints)</li>
+          <li><strong>Two or more of the following features:</strong>
+            <ul>
+              <li>Systemic manifestations of a connective tissue disorder (e.g., unusually soft skin, mild skin hyperextensibility, unexplained stretch marks)</li>
+              <li>Positive family history</li>
+              <li>Musculoskeletal complications (e.g., chronic pain, recurrent dislocations)</li>
+            </ul>
+          </li>
+          <li><strong>Exclusion of other diagnoses</strong> &mdash; Including other types of EDS (via genetic testing) and alternative diagnoses that may explain the symptoms</li>
+        </ol>
+        <p>A knowledgeable clinician can walk you through the full checklist. Dr. Bluestein offers guidance on understanding and applying these criteria through her <a href="/services/#coaching">EduCoaching</a> program.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>How can I help my teen who has hypermobility?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Supporting a teen with a hypermobility disorder involves several important strategies:</p>
+        <ul>
+          <li><strong>Stay calm and be their advocate</strong> &mdash; Your child will mirror your emotional state. Remaining steady helps them feel secure</li>
+          <li><strong>Help them build resilience</strong> &mdash; Encourage self-advocacy, positive self-talk, and avoiding comparison with peers</li>
+          <li><strong>Set realistic goals</strong> &mdash; Use SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) to create manageable milestones</li>
+          <li><strong>Organize medical records</strong> &mdash; Keep a one-page medical summary to bring to appointments</li>
+          <li><strong>Explore resources</strong> &mdash; Books like <em>Disjointed</em> and <em>Conquering Your Child's Chronic Pain</em>, plus the <a href="/podcast/">Bendy Bodies Podcast</a>, offer practical guidance</li>
+        </ul>
+        <p>Many teens with hypermobility disorders go on to lead fulfilling, functional lives. Some symptoms, such as POTS, may even improve over time.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>Can my child with EDS or HSD lead a normal life?</span>
+        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Yes. While a hypermobility disorder may require adjustments, many people with these conditions live active, fulfilling lives. Many go on to have successful careers, families, and hobbies. The key is finding the right management strategies, building a supportive care team, and learning to listen to your body. Some symptoms like POTS may also improve with time and appropriate treatment.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -67,7 +420,49 @@ permalink: /faq/
 <section class="section section-alt" style="text-align: center;">
   <div class="container">
     <h2>Still Have Questions?</h2>
-    <p style="color: var(--text-muted); max-width: 500px; margin: 12px auto 24px;">Don't hesitate to reach out. We're happy to help you understand your options.</p>
+    <p style="color: var(--text-muted); max-width: 500px; margin: 12px auto 24px;">Don&rsquo;t hesitate to reach out. We&rsquo;re happy to help you understand your options.</p>
     <a href="mailto:info@hypermobilitymd.com" class="btn btn-primary">Contact Us</a>
   </div>
 </section>
+
+{% block scripts %}
+<script>
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const wasOpen = item.classList.contains('open');
+
+  // Close all items in the same section
+  const section = item.closest('.faq-container');
+  section.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+
+  // Toggle clicked item
+  if (!wasOpen) item.classList.add('open');
+}
+
+function scrollToSection(e, id) {
+  e.preventDefault();
+  const el = document.getElementById(id);
+  if (!el) return;
+  const offset = 100;
+  const y = el.getBoundingClientRect().top + window.pageYOffset - offset;
+  window.scrollTo({ top: y, behavior: 'smooth' });
+
+  // Update active nav link
+  document.querySelectorAll('.faq-nav-link').forEach(l => l.classList.remove('active'));
+  e.target.classList.add('active');
+}
+
+// Highlight active section on scroll
+window.addEventListener('scroll', () => {
+  const sections = ['general', 'medical', 'coaching', 'mentorship', 'other'];
+  let current = sections[0];
+  for (const id of sections) {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 150) current = id;
+  }
+  document.querySelectorAll('.faq-nav-link').forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+  });
+});
+</script>
+{% endblock %}

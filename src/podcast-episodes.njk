@@ -34,6 +34,14 @@ permalink: /podcast-episodes/
   </div>
 </div>
 
+<!-- Sponsor Banner -->
+<div class="sponsor-banner">
+  <div class="container">
+    <span class="sponsor-text">Proudly sponsored by</span>
+    <img src="/assets/uva-health-banner.png" alt="UVA Health" class="sponsor-logo">
+  </div>
+</div>
+
 <!-- Search & Filter Bar -->
 <div class="filter-bar" id="filterBar">
   <div class="filter-inner">
@@ -354,8 +362,16 @@ function openEpisode(idx) {
 
   document.getElementById('modalEpNum').textContent = ep.num ? `Episode ${ep.num}` : '';
   document.getElementById('modalTitle').textContent = cleanTitle(ep.title);
-  const guestStr = ep.guests && ep.guests.length ? ep.guests.join(', ') : '';
-  document.getElementById('modalGuest').textContent = guestStr ? `with ${guestStr}` : '';
+  const modalGuestEl = document.getElementById('modalGuest');
+  if (ep.guests && ep.guests.length) {
+    const guestLinks = ep.guests.map(g => {
+      const lastName = getGuestLastName(g);
+      return `<a href="/podcast-guests/#guest-${lastName}" class="modal-guest-link">${g}</a>`;
+    });
+    modalGuestEl.innerHTML = `with ${guestLinks.join(', ')}`;
+  } else {
+    modalGuestEl.textContent = '';
+  }
   document.getElementById('modalAvatars').innerHTML = buildAvatarHtml(ep, true, true);
   document.getElementById('modalMeta').textContent = [formatDate(ep.date), ep.duration].filter(Boolean).join(' · ');
   document.getElementById('modalDescription').innerHTML = ep.description.split('\n\n').map(p => `<p>${p}</p>`).join('');
