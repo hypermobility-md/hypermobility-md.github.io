@@ -6,24 +6,83 @@
   <meta name="robots" content="noindex" />
   <title>Content Manager — Hypermobility MD</title>
   <style>
-    .hmd-helper-btn {
+    /* Floating episode helper toolbar */
+    .hmd-toolbar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9000;
+      display: flex;
+      gap: 8px;
+      background: #1e1e2e;
+      border: 1px solid #444;
+      border-radius: 10px;
+      padding: 8px 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      transition: opacity 0.2s;
+    }
+    .hmd-toolbar-btn {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      padding: 3px 10px;
-      font-size: 12px;
+      gap: 6px;
+      padding: 6px 14px;
+      font-size: 13px;
       font-weight: 600;
       border: 1px solid #6b5ce7;
-      background: #6b5ce710;
-      color: #6b5ce7;
-      border-radius: 6px;
+      background: #6b5ce718;
+      color: #a794ff;
+      border-radius: 8px;
       cursor: pointer;
-      margin-left: 8px;
-      vertical-align: middle;
-      transition: background 0.15s;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
     }
-    .hmd-helper-btn:hover { background: #6b5ce725; }
-    .hmd-guest-result {
+    .hmd-toolbar-btn:hover { background: #6b5ce730; color: #c4b8ff; }
+    .hmd-toolbar-btn.success { border-color: #4caf50; color: #81c784; background: #4caf5018; }
+    .hmd-toolbar-label {
+      font-size: 11px;
+      color: #888;
+      font-weight: 500;
+      padding-right: 4px;
+      align-self: center;
+    }
+
+    /* Guest photo check popup */
+    .hmd-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 9999;
+    }
+    .hmd-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #1e1e2e;
+      color: #e0e0e0;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      padding: 24px;
+      z-index: 10000;
+      max-width: 440px;
+      width: 90%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    .hmd-popup h3 { margin: 0 0 16px; font-size: 15px; color: #fff; }
+    .hmd-popup-close {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: #888;
+      line-height: 1;
+    }
+    .hmd-popup-close:hover { color: #fff; }
+    .hmd-guest-row {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -31,58 +90,42 @@
       margin: 4px 0;
       border-radius: 8px;
       font-size: 13px;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     }
-    .hmd-guest-result img {
+    .hmd-guest-row img {
       width: 40px;
       height: 40px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid #6b5ce7;
+      flex-shrink: 0;
     }
-    .hmd-guest-result.found { background: #e8f5e9; }
-    .hmd-guest-result.missing { background: #fce4ec; }
-    .hmd-guest-popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-      padding: 24px;
-      z-index: 10000;
-      max-width: 420px;
-      width: 90%;
-    }
-    .hmd-guest-popup h3 { margin: 0 0 16px; font-size: 15px; }
-    .hmd-guest-popup-close {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      background: none;
-      border: none;
-      font-size: 20px;
-      cursor: pointer;
-      color: #666;
-    }
-    .hmd-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.3);
-      z-index: 9999;
+    .hmd-guest-row.found { background: #1b5e2020; border: 1px solid #2e7d3240; }
+    .hmd-guest-row.missing { background: #b7131320; border: 1px solid #c6282840; }
+    .hmd-no-photo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #c62828;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      flex-shrink: 0;
     }
   </style>
 </head>
 <body>
   <script>
-    // CMS enhancement: auto-increment episode numbers, guest photo validation,
-    // auto-populate guestImages on save, and in-form helper buttons.
+    // =========================================================
+    //  Hypermobility MD — CMS Enhancements for Sveltia CMS
+    //  - Floating toolbar with "Next Ep #" and "Check Photos"
+    //  - preSave hook for auto-increment, validation, guestImages
+    // =========================================================
 
     let guestLookup = {};
     let episodeNums = [];
 
-    // Fetch CMS data endpoints
     Promise.all([
       fetch('/cms-data/guest-lookup.json').then(r => r.ok ? r.json() : {}).catch(() => ({})),
       fetch('/cms-data/episode-nums.json').then(r => r.ok ? r.json() : []).catch(() => [])
@@ -96,7 +139,6 @@
       return Math.max(...episodeNums) + 1;
     }
 
-    // Guest name normalization — mirrors podcast-guests.njk logic
     function stripCredentials(name) {
       let n = name, prev;
       do {
@@ -112,101 +154,217 @@
       return n.toLowerCase().replace(/\s+/g, ' ');
     }
 
-    // ---- In-form helper buttons ----
-    // Inject "Next Ep #" and "Check Guest Photos" buttons into Sveltia CMS form fields
-    function injectHelperButtons() {
-      // Look for field labels in the CMS form
-      const labels = document.querySelectorAll('label, [class*="label"], [class*="Label"]');
+    // ---- DOM helpers to find Sveltia CMS fields by label text ----
+    function findFieldByLabel(labelText) {
+      // Walk all elements looking for one whose text content matches the label
+      const walker = document.createTreeWalker(
+        document.body,
+        NodeFilter.SHOW_ELEMENT,
+        {
+          acceptNode(node) {
+            // Skip our own toolbar
+            if (node.closest('.hmd-toolbar, .hmd-popup, .hmd-overlay')) return NodeFilter.FILTER_REJECT;
+            // Check direct text (not nested) for the label
+            const directText = Array.from(node.childNodes)
+              .filter(n => n.nodeType === Node.TEXT_NODE)
+              .map(n => n.textContent.trim())
+              .join('');
+            if (directText === labelText || directText === labelText + ' *') return NodeFilter.FILTER_ACCEPT;
+            return NodeFilter.FILTER_SKIP;
+          }
+        }
+      );
+      return walker.nextNode();
+    }
 
-      for (const label of labels) {
-        const text = label.textContent.trim();
+    function findInputNear(labelEl, inputType) {
+      // Walk up to find the field container, then look for an input
+      let container = labelEl;
+      for (let i = 0; i < 5; i++) {
+        container = container.parentElement;
+        if (!container) break;
+        const input = container.querySelector(inputType || 'input');
+        if (input) return input;
+      }
+      return null;
+    }
 
-        // "Next Episode #" button next to Episode Number field
-        if (text === 'Episode Number' && !label.querySelector('.hmd-helper-btn')) {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'hmd-helper-btn';
-          btn.textContent = 'Next: #' + getNextEpisodeNum();
-          btn.onclick = function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            const nextNum = getNextEpisodeNum();
-            // Find the input field near this label
-            const container = label.closest('[class*="field"]') || label.parentElement;
-            const input = container?.querySelector('input[type="number"], input[type="text"], input');
-            if (input) {
-              // Set value and dispatch events to notify Sveltia's reactivity
-              const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-                window.HTMLInputElement.prototype, 'value'
-              ).set;
-              nativeInputValueSetter.call(input, nextNum);
-              input.dispatchEvent(new Event('input', { bubbles: true }));
-              input.dispatchEvent(new Event('change', { bubbles: true }));
-              btn.textContent = 'Set to #' + nextNum + ' ✓';
-              setTimeout(() => { btn.textContent = 'Next: #' + getNextEpisodeNum(); }, 1500);
-            }
-          };
-          label.appendChild(btn);
+    function findAllInputsNear(labelEl) {
+      let container = labelEl;
+      for (let i = 0; i < 5; i++) {
+        container = container.parentElement;
+        if (!container) break;
+        const inputs = container.querySelectorAll('input');
+        if (inputs.length > 0) return inputs;
+      }
+      return [];
+    }
+
+    // ---- Floating Toolbar ----
+    let toolbar = null;
+    let lastUrl = '';
+
+    function isOnEpisodeEditor() {
+      // Detect if we're on an episode editing page
+      // Sveltia CMS uses hash routing: #/collections/episodes/entries/...
+      // or #/collections/episodes/new
+      const hash = window.location.hash;
+      return hash.includes('collections/episodes/entries') ||
+             hash.includes('collections/episodes/new');
+    }
+
+    function createToolbar() {
+      if (toolbar) return;
+      toolbar = document.createElement('div');
+      toolbar.className = 'hmd-toolbar';
+
+      const label = document.createElement('span');
+      label.className = 'hmd-toolbar-label';
+      label.textContent = 'Episode Tools:';
+      toolbar.appendChild(label);
+
+      // Next Episode # button
+      const epBtn = document.createElement('button');
+      epBtn.className = 'hmd-toolbar-btn';
+      epBtn.textContent = '# Next: ' + getNextEpisodeNum();
+      epBtn.title = 'Set episode number to the next available number';
+      epBtn.onclick = function() {
+        const nextNum = getNextEpisodeNum();
+        const labelEl = findFieldByLabel('Episode Number');
+        if (labelEl) {
+          const input = findInputNear(labelEl);
+          if (input) {
+            const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+            setter.call(input, nextNum);
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+            epBtn.textContent = '# Set to ' + nextNum + ' ✓';
+            epBtn.classList.add('success');
+            setTimeout(() => {
+              epBtn.textContent = '# Next: ' + getNextEpisodeNum();
+              epBtn.classList.remove('success');
+            }, 2000);
+            return;
+          }
+        }
+        // Fallback: try any number input on the page
+        const numInput = document.querySelector('input[type="number"]');
+        if (numInput) {
+          const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+          setter.call(numInput, nextNum);
+          numInput.dispatchEvent(new Event('input', { bubbles: true }));
+          numInput.dispatchEvent(new Event('change', { bubbles: true }));
+          epBtn.textContent = '# Set to ' + nextNum + ' ✓';
+          epBtn.classList.add('success');
+          setTimeout(() => {
+            epBtn.textContent = '# Next: ' + getNextEpisodeNum();
+            epBtn.classList.remove('success');
+          }, 2000);
+        } else {
+          epBtn.textContent = 'Field not found';
+          setTimeout(() => { epBtn.textContent = '# Next: ' + getNextEpisodeNum(); }, 2000);
+        }
+      };
+      toolbar.appendChild(epBtn);
+
+      // Check Guest Photos button
+      const photoBtn = document.createElement('button');
+      photoBtn.className = 'hmd-toolbar-btn';
+      photoBtn.textContent = 'Check Guest Photos';
+      photoBtn.title = 'Check if all listed guests have photos';
+      photoBtn.onclick = function() {
+        // Gather all text inputs that might contain guest names
+        // Sveltia list widget renders each item as an input
+        const labelEl = findFieldByLabel('Guests');
+        let inputs = [];
+        if (labelEl) {
+          inputs = findAllInputsNear(labelEl);
         }
 
-        // "Check Guest Photos" button next to Guests field
-        if (text === 'Guests' && !label.querySelector('.hmd-helper-btn')) {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'hmd-helper-btn';
-          btn.textContent = 'Check Photos';
-          btn.onclick = function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            // Gather guest names from the list widget inputs
-            const container = label.closest('[class*="field"]') || label.parentElement?.parentElement;
-            const inputs = container?.querySelectorAll('input') || [];
-            const guests = [];
-            inputs.forEach(inp => {
-              const val = inp.value.trim();
-              if (val) guests.push(val);
-            });
-
-            if (guests.length === 0) {
-              alert('No guest names entered yet.');
-              return;
-            }
-
-            // Build results popup
-            const overlay = document.createElement('div');
-            overlay.className = 'hmd-overlay';
-            const popup = document.createElement('div');
-            popup.className = 'hmd-guest-popup';
-            popup.innerHTML = '<button class="hmd-guest-popup-close">&times;</button><h3>Guest Photo Check</h3>';
-
-            for (const guest of guests) {
-              const key = normalizeGuestKey(guest);
-              const photo = guestLookup[key];
-              const row = document.createElement('div');
-              if (photo) {
-                row.className = 'hmd-guest-result found';
-                row.innerHTML = '<img src="' + photo + '" alt=""> <span><strong>' + guest + '</strong> — Photo found</span>';
-              } else {
-                row.className = 'hmd-guest-result missing';
-                row.innerHTML = '<span style="width:40px;height:40px;border-radius:50%;background:#e57373;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;flex-shrink:0;">✕</span> <span><strong>' + guest + '</strong> — No photo found</span>';
-              }
-              popup.appendChild(row);
-            }
-
-            function close() { overlay.remove(); popup.remove(); }
-            overlay.onclick = close;
-            popup.querySelector('.hmd-guest-popup-close').onclick = close;
-            document.body.appendChild(overlay);
-            document.body.appendChild(popup);
-          };
-          label.appendChild(btn);
+        // Fallback: find inputs by scanning the page for guest-like list entries
+        const guests = [];
+        if (inputs.length > 0) {
+          inputs.forEach(inp => {
+            const val = inp.value.trim();
+            if (val && val.length > 2) guests.push(val);
+          });
         }
+
+        if (guests.length === 0) {
+          // Try broader: all text inputs on the page that look like names
+          document.querySelectorAll('input[type="text"], input:not([type])').forEach(inp => {
+            const val = inp.value.trim();
+            // Heuristic: names have spaces and are 5+ chars
+            if (val && val.length >= 5 && val.includes(' ') && !val.includes('http') && !val.includes('/')) {
+              guests.push(val);
+            }
+          });
+        }
+
+        if (guests.length === 0) {
+          alert('No guest names found. Enter guest names in the Guests field first.');
+          return;
+        }
+
+        showPhotoCheckPopup(guests);
+      };
+      toolbar.appendChild(photoBtn);
+
+      document.body.appendChild(toolbar);
+    }
+
+    function removeToolbar() {
+      if (toolbar) {
+        toolbar.remove();
+        toolbar = null;
       }
     }
 
-    // Use MutationObserver to inject buttons when CMS form renders
-    const observer = new MutationObserver(() => { injectHelperButtons(); });
-    observer.observe(document.body, { childList: true, subtree: true });
+    function showPhotoCheckPopup(guests) {
+      const overlay = document.createElement('div');
+      overlay.className = 'hmd-overlay';
+      const popup = document.createElement('div');
+      popup.className = 'hmd-popup';
+      popup.innerHTML = '<button class="hmd-popup-close">&times;</button><h3>Guest Photo Check</h3>';
+
+      for (const guest of guests) {
+        const key = normalizeGuestKey(guest);
+        const photo = guestLookup[key];
+        const row = document.createElement('div');
+        row.className = 'hmd-guest-row ' + (photo ? 'found' : 'missing');
+        if (photo) {
+          row.innerHTML = '<img src="' + photo + '" alt=""> <span><strong>' +
+            guest + '</strong> — Photo found</span>';
+        } else {
+          row.innerHTML = '<span class="hmd-no-photo">✕</span> <span><strong>' +
+            guest + '</strong> — No photo on file</span>';
+        }
+        popup.appendChild(row);
+      }
+
+      function close() { overlay.remove(); popup.remove(); }
+      overlay.onclick = close;
+      popup.querySelector('.hmd-popup-close').onclick = close;
+      document.addEventListener('keydown', function esc(e) {
+        if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
+      });
+      document.body.appendChild(overlay);
+      document.body.appendChild(popup);
+    }
+
+    // Poll for route changes to show/hide toolbar
+    setInterval(() => {
+      const url = window.location.hash;
+      if (url !== lastUrl) {
+        lastUrl = url;
+        if (isOnEpisodeEditor()) {
+          // Small delay to let the form render
+          setTimeout(createToolbar, 500);
+        } else {
+          removeToolbar();
+        }
+      }
+    }, 300);
 
     // ---- preSave hook ----
     function registerHooks() {
@@ -219,11 +377,9 @@
         name: 'preSave',
         handler: ({ entry }) => {
           try {
-            // Determine collection — only act on episodes
             const collection = entry.get ? entry.get('collection') : entry.collection;
             if (collection !== 'episodes') return;
 
-            // Try Immutable.js (Decap) then plain object (Sveltia) patterns
             let data, setData;
             if (entry.get && entry.getIn) {
               data = {
@@ -243,7 +399,6 @@
               };
             }
 
-            // Auto-increment episode number
             const num = data.num;
             if (!num || num === 0) {
               const nextNum = getNextEpisodeNum();
@@ -251,11 +406,9 @@
               episodeNums.push(nextNum);
             }
 
-            // Guest photo validation and guestImages auto-populate
             let guests = data.guests;
             if (guests) {
               if (guests.toJS) guests = guests.toJS();
-
               const missingPhotos = [];
               const guestImages = [];
 

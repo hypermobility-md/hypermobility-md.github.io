@@ -967,7 +967,7 @@ a.logo-card:hover {
 .faq-title-icon {
   width: 28px;
   height: 28px;
-  color: var(--primary);
+  color: currentColor;
   flex-shrink: 0;
 }
 
