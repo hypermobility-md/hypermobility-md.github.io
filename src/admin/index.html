@@ -6,46 +6,6 @@
   <meta name="robots" content="noindex" />
   <title>Content Manager — Hypermobility MD</title>
   <style>
-    /* Floating episode helper toolbar */
-    .hmd-toolbar {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 9000;
-      display: flex;
-      gap: 8px;
-      background: #1e1e2e;
-      border: 1px solid #444;
-      border-radius: 10px;
-      padding: 8px 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    }
-    .hmd-toolbar-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      border: 1px solid #6b5ce7;
-      background: #6b5ce718;
-      color: #a794ff;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-      white-space: nowrap;
-    }
-    .hmd-toolbar-btn:hover { background: #6b5ce730; color: #c4b8ff; }
-    .hmd-toolbar-btn.success { border-color: #4caf50; color: #81c784; background: #4caf5018; }
-    .hmd-toolbar-label {
-      font-size: 11px;
-      color: #888;
-      font-weight: 500;
-      padding-right: 4px;
-      align-self: center;
-    }
-
     /* Pre-save dialog */
     .hmd-overlay {
       position: fixed;
@@ -187,15 +147,12 @@
 
     let guestLookup = {};
     let episodeNums = [];
-    let dataReady = false;
-
     Promise.all([
       fetch('/cms-data/guest-lookup.json').then(r => r.ok ? r.json() : {}).catch(() => ({})),
       fetch('/cms-data/episode-nums.json').then(r => r.ok ? r.json() : []).catch(() => [])
     ]).then(([guests, nums]) => {
       guestLookup = guests;
       episodeNums = nums.filter(n => n !== null);
-      dataReady = true;
     });
 
     function getNextEpisodeNum() {
@@ -237,6 +194,16 @@
           html += '<strong>#' + info.num + '</strong> <span class="status ok">(auto-assigned)</span>';
         } else {
           html += '<strong>#' + info.num + '</strong>';
+        }
+        html += '</span></div>';
+
+        // Date
+        html += '<div class="hmd-section-label">Date</div>';
+        html += '<div class="hmd-info-row"><span>';
+        if (info.dateAutoFilled) {
+          html += '<strong>' + info.date + '</strong> <span class="status ok">(auto-filled to today)</span>';
+        } else {
+          html += '<strong>' + info.date + '</strong>';
         }
         html += '</span></div>';
 
@@ -303,87 +270,6 @@
       });
     }
 
-    // ---- Floating Toolbar (episode number only) ----
-    let toolbar = null;
-    let lastUrl = '';
-
-    function isOnEpisodeEditor() {
-      const hash = window.location.hash;
-      return hash.includes('collections/episodes/entries') ||
-             hash.includes('collections/episodes/new');
-    }
-
-    function createToolbar() {
-      if (toolbar) return;
-      toolbar = document.createElement('div');
-      toolbar.className = 'hmd-toolbar';
-
-      const label = document.createElement('span');
-      label.className = 'hmd-toolbar-label';
-      label.textContent = 'Episode:';
-      toolbar.appendChild(label);
-
-      // Next Episode # button
-      const epBtn = document.createElement('button');
-      epBtn.className = 'hmd-toolbar-btn';
-      epBtn.textContent = '# Next: ' + getNextEpisodeNum();
-      epBtn.title = 'Set episode number to the next available number';
-      epBtn.onclick = function() {
-        const nextNum = getNextEpisodeNum();
-        // Find the number input (Episode Number is the only number widget)
-        const numInput = document.querySelector('input[type="number"]');
-        if (numInput) {
-          const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
-          setter.call(numInput, nextNum);
-          numInput.dispatchEvent(new Event('input', { bubbles: true }));
-          numInput.dispatchEvent(new Event('change', { bubbles: true }));
-          epBtn.textContent = '# Set to ' + nextNum + ' ✓';
-          epBtn.classList.add('success');
-          setTimeout(() => {
-            epBtn.textContent = '# Next: ' + getNextEpisodeNum();
-            epBtn.classList.remove('success');
-          }, 2000);
-        }
-      };
-      toolbar.appendChild(epBtn);
-
-      document.body.appendChild(toolbar);
-    }
-
-    function removeToolbar() {
-      if (toolbar) { toolbar.remove(); toolbar = null; }
-    }
-
-    // Auto-fill episode number when creating a new episode
-    function autoFillNewEpisodeNum() {
-      if (!dataReady) return;
-      const hash = window.location.hash;
-      if (!hash.includes('collections/episodes/new')) return;
-      const numInput = document.querySelector('input[type="number"]');
-      if (numInput && (!numInput.value || numInput.value === '0')) {
-        const nextNum = getNextEpisodeNum();
-        const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
-        setter.call(numInput, nextNum);
-        numInput.dispatchEvent(new Event('input', { bubbles: true }));
-        numInput.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-    }
-
-    // Poll for route changes
-    setInterval(() => {
-      const url = window.location.hash;
-      if (url !== lastUrl) {
-        lastUrl = url;
-        if (isOnEpisodeEditor()) {
-          setTimeout(createToolbar, 500);
-          // Auto-fill episode number for new episodes
-          setTimeout(autoFillNewEpisodeNum, 1000);
-        } else {
-          removeToolbar();
-        }
-      }
-    }, 300);
-
     // ---- preSave hook ----
     function registerHooks() {
       if (typeof CMS === 'undefined') {
@@ -421,6 +307,13 @@
               numAutoFilled = true;
             }
 
+            let date = getData('date');
+            let dateAutoFilled = false;
+            if (!date) {
+              date = new Date().toISOString().split('T')[0];
+              dateAutoFilled = true;
+            }
+
             const guests = getData('guests') || [];
             const guestResults = [];
             const guestImagePaths = [];
@@ -441,6 +334,8 @@
             const proceed = await showPreSaveDialog({
               num,
               numAutoFilled,
+              date,
+              dateAutoFilled,
               guests,
               guestResults,
               guestImagePaths,
@@ -453,6 +348,10 @@
             if (numAutoFilled) {
               setData('num', num);
               episodeNums.push(num);
+            }
+
+            if (dateAutoFilled) {
+              setData('date', date);
             }
 
             if (guestImagePaths.length > 0) {
