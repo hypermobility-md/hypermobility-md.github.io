@@ -125,6 +125,11 @@ permalink: /podcast-episodes/
         <div id="modalTranscript"></div>
       </div>
 
+      <div id="modalGuestCardsSection" style="display:none;">
+        <h4>Guests</h4>
+        <div class="modal-guest-cards" id="modalGuestCards"></div>
+      </div>
+
       <h4>Tags</h4>
       <div class="modal-tags" id="modalTags"></div>
     </div>
@@ -198,6 +203,54 @@ function resolveGuestImage(name) {
   } while (n !== prev);
   n = n.replace(/[,.\s]+$/, '').trim().toLowerCase();
   return GUEST_IMAGES[n] || null;
+}
+
+function getSocialIcon(url) {
+  if (!url) return '';
+  const u = url.toLowerCase();
+  if (u.includes('linkedin.com')) return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>';
+  if (u.includes('twitter.com') || u.includes('x.com')) return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>';
+  if (u.includes('instagram.com')) return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>';
+  if (u.includes('facebook.com')) return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>';
+  if (u.includes('youtube.com') || u.includes('youtu.be')) return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>';
+  return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>';
+}
+
+function normalizeGuestKey(name) {
+  let n = name.replace(/^(Dr\.?|Prof\.?|Professor)\s+/i, '');
+  let prev;
+  do {
+    prev = n;
+    n = n.replace(/[,\s]+(M\.?D\.?|Ph\.?D\.?|D\.?P\.?T\.?|D\.?O\.?|P\.?A\.?-?C?|R\.?D\.?N\.?|O\.?T\.?|P\.?T\.?|J\.?D\.?|LICSW|NCPT|ATC|MS|MA|MPT|DMSC|MRCPsych|DDS)\.?\s*$/i, '');
+  } while (n !== prev);
+  return n.replace(/[,.\s]+$/, '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function getGuestProfile(name) {
+  if (typeof GUEST_PROFILES === 'undefined') return null;
+  return GUEST_PROFILES[normalizeGuestKey(name)] || null;
+}
+
+function buildModalGuestCard(name) {
+  const img = resolveGuestImage(name);
+  const profile = getGuestProfile(name);
+  const imgHtml = img ? `<img class="guest-card-img" src="${img}" alt="${name}">` : '';
+  const affiliationHtml = profile && profile.affiliation
+    ? `<div class="guest-card-affiliation">${profile.affiliation}</div>` : '';
+  const bioHtml = profile && profile.bio
+    ? `<div class="guest-card-bio">${profile.bio}</div>` : '';
+  const websiteHtml = profile && profile.website
+    ? `<a href="${profile.website}" target="_blank" rel="noopener" class="guest-card-website" title="Visit website">${getSocialIcon(profile.website)}</a>` : '';
+  const lastName = getGuestLastName(name);
+  return `
+  <div class="guest-card">
+    <div class="guest-card-header">
+      ${imgHtml}
+      <h3><a href="/podcast-guests/#guest-${lastName}" style="color:inherit;text-decoration:none;">${name}</a> ${websiteHtml}</h3>
+    </div>
+    ${affiliationHtml}
+    ${bioHtml}
+  </div>`;
 }
 
 function buildAvatarHtml(ep, linkable, showAll) {
@@ -420,6 +473,16 @@ function openEpisode(idx) {
     }
   } else {
     transcriptSection.style.display = 'none';
+  }
+
+  // Guest Cards
+  const guestCardsSection = document.getElementById('modalGuestCardsSection');
+  const guestCardsEl = document.getElementById('modalGuestCards');
+  if (ep.guests && ep.guests.length > 0) {
+    guestCardsSection.style.display = 'block';
+    guestCardsEl.innerHTML = ep.guests.map(buildModalGuestCard).join('');
+  } else {
+    guestCardsSection.style.display = 'none';
   }
 
   // Tags

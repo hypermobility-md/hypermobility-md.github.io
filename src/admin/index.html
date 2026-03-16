@@ -7,6 +7,137 @@
   <title>Content Manager — Hypermobility MD</title>
 </head>
 <body>
+  <script>
+    // CMS enhancement: auto-increment episode numbers, guest photo validation,
+    // and auto-populate guestImages on save.
+
+    let guestLookup = {};
+    let episodeNums = [];
+
+    // Fetch CMS data endpoints
+    Promise.all([
+      fetch('/cms-data/guest-lookup.json').then(r => r.ok ? r.json() : {}).catch(() => ({})),
+      fetch('/cms-data/episode-nums.json').then(r => r.ok ? r.json() : []).catch(() => [])
+    ]).then(([guests, nums]) => {
+      guestLookup = guests;
+      episodeNums = nums.filter(n => n !== null);
+    });
+
+    function getNextEpisodeNum() {
+      if (episodeNums.length === 0) return 1;
+      return Math.max(...episodeNums) + 1;
+    }
+
+    // Guest name normalization — mirrors podcast-guests.njk logic
+    function stripCredentials(name) {
+      let n = name, prev;
+      do {
+        prev = n;
+        n = n.replace(/[,\s]+(M\.?D\.?|Ph\.?D\.?|D\.?P\.?T\.?|D\.?O\.?|P\.?A\.?-?C?|R\.?D\.?N\.?|O\.?T\.?|P\.?T\.?|J\.?D\.?|LICSW|NCPT|ATC|MS|MA|MPT|DMSC|MRCPsych|DDS)\.?\s*$/i, '');
+      } while (n !== prev);
+      return n.replace(/[,.\s]+$/, '').trim();
+    }
+
+    function normalizeGuestKey(name) {
+      let n = name.replace(/^(Dr\.?|Prof\.?|Professor)\s+/i, '');
+      n = stripCredentials(n);
+      return n.toLowerCase().replace(/\s+/g, ' ');
+    }
+
+    // Register preSave hook once CMS is ready
+    // Sveltia CMS exposes CMS on window after its script loads
+    function registerHooks() {
+      if (typeof CMS === 'undefined') {
+        setTimeout(registerHooks, 200);
+        return;
+      }
+
+      CMS.registerEventListener({
+        name: 'preSave',
+        handler: ({ entry }) => {
+          try {
+            // Determine collection — only act on episodes
+            const collection = entry.get ? entry.get('collection') : entry.collection;
+            if (collection !== 'episodes') return;
+
+            // Try Immutable.js (Decap) then plain object (Sveltia) patterns
+            let data, setData;
+            if (entry.get && entry.getIn) {
+              // Immutable.js style
+              data = {
+                num: entry.getIn(['data', 'num']),
+                guests: entry.getIn(['data', 'guests']),
+              };
+              setData = (field, value) => {
+                entry = entry.setIn(['data', field], value);
+              };
+            } else {
+              // Plain object style (Sveltia CMS)
+              data = {
+                num: entry.data?.num,
+                guests: entry.data?.guests,
+              };
+              setData = (field, value) => {
+                entry.data[field] = value;
+              };
+            }
+
+            // 2a. Auto-increment episode number
+            const num = data.num;
+            if (!num || num === 0) {
+              const nextNum = getNextEpisodeNum();
+              setData('num', nextNum);
+              // Track it so subsequent saves in same session don't collide
+              episodeNums.push(nextNum);
+            }
+
+            // 2b & 2c. Guest photo validation and guestImages auto-populate
+            let guests = data.guests;
+            if (guests) {
+              // Convert from Immutable List if needed
+              if (guests.toJS) guests = guests.toJS();
+
+              const missingPhotos = [];
+              const guestImages = [];
+
+              for (const guest of guests) {
+                const key = normalizeGuestKey(guest);
+                const photo = guestLookup[key];
+                if (photo) {
+                  // Strip leading '/' to match existing format (e.g., "Guests/Name.jpg")
+                  guestImages.push(photo.replace(/^\//, ''));
+                } else {
+                  missingPhotos.push(guest);
+                }
+              }
+
+              // Warn about missing photos
+              if (missingPhotos.length > 0) {
+                const proceed = window.confirm(
+                  'No photo found for: ' + missingPhotos.join(', ') +
+                  '\n\nSave anyway?'
+                );
+                if (!proceed) return false;
+              }
+
+              // Auto-populate guestImages (only entries with matches)
+              if (guestImages.length > 0) {
+                setData('guestImages', guestImages);
+              }
+            }
+
+            return entry;
+          } catch (err) {
+            console.error('CMS preSave hook error:', err);
+            // Don't block save on hook errors
+          }
+        }
+      });
+    }
+
+    // Start polling for CMS availability
+    registerHooks();
+  </script>
   <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
 </body>
 </html>

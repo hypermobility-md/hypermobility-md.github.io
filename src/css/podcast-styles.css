@@ -465,8 +465,14 @@
 .guest-card-img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid var(--teal-light); flex-shrink: 0; }
 .guest-card-bio { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 10px; font-family: var(--body-font); }
 .guest-card-affiliation { font-size: 0.75rem; color: var(--primary); font-family: var(--body-font); font-weight: 600; margin-bottom: 10px; }
-.guest-card-website { font-size: 0.85rem; text-decoration: none; opacity: 0.5; transition: opacity 0.2s; }
+.guest-card-website { display: inline-flex; align-items: center; text-decoration: none; opacity: 0.5; transition: opacity 0.2s; color: var(--primary); }
 .guest-card-website:hover { opacity: 1; text-decoration: none; }
+.guest-card-website svg { vertical-align: middle; }
+
+/* Modal guest cards grid */
+.modal-guest-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.modal-guest-cards .guest-card { margin-bottom: 0; }
+.modal-guest-cards .guest-card h3 a:hover { color: var(--primary-dark) !important; }
 
 /* ---- Alphabet Filter ---- */
 .alpha-filter { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 32px; }

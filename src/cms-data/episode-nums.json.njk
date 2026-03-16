@@ -1,0 +1,5 @@
+---
+permalink: /cms-data/episode-nums.json
+eleventyExcludeFromCollections: true
+---
+[{% for ep in collections.episodes %}{{ ep.data.num if ep.data.num else "null" }}{% if not loop.last %},{% endif %}{% endfor %}]
