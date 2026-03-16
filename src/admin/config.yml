@@ -20,15 +20,16 @@ collections:
         field: date
         pattern: \d{4}
     fields:
-      - { label: "Episode Number", name: "num", widget: "number", value_type: "int" }
+      - { label: "Episode Number", name: "num", widget: "number", value_type: "int", required: false }
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
-      - { label: "Duration", name: "duration", widget: "string", hint: "e.g. 1h 7m" }
-      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
+      - { label: "Duration", name: "duration", widget: "string", required: false, hint: "e.g. 1h 7m" }
+      - { label: "Description", name: "description", widget: "text", required: false }
       - label: "Tags"
         name: "tags"
         widget: "select"
         multiple: true
+        required: false
         options:
           - "EDS"
           - "POTS"
