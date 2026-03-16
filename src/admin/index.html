@@ -200,6 +200,51 @@
       return [];
     }
 
+    // ---- Find guest names from the CMS form ----
+    function getGuestNamesFromForm() {
+      const guests = [];
+
+      // Strategy 1: Find "Guests" label element and get inputs near it
+      const labelEl = findFieldByLabel('Guests');
+      if (labelEl) {
+        const inputs = findAllInputsNear(labelEl);
+        inputs.forEach(inp => {
+          const val = inp.value.trim();
+          if (val && val.length > 2) guests.push(val);
+        });
+        // If we found the label's section, only return those inputs
+        // Filter out values that are clearly not names
+        const filtered = guests.filter(v =>
+          !v.match(/^\d{4}/) &&          // not a date
+          !v.match(/^\d+$/) &&           // not a number
+          !v.match(/^https?:\/\//) &&    // not a URL
+          !v.match(/^\d+h\s*\d+m$/) &&  // not a duration
+          !v.includes('/')               // not a path
+        );
+        if (filtered.length > 0) return filtered;
+      }
+
+      // Strategy 2: Scan all text inputs, filter to likely names
+      // Guest names: contain a space, no numbers at start, no URL patterns
+      document.querySelectorAll('input').forEach(inp => {
+        const val = inp.value.trim();
+        if (!val || val.length < 4) return;
+        // Skip number inputs, date inputs, URL-like inputs
+        if (inp.type === 'number' || inp.type === 'date') return;
+        if (val.match(/^\d{4}/)) return;         // date-like
+        if (val.match(/^\d+$/)) return;           // pure number
+        if (val.match(/^https?:\/\//)) return;    // URL
+        if (val.match(/^\d+h\s*\d*m?$/)) return;  // duration
+        if (val.includes('/')) return;             // path
+        // Likely a name if it has a space and looks like text
+        if (val.includes(' ') && val.match(/^[A-Za-z]/)) {
+          guests.push(val);
+        }
+      });
+
+      return guests;
+    }
+
     // ---- Floating Toolbar ----
     let toolbar = null;
     let lastUrl = '';
@@ -273,42 +318,55 @@
       photoBtn.textContent = 'Check Guest Photos';
       photoBtn.title = 'Check if all listed guests have photos';
       photoBtn.onclick = function() {
-        // Gather all text inputs that might contain guest names
-        // Sveltia list widget renders each item as an input
-        const labelEl = findFieldByLabel('Guests');
-        let inputs = [];
-        if (labelEl) {
-          inputs = findAllInputsNear(labelEl);
-        }
-
-        // Fallback: find inputs by scanning the page for guest-like list entries
-        const guests = [];
-        if (inputs.length > 0) {
-          inputs.forEach(inp => {
-            const val = inp.value.trim();
-            if (val && val.length > 2) guests.push(val);
-          });
-        }
-
-        if (guests.length === 0) {
-          // Try broader: all text inputs on the page that look like names
-          document.querySelectorAll('input[type="text"], input:not([type])').forEach(inp => {
-            const val = inp.value.trim();
-            // Heuristic: names have spaces and are 5+ chars
-            if (val && val.length >= 5 && val.includes(' ') && !val.includes('http') && !val.includes('/')) {
-              guests.push(val);
-            }
-          });
-        }
-
+        const guests = getGuestNamesFromForm();
         if (guests.length === 0) {
           alert('No guest names found. Enter guest names in the Guests field first.');
           return;
         }
-
         showPhotoCheckPopup(guests);
       };
       toolbar.appendChild(photoBtn);
+
+      // Fill Guest Paths button
+      const fillBtn = document.createElement('button');
+      fillBtn.className = 'hmd-toolbar-btn';
+      fillBtn.textContent = 'Fill Guest Paths';
+      fillBtn.title = 'Auto-fill Guest Photo Paths from guest names';
+      fillBtn.onclick = function() {
+        const guests = getGuestNamesFromForm();
+        if (guests.length === 0) {
+          alert('No guest names found. Enter guest names in the Guests field first.');
+          return;
+        }
+        const paths = [];
+        for (const guest of guests) {
+          const key = normalizeGuestKey(guest);
+          const photo = guestLookup[key];
+          if (photo) paths.push(photo.replace(/^\//, ''));
+        }
+        if (paths.length === 0) {
+          alert('No matching photos found for any guest.');
+          return;
+        }
+        // Find Guest Photo Paths list inputs and fill them
+        const pathLabel = findFieldByLabel('Guest Photo Paths');
+        if (pathLabel) {
+          const pathInputs = findAllInputsNear(pathLabel);
+          for (let i = 0; i < Math.min(paths.length, pathInputs.length); i++) {
+            const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+            setter.call(pathInputs[i], paths[i]);
+            pathInputs[i].dispatchEvent(new Event('input', { bubbles: true }));
+            pathInputs[i].dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        }
+        fillBtn.textContent = paths.length + ' path(s) ready ✓';
+        fillBtn.classList.add('success');
+        setTimeout(() => {
+          fillBtn.textContent = 'Fill Guest Paths';
+          fillBtn.classList.remove('success');
+        }, 2000);
+      };
+      toolbar.appendChild(fillBtn);
 
       document.body.appendChild(toolbar);
     }
