@@ -5,11 +5,79 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex" />
   <title>Content Manager — Hypermobility MD</title>
+  <style>
+    .hmd-helper-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid #6b5ce7;
+      background: #6b5ce710;
+      color: #6b5ce7;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left: 8px;
+      vertical-align: middle;
+      transition: background 0.15s;
+    }
+    .hmd-helper-btn:hover { background: #6b5ce725; }
+    .hmd-guest-result {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      margin: 4px 0;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .hmd-guest-result img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #6b5ce7;
+    }
+    .hmd-guest-result.found { background: #e8f5e9; }
+    .hmd-guest-result.missing { background: #fce4ec; }
+    .hmd-guest-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      padding: 24px;
+      z-index: 10000;
+      max-width: 420px;
+      width: 90%;
+    }
+    .hmd-guest-popup h3 { margin: 0 0 16px; font-size: 15px; }
+    .hmd-guest-popup-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #666;
+    }
+    .hmd-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 9999;
+    }
+  </style>
 </head>
 <body>
   <script>
     // CMS enhancement: auto-increment episode numbers, guest photo validation,
-    // and auto-populate guestImages on save.
+    // auto-populate guestImages on save, and in-form helper buttons.
 
     let guestLookup = {};
     let episodeNums = [];
@@ -44,8 +112,103 @@
       return n.toLowerCase().replace(/\s+/g, ' ');
     }
 
-    // Register preSave hook once CMS is ready
-    // Sveltia CMS exposes CMS on window after its script loads
+    // ---- In-form helper buttons ----
+    // Inject "Next Ep #" and "Check Guest Photos" buttons into Sveltia CMS form fields
+    function injectHelperButtons() {
+      // Look for field labels in the CMS form
+      const labels = document.querySelectorAll('label, [class*="label"], [class*="Label"]');
+
+      for (const label of labels) {
+        const text = label.textContent.trim();
+
+        // "Next Episode #" button next to Episode Number field
+        if (text === 'Episode Number' && !label.querySelector('.hmd-helper-btn')) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'hmd-helper-btn';
+          btn.textContent = 'Next: #' + getNextEpisodeNum();
+          btn.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const nextNum = getNextEpisodeNum();
+            // Find the input field near this label
+            const container = label.closest('[class*="field"]') || label.parentElement;
+            const input = container?.querySelector('input[type="number"], input[type="text"], input');
+            if (input) {
+              // Set value and dispatch events to notify Sveltia's reactivity
+              const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+                window.HTMLInputElement.prototype, 'value'
+              ).set;
+              nativeInputValueSetter.call(input, nextNum);
+              input.dispatchEvent(new Event('input', { bubbles: true }));
+              input.dispatchEvent(new Event('change', { bubbles: true }));
+              btn.textContent = 'Set to #' + nextNum + ' ✓';
+              setTimeout(() => { btn.textContent = 'Next: #' + getNextEpisodeNum(); }, 1500);
+            }
+          };
+          label.appendChild(btn);
+        }
+
+        // "Check Guest Photos" button next to Guests field
+        if (text === 'Guests' && !label.querySelector('.hmd-helper-btn')) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'hmd-helper-btn';
+          btn.textContent = 'Check Photos';
+          btn.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            // Gather guest names from the list widget inputs
+            const container = label.closest('[class*="field"]') || label.parentElement?.parentElement;
+            const inputs = container?.querySelectorAll('input') || [];
+            const guests = [];
+            inputs.forEach(inp => {
+              const val = inp.value.trim();
+              if (val) guests.push(val);
+            });
+
+            if (guests.length === 0) {
+              alert('No guest names entered yet.');
+              return;
+            }
+
+            // Build results popup
+            const overlay = document.createElement('div');
+            overlay.className = 'hmd-overlay';
+            const popup = document.createElement('div');
+            popup.className = 'hmd-guest-popup';
+            popup.innerHTML = '<button class="hmd-guest-popup-close">&times;</button><h3>Guest Photo Check</h3>';
+
+            for (const guest of guests) {
+              const key = normalizeGuestKey(guest);
+              const photo = guestLookup[key];
+              const row = document.createElement('div');
+              if (photo) {
+                row.className = 'hmd-guest-result found';
+                row.innerHTML = '<img src="' + photo + '" alt=""> <span><strong>' + guest + '</strong> — Photo found</span>';
+              } else {
+                row.className = 'hmd-guest-result missing';
+                row.innerHTML = '<span style="width:40px;height:40px;border-radius:50%;background:#e57373;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;flex-shrink:0;">✕</span> <span><strong>' + guest + '</strong> — No photo found</span>';
+              }
+              popup.appendChild(row);
+            }
+
+            function close() { overlay.remove(); popup.remove(); }
+            overlay.onclick = close;
+            popup.querySelector('.hmd-guest-popup-close').onclick = close;
+            document.body.appendChild(overlay);
+            document.body.appendChild(popup);
+          };
+          label.appendChild(btn);
+        }
+      }
+    }
+
+    // Use MutationObserver to inject buttons when CMS form renders
+    const observer = new MutationObserver(() => { injectHelperButtons(); });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // ---- preSave hook ----
     function registerHooks() {
       if (typeof CMS === 'undefined') {
         setTimeout(registerHooks, 200);
@@ -63,7 +226,6 @@
             // Try Immutable.js (Decap) then plain object (Sveltia) patterns
             let data, setData;
             if (entry.get && entry.getIn) {
-              // Immutable.js style
               data = {
                 num: entry.getIn(['data', 'num']),
                 guests: entry.getIn(['data', 'guests']),
@@ -72,7 +234,6 @@
                 entry = entry.setIn(['data', field], value);
               };
             } else {
-              // Plain object style (Sveltia CMS)
               data = {
                 num: entry.data?.num,
                 guests: entry.data?.guests,
@@ -82,19 +243,17 @@
               };
             }
 
-            // 2a. Auto-increment episode number
+            // Auto-increment episode number
             const num = data.num;
             if (!num || num === 0) {
               const nextNum = getNextEpisodeNum();
               setData('num', nextNum);
-              // Track it so subsequent saves in same session don't collide
               episodeNums.push(nextNum);
             }
 
-            // 2b & 2c. Guest photo validation and guestImages auto-populate
+            // Guest photo validation and guestImages auto-populate
             let guests = data.guests;
             if (guests) {
-              // Convert from Immutable List if needed
               if (guests.toJS) guests = guests.toJS();
 
               const missingPhotos = [];
@@ -104,14 +263,12 @@
                 const key = normalizeGuestKey(guest);
                 const photo = guestLookup[key];
                 if (photo) {
-                  // Strip leading '/' to match existing format (e.g., "Guests/Name.jpg")
                   guestImages.push(photo.replace(/^\//, ''));
                 } else {
                   missingPhotos.push(guest);
                 }
               }
 
-              // Warn about missing photos
               if (missingPhotos.length > 0) {
                 const proceed = window.confirm(
                   'No photo found for: ' + missingPhotos.join(', ') +
@@ -120,7 +277,6 @@
                 if (!proceed) return false;
               }
 
-              // Auto-populate guestImages (only entries with matches)
               if (guestImages.length > 0) {
                 setData('guestImages', guestImages);
               }
@@ -129,13 +285,11 @@
             return entry;
           } catch (err) {
             console.error('CMS preSave hook error:', err);
-            // Don't block save on hook errors
           }
         }
       });
     }
 
-    // Start polling for CMS availability
     registerHooks();
   </script>
   <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
