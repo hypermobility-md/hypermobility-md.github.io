@@ -20,7 +20,6 @@
       padding: 8px 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.4);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      transition: opacity 0.2s;
     }
     .hmd-toolbar-btn {
       display: inline-flex;
@@ -47,42 +46,50 @@
       align-self: center;
     }
 
-    /* Guest photo check popup */
+    /* Pre-save dialog */
     .hmd-overlay {
       position: fixed;
       inset: 0;
       background: rgba(0,0,0,0.5);
       z-index: 9999;
     }
-    .hmd-popup {
+    .hmd-dialog {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       background: #1e1e2e;
       color: #e0e0e0;
-      border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-      padding: 24px;
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      padding: 28px;
       z-index: 10000;
-      max-width: 440px;
-      width: 90%;
+      max-width: 500px;
+      width: 92%;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      max-height: 80vh;
+      overflow-y: auto;
     }
-    .hmd-popup h3 { margin: 0 0 16px; font-size: 15px; color: #fff; }
-    .hmd-popup-close {
-      position: absolute;
-      top: 10px;
-      right: 14px;
-      background: none;
-      border: none;
-      font-size: 22px;
-      cursor: pointer;
+    .hmd-dialog h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      color: #fff;
+    }
+    .hmd-dialog-subtitle {
+      font-size: 12px;
       color: #888;
-      line-height: 1;
+      margin-bottom: 20px;
     }
-    .hmd-popup-close:hover { color: #fff; }
-    .hmd-guest-row {
+    .hmd-section-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b5ce7;
+      margin: 18px 0 8px;
+    }
+    .hmd-section-label:first-of-type { margin-top: 0; }
+    .hmd-info-row {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -90,8 +97,10 @@
       margin: 4px 0;
       border-radius: 8px;
       font-size: 13px;
+      background: #ffffff08;
+      border: 1px solid #ffffff10;
     }
-    .hmd-guest-row img {
+    .hmd-info-row img {
       width: 40px;
       height: 40px;
       border-radius: 50%;
@@ -99,8 +108,11 @@
       border: 2px solid #6b5ce7;
       flex-shrink: 0;
     }
-    .hmd-guest-row.found { background: #1b5e2020; border: 1px solid #2e7d3240; }
-    .hmd-guest-row.missing { background: #b7131320; border: 1px solid #c6282840; }
+    .hmd-info-row.found { background: #1b5e2018; border-color: #2e7d3230; }
+    .hmd-info-row.missing { background: #b7131318; border-color: #c6282830; }
+    .hmd-info-row .status { font-size: 12px; color: #888; }
+    .hmd-info-row .status.ok { color: #81c784; }
+    .hmd-info-row .status.warn { color: #ef9a9a; }
     .hmd-no-photo {
       width: 40px;
       height: 40px;
@@ -113,18 +125,69 @@
       font-size: 18px;
       flex-shrink: 0;
     }
+    .hmd-path-item {
+      font-size: 12px;
+      color: #aaa;
+      padding: 4px 12px;
+      background: #ffffff06;
+      border-radius: 6px;
+      margin: 3px 0;
+      font-family: 'SF Mono', Monaco, monospace;
+      word-break: break-all;
+    }
+    .hmd-dialog-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+      justify-content: flex-end;
+    }
+    .hmd-btn {
+      padding: 8px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      transition: background 0.15s;
+    }
+    .hmd-btn-save {
+      background: #6b5ce7;
+      color: white;
+    }
+    .hmd-btn-save:hover { background: #7c6ef0; }
+    .hmd-btn-save.has-warnings {
+      background: #e65100;
+    }
+    .hmd-btn-save.has-warnings:hover { background: #f57c00; }
+    .hmd-btn-cancel {
+      background: #333;
+      color: #ccc;
+      border: 1px solid #555;
+    }
+    .hmd-btn-cancel:hover { background: #444; }
+    .hmd-warning {
+      background: #e6510018;
+      border: 1px solid #e6510040;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-top: 14px;
+      font-size: 12px;
+      color: #ffab91;
+    }
   </style>
 </head>
 <body>
   <script>
     // =========================================================
     //  Hypermobility MD — CMS Enhancements for Sveltia CMS
-    //  - Floating toolbar with "Next Ep #" and "Check Photos"
+    //  - Pre-save dialog with guest photo info & auto-fill
+    //  - Floating toolbar with "Next Ep #" for quick fill
     //  - preSave hook for auto-increment, validation, guestImages
     // =========================================================
 
     let guestLookup = {};
     let episodeNums = [];
+    let dataReady = false;
 
     Promise.all([
       fetch('/cms-data/guest-lookup.json').then(r => r.ok ? r.json() : {}).catch(() => ({})),
@@ -132,6 +195,7 @@
     ]).then(([guests, nums]) => {
       guestLookup = guests;
       episodeNums = nums.filter(n => n !== null);
+      dataReady = true;
     });
 
     function getNextEpisodeNum() {
@@ -154,105 +218,96 @@
       return n.toLowerCase().replace(/\s+/g, ' ');
     }
 
-    // ---- DOM helpers to find Sveltia CMS fields by label text ----
-    function findFieldByLabel(labelText) {
-      // Walk all elements looking for one whose text content matches the label
-      const walker = document.createTreeWalker(
-        document.body,
-        NodeFilter.SHOW_ELEMENT,
-        {
-          acceptNode(node) {
-            // Skip our own toolbar
-            if (node.closest('.hmd-toolbar, .hmd-popup, .hmd-overlay')) return NodeFilter.FILTER_REJECT;
-            // Check direct text (not nested) for the label
-            const directText = Array.from(node.childNodes)
-              .filter(n => n.nodeType === Node.TEXT_NODE)
-              .map(n => n.textContent.trim())
-              .join('');
-            if (directText === labelText || directText === labelText + ' *') return NodeFilter.FILTER_ACCEPT;
-            return NodeFilter.FILTER_SKIP;
+    // ---- Pre-save dialog ----
+    // Shows detailed info about what will be saved, with guest photo status
+    function showPreSaveDialog(info) {
+      return new Promise((resolve) => {
+        const overlay = document.createElement('div');
+        overlay.className = 'hmd-overlay';
+        const dialog = document.createElement('div');
+        dialog.className = 'hmd-dialog';
+
+        let html = '<h3>Episode Pre-Save Review</h3>';
+        html += '<div class="hmd-dialog-subtitle">Review the information below before saving.</div>';
+
+        // Episode number
+        html += '<div class="hmd-section-label">Episode Number</div>';
+        html += '<div class="hmd-info-row"><span>';
+        if (info.numAutoFilled) {
+          html += '<strong>#' + info.num + '</strong> <span class="status ok">(auto-assigned)</span>';
+        } else {
+          html += '<strong>#' + info.num + '</strong>';
+        }
+        html += '</span></div>';
+
+        // Guest photos
+        if (info.guests && info.guests.length > 0) {
+          html += '<div class="hmd-section-label">Guest Photos</div>';
+          for (const g of info.guestResults) {
+            if (g.photo) {
+              html += '<div class="hmd-info-row found">';
+              html += '<img src="' + g.photo + '" alt="">';
+              html += '<span><strong>' + g.name + '</strong><br><span class="status ok">Photo found</span></span>';
+              html += '</div>';
+            } else {
+              html += '<div class="hmd-info-row missing">';
+              html += '<span class="hmd-no-photo">✕</span>';
+              html += '<span><strong>' + g.name + '</strong><br><span class="status warn">No photo on file</span></span>';
+              html += '</div>';
+            }
+          }
+
+          // Guest image paths that will be auto-filled
+          if (info.guestImagePaths.length > 0) {
+            html += '<div class="hmd-section-label">Guest Photo Paths (auto-filled)</div>';
+            for (const p of info.guestImagePaths) {
+              html += '<div class="hmd-path-item">' + p + '</div>';
+            }
           }
         }
-      );
-      return walker.nextNode();
-    }
 
-    function findInputNear(labelEl, inputType) {
-      // Walk up to find the field container, then look for an input
-      let container = labelEl;
-      for (let i = 0; i < 5; i++) {
-        container = container.parentElement;
-        if (!container) break;
-        const input = container.querySelector(inputType || 'input');
-        if (input) return input;
-      }
-      return null;
-    }
-
-    function findAllInputsNear(labelEl) {
-      let container = labelEl;
-      for (let i = 0; i < 5; i++) {
-        container = container.parentElement;
-        if (!container) break;
-        const inputs = container.querySelectorAll('input');
-        if (inputs.length > 0) return inputs;
-      }
-      return [];
-    }
-
-    // ---- Find guest names from the CMS form ----
-    function getGuestNamesFromForm() {
-      const guests = [];
-
-      // Strategy 1: Find "Guests" label element and get inputs near it
-      const labelEl = findFieldByLabel('Guests');
-      if (labelEl) {
-        const inputs = findAllInputsNear(labelEl);
-        inputs.forEach(inp => {
-          const val = inp.value.trim();
-          if (val && val.length > 2) guests.push(val);
-        });
-        // If we found the label's section, only return those inputs
-        // Filter out values that are clearly not names
-        const filtered = guests.filter(v =>
-          !v.match(/^\d{4}/) &&          // not a date
-          !v.match(/^\d+$/) &&           // not a number
-          !v.match(/^https?:\/\//) &&    // not a URL
-          !v.match(/^\d+h\s*\d+m$/) &&  // not a duration
-          !v.includes('/')               // not a path
-        );
-        if (filtered.length > 0) return filtered;
-      }
-
-      // Strategy 2: Scan all text inputs, filter to likely names
-      // Guest names: contain a space, no numbers at start, no URL patterns
-      document.querySelectorAll('input').forEach(inp => {
-        const val = inp.value.trim();
-        if (!val || val.length < 4) return;
-        // Skip number inputs, date inputs, URL-like inputs
-        if (inp.type === 'number' || inp.type === 'date') return;
-        if (val.match(/^\d{4}/)) return;         // date-like
-        if (val.match(/^\d+$/)) return;           // pure number
-        if (val.match(/^https?:\/\//)) return;    // URL
-        if (val.match(/^\d+h\s*\d*m?$/)) return;  // duration
-        if (val.includes('/')) return;             // path
-        // Likely a name if it has a space and looks like text
-        if (val.includes(' ') && val.match(/^[A-Za-z]/)) {
-          guests.push(val);
+        // Warning about missing photos
+        if (info.missingPhotos.length > 0) {
+          html += '<div class="hmd-warning">⚠ No photo found for: <strong>' +
+            info.missingPhotos.join(', ') + '</strong>. The episode will save without images for these guests.</div>';
         }
-      });
 
-      return guests;
+        // Action buttons
+        const hasWarnings = info.missingPhotos.length > 0;
+        html += '<div class="hmd-dialog-actions">';
+        html += '<button class="hmd-btn hmd-btn-cancel" id="hmdCancel">Cancel</button>';
+        html += '<button class="hmd-btn hmd-btn-save' + (hasWarnings ? ' has-warnings' : '') +
+          '" id="hmdSave">' + (hasWarnings ? 'Save Anyway' : 'Save') + '</button>';
+        html += '</div>';
+
+        dialog.innerHTML = html;
+
+        function close(result) {
+          overlay.remove();
+          dialog.remove();
+          document.removeEventListener('keydown', escHandler);
+          resolve(result);
+        }
+
+        function escHandler(e) {
+          if (e.key === 'Escape') close(false);
+        }
+
+        document.body.appendChild(overlay);
+        document.body.appendChild(dialog);
+        document.addEventListener('keydown', escHandler);
+
+        dialog.querySelector('#hmdCancel').onclick = () => close(false);
+        dialog.querySelector('#hmdSave').onclick = () => close(true);
+        overlay.onclick = () => close(false);
+      });
     }
 
-    // ---- Floating Toolbar ----
+    // ---- Floating Toolbar (episode number only) ----
     let toolbar = null;
     let lastUrl = '';
 
     function isOnEpisodeEditor() {
-      // Detect if we're on an episode editing page
-      // Sveltia CMS uses hash routing: #/collections/episodes/entries/...
-      // or #/collections/episodes/new
       const hash = window.location.hash;
       return hash.includes('collections/episodes/entries') ||
              hash.includes('collections/episodes/new');
@@ -265,7 +320,7 @@
 
       const label = document.createElement('span');
       label.className = 'hmd-toolbar-label';
-      label.textContent = 'Episode Tools:';
+      label.textContent = 'Episode:';
       toolbar.appendChild(label);
 
       // Next Episode # button
@@ -275,24 +330,7 @@
       epBtn.title = 'Set episode number to the next available number';
       epBtn.onclick = function() {
         const nextNum = getNextEpisodeNum();
-        const labelEl = findFieldByLabel('Episode Number');
-        if (labelEl) {
-          const input = findInputNear(labelEl);
-          if (input) {
-            const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
-            setter.call(input, nextNum);
-            input.dispatchEvent(new Event('input', { bubbles: true }));
-            input.dispatchEvent(new Event('change', { bubbles: true }));
-            epBtn.textContent = '# Set to ' + nextNum + ' ✓';
-            epBtn.classList.add('success');
-            setTimeout(() => {
-              epBtn.textContent = '# Next: ' + getNextEpisodeNum();
-              epBtn.classList.remove('success');
-            }, 2000);
-            return;
-          }
-        }
-        // Fallback: try any number input on the page
+        // Find the number input (Episode Number is the only number widget)
         const numInput = document.querySelector('input[type="number"]');
         if (numInput) {
           const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
@@ -305,119 +343,41 @@
             epBtn.textContent = '# Next: ' + getNextEpisodeNum();
             epBtn.classList.remove('success');
           }, 2000);
-        } else {
-          epBtn.textContent = 'Field not found';
-          setTimeout(() => { epBtn.textContent = '# Next: ' + getNextEpisodeNum(); }, 2000);
         }
       };
       toolbar.appendChild(epBtn);
-
-      // Check Guest Photos button
-      const photoBtn = document.createElement('button');
-      photoBtn.className = 'hmd-toolbar-btn';
-      photoBtn.textContent = 'Check Guest Photos';
-      photoBtn.title = 'Check if all listed guests have photos';
-      photoBtn.onclick = function() {
-        const guests = getGuestNamesFromForm();
-        if (guests.length === 0) {
-          alert('No guest names found. Enter guest names in the Guests field first.');
-          return;
-        }
-        showPhotoCheckPopup(guests);
-      };
-      toolbar.appendChild(photoBtn);
-
-      // Fill Guest Paths button
-      const fillBtn = document.createElement('button');
-      fillBtn.className = 'hmd-toolbar-btn';
-      fillBtn.textContent = 'Fill Guest Paths';
-      fillBtn.title = 'Auto-fill Guest Photo Paths from guest names';
-      fillBtn.onclick = function() {
-        const guests = getGuestNamesFromForm();
-        if (guests.length === 0) {
-          alert('No guest names found. Enter guest names in the Guests field first.');
-          return;
-        }
-        const paths = [];
-        for (const guest of guests) {
-          const key = normalizeGuestKey(guest);
-          const photo = guestLookup[key];
-          if (photo) paths.push(photo.replace(/^\//, ''));
-        }
-        if (paths.length === 0) {
-          alert('No matching photos found for any guest.');
-          return;
-        }
-        // Find Guest Photo Paths list inputs and fill them
-        const pathLabel = findFieldByLabel('Guest Photo Paths');
-        if (pathLabel) {
-          const pathInputs = findAllInputsNear(pathLabel);
-          for (let i = 0; i < Math.min(paths.length, pathInputs.length); i++) {
-            const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
-            setter.call(pathInputs[i], paths[i]);
-            pathInputs[i].dispatchEvent(new Event('input', { bubbles: true }));
-            pathInputs[i].dispatchEvent(new Event('change', { bubbles: true }));
-          }
-        }
-        fillBtn.textContent = paths.length + ' path(s) ready ✓';
-        fillBtn.classList.add('success');
-        setTimeout(() => {
-          fillBtn.textContent = 'Fill Guest Paths';
-          fillBtn.classList.remove('success');
-        }, 2000);
-      };
-      toolbar.appendChild(fillBtn);
 
       document.body.appendChild(toolbar);
     }
 
     function removeToolbar() {
-      if (toolbar) {
-        toolbar.remove();
-        toolbar = null;
+      if (toolbar) { toolbar.remove(); toolbar = null; }
+    }
+
+    // Auto-fill episode number when creating a new episode
+    function autoFillNewEpisodeNum() {
+      if (!dataReady) return;
+      const hash = window.location.hash;
+      if (!hash.includes('collections/episodes/new')) return;
+      const numInput = document.querySelector('input[type="number"]');
+      if (numInput && (!numInput.value || numInput.value === '0')) {
+        const nextNum = getNextEpisodeNum();
+        const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+        setter.call(numInput, nextNum);
+        numInput.dispatchEvent(new Event('input', { bubbles: true }));
+        numInput.dispatchEvent(new Event('change', { bubbles: true }));
       }
     }
 
-    function showPhotoCheckPopup(guests) {
-      const overlay = document.createElement('div');
-      overlay.className = 'hmd-overlay';
-      const popup = document.createElement('div');
-      popup.className = 'hmd-popup';
-      popup.innerHTML = '<button class="hmd-popup-close">&times;</button><h3>Guest Photo Check</h3>';
-
-      for (const guest of guests) {
-        const key = normalizeGuestKey(guest);
-        const photo = guestLookup[key];
-        const row = document.createElement('div');
-        row.className = 'hmd-guest-row ' + (photo ? 'found' : 'missing');
-        if (photo) {
-          row.innerHTML = '<img src="' + photo + '" alt=""> <span><strong>' +
-            guest + '</strong> — Photo found</span>';
-        } else {
-          row.innerHTML = '<span class="hmd-no-photo">✕</span> <span><strong>' +
-            guest + '</strong> — No photo on file</span>';
-        }
-        popup.appendChild(row);
-      }
-
-      function close() { overlay.remove(); popup.remove(); }
-      overlay.onclick = close;
-      popup.querySelector('.hmd-popup-close').onclick = close;
-      document.addEventListener('keydown', function esc(e) {
-        if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
-      });
-      document.body.appendChild(overlay);
-      document.body.appendChild(popup);
-    }
-
-    // Poll for route changes to show/hide toolbar
+    // Poll for route changes
     setInterval(() => {
       const url = window.location.hash;
       if (url !== lastUrl) {
         lastUrl = url;
         if (isOnEpisodeEditor()) {
-          // Small delay to let the form render
           setTimeout(createToolbar, 500);
+          // Auto-fill episode number for new episodes
+          setTimeout(autoFillNewEpisodeNum, 1000);
         } else {
           removeToolbar();
         }
@@ -433,64 +393,70 @@
 
       CMS.registerEventListener({
         name: 'preSave',
-        handler: ({ entry }) => {
+        handler: async ({ entry }) => {
           try {
             const collection = entry.get ? entry.get('collection') : entry.collection;
             if (collection !== 'episodes') return;
 
-            let data, setData;
+            // Read entry data (handle both Immutable.js and plain object)
+            let getData, setData;
             if (entry.get && entry.getIn) {
-              data = {
-                num: entry.getIn(['data', 'num']),
-                guests: entry.getIn(['data', 'guests']),
+              getData = (field) => {
+                const val = entry.getIn(['data', field]);
+                return val && val.toJS ? val.toJS() : val;
               };
               setData = (field, value) => {
                 entry = entry.setIn(['data', field], value);
               };
             } else {
-              data = {
-                num: entry.data?.num,
-                guests: entry.data?.guests,
-              };
-              setData = (field, value) => {
-                entry.data[field] = value;
-              };
+              getData = (field) => entry.data?.[field];
+              setData = (field, value) => { entry.data[field] = value; };
             }
 
-            const num = data.num;
+            // Prepare info for the pre-save dialog
+            let num = getData('num');
+            let numAutoFilled = false;
             if (!num || num === 0) {
-              const nextNum = getNextEpisodeNum();
-              setData('num', nextNum);
-              episodeNums.push(nextNum);
+              num = getNextEpisodeNum();
+              numAutoFilled = true;
             }
 
-            let guests = data.guests;
-            if (guests) {
-              if (guests.toJS) guests = guests.toJS();
-              const missingPhotos = [];
-              const guestImages = [];
+            const guests = getData('guests') || [];
+            const guestResults = [];
+            const guestImagePaths = [];
+            const missingPhotos = [];
 
-              for (const guest of guests) {
-                const key = normalizeGuestKey(guest);
-                const photo = guestLookup[key];
-                if (photo) {
-                  guestImages.push(photo.replace(/^\//, ''));
-                } else {
-                  missingPhotos.push(guest);
-                }
+            for (const guest of guests) {
+              const key = normalizeGuestKey(guest);
+              const photo = guestLookup[key];
+              guestResults.push({ name: guest, photo: photo || null });
+              if (photo) {
+                guestImagePaths.push(photo.replace(/^\//, ''));
+              } else {
+                missingPhotos.push(guest);
               }
+            }
 
-              if (missingPhotos.length > 0) {
-                const proceed = window.confirm(
-                  'No photo found for: ' + missingPhotos.join(', ') +
-                  '\n\nSave anyway?'
-                );
-                if (!proceed) return false;
-              }
+            // Show the pre-save dialog
+            const proceed = await showPreSaveDialog({
+              num,
+              numAutoFilled,
+              guests,
+              guestResults,
+              guestImagePaths,
+              missingPhotos
+            });
 
-              if (guestImages.length > 0) {
-                setData('guestImages', guestImages);
-              }
+            if (!proceed) return false;
+
+            // Apply changes
+            if (numAutoFilled) {
+              setData('num', num);
+              episodeNums.push(num);
+            }
+
+            if (guestImagePaths.length > 0) {
+              setData('guestImages', guestImagePaths);
             }
 
             return entry;
