@@ -488,6 +488,21 @@ a:hover { color: var(--accent); }
 }
 .footer-social a:hover { opacity: 1; }
 .footer-social svg { width: 24px; height: 24px; }
+.footer-policies {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 0.85rem;
+}
+.footer-policies a {
+  color: var(--footer-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.footer-policies a:hover { opacity: 0.8; }
+.footer-divider {
+  margin: 0 12px;
+  opacity: 0.4;
+}
 .footer-bottom {
   margin-top: 36px;
   padding-top: 20px;
