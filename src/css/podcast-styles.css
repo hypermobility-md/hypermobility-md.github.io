@@ -412,6 +412,8 @@
 .modal-close:hover { background: rgba(255,255,255,0.35); }
 .modal-ep-num { font-size: 0.82rem; font-family: var(--body-font); color: rgba(255,255,255,0.6); font-weight: 700; margin-bottom: 8px; }
 .modal-title { color: white; font-size: 1.5rem; margin-bottom: 8px; font-family: var(--heading-font); }
+.modal-title-link { color: white; text-decoration: none; }
+.modal-title-link:hover { text-decoration: underline; color: white; }
 .modal-guest { color: var(--teal-light); font-size: 0.95rem; font-family: var(--body-font); font-weight: 600; }
 .modal-guest-link { color: var(--teal-light); text-decoration: none; }
 .modal-guest-link:hover { text-decoration: underline; }

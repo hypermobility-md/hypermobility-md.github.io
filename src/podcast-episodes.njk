@@ -226,6 +226,18 @@ function normalizeGuestKey(name) {
   return n.replace(/[,.\s]+$/, '').trim().toLowerCase().replace(/\s+/g, ' ');
 }
 
+function guestSlug(name) {
+  return normalizeGuestKey(name).replace(/\s+/g, '-');
+}
+
+function hasGuestPage(name) {
+  return typeof GUEST_PROFILES !== 'undefined' && !!GUEST_PROFILES[normalizeGuestKey(name)];
+}
+
+function guestLink(name) {
+  return hasGuestPage(name) ? `/guests/${guestSlug(name)}/` : `/podcast-guests/#guest-${getGuestLastName(name)}`;
+}
+
 function getGuestProfile(name) {
   if (typeof GUEST_PROFILES === 'undefined') return null;
   return GUEST_PROFILES[normalizeGuestKey(name)] || null;
@@ -241,12 +253,12 @@ function buildModalGuestCard(name) {
     ? `<div class="guest-card-bio">${profile.bio}</div>` : '';
   const websiteHtml = profile && profile.website
     ? `<a href="${profile.website}" target="_blank" rel="noopener" class="guest-card-website" title="Visit website">${getSocialIcon(profile.website)}</a>` : '';
-  const lastName = getGuestLastName(name);
+  const href = guestLink(name);
   return `
   <div class="guest-card">
     <div class="guest-card-header">
       ${imgHtml}
-      <h3><a href="/podcast-guests/#guest-${lastName}" style="color:inherit;text-decoration:none;">${name}</a> ${websiteHtml}</h3>
+      <h3><a href="${href}" style="color:inherit;text-decoration:none;">${name}</a> ${websiteHtml}</h3>
     </div>
     ${affiliationHtml}
     ${bioHtml}
@@ -262,8 +274,7 @@ function buildAvatarHtml(ep, linkable, showAll) {
   let html = guestsWithImages.slice(0, MAX_SHOW).map((g) => {
     const img = `<img class="guest-avatar-img" src="${g.src}" alt="">`;
     if (linkable) {
-      const lastName = getGuestLastName(g.name);
-      return `<a href="/podcast-guests/#guest-${lastName}" title="${g.name}" onclick="event.stopPropagation();">${img}</a>`;
+      return `<a href="${guestLink(g.name)}" title="${g.name}" onclick="event.stopPropagation();">${img}</a>`;
     }
     return img;
   }).join('');
@@ -406,12 +417,16 @@ function openEpisode(idx) {
   if (!ep) return;
 
   document.getElementById('modalEpNum').textContent = ep.num ? `Episode ${ep.num}` : '';
-  document.getElementById('modalTitle').textContent = cleanTitle(ep.title);
+  const titleEl = document.getElementById('modalTitle');
+  if (ep.num !== null && ep.num !== undefined) {
+    titleEl.innerHTML = `<a href="/episodes/${ep.num}/" class="modal-title-link">${cleanTitle(ep.title)}</a>`;
+  } else {
+    titleEl.textContent = cleanTitle(ep.title);
+  }
   const modalGuestEl = document.getElementById('modalGuest');
   if (ep.guests && ep.guests.length) {
     const guestLinks = ep.guests.map(g => {
-      const lastName = getGuestLastName(g);
-      return `<a href="/podcast-guests/#guest-${lastName}" class="modal-guest-link">${g}</a>`;
+      return `<a href="${guestLink(g)}" class="modal-guest-link">${g}</a>`;
     });
     modalGuestEl.innerHTML = `with ${guestLinks.join(', ')}`;
   } else {
