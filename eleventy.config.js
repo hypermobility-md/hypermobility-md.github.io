@@ -94,11 +94,12 @@ module.exports = function(eleventyConfig) {
     );
   });
 
-  // Get prev/next episodes relative to a given episode number
-  eleventyConfig.addFilter("adjacentEpisodes", (episodes, num) => {
+  // Get prev/next episodes relative to a given episode
+  // Uses inputPath for unique matching (handles bonus episodes with null num)
+  eleventyConfig.addFilter("adjacentEpisodes", (episodes, inputPath) => {
     let prev = null, next = null;
     for (let i = 0; i < episodes.length; i++) {
-      if (episodes[i].data.num === num) {
+      if (episodes[i].inputPath === inputPath) {
         if (i > 0) next = episodes[i - 1];           // higher num (collection sorted desc)
         if (i < episodes.length - 1) prev = episodes[i + 1]; // lower num
         break;

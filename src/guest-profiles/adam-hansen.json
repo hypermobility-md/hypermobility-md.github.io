@@ -1,0 +1,12 @@
+{
+  "key": "adam hansen",
+  "bio": "Dr. Adam Hansen is a thoracic surgeon at WVU Medicine known for developing the Hansen repair technique for slipping rib syndrome. He has treated close to 1,000 slipping rib syndrome patients, many of whom have Ehlers-Danlos Syndrome.",
+  "credentials": "MD",
+  "affiliation": "WVU Medicine United Hospital Center",
+  "links": [
+    {
+      "url": "https://www.slippingribsyndrome.org/",
+      "label": "Website"
+    }
+  ]
+}

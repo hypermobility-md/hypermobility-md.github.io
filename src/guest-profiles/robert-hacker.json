@@ -1,0 +1,12 @@
+{
+  "key": "robert hacker",
+  "bio": "Dr. Robert Hacker is a double board-certified vascular surgeon specializing in MALS, Nutcracker Syndrome, May-Thurner Syndrome, and pelvic venous congestion syndrome affecting EDS patients.",
+  "credentials": "MD",
+  "affiliation": "St. Louis Vascular Surgical Specialists",
+  "links": [
+    {
+      "url": "https://stlvascular.com/about/dr-robert-hacker/",
+      "label": "Website"
+    }
+  ]
+}

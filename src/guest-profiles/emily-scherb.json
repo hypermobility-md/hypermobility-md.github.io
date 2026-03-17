@@ -1,0 +1,12 @@
+{
+  "key": "emily scherb",
+  "bio": "Dr. Emily Scherb is a physical therapist and circus arts specialist known as 'The Circus Doc.' She wrote the bestselling Applied Anatomy of Aerial Arts, the first book on biomechanics of circus training.",
+  "credentials": "PT, DPT",
+  "affiliation": "Pure Motion Physical Therapy",
+  "links": [
+    {
+      "url": "https://www.thecircusdoc.com/",
+      "label": "Website"
+    }
+  ]
+}

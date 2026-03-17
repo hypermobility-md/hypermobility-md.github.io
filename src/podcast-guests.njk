@@ -184,8 +184,9 @@ function buildGuestCard(name) {
     ? `<div class="guest-card-affiliation">${profile.affiliation}</div>` : '';
   const bioHtml = profile && profile.bio
     ? `<div class="guest-card-bio">${profile.bio}</div>` : '';
-  const websiteHtml = profile && profile.website
-    ? `<a href="${profile.website}" target="_blank" rel="noopener" class="guest-card-website" title="Visit website">${getSocialIcon(profile.website)}</a>` : '';
+  const linksHtml = profile && profile.links && profile.links.length
+    ? profile.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener" class="guest-card-website" title="${l.label || 'Website'}">${getSocialIcon(l.url)}</a>`).join(' ')
+    : '';
   const epList = episodes.map(ep => {
     const epNum = ep.num ? `<span class="guest-ep-num">Ep ${ep.num}</span> · ` : '';
     const cleanTitle = ep.title.replace(/\s*\((?:Ep|EP|BEN)\s*\d+\)\s*$/, '').replace(/^\d+\.\s+/, '').trim();
@@ -200,7 +201,7 @@ function buildGuestCard(name) {
   <div class="guest-card" id="guest-${lastName}">
     <div class="guest-card-header">
       ${imgHtml}
-      <h3>${nameHtml} ${websiteHtml}</h3>
+      <h3>${nameHtml} ${linksHtml}</h3>
     </div>
     ${affiliationHtml}
     ${bioHtml}

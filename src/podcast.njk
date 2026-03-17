@@ -247,6 +247,7 @@ function buildLatest(ep) {
   const guestLabel = guestStr ? `<span class="featured-guest-inline">${guestStr}</span>` : '';
   const separator = (epLabel && guestLabel) ? '<span class="featured-top-sep">&middot;</span>' : '';
 
+  const epUrl = ep.num !== null && ep.num !== undefined ? `/episodes/${ep.num}/` : '#';
   return `
   <div class="featured-top-bar">
     ${epLabel}${separator}
@@ -254,11 +255,11 @@ function buildLatest(ep) {
     ${guestLabel}
   </div>
   <div class="featured-bottom">
-    <h2>${cleanTitle(ep.title)}</h2>
+    <h2><a href="${epUrl}" style="color:inherit;text-decoration:none;">${cleanTitle(ep.title)}</a></h2>
     <p class="featured-description">${truncateAtSentence(ep.description, 350)}</p>
     ${ep.audioUrl ? `<div style="margin-bottom: 20px;"><audio controls preload="none" style="width:100%; border-radius:28px;"><source src="${ep.audioUrl}" type="audio/mpeg">Your browser does not support audio.</audio></div>` : ''}
     <div class="featured-actions">
-      <a href="/podcast-episodes/?ep=${ep.num}" class="btn btn-primary">Full Episode Details</a>
+      <a href="${epUrl}" class="btn btn-primary">Full Episode Details</a>
       <a href="/podcast-episodes/" class="btn btn-secondary">Browse All Episodes</a>
     </div>
   </div>`;

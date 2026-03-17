@@ -149,15 +149,15 @@ layout: base.njk
     {% endif %}
 
     <!-- Navigation -->
-    {% set adj = collections.episodes | adjacentEpisodes(num) %}
+    {% set adj = collections.episodes | adjacentEpisodes(page.inputPath) %}
     <nav class="episode-nav">
       <a href="/podcast-episodes/" class="episode-nav-back">&larr; Back to All Episodes</a>
       <div class="episode-nav-prevnext">
-        {% if adj.prev %}
-        <a href="/episodes/{{ adj.prev.data.num }}/" class="episode-nav-link">&larr; Ep {{ adj.prev.data.num }}</a>
+        {% if adj.prev and adj.prev.url %}
+        <a href="{{ adj.prev.url }}" class="episode-nav-link">&larr; {% if adj.prev.data.num %}Ep {{ adj.prev.data.num }}{% else %}{{ adj.prev.data.title | cleanTitle | truncate(30, true, "...") }}{% endif %}</a>
         {% endif %}
-        {% if adj.next %}
-        <a href="/episodes/{{ adj.next.data.num }}/" class="episode-nav-link">Ep {{ adj.next.data.num }} &rarr;</a>
+        {% if adj.next and adj.next.url %}
+        <a href="{{ adj.next.url }}" class="episode-nav-link">{% if adj.next.data.num %}Ep {{ adj.next.data.num }}{% else %}{{ adj.next.data.title | cleanTitle | truncate(30, true, "...") }}{% endif %} &rarr;</a>
         {% endif %}
       </div>
     </nav>

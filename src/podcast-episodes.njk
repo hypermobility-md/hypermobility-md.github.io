@@ -251,14 +251,15 @@ function buildModalGuestCard(name) {
     ? `<div class="guest-card-affiliation">${profile.affiliation}</div>` : '';
   const bioHtml = profile && profile.bio
     ? `<div class="guest-card-bio">${profile.bio}</div>` : '';
-  const websiteHtml = profile && profile.website
-    ? `<a href="${profile.website}" target="_blank" rel="noopener" class="guest-card-website" title="Visit website">${getSocialIcon(profile.website)}</a>` : '';
+  const linksHtml = profile && profile.links && profile.links.length
+    ? profile.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener" class="guest-card-website" title="${l.label || 'Website'}">${getSocialIcon(l.url)}</a>`).join(' ')
+    : '';
   const href = guestLink(name);
   return `
   <div class="guest-card">
     <div class="guest-card-header">
       ${imgHtml}
-      <h3><a href="${href}" style="color:inherit;text-decoration:none;">${name}</a> ${websiteHtml}</h3>
+      <h3><a href="${href}" style="color:inherit;text-decoration:none;">${name}</a> ${linksHtml}</h3>
     </div>
     ${affiliationHtml}
     ${bioHtml}

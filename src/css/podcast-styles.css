@@ -827,14 +827,23 @@
   font-weight: 600;
   margin-bottom: 8px;
 }
-.guest-detail-website {
-  color: rgba(255,255,255,0.8);
-  font-size: 0.85rem;
-  font-family: var(--body-font);
-  font-weight: 600;
-  text-decoration: none;
+.guest-detail-links {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
 }
-.guest-detail-website:hover { color: #fff; text-decoration: underline; }
+.guest-detail-link-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.85);
+  transition: all 0.2s;
+}
+.guest-detail-link-icon:hover { background: rgba(255,255,255,0.3); color: #fff; }
 
 .guest-detail-body {
   max-width: 900px;

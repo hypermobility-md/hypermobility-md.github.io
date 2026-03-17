@@ -66,3 +66,27 @@ collections:
         required: false
         hint: "Auto-filled paths (e.g. Guests/Name.jpg)"
       - { label: "Transcript", name: "body", widget: "markdown", required: false, hint: "Full episode transcript — paste the text here" }
+
+  - name: "guest-profiles"
+    label: "Guest Profiles"
+    folder: "src/guest-profiles"
+    create: true
+    extension: "json"
+    format: "json"
+    slug: "{{fields.key}}"
+    identifier_field: "key"
+    summary: "{{fields.key}}"
+    sortable_fields: ["key", "affiliation"]
+    fields:
+      - { label: "Guest Key", name: "key", widget: "string", hint: "Lowercase name without titles/credentials, e.g. 'dacre knight'" }
+      - { label: "Bio", name: "bio", widget: "text", required: false }
+      - { label: "Credentials", name: "credentials", widget: "string", required: false, hint: "e.g. MD, PhD, DPT" }
+      - { label: "Affiliation", name: "affiliation", widget: "string", required: false }
+      - label: "Links"
+        name: "links"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "URL", name: "url", widget: "string" }
+          - { label: "Label", name: "label", widget: "string", required: false, hint: "e.g. Website, LinkedIn, Instagram" }
+      - { label: "Photo", name: "image", widget: "image", required: false, hint: "Upload or select a guest photo" }
