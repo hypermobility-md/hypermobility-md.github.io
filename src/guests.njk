@@ -1,0 +1,77 @@
+---
+layout: base.njk
+activePage: "podcast"
+extraCss: "podcast-styles.css"
+bodyClass: "podcast-page"
+podcastSubpage: "guests"
+pagination:
+  data: guestData.profiles
+  size: 1
+  alias: guestName
+  addAllPagesToCollections: true
+permalink: /guests/{{ guestName | slug }}/
+eleventyComputed:
+  title: "{% set dn = collections.guestDisplayNames[guestName] %}{{ dn if dn else guestName }}"
+  description: "{% set dn = collections.guestDisplayNames[guestName] %}{{ dn if dn else guestName }} — Guest on the Bendy Bodies Podcast with Dr. Linda Bluestein"
+---
+
+{% include "podcast-subnav.njk" %}
+
+{% set profile = guestData.profiles[guestName] %}
+{% set img = guestData.images[guestName] %}
+{% set displayName = collections.guestDisplayNames[guestName] or guestName %}
+{% set guestEpisodes = collections.episodes | episodesForGuest(guestName) %}
+
+<div class="guest-detail">
+  <div class="guest-detail-header">
+    <div class="container">
+      <div class="guest-detail-header-inner">
+        {% if img %}
+        <img class="guest-detail-photo" src="{{ img }}" alt="{{ displayName }}">
+        {% endif %}
+        <div>
+          <h1>{{ displayName }}</h1>
+          {% if profile.credentials %}
+          <div class="guest-detail-credentials">{{ profile.credentials }}</div>
+          {% endif %}
+          {% if profile.affiliation %}
+          <div class="guest-detail-affiliation">{{ profile.affiliation }}</div>
+          {% endif %}
+          {% if profile.website %}
+          <a href="{{ profile.website }}" target="_blank" rel="noopener" class="guest-detail-website">Visit Website &rarr;</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container guest-detail-body">
+
+    {% if profile.bio %}
+    <section class="guest-section">
+      <h2>About</h2>
+      <p class="guest-detail-bio">{{ profile.bio }}</p>
+    </section>
+    {% endif %}
+
+    {% if guestEpisodes.length %}
+    <section class="guest-section">
+      <h2>Episodes ({{ guestEpisodes.length }})</h2>
+      <div class="guest-episode-list">
+        {% for ep in guestEpisodes %}
+        <a href="/episodes/{{ ep.data.num }}/" class="guest-episode-item">
+          {% if ep.data.num %}<span class="guest-ep-num">Ep {{ ep.data.num }}</span>{% endif %}
+          <span class="guest-ep-title">{{ ep.data.title | cleanTitle }}</span>
+          {% if ep.data.date %}<span class="guest-ep-date">{{ ep.data.date | formatDate }}</span>{% endif %}
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <nav class="guest-nav">
+      <a href="/podcast-guests/" class="episode-nav-back">&larr; Back to All Guests</a>
+    </nav>
+
+  </div>
+</div>

@@ -1,4 +1,7 @@
 {
-  "layout": false,
-  "permalink": false
+  "layout": "episode.njk",
+  "activePage": "podcast",
+  "extraCss": "podcast-styles.css",
+  "bodyClass": "podcast-page",
+  "podcastSubpage": "episodes"
 }
