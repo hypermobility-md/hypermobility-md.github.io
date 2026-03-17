@@ -1,14 +1,16 @@
 ---
-num: null
-title: a
-date: ''
+num: 185
+title: Example Episode
+date: 2026-03-17
 duration: ''
 description: ''
 tags: []
 audioUrl: ''
 videoUrl: ''
 snippets: []
-guests: []
+guests:
+  - Linda Bluestein
 guestImage: ''
-guestImages: []
+guestImages:
+  - Guests/Linda_Bluestein.png
 ---
