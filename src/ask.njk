@@ -1,0 +1,348 @@
+---
+layout: base.njk
+title: "Ask the Podcast a Question"
+activePage: "ask"
+permalink: /ask/
+---
+
+<div class="page-header">
+  <div class="container">
+    <h1>Ask the Podcast</h1>
+    <p>Submit a question for a future episode of the Bendy Bodies Podcast. Selected questions will be answered on-air.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="form-card" id="askFormCard">
+
+      <!-- Step indicator -->
+      <div class="form-steps" id="stepIndicator">
+        <div class="form-step">
+          <div class="form-step-row">
+            <div class="form-step-circle active" id="stepCircle0">1</div>
+            <div class="form-step-line" id="stepLine0"></div>
+          </div>
+          <span class="form-step-label active" id="stepLabel0">Your Question</span>
+        </div>
+        <div class="form-step">
+          <div class="form-step-row">
+            <div class="form-step-line" id="stepLine1"></div>
+            <div class="form-step-circle" id="stepCircle1">2</div>
+            <div class="form-step-line" id="stepLine2"></div>
+          </div>
+          <span class="form-step-label" id="stepLabel1">Attribution</span>
+        </div>
+        <div class="form-step">
+          <div class="form-step-row">
+            <div class="form-step-line" id="stepLine3"></div>
+            <div class="form-step-circle" id="stepCircle2">3</div>
+          </div>
+          <span class="form-step-label" id="stepLabel2">Review &amp; Submit</span>
+        </div>
+      </div>
+
+      <form id="askForm" action="#" method="POST">
+
+        <!-- STEP 0: Question -->
+        <div id="askStep0">
+          <div class="form-alert form-alert-warning">
+            <svg class="form-alert-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4862B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <div>
+              <strong>Please keep your question general.</strong><br>
+              Don't include your full name, diagnosis details, medical history, or other personal health information. Frame your question as a general topic &mdash; e.g. <em>"What should EDS patients know about anesthesia?"</em> rather than <em>"I have vEDS and I'm having surgery next month&hellip;"</em>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Topic area</label>
+            <div class="form-chips" id="topicChips">
+              <button type="button" class="form-chip" data-value="Daily living & management">Daily living &amp; management</button>
+              <button type="button" class="form-chip" data-value="Diagnosis & testing">Diagnosis &amp; testing</button>
+              <button type="button" class="form-chip" data-value="Treatment options">Treatment options</button>
+              <button type="button" class="form-chip" data-value="Exercise & physical therapy">Exercise &amp; physical therapy</button>
+              <button type="button" class="form-chip" data-value="Mental health & coping">Mental health &amp; coping</button>
+              <button type="button" class="form-chip" data-value="Cosmetic & elective procedures">Cosmetic &amp; elective procedures</button>
+              <button type="button" class="form-chip" data-value="Medications & supplements">Medications &amp; supplements</button>
+              <button type="button" class="form-chip" data-value="Pediatric concerns">Pediatric concerns</button>
+              <button type="button" class="form-chip" data-value="Other">Other</button>
+            </div>
+            <input type="hidden" name="topic" id="askTopic">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="askQuestion">Your question</label>
+            <textarea class="form-textarea" id="askQuestion" name="question" rows="5" placeholder="Frame your question as a general topic — no personal health details needed..."></textarea>
+            <div id="phiWarning" style="display: none;" class="form-alert form-alert-warning" style="margin-top: 8px;">
+              <svg class="form-alert-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C4862B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>It looks like your question may contain personal health details. Consider rephrasing as a general question to protect your privacy.</span>
+            </div>
+            <div style="text-align: right; font-size: 0.78rem; color: var(--text-light); margin-top: 4px;" id="askCharCount">0 characters</div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-primary" id="askNext0" disabled onclick="goToStep(1)">Continue</button>
+          </div>
+        </div>
+
+        <!-- STEP 1: Attribution -->
+        <div id="askStep1" style="display: none;">
+          <div class="form-group">
+            <label class="form-label">How should we credit your question on the podcast?</label>
+            <p class="form-hint">This controls how you'll be referred to if your question is selected.</p>
+
+            <div class="form-option-card selected" data-attr="anonymous" onclick="selectAttribution('anonymous')">
+              <input type="radio" name="attribution" value="anonymous" checked style="display:none;">
+              <div>
+                <div class="form-option-title">Anonymous</div>
+                <div class="form-option-desc">Your question will be read without any name</div>
+              </div>
+            </div>
+
+            <div class="form-option-card" data-attr="first_name" onclick="selectAttribution('first_name')">
+              <input type="radio" name="attribution" value="first_name" style="display:none;">
+              <div style="flex:1;">
+                <div class="form-option-title">First name only</div>
+                <div class="form-option-desc">e.g. "Sarah asks&hellip;"</div>
+                <input type="text" class="form-input" id="askFirstName" name="display_name" placeholder="Your first name" style="display:none; margin-top: 10px; width: 220px;">
+              </div>
+            </div>
+
+            <div class="form-option-card" data-attr="custom" onclick="selectAttribution('custom')">
+              <input type="radio" name="attribution" value="custom" style="display:none;">
+              <div style="flex:1;">
+                <div class="form-option-title">Custom alias</div>
+                <div class="form-option-desc">Pick a nickname or handle</div>
+                <input type="text" class="form-input" id="askAlias" name="alias" placeholder="Your alias or nickname" style="display:none; margin-top: 10px; width: 220px;">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="askEmail">Email <span class="optional">(optional)</span></label>
+            <p class="form-hint">Only used if we need to follow up. Stored separately from your question and never shared.</p>
+            <input class="form-input" type="email" id="askEmail" name="email" placeholder="you@example.com">
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary form-actions-back" onclick="goToStep(0)">Back</button>
+            <button type="button" class="btn btn-primary" id="askNext1" onclick="goToStep(2)">Review</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Review & Submit -->
+        <div id="askStep2" style="display: none;">
+          <div class="form-review">
+            <div class="form-review-field">
+              <div class="form-review-label">Topic</div>
+              <div class="form-review-value" id="reviewTopic"></div>
+            </div>
+            <div class="form-review-field">
+              <div class="form-review-label">Question</div>
+              <div class="form-review-value" id="reviewQuestion"></div>
+            </div>
+            <div class="form-review-field">
+              <div class="form-review-label">Credit as</div>
+              <div class="form-review-value" id="reviewAttribution"></div>
+            </div>
+            <div class="form-review-field" id="reviewEmailField" style="display: none;">
+              <div class="form-review-label">Email</div>
+              <div class="form-review-value" id="reviewEmail"></div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+            <label class="form-check">
+              <input type="checkbox" id="askConsent">
+              <span>I understand my question may be read and discussed on the Bendy Bodies Podcast in anonymized or attributed form (per my selection above). This is not a clinical interaction and any on-air discussion is for informational purposes only.</span>
+            </label>
+            <label class="form-check">
+              <input type="checkbox" id="askAge">
+              <span>I confirm I am 18 years of age or older.</span>
+            </label>
+          </div>
+
+          <div class="form-disclaimer">
+            <div class="form-disclaimer-title">Privacy notice</div>
+            <div class="form-disclaimer-text">
+              Your submission is stored securely and reviewed by the podcast team only. Email addresses (if provided) are stored separately from question content and never shared. Submitted questions may be lightly edited for clarity before being discussed on-air. This form does not establish a patient-provider relationship. For medical advice, please consult your healthcare provider.
+              This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> apply.
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary form-actions-back" onclick="goToStep(1)">Back</button>
+            <button type="submit" class="btn btn-primary" id="askSubmitBtn" disabled>Submit question</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Success state -->
+      <div class="form-success" id="askSuccess" style="display: none;">
+        <div class="form-success-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2>Question submitted</h2>
+        <p>Thank you for your question! If it's selected for the podcast, it will be credited as <strong id="successCredit">Anonymous</strong>. We'll reach out via email if we need any clarification.</p>
+      </div>
+
+      <p style="text-align: center; font-size: 0.78rem; color: var(--text-light); margin-top: 20px;" id="askFootnote">
+        Questions are reviewed and selected at the podcast team's discretion. Not all submissions will be featured.
+      </p>
+    </div>
+  </div>
+</section>
+
+{% block scripts %}
+<script src="/js/form-submit.js"></script>
+<script>
+// State
+let askStep = 0;
+let askTopicVal = '';
+let askAttrVal = 'anonymous';
+const PHI_RE = /\b(diagnosed|my doctor|my surgery|i have|i was told|my condition|my symptoms|my medication|my treatment)\b/i;
+
+// Topic chips
+document.querySelectorAll('#topicChips .form-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('#topicChips .form-chip').forEach(c => c.classList.remove('selected'));
+    chip.classList.add('selected');
+    askTopicVal = chip.dataset.value;
+    document.getElementById('askTopic').value = askTopicVal;
+    validateStep0();
+  });
+});
+
+// Question textarea
+const qField = document.getElementById('askQuestion');
+qField.addEventListener('input', () => {
+  const val = qField.value;
+  document.getElementById('askCharCount').textContent = val.length + ' characters';
+  document.getElementById('phiWarning').style.display = PHI_RE.test(val) ? 'flex' : 'none';
+  if (PHI_RE.test(val)) {
+    qField.style.borderColor = '#D4A03C';
+    qField.style.background = '#FFFDF8';
+  } else {
+    qField.style.borderColor = '';
+    qField.style.background = '';
+  }
+  validateStep0();
+});
+
+function validateStep0() {
+  const ok = askTopicVal && qField.value.trim().length > 10;
+  document.getElementById('askNext0').disabled = !ok;
+}
+
+// Attribution selection
+function selectAttribution(val) {
+  askAttrVal = val;
+  document.querySelectorAll('.form-option-card').forEach(c => {
+    const isSelected = c.dataset.attr === val;
+    c.classList.toggle('selected', isSelected);
+    c.querySelector('input[type="radio"]').checked = isSelected;
+  });
+  document.getElementById('askFirstName').style.display = val === 'first_name' ? 'block' : 'none';
+  document.getElementById('askAlias').style.display = val === 'custom' ? 'block' : 'none';
+  validateStep1();
+}
+
+function validateStep1() {
+  let ok = true;
+  if (askAttrVal === 'first_name' && !document.getElementById('askFirstName').value.trim()) ok = false;
+  if (askAttrVal === 'custom' && !document.getElementById('askAlias').value.trim()) ok = false;
+  document.getElementById('askNext1').disabled = !ok;
+}
+
+document.getElementById('askFirstName').addEventListener('input', validateStep1);
+document.getElementById('askAlias').addEventListener('input', validateStep1);
+
+// Consent checkboxes
+document.getElementById('askConsent').addEventListener('change', validateStep2);
+document.getElementById('askAge').addEventListener('change', validateStep2);
+
+function validateStep2() {
+  const ok = document.getElementById('askConsent').checked && document.getElementById('askAge').checked;
+  document.getElementById('askSubmitBtn').disabled = !ok;
+}
+
+// Step navigation
+function goToStep(n) {
+  askStep = n;
+  document.getElementById('askStep0').style.display = n === 0 ? 'block' : 'none';
+  document.getElementById('askStep1').style.display = n === 1 ? 'block' : 'none';
+  document.getElementById('askStep2').style.display = n === 2 ? 'block' : 'none';
+
+  // Update step indicators
+  for (let i = 0; i < 3; i++) {
+    const circle = document.getElementById('stepCircle' + i);
+    const label = document.getElementById('stepLabel' + i);
+    circle.classList.remove('active', 'done');
+    label.classList.remove('active');
+    if (i < n) {
+      circle.classList.add('done');
+      circle.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    } else if (i === n) {
+      circle.classList.add('active');
+      circle.textContent = i + 1;
+      label.classList.add('active');
+    } else {
+      circle.textContent = i + 1;
+    }
+  }
+  // Update lines
+  const lines = document.querySelectorAll('.form-step-line');
+  lines.forEach((line, i) => {
+    line.classList.toggle('active', i < n * 2);
+  });
+
+  // Populate review
+  if (n === 2) {
+    document.getElementById('reviewTopic').textContent = askTopicVal;
+    document.getElementById('reviewQuestion').textContent = qField.value;
+    const creditLabel = askAttrVal === 'anonymous' ? 'Anonymous'
+      : askAttrVal === 'first_name' ? (document.getElementById('askFirstName').value || 'First name')
+      : (document.getElementById('askAlias').value || 'Custom alias');
+    document.getElementById('reviewAttribution').textContent = creditLabel;
+    const email = document.getElementById('askEmail').value;
+    if (email) {
+      document.getElementById('reviewEmailField').style.display = 'block';
+      document.getElementById('reviewEmail').textContent = email;
+    } else {
+      document.getElementById('reviewEmailField').style.display = 'none';
+    }
+    validateStep2();
+  }
+
+  window.scrollTo({ top: document.getElementById('askFormCard').offsetTop - 100, behavior: 'smooth' });
+}
+
+// Submit
+document.getElementById('askForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('askSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  const creditLabel = askAttrVal === 'anonymous' ? 'Anonymous'
+    : askAttrVal === 'first_name' ? document.getElementById('askFirstName').value
+    : document.getElementById('askAlias').value;
+
+  try {
+    await submitToSheet('podcast_question', {
+      topic: askTopicVal,
+      question: qField.value,
+      attribution: askAttrVal,
+      display_name: creditLabel,
+      email: document.getElementById('askEmail').value
+    });
+  } catch (err) {}
+
+  document.getElementById('successCredit').textContent = creditLabel;
+  document.getElementById('askForm').style.display = 'none';
+  document.getElementById('stepIndicator').style.display = 'none';
+  document.getElementById('askFootnote').style.display = 'none';
+  document.getElementById('askSuccess').style.display = 'block';
+});
+</script>
+{% endblock %}

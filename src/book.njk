@@ -1,0 +1,224 @@
+---
+layout: base.njk
+title: "Schedule a First Appointment"
+activePage: "services"
+permalink: /book/
+---
+
+<div class="page-header">
+  <div class="container">
+    <h1>Interested in Scheduling a First Appointment?</h1>
+    <p>Please answer the following questions so we can learn more about you and your interest in seeking care from Dr. Bluestein.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="form-card" id="bookFormCard">
+
+      <div class="form-alert form-alert-info">
+        <svg class="form-alert-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div>
+          A member of the Hypermobility MD team will follow up with you about whether we may be able to help. Please read our <a href="/assets/HMD_Policies_and_Procedures.pdf" target="_blank" rel="noopener">office policies, pricing, and package options</a> before continuing. One-on-one medical care is expensive! If you need a more cost-affordable option, are not a US citizen, and/or cannot travel to CO or WI for your first appointment, then <a href="/services/#coaching">coaching</a> may be a better choice for you.
+        </div>
+      </div>
+
+      <form id="bookForm" action="#" method="POST">
+
+        <h3 style="margin-bottom: 20px;">Your Information</h3>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="book-first">First name</label>
+            <input class="form-input" type="text" id="book-first" name="first_name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="book-last">Last name</label>
+            <input class="form-input" type="text" id="book-last" name="last_name" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="book-email">Email</label>
+            <input class="form-input" type="email" id="book-email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="book-phone">Phone number</label>
+            <input class="form-input" type="tel" id="book-phone" name="phone" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="book-address">Address</label>
+          <input class="form-input" type="text" id="book-address" name="address" required>
+        </div>
+
+        <h3 style="margin-top: 32px; margin-bottom: 20px;">How did you hear about us?</h3>
+
+        <div class="form-group">
+          <div class="form-chips" id="hearChips">
+            <button type="button" class="form-chip" data-value="Friend or family member">Friend or family member</button>
+            <button type="button" class="form-chip" data-value="Instagram">Instagram</button>
+            <button type="button" class="form-chip" data-value="Facebook">Facebook</button>
+            <button type="button" class="form-chip" data-value="Twitter">Twitter</button>
+            <button type="button" class="form-chip" data-value="LinkedIn">LinkedIn</button>
+            <button type="button" class="form-chip" data-value="Fellow patient of Dr Bluestein">Fellow patient</button>
+            <button type="button" class="form-chip" data-value="Bendy Bodies Podcast">Bendy Bodies Podcast</button>
+            <button type="button" class="form-chip" data-value="Other">Other</button>
+          </div>
+          <input type="hidden" name="how_heard" id="bookHowHeard">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="book-referral">I was referred to Dr. Bluestein by: <span class="optional">(optional)</span></label>
+          <input class="form-input" type="text" id="book-referral" name="referral">
+        </div>
+
+        <h3 style="margin-top: 32px; margin-bottom: 20px;">About Your Health</h3>
+
+        <div class="form-group">
+          <label class="form-label" for="book-issues">What are the top three medical issues you would like to address?</label>
+          <textarea class="form-textarea" id="book-issues" name="top_issues" rows="4" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="book-goals">What do you hope to achieve in working with Dr. Bluestein?</label>
+          <textarea class="form-textarea" id="book-goals" name="goals" rows="4" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="book-tried">What have you tried in the past?</label>
+          <textarea class="form-textarea" id="book-tried" name="past_treatments" rows="4" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="book-anything">Is there anything else you would like to add? <span class="optional">(optional)</span></label>
+          <textarea class="form-textarea" id="book-anything" name="additional" rows="3"></textarea>
+        </div>
+
+        <h3 style="margin-top: 32px; margin-bottom: 20px;">Important Acknowledgments</h3>
+
+        <div class="form-group">
+          <label class="form-check">
+            <input type="checkbox" name="payment_ack" required>
+            <span>I understand that Dr. Bluestein does not accept insurance and that I will be responsible for payment before services are rendered.</span>
+          </label>
+          <label class="form-check">
+            <input type="checkbox" name="time_ack" required>
+            <span>I am aware that most chronic medical conditions require time for improvement, and I will likely have to work with Dr. Bluestein over a reasonable period of time to improve my quality of life.</span>
+          </label>
+        </div>
+
+        <h3 style="margin-top: 32px; margin-bottom: 20px;">Appointment Preferences</h3>
+
+        <div class="form-group">
+          <label class="form-label">Which in-person location are you willing and able to travel to for your first appointment?</label>
+          <p class="form-hint">Your first appointment must be in person. If none of these locations work, <a href="/services/#coaching">coaching</a> may be a better option.</p>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+            <label class="form-check">
+              <input type="radio" name="location" value="Littleton, Colorado - 8091 Shaffer Parkway" required>
+              <span>Littleton, Colorado &mdash; 8091 Shaffer Parkway</span>
+            </label>
+            <label class="form-check">
+              <input type="radio" name="location" value="Arvada, Colorado - 8795 Ralston Road">
+              <span>Arvada, Colorado &mdash; 8795 Ralston Road</span>
+            </label>
+            <label class="form-check">
+              <input type="radio" name="location" value="Green Bay, Wisconsin - 2304 Lineville Road">
+              <span>Green Bay, Wisconsin &mdash; 2304 Lineville Road</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Which package do you feel is the best fit for you?</label>
+          <p class="form-hint">Not sure? Review our <a href="/faq/#medical">package options in the FAQ</a> or our <a href="/assets/HMD_Policies_and_Procedures.pdf" target="_blank" rel="noopener">policies and procedures</a>.</p>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+            <label class="form-check">
+              <input type="radio" name="package" value="Diamond" required>
+              <span><strong>Diamond</strong> (Most Complex) &mdash; appropriate for most people who suspect EDS, HSD, POTS, or MCAS</span>
+            </label>
+            <label class="form-check">
+              <input type="radio" name="package" value="Platinum">
+              <span><strong>Platinum</strong> (Moderately Complex) &mdash; appropriate for people who are NOT complex</span>
+            </label>
+            <label class="form-check">
+              <input type="radio" name="package" value="Gold">
+              <span><strong>Gold</strong> (Least Complex) &mdash; only for a single, straightforward problem</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-disclaimer">
+          <div class="form-disclaimer-title">Privacy notice</div>
+          <div class="form-disclaimer-text">
+            Your information is used solely to evaluate your suitability for Dr. Bluestein's practice and to schedule your appointment. All information is kept confidential and is never shared with third parties. Submitting this form does not guarantee an appointment or establish a patient-provider relationship.
+            This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> apply.
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="bookSubmitBtn">Submit Application</button>
+        </div>
+      </form>
+
+      <!-- Success state -->
+      <div class="form-success" id="bookSuccess" style="display: none;">
+        <div class="form-success-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2>Application received</h2>
+        <p>Thank you for your interest in Hypermobility MD. A member of our team will review your information and follow up with you about whether we may be able to help. Please allow several business days for a response.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% block scripts %}
+<script src="/js/form-submit.js"></script>
+<script>
+// How-heard chips
+document.querySelectorAll('#hearChips .form-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('#hearChips .form-chip').forEach(c => c.classList.remove('selected'));
+    chip.classList.add('selected');
+    document.getElementById('bookHowHeard').value = chip.dataset.value;
+  });
+});
+
+// Submit
+document.getElementById('bookForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('bookSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  const locationEl = document.querySelector('input[name="location"]:checked');
+  const packageEl = document.querySelector('input[name="package"]:checked');
+
+  try {
+    await submitToSheet('appointment', {
+      first_name: document.getElementById('book-first').value,
+      last_name: document.getElementById('book-last').value,
+      email: document.getElementById('book-email').value,
+      phone: document.getElementById('book-phone').value,
+      address: document.getElementById('book-address').value,
+      how_heard: document.getElementById('bookHowHeard').value,
+      referral: document.getElementById('book-referral').value,
+      top_issues: document.getElementById('book-issues').value,
+      goals: document.getElementById('book-goals').value,
+      past_treatments: document.getElementById('book-tried').value,
+      additional: document.getElementById('book-anything').value,
+      location: locationEl ? locationEl.value : '',
+      package: packageEl ? packageEl.value : ''
+    });
+  } catch (err) {}
+
+  document.getElementById('bookForm').style.display = 'none';
+  document.querySelector('.form-alert').style.display = 'none';
+  document.getElementById('bookSuccess').style.display = 'block';
+  window.scrollTo({ top: document.getElementById('bookFormCard').offsetTop - 100, behavior: 'smooth' });
+});
+</script>
+{% endblock %}
