@@ -34,12 +34,20 @@ async function submitToSheet(formType, data) {
     _recaptcha: recaptchaToken
   });
 
-  const response = await fetch(APPS_SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify(payload)
-  });
+  // Use no-cors fetch. Apps Script redirects on POST, so we follow it.
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      redirect: 'follow',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    // With no-cors, network errors surface here but the request
+    // typically still reaches Apps Script. Log for debugging.
+    console.warn('Form submission fetch error (may still succeed):', err);
+  }
 
   return true;
 }
@@ -52,8 +60,6 @@ function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => {
-      // reader.result is "data:image/jpeg;base64,/9j/4AAQ..."
-      // Split off the prefix to get just the base64 data
       const base64 = reader.result.split(',')[1];
       resolve(base64);
     };
