@@ -7,25 +7,149 @@ eleventyExcludeFromCollections: true
 
 <meta name="robots" content="noindex">
 
-<section style="max-width: 680px; margin: 3rem auto; padding: 0 1.5rem;">
-  <h1 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 0.5rem;">
-    Bendy Bodies Podcast — Guest Information
-  </h1>
-  <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem;">
-    Welcome! Please fill in your information for your upcoming Bendy Bodies Podcast episode.
-  </p>
-
-  <div style="background: var(--surface, #f8f6f3); border: 1px solid var(--border, #e0dcd6); border-radius: 12px; padding: 2rem; margin-bottom: 2rem;">
-    <h2 style="font-size: 1.25rem; margin-bottom: 1rem;">Information we'll collect</h2>
-    <ul style="line-height: 2; padding-left: 1.25rem;">
-      <li><strong>Name</strong> — Your full name as you'd like it displayed</li>
-      <li><strong>Credentials</strong> — Degrees and certifications (e.g., MD, DPT, PhD)</li>
-      <li><strong>Affiliation</strong> — Practice, hospital, or organization</li>
-      <li><strong>Bio</strong> — A short professional biography (2–4 sentences)</li>
-      <li><strong>Website</strong> — Your professional website or social link</li>
-      <li><strong>Headshot Photo</strong> — A high-resolution photo for the episode page</li>
-    </ul>
+<div class="page-header">
+  <div class="container">
+    <h1>Bendy Bodies Podcast &mdash; Guest Information</h1>
+    <p>Welcome! Please fill in your information for your upcoming Bendy Bodies Podcast episode.</p>
   </div>
+</div>
 
-  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdPxNeioMQsm1gPtPVPEgGBI_kQn3IfavAHdGztVsjiZ2o2Ng/viewform?embedded=true" width="100%" height="1200" frameborder="0" marginheight="0" marginwidth="0" style="border-radius: 12px; border: 1px solid var(--border, #e0dcd6);">Loading…</iframe>
+<section class="section">
+  <div class="container">
+    <div class="form-card" id="guestFormCard">
+
+      <div class="form-alert form-alert-info">
+        <svg class="form-alert-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div>
+          This information will be used to create your episode page on our website. Please double-check your details before submitting.
+        </div>
+      </div>
+
+      <form id="guestForm" action="#" method="POST" enctype="multipart/form-data">
+
+        <div class="form-group">
+          <label class="form-label" for="guest-name">Full name</label>
+          <p class="form-hint">Your name as you'd like it displayed on the episode page.</p>
+          <input class="form-input" type="text" id="guest-name" name="name" placeholder="e.g. Dr. Jane Smith" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="guest-credentials">Credentials</label>
+          <p class="form-hint">Degrees and certifications (e.g. MD, DPT, PhD, LCSW)</p>
+          <input class="form-input" type="text" id="guest-credentials" name="credentials" placeholder="e.g. MD, FAAP" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="guest-affiliation">Affiliation</label>
+          <p class="form-hint">Your practice, hospital, organization, or university.</p>
+          <input class="form-input" type="text" id="guest-affiliation" name="affiliation" placeholder="e.g. University of Wisconsin" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="guest-bio">Professional bio</label>
+          <p class="form-hint">A short biography (2&ndash;4 sentences) that will appear on your episode page.</p>
+          <textarea class="form-textarea" id="guest-bio" name="bio" rows="5" placeholder="Tell listeners about your background, expertise, and what you're passionate about..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="guest-website">Website <span class="optional">(optional)</span></label>
+          <p class="form-hint">Your professional website, practice page, or preferred social media link.</p>
+          <input class="form-input" type="url" id="guest-website" name="website" placeholder="https://">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="guest-social">Social media links <span class="optional">(optional)</span></label>
+          <p class="form-hint">Any additional social media profiles you'd like linked (one per line).</p>
+          <textarea class="form-textarea" id="guest-social" name="social_links" rows="3" placeholder="e.g. https://instagram.com/yourhandle" style="min-height: 80px;"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="guest-headshot">Headshot photo</label>
+          <p class="form-hint">A high-resolution professional photo for your episode page. Accepted formats: JPG, PNG, WEBP (max 10 MB).</p>
+          <input class="form-input" type="file" id="guest-headshot" name="headshot" accept="image/jpeg,image/png,image/webp" required style="padding: 10px 16px;">
+          <p class="form-hint" id="headshot-status" style="display: none; color: var(--primary); margin-top: 6px;"></p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="guest-anything">Anything else we should know? <span class="optional">(optional)</span></label>
+          <textarea class="form-textarea" id="guest-anything" name="additional" rows="3" placeholder="Pronunciation of your name, preferred pronouns, topics to highlight, etc." style="min-height: 80px;"></textarea>
+        </div>
+
+        <div class="form-disclaimer">
+          <div class="form-disclaimer-title">How we use your information</div>
+          <div class="form-disclaimer-text">
+            The information you provide will be used to create your episode page on the Bendy Bodies Podcast website, including your name, credentials, bio, photo, and any links you share. By submitting, you give permission for this information to be published on our website and used in promotional materials for the episode.
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="guestSubmitBtn">Submit Guest Information</button>
+        </div>
+      </form>
+
+      <!-- Success state -->
+      <div class="form-success" id="guestSuccess" style="display: none;">
+        <div class="form-success-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2>Information received</h2>
+        <p>Thank you! We have everything we need to create your episode page. The podcast team will reach out if we need anything else. We look forward to having you on the show!</p>
+      </div>
+    </div>
+  </div>
 </section>
+
+{% block scripts %}
+<script src="/js/form-submit.js"></script>
+<script>
+document.getElementById('guestForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('guestSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Uploading...';
+
+  // Convert headshot to base64
+  const fileInput = document.getElementById('guest-headshot');
+  let headshotBase64 = '';
+  let headshotMime = '';
+  let headshotExt = '';
+  if (fileInput.files.length > 0) {
+    const file = fileInput.files[0];
+    if (file.size > 10 * 1024 * 1024) {
+      alert('Headshot file must be under 10 MB.');
+      btn.disabled = false;
+      btn.textContent = 'Submit Guest Information';
+      return;
+    }
+    const status = document.getElementById('headshot-status');
+    status.style.display = 'block';
+    status.textContent = 'Uploading headshot...';
+    headshotBase64 = await fileToBase64(file);
+    headshotMime = file.type;
+    headshotExt = file.name.split('.').pop().toLowerCase();
+  }
+
+  btn.textContent = 'Submitting...';
+
+  try {
+    await submitToSheet('guest_info', {
+      name: document.getElementById('guest-name').value,
+      credentials: document.getElementById('guest-credentials').value,
+      affiliation: document.getElementById('guest-affiliation').value,
+      bio: document.getElementById('guest-bio').value,
+      website: document.getElementById('guest-website').value,
+      social_links: document.getElementById('guest-social').value,
+      additional: document.getElementById('guest-anything').value,
+      headshot_base64: headshotBase64,
+      headshot_mime: headshotMime,
+      headshot_ext: headshotExt
+    });
+  } catch (err) {}
+
+  document.getElementById('guestForm').style.display = 'none';
+  document.querySelector('.form-alert').style.display = 'none';
+  document.getElementById('guestSuccess').style.display = 'block';
+  window.scrollTo({ top: document.getElementById('guestFormCard').offsetTop - 100, behavior: 'smooth' });
+});
+</script>
+{% endblock %}
