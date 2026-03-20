@@ -514,7 +514,7 @@
 .guest-card-website { display: inline-flex; align-items: center; text-decoration: none; opacity: 0.5; transition: opacity 0.2s; color: var(--primary); }
 .guest-card-website:hover { opacity: 1; text-decoration: none; }
 .guest-card-website svg { vertical-align: middle; }
-.guest-links-more { font-size: 0.7rem; font-weight: 700; padding: 1px 5px; border-radius: 8px; background: color-mix(in srgb, var(--primary) 10%, transparent); }
+.guest-links-more { font-size: 0.7rem; font-weight: 700; font-family: var(--body-font); padding: 2px 6px; border-radius: 8px; background: color-mix(in srgb, var(--primary) 10%, transparent); vertical-align: middle; display: inline-flex; align-items: center; justify-content: center; line-height: 1; }
 
 /* Modal guest cards grid */
 .modal-guest-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
