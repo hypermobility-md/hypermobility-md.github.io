@@ -180,6 +180,27 @@ function getSocialIcon(url, size) {
   return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`;
 }
 
+function sortSocialLinks(links) {
+  if (!links || !links.length) return [];
+  function priority(link) {
+    const u = (link.url || '').toLowerCase();
+    const label = (link.label || '').toLowerCase();
+    const isSocial = ['linkedin', 'twitter', 'x.com', 'instagram', 'facebook', 'youtube', 'youtu.be', 'tiktok', 'wikipedia', 'substack'].some(d => u.includes(d));
+    if (u.includes('wikipedia.org')) return 0;
+    if (!isSocial && (label === 'website' || label === 'site')) return 1;
+    if (!isSocial && label === 'site 2') return 2;
+    if (u.includes('substack.com')) return 2.5;
+    if (u.includes('linkedin.com')) return 3;
+    if (u.includes('instagram.com')) return 4;
+    if (u.includes('twitter.com') || u.includes('x.com')) return 5;
+    if (u.includes('facebook.com')) return 6;
+    if (u.includes('youtube.com') || u.includes('youtu.be')) return 7;
+    if (u.includes('tiktok.com')) return 8;
+    return 9;
+  }
+  return links.slice().sort((a, b) => priority(a) - priority(b));
+}
+
 function buildGuestCard(name) {
   const episodes = guestMap[name];
   const img = getGuestImage(name);
@@ -191,9 +212,10 @@ function buildGuestCard(name) {
     ? `<div class="guest-card-bio">${profile.bio}</div>` : '';
   let linksHtml = '';
   if (profile && profile.links && profile.links.length) {
+    const sorted = sortSocialLinks(profile.links);
     const MAX_SHOW = 3;
-    const visibleLinks = profile.links.slice(0, MAX_SHOW);
-    const hiddenLinks = profile.links.slice(MAX_SHOW);
+    const visibleLinks = sorted.slice(0, MAX_SHOW);
+    const hiddenLinks = sorted.slice(MAX_SHOW);
     linksHtml = visibleLinks.map(l => `<a href="${l.url}" target="_blank" rel="noopener" class="guest-card-website" title="${l.label || 'Website'}">${getSocialIcon(l.url)}</a>`).join(' ');
     if (hiddenLinks.length > 0 && hasGuestPage(name)) {
       linksHtml += ` <a href="/guests/${guestSlug(name)}/" class="guest-card-website guest-links-more" title="View all links">+${hiddenLinks.length}</a>`;
