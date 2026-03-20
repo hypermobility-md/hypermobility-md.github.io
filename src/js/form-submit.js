@@ -13,7 +13,7 @@
  *    (RECAPTCHA_SECRET_KEY variable — NOT in this file!)
  */
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwndTMZHT-PUELpA_s-Mstq_eyZLp8nzLBdaFMW8nrbzy-n7sMAkP0Yi0Feu0brhtvhmg/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzH-dXbghwfIS-EV82fZqc-MT8vnhfo8owgVptmBxLZSteA8VIxyiGZXTtNuuZ43s_H/exec';
 const RECAPTCHA_SITE_KEY = '6LdllJAsAAAAAEC9voQiGG1M1CEb_xtjpx-eT7Yv';
 
 /**
