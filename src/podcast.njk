@@ -293,12 +293,12 @@ function buildLatest(ep, idx) {
 
   return `
   <div class="featured-top-bar">
+    ${ep.num ? `<div class="featured-latest-num">${ep.num}</div>` : ''}
     ${buildAvatarHtml(ep)}
     ${guestLabel}
   </div>
   <div class="featured-bottom">
-    <div style="display:flex;align-items:flex-start;gap:16px;">
-      ${ep.num ? `<div class="ep-number" style="font-size:2.2rem;font-weight:900;color:var(--primary);opacity:0.25;line-height:1;flex-shrink:0;">${ep.num}</div>` : ''}
+    <div>
       <h2 style="margin:0;"><a href="#" onclick="openLatestModal(${idx});return false;" style="color:inherit;text-decoration:none;">${cleanTitle(ep.title)}</a></h2>
     </div>
     <p class="featured-description">${truncateAtSentence(ep.description, 350)}</p>

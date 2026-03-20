@@ -558,6 +558,7 @@
 .featured-top-bar .featured-ep-num { color: rgba(255,255,255,0.6); font-size: 0.9rem; }
 .featured-top-bar .featured-top-sep { color: rgba(255,255,255,0.4); }
 .featured-top-bar .featured-guest-inline { color: var(--teal-light); font-size: 0.95rem; }
+.featured-latest-num { font-size: 3.5rem; font-weight: 900; color: rgba(255,255,255,0.25); line-height: 1; font-family: var(--heading-font); }
 .featured-bottom { padding: 32px 40px 40px; }
 .featured-top-line { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
 .featured-ep-num { font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--primary); font-family: var(--body-font); font-weight: 700; }
