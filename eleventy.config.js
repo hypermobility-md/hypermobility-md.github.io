@@ -109,6 +109,33 @@ module.exports = function(eleventyConfig) {
     return { prev, next };
   });
 
+  // Sort guest social links: Wikipedia, Website/Site, Site2, LinkedIn, Instagram, Twitter/X, Facebook, YouTube, TikTok, other
+  eleventyConfig.addFilter("sortSocialLinks", (links) => {
+    if (!links || !links.length) return [];
+    const order = [
+      'wikipedia.org', '__website__', '__site2__', 'linkedin.com', 'instagram.com',
+      'twitter.com', 'x.com', 'facebook.com', 'youtube.com', 'youtu.be', 'tiktok.com'
+    ];
+    function linkPriority(link) {
+      const u = (link.url || '').toLowerCase();
+      const label = (link.label || '').toLowerCase();
+      if (u.includes('wikipedia.org')) return 0;
+      // Website / Site (non-social URLs)
+      const isSocial = ['linkedin', 'twitter', 'x.com', 'instagram', 'facebook', 'youtube', 'youtu.be', 'tiktok', 'wikipedia'].some(d => u.includes(d));
+      if (!isSocial && !u.includes('substack') && (label === 'website' || label === 'site')) return 1;
+      if (!isSocial && !u.includes('substack') && label === 'site 2') return 2;
+      if (u.includes('substack.com')) return 2.5;
+      if (u.includes('linkedin.com')) return 3;
+      if (u.includes('instagram.com')) return 4;
+      if (u.includes('twitter.com') || u.includes('x.com')) return 5;
+      if (u.includes('facebook.com')) return 6;
+      if (u.includes('youtube.com') || u.includes('youtu.be')) return 7;
+      if (u.includes('tiktok.com')) return 8;
+      return 9;
+    }
+    return links.slice().sort((a, b) => linkPriority(a) - linkPriority(b));
+  });
+
   // YouTube URL → embed URL
   eleventyConfig.addFilter("youtubeEmbed", (url) => {
     if (!url) return '';

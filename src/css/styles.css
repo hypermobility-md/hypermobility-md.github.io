@@ -1385,6 +1385,71 @@ a.product-card:hover {
   .form-card { padding: 28px 20px; }
 }
 
+/* Social Input Rows (guest form) */
+.form-socials-group { border: none; padding: 0; margin: 0 0 24px; }
+.form-socials-group legend { display: block; }
+.social-input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.social-input-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--section-alt);
+  color: var(--text-muted);
+}
+.social-input-row .form-input {
+  flex: 1;
+  margin-bottom: 0;
+}
+.social-input-label {
+  font-size: 0.82rem;
+  font-family: var(--body-font);
+  font-weight: 600;
+  color: var(--text-light);
+  min-width: 64px;
+  flex-shrink: 0;
+}
+.social-more-details {
+  margin-top: 4px;
+}
+.social-more-toggle {
+  font-size: 0.88rem;
+  font-family: var(--body-font);
+  font-weight: 600;
+  color: var(--primary);
+  cursor: pointer;
+  padding: 8px 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.social-more-toggle::-webkit-details-marker { display: none; }
+.social-more-toggle::before {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid var(--primary);
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  transition: transform 0.2s;
+}
+.social-more-details[open] .social-more-toggle::before {
+  transform: rotate(90deg);
+}
+.social-more-fields {
+  padding-top: 8px;
+}
+
 /* Checkbox & Radio */
 .form-check {
   display: flex;

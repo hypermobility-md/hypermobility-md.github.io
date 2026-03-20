@@ -88,5 +88,21 @@ collections:
         required: false
         fields:
           - { label: "URL", name: "url", widget: "string" }
-          - { label: "Label", name: "label", widget: "string", required: false, hint: "e.g. Website, LinkedIn, Instagram" }
+          - label: "Label"
+            name: "label"
+            widget: "select"
+            required: false
+            options:
+              - "Website"
+              - "Site 2"
+              - "LinkedIn"
+              - "Twitter"
+              - "Substack"
+              - "Instagram"
+              - "Facebook"
+              - "YouTube"
+              - "TikTok"
+              - "Wikipedia"
+              - "Other"
+            hint: "Select the type of link"
       - { label: "Photo", name: "image", widget: "image", required: false, hint: "Upload or select a guest photo" }

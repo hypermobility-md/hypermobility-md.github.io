@@ -282,7 +282,6 @@
         handler: async ({ entry }) => {
           try {
             const collection = entry.get ? entry.get('collection') : entry.collection;
-            if (collection !== 'episodes') return;
 
             // Read entry data (handle both Immutable.js and plain object)
             let getData, setData;
@@ -298,6 +297,31 @@
               getData = (field) => entry.data?.[field];
               setData = (field, value) => { entry.data[field] = value; };
             }
+
+            // --- Guest Profile: auto-link uploaded image ---
+            if (collection === 'guest-profiles') {
+              const image = getData('image');
+              const key = getData('key');
+              if (image && key) {
+                // If the image was uploaded via the CMS, it will be a path like /Guests/filename.jpg
+                // Ensure guestImages.json gets updated by storing the image path
+                // The image field already stores the path, so we just need to make sure it's correct
+                let imagePath = image;
+                if (!imagePath.startsWith('/')) {
+                  imagePath = '/' + imagePath;
+                }
+                if (!imagePath.startsWith('/Guests/')) {
+                  // Extract filename and prepend /Guests/
+                  const parts = imagePath.split('/');
+                  imagePath = '/Guests/' + parts[parts.length - 1];
+                }
+                setData('image', imagePath);
+              }
+              return entry;
+            }
+
+            // --- Episodes: auto-fill num, date, guest images ---
+            if (collection !== 'episodes') return;
 
             // Prepare info for the pre-save dialog
             let num = getData('num');
@@ -328,6 +352,20 @@
               } else {
                 missingPhotos.push(guest);
               }
+            }
+
+            // Also check if a guestImage was uploaded directly on this episode
+            const uploadedImage = getData('guestImage');
+            if (uploadedImage && missingPhotos.length > 0) {
+              // Link the uploaded image to the first missing guest
+              let imgPath = uploadedImage;
+              if (!imgPath.startsWith('/')) imgPath = '/' + imgPath;
+              guestImagePaths.push(imgPath.replace(/^\//, ''));
+              // Update the first missing guest's result
+              const firstMissing = missingPhotos[0];
+              const gr = guestResults.find(g => g.name === firstMissing);
+              if (gr) gr.photo = imgPath;
+              missingPhotos.shift();
             }
 
             // Show the pre-save dialog

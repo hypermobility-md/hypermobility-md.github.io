@@ -251,6 +251,31 @@
   overflow: hidden;
 }
 
+/* Transcript search snippets on episode cards */
+.card-transcript-snippets {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.card-transcript-snippet {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--text-light);
+  background: var(--section-alt);
+  border-left: 3px solid var(--primary);
+  padding: 6px 10px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-family: var(--body-font);
+}
+.card-transcript-snippet mark {
+  background: color-mix(in srgb, var(--primary) 25%, transparent);
+  color: var(--text);
+  padding: 1px 2px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
 .card-tags {
   display: flex;
   flex-wrap: wrap;
@@ -300,6 +325,25 @@
 }
 
 .podcast-page .btn-listen:hover { background: var(--primary-dark); color: #fff; text-decoration: none; }
+
+.card-footer-actions { display: flex; gap: 8px; align-items: center; }
+
+.podcast-page .btn-watch {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 14px;
+  background: transparent;
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: var(--body-font);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.podcast-page .btn-watch:hover { background: var(--primary); color: #fff; }
 
 /* ---- Search & Filter Bar ---- */
 .filter-bar, .guest-filter-bar {
@@ -558,7 +602,7 @@
 .featured-top-bar .featured-ep-num { color: rgba(255,255,255,0.6); font-size: 0.9rem; }
 .featured-top-bar .featured-top-sep { color: rgba(255,255,255,0.4); }
 .featured-top-bar .featured-guest-inline { color: var(--teal-light); font-size: 0.95rem; }
-.featured-latest-num { font-size: 3.5rem; font-weight: 900; color: rgba(255,255,255,0.25); line-height: 1; font-family: var(--heading-font); }
+.featured-latest-num { font-size: 3.5rem; font-weight: 900; color: rgba(255,255,255,0.25); line-height: 1; font-family: var(--body-font); }
 .featured-bottom { padding: 32px 40px 40px; }
 .featured-top-line { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
 .featured-ep-num { font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--primary); font-family: var(--body-font); font-weight: 700; }
@@ -726,6 +770,30 @@
   color: var(--primary);
   margin-bottom: 16px;
 }
+.episode-action-buttons {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.btn-watch-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 20px;
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 600;
+  font-family: var(--body-font);
+  text-decoration: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-watch-inline:hover { background: var(--primary); color: #fff; text-decoration: none; }
+
 .episode-detail-description {
   font-size: 0.95rem;
   color: var(--text-muted);
