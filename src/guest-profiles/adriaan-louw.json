@@ -7,6 +7,22 @@
     {
       "url": "https://whyyouhurt.com/",
       "label": "Website"
+    },
+    {
+      "url": "https://www.facebook.com/EIMTeam",
+      "label": "Facebook"
+    },
+    {
+      "url": "https://www.linkedin.com/company/evidence-in-motion-eim-",
+      "label": "LinkedIn"
+    },
+    {
+      "url": "https://www.instagram.com/eimteam/",
+      "label": "Instagram"
+    },
+    {
+      "url": "https://www.twitter.com/EIMTeam",
+      "label": "Twitter"
     }
   ]
 }

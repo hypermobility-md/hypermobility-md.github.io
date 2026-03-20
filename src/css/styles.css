@@ -289,7 +289,7 @@ a:hover { color: var(--accent); }
 }
 .hero-image {
   width: 100%;
-  max-width: 380px;
+  max-width: 480px;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
@@ -303,7 +303,7 @@ a:hover { color: var(--accent); }
   }
   .hero-buttons { justify-content: center; }
   .hero-image-wrap { order: -1; }
-  .hero-image { max-width: 280px; }
+  .hero-image { max-width: 360px; }
 }
 
 /* ---- Zebra Accent Bar ---- */
@@ -522,7 +522,7 @@ a:hover { color: var(--accent); }
 /* ---- About Page: Bio ---- */
 .about-hero {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 380px 1fr;
   gap: 48px;
   align-items: start;
 }
@@ -543,7 +543,7 @@ a:hover { color: var(--accent); }
 
 @media (max-width: 768px) {
   .about-hero { grid-template-columns: 1fr; text-align: center; }
-  .about-photo { max-width: 260px; margin: 0 auto; }
+  .about-photo { max-width: 360px; margin: 0 auto; }
 }
 
 /* ---- Team Section ---- */
