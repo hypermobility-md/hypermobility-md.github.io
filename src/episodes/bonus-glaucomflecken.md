@@ -5,14 +5,14 @@ date: "2025-09-22"
 duration: "1h 7m"
 description: "In honor of Pain Awareness Month, I wanted to share an episode of one of my favorite healthcare podcasts, \"Knock Knock Hi with the Glaucomfleckens.\" In this interview from last July, Will and Kristin Flanary (AKA Dr. and Lady Glaucomflecken) kindly invited me on to talk about my journey from ballet to anesthesiology to integrative pain care, and how hypermobility and chronic pain are often overlooked or misunderstood in both medicine and everyday life.\n\nListen to more episodes of \"Knock Knock, Hi! with the Glaucomfleckens\" wherever you get your podcasts, or watch on YouTube. https://www.human-content.com/kkh\n\nBendy Bodies, alongside Knock Knock Hi with the Glaucomfleckens, is a proud part of the Human Content Podcast Network"
 tags:
-  - "Pain"
-  - "Surgery"
-  - "Hypermobility"
+ - "Pain"
+ - "Surgery"
+ - "Hypermobility"
 audioUrl: "https://p.podderapp.com/9752035609/traffic.megaphone.fm/TCAHH9366654775.mp3"
 videoUrl: "https://youtu.be/WIwNaTeBC7U"
 snippets: []
 guests:
-  - "Dr. Linda Bluestein"
+ - "Dr. Linda Bluestein"
 guestImages: []
 ---
 Will Flannery: Hello everybody. Welcome to Knock Knock High with The Glockenfleckens. I am your host, Will Flannery, also known as Dr. Glockenflecken. 
@@ -39,11 +39,11 @@ Will Flannery: Yeah. So you can imagine. They're going to run around. You can im
 
 Kristen Flannery: Yep. There was a lot of complaining. There was a lot of just the world is ending. How could you make me do this?
 
-Will Flannery: Right. My legs don't work anymore. Which does make it difficult to play soccer. Oh man, the histrionics, uh, the exaggeration, the drama was out of control, uh, especially from our child. And gee, I wonder where she gets that from. And the final score was like 2-1, which normally these games are like, you know, 10-8. So just not a lot of enthusiasm. And so it was a struggle. And as the assistant coach for the under-8-year-old girls team named the Jelly Bean Tigers, it was very challenging to get people motivated to play.
+Will Flannery: Right. My legs don't work anymore. Which does make it difficult to play soccer. Oh man, the histrionics, the exaggeration, the drama was out of control, especially from our child. And gee, I wonder where she gets that from. And the final score was like 2-1, which normally these games are like, you know, 10-8. So just not a lot of enthusiasm. And so it was a struggle. And as the assistant coach for the under-8-year-old girls team named the Jelly Bean Tigers, it was very challenging to get people motivated to play.
 
-Kristen Flannery: Yeah, but, um, we got those jelly beans— were not being very tiger-like. We got through it.
+Kristen Flannery: Yeah, but, we got those jelly beans— were not being very tiger-like. We got through it.
 
-Will Flannery: Yeah, uh, and our team's pretty good.
+Will Flannery: Yeah, and our team's pretty good.
 
 Kristen Flannery: Yeah, they are. They've been together. What, when did they start?
 
@@ -51,23 +51,23 @@ Will Flannery: 3 years?
 
 Kristen Flannery: Yeah, 5-year-olds, and now they're 8-year-olds.
 
-Will Flannery: Exactly. They're like pretty much the same team. They're a juggernaut. They're, uh, they're like the New York Yankees of, of 8 local, of 8-year-old rec soccer.
+Will Flannery: Exactly. They're like pretty much the same team. They're a juggernaut. They're, they're like the New York Yankees of, of 8 local, of 8-year-old rec soccer.
 
-Kristen Flannery: Yeah, but it did, uh, you know, the older they get, the more they're experimenting with different sports, and, and it's actually kind of relevant to our conversation today.
+Kristen Flannery: Yeah, but it did, you know, the older they get, the more they're experimenting with different sports, and, and it's actually kind of relevant to our conversation today.
 
 Will Flannery: Yeah, physical, because we talk a little bit about sports and performing arts, and in particular ballet and gymnastics, which is what Kristen did a lot of as a, as a, as a kid. I was a gymnast for 10 years when I retired at the ripe old age of 15, as gymnasts often do.
 
 Kristen Flannery: And the reason we were talking about this is because we interviewed Dr. Linda Bluestein, who's a board-certified anesthesiologist who's now practicing as an integrative pain management specialist and does a ton of work on hypermobility, Ehlers-Danlos, hypermobility spectrum disorders. And, and so that's how it kind of relates to sports.
 
-Will Flannery: Yeah, so, you know, we talked about I loved gymnastics and, and it was so fun, and I feel like, you know, I would still do it if I could, even knowing what I know. But it, you know, it ended up It turns out that I have, you know, I'm somewhere on the hypermobility spectrum that's, you know, in the problematic end. And, uh, I think gymnastics ultimately didn't really do my body any favors, um, in my, in my middle age. Um, but it was so fun. And so, you know, it's, uh, it's tricky thinking about, do you put your kids in something, you know, that they're interested in and are asking about, and, you know, that you did and was so fun, but also, you know, that it You know, they have the potential to, to, you know, kind of mess up their body.
+Will Flannery: Yeah, so, you know, we talked about I loved gymnastics and, and it was so fun, and I feel like, you know, I would still do it if I could, even knowing what I know. But it, you know, it ended up It turns out that I have, you know, I'm somewhere on the hypermobility spectrum that's, you know, in the problematic end. And, I think gymnastics ultimately didn't really do my body any favors, in my, in my middle age. but it was so fun. And so, you know, it's, it's tricky thinking about, do you put your kids in something, you know, that they're interested in and are asking about, and, you know, that you did and was so fun, but also, you know, that it You know, they have the potential to, to, you know, kind of mess up their body.
 
-Will Flannery: Yeah. So, so it's, yeah, we talk about that a little bit with Dr. Bluestein. Um, it's just a tricky balance. Could put them in chess.
+Will Flannery: Yeah. So, so it's, yeah, we talk about that a little bit with Dr. Bluestein. it's just a tricky balance. Could put them in chess.
 
 Kristen Flannery: In chess.
 
-Will Flannery: Yeah. No, you know, if there's other parents out there wondering about that, right? It's what I have learned in my struggles is you want to look for things that, that, uh, foster strength and flexibility at the same time. And so things like martial arts are really good, things like swimming.
+Will Flannery: Yeah. No, you know, if there's other parents out there wondering about that, right? It's what I have learned in my struggles is you want to look for things that, that, foster strength and flexibility at the same time. And so things like martial arts are really good, things like swimming.
 
-Kristen Flannery: Really good. But if you have a kid that's, that's a little bit too flexible or has, you know, some party tricks, uh, you might want to just think about what kind of, what kind of sports you're putting them into. So I don't know, it's a different, different criteria, different decision for— I don't know, but something good to think about and look into.
+Kristen Flannery: Really good. But if you have a kid that's, that's a little bit too flexible or has, you know, some party tricks, you might want to just think about what kind of, what kind of sports you're putting them into. So I don't know, it's a different, different criteria, different decision for— I don't know, but something good to think about and look into.
 
 Will Flannery: Yeah. All I do know is don't put 8-year-olds on a, on an 80-degree day.
 
@@ -81,9 +81,9 @@ Will Flannery: Yeah, but now we can't take it anymore. I'd go and I'd play socce
 
 Kristen Flannery: Yeah, like literally and figuratively.
 
-Will Flannery: That's true. So anyway, let's get to our guest here. Again, this is Dr. Linda, uh, Bluestein. And so I hope you guys enjoy this one. Um, and, uh, yeah, do I have anything else to add, or am I just like changing the topic?
+Will Flannery: That's true. So anyway, let's get to our guest here. Again, this is Dr. Linda, Bluestein. And so I hope you guys enjoy this one. and, yeah, do I have anything else to add, or am I just like changing the topic?
 
-Kristen Flannery: I think, uh, you know, for, for people who might think, uh, hypermobility, it's got nothing to do with me, or, you know, I don't know, I could see how some people might think this is maybe not relevant to them, but actually, as it turns out, it is relevant to every specialty. And Dr. Bluestein, uh, tells us why. So be sure to stick around and, yeah, and hear how it might relate to yours.
+Kristen Flannery: I think, you know, for, for people who might think, hypermobility, it's got nothing to do with me, or, you know, I don't know, I could see how some people might think this is maybe not relevant to them, but actually, as it turns out, it is relevant to every specialty. And Dr. Bluestein, tells us why. So be sure to stick around and, yeah, and hear how it might relate to yours.
 
 Will Flannery: Well, let's get to Dr. Bluestein. Here she is.
 
@@ -95,11 +95,11 @@ Dr. Linda Bluestein: Papers. I've been listening to your podcast.
 
 Kristen Flannery: Oh my goodness, that's so sweet.
 
-Will Flannery: Yeah, and you have, you have such a fascinating background and journey in medicine to where you came to be today. And, uh, something that I actually haven't heard of is performing arts medicine. So, so, so let's start there. Okay, how did— because I— and, and just give people just the background of like I guess how you got to that point where you're, you're focused on, you know, performing arts as, as one of the many things that you do.
+Will Flannery: Yeah, and you have, you have such a fascinating background and journey in medicine to where you came to be today. And, something that I actually haven't heard of is performing arts medicine. So, so, so let's start there. Okay, how did— because I— and, and just give people just the background of like I guess how you got to that point where you're, you're focused on, you know, performing arts as, as one of the many things that you do.
 
 Dr. Linda Bluestein: Well, I have to confess, I, I've always wanted to be a ballet dancer. That was my number one goal, was to be a professional ballet dancer. But my body had other ideas at a fairly young age, so I had to come up with a plan B, which turned out to be medicine. But when I started really digging into hypermobility— and I didn't know that I was hypermobile or any— I didn't know about any of these conditions until I was probably in my 40s, I guess. And like most people, I started reading and I was like, oh my gosh, this literally could explain my entire life, right? Like, so many people have that same experience.
 
-So I, um, but I quickly realized dancers must have this really commonly. And as I started to do more and more research, I realized that they might not all have any, some kind of, you know, connective tissue disorder, but a lot of them do have joint hypermobility in one or more joints. And so by supporting them at a young age, maybe, just maybe, we can help keep people more active. Because I'm sure both of you have heard of or seen people who are in their 20s or, you know, even younger who are really, really disabled. And so I just want to avoid as much of that as possible and try to not over-medicalize, but catch people at the earliest possible stage and let them know what to watch for, what kind of things they can do.
+So I, but I quickly realized dancers must have this really commonly. And as I started to do more and more research, I realized that they might not all have any, some kind of, you know, connective tissue disorder, but a lot of them do have joint hypermobility in one or more joints. And so by supporting them at a young age, maybe, just maybe, we can help keep people more active. Because I'm sure both of you have heard of or seen people who are in their 20s or, you know, even younger who are really, really disabled. And so I just want to avoid as much of that as possible and try to not over-medicalize, but catch people at the earliest possible stage and let them know what to watch for, what kind of things they can do.
 
 And it was a way to merge my love of medicine and my love of dance in this phase of my career where, you know, my husband's retired. And he's like, come on, join me in the retirement. I feel like I have—
 
@@ -109,13 +109,13 @@ Dr. Linda Bluestein: I feel like I have more left to give and—
 
 Will Flannery: that was just such an easy marriage for me. I love what you just said about merging, you know, the two things you're very passionate about, you know, in science and medicine. And then we love it when we have people who are both, you know, artists or creative in some way and really scientific and, you know, have become physicians.
 
-Dr. Linda Bluestein: Well, I think most people in medicine are creative. I think most people in general have creativity. But medicine has a way of just stamping that out, like just removing that entirely from your life. And so, uh, I— it's, it's, uh, it's such a great thing that you've been able to really focus in on, on combining those two things and, and keeping it alive. You know, we need more creativity in medicine, more people, you know, embracing that side of themselves.
+Dr. Linda Bluestein: Well, I think most people in medicine are creative. I think most people in general have creativity. But medicine has a way of just stamping that out, like just removing that entirely from your life. And so, I— it's, it's, it's such a great thing that you've been able to really focus in on, on combining those two things and, and keeping it alive. You know, we need more creativity in medicine, more people, you know, embracing that side of themselves.
 
 Will Flannery: Definitely. So you're certified in anesthesia, is that right?
 
 Dr. Linda Bluestein: Right, right. My, my training was very traditional. I went to UCLA Medical School, then I went to Mayo Clinic for residency, and I'm board certified in anesthesiology, and I practiced for many years in the operating room. And so now what I'm doing is such an interesting path because I'm so open to any kind of information and try to judge, is this something that I can incorporate into my clinical practice? Is this something that I want to share with my audience? Because to me, the most frustrating thing about hypermobility is that there is so much low-hanging fruit that most people are not aware of. And so many people, I truly believe, end up in a worse situation than really they needed to be in because their doctors didn't know this information, they didn't know this information, and we don't have enough data yet to be able to point to certain studies, but in the meantime, we can use anecdotal data, especially if it's something that's safe, you know.
 
-Um, of course we have to weigh the risks and benefits of everything, but if we're recommending something that, where the risks are pretty low, hey, why not try it?
+of course we have to weigh the risks and benefits of everything, but if we're recommending something that, where the risks are pretty low, hey, why not try it?
 
 Will Flannery: Yeah. Right. So how did you go from anesthesiology into integrative pain management? And, and what is integrative pain management?
 
@@ -135,27 +135,27 @@ And finally, my mentor, Pradeep Chopra, convinced me to open a practice. He's li
 
 But I also really felt very strongly that there were enough people that were doing interventional pain management. And even though I had done epidurals and, you know, stellate ganglion blocks and celiac ganglion blocks and things like that, I also was having enough issues with my hands. And I felt like there's a lot of people that are doing those things. I want to take the best of Western medicine and the best of Eastern medicine and be open to many, many different types of treatment approaches. And so integrative pain management just seemed like a, a really good way to go.
 
-Kristen Flannery: Yeah. And there's just nothing— I mean, you know, speaking from experience, you know, I'm, I'm somewhere on the hypermobility spectrum, somewhere problematic. I don't know exactly where. Um, but like you, I did not— I always knew that I was really flexible, right? And I always had the party tricks, you know, my elbows bend too far, and I could put my leg over my head still in my late 30s, um, things like that. But it wasn't until— and, and I had had pregnancies that just were so painful, and I didn't know why.
+Kristen Flannery: Yeah. And there's just nothing— I mean, you know, speaking from experience, you know, I'm, I'm somewhere on the hypermobility spectrum, somewhere problematic. I don't know exactly where. but like you, I did not— I always knew that I was really flexible, right? And I always had the party tricks, you know, my elbows bend too far, and I could put my leg over my head still in my late 30s, things like that. But it wasn't until— and, and I had had pregnancies that just were so painful, and I didn't know why.
 
-And I knew— I did know though, after our second kid, I was— I knew somewhere in my body, this can't— I can't do it again. Like, my body will break if I tried to do that again. Um, but I didn't know why. And of course, you know, all the, you know, medical tests and anytime I had been to a doctor about anything, there's no like, you know, obvious reason why any of this is happening.
+And I knew— I did know though, after our second kid, I was— I knew somewhere in my body, this can't— I can't do it again. Like, my body will break if I tried to do that again. but I didn't know why. And of course, you know, all the, you know, medical tests and anytime I had been to a doctor about anything, there's no like, you know, obvious reason why any of this is happening.
 
 And even, you know, Will here, he's a physician, he's an ophthalmologist. So, you know, that's different. But she knows not to come to me with that. But even him, you know, the thing that I got so tired of hearing is, you are fine. Right. If I could just strike those words from the English language, I would, because I hate that phrase because no, I am not fine. You may not be able to tell what's wrong with me, but I am not fine, right? And we're not allowed to say that around the house.
 
 Will Flannery: I'm not at all.
 
-Kristen Flannery: Yeah. Um, but you know, he would kind of poke fun, and I would too. I would laugh at myself of, you know, I'm always bumping into things, I'm always having bruises for reasons that I don't know why, and you know, just, just all these random— sometimes I have trouble swallowing. And he said, how have you not learned how to swallow in 35 years or whatever, right? Like, all these— you do it every day.
+Kristen Flannery: Yeah. but you know, he would kind of poke fun, and I would too. I would laugh at myself of, you know, I'm always bumping into things, I'm always having bruises for reasons that I don't know why, and you know, just, just all these random— sometimes I have trouble swallowing. And he said, how have you not learned how to swallow in 35 years or whatever, right? Like, all these— you do it every day.
 
-Will Flannery: I'm just saying, right? A lot of practice, but I still trip up on it sometimes. Um, you know, I've got some— I mean, I could go on and on and on. The GI stuff that, you know, that I've only— in retrospect, it wasn't until my physical therapist, um, told me, you are more— yeah, God love the physical therapist.
+Will Flannery: I'm just saying, right? A lot of practice, but I still trip up on it sometimes. you know, I've got some— I mean, I could go on and on and on. The GI stuff that, you know, that I've only— in retrospect, it wasn't until my physical therapist, told me, you are more— yeah, God love the physical therapist.
 
 Dr. Linda Bluestein: Yeah. Oh my goodness.
 
 Kristen Flannery: But she told me, I have never seen someone because with your range of motion— and I knew I was flexible, but that got me thinking like, okay, that's interesting because you do this all day every day.
 
-Dr. Linda Bluestein: Exactly. Lots of people for years now. Um, and I had had a cervical disc replacement, and so I had physical therapy after that. And I have, um— okay, you're gonna have to help me with the words, both of you. It's antero— anterolysis, yes, on one of my— so like, I don't know, one of the upper two, right? They're anterolysis. And then a couple of the lower two are retro— retro— yeah, retrolisthesis— and then I got some other weird thing happening in my lower spine. And like, who even knows anymore, you know? And it's so frustrating.
+Dr. Linda Bluestein: Exactly. Lots of people for years now. and I had had a cervical disc replacement, and so I had physical therapy after that. And I have— okay, you're gonna have to help me with the words, both of you. It's antero— anterolysis, yes, on one of my— so like, I don't know, one of the upper two, right? They're anterolysis. And then a couple of the lower two are retro— retro— yeah, retrolisthesis— and then I got some other weird thing happening in my lower spine. And like, who even knows anymore, you know? And it's so frustrating.
 
-Will Flannery: How often do you hear this type of story, uh, Linda, about, you know, Yeah, all these— all the constellation of symptoms.
+Will Flannery: How often do you hear this type of story, Linda, about, you know, Yeah, all these— all the constellation of symptoms.
 
-Dr. Linda Bluestein: And, and yeah, and the, and, and the thing is, um, I feel like it's not even just a hypermobility problem. I took my son, who's very athletic, and he had, um, he was playing Ultimate Frisbee and did a, you know, massive dive for the Frisbee, landed on his shoulder, and, you know, went in and got imaging because, I mean, the kid never complains of pain, but he was complaining of pain and The PA came back in and said, "You're fine." And what I wish she would have said is, "There's nothing fractured, but if you're hurting, you have a soft tissue injury. So you probably should baby it until it stops hurting." That's what she should have told him.
+Dr. Linda Bluestein: And, and yeah, and the, and, and the thing is, I feel like it's not even just a hypermobility problem. I took my son, who's very athletic, and he had, he was playing Ultimate Frisbee and did a, you know, massive dive for the Frisbee, landed on his shoulder, and, you know, went in and got imaging because, I mean, the kid never complains of pain, but he was complaining of pain and The PA came back in and said, "You're fine." And what I wish she would have said is, "There's nothing fractured, but if you're hurting, you have a soft tissue injury. So you probably should baby it until it stops hurting." That's what she should have told him.
 
 And my story, Kristen, is so similar to yours. I kept telling my internal medicine doctor, "Something is wrong with me. I get injured really easily." easily. My tissues, I had tearing of certain tissues during things that should not have happened. I did have an ophthalmologic problem. I had a corneal ulcer at one point.
 
@@ -175,7 +175,7 @@ Dr. Linda Bluestein: Totally.
 
 Will Flannery: Yeah. Yeah. And it's so, it hurts so much to be dismissed like that when you know something is wrong, but you can't articulate what it is and they can't find what it is. And then you're written off as it's all it's all in your head, or you're seeking attention, or you're seeking drugs, or, you know, they have all these other explanations in their minds for, for why it is that you have, you know, these visits with them.
 
-But, um, but that's why I love so much what you're doing, because you educate, you know, in addition to your— to helping patients, you also educate physicians about hypermobility and the hypermobility spectrum you know, disorder and Ehlers-Danlos syndromes and all of those things. And I think it's not— for whatever reason, it's not taught, but it seems so common. So I don't know why that is.
+But, but that's why I love so much what you're doing, because you educate, you know, in addition to your— to helping patients, you also educate physicians about hypermobility and the hypermobility spectrum you know, disorder and Ehlers-Danlos syndromes and all of those things. And I think it's not— for whatever reason, it's not taught, but it seems so common. So I don't know why that is.
 
 Kristen Flannery: Well, I'm just thinking about my education, and, you know, I was taught about Ehlers-Danlos, but I, I guess I never really thought of hypermobility as a spectrum, right?
 
@@ -185,7 +185,7 @@ Will Flannery: Oh, definitely. Yeah, that's definitely newer. And Kristen, like 
 
 Kristen Flannery: Right, exactly. That was a question actually I had. It was, you talk about, you know, you know, some, maybe some patients not having an actual connective tissue like disease, but so is it— I'll use ballet for an example— is it the training that you go through that makes you hypermobile? Is there some part of that, or is it like, is it what's the chicken of the egg?
 
-Dr. Linda Bluestein: Yeah, yeah, it's a fascinating question. And, uh, Professor Rodney Graham, Kristen, you probably know who he is. I don't know if you know who he is or not, but he's one of the grandfathers of Ehlers-Danlos and just an amazing man. But he published a study in 1972 comparing student nurses versus student ballet dancers. And he found that even the fifth finger, um, how much it could extend and also with 10 pounds of pressure, how far it extended, he found that that joint was more hypermobile in the student ballet dancers as compared to the student nurses, which would suggest that part of it, at least, is that, that when people are hypermobile, they will stay in dance longer. They're more drawn to the profession because they can excel at it.
+Dr. Linda Bluestein: Yeah, yeah, it's a fascinating question. And, Professor Rodney Graham, Kristen, you probably know who he is. I don't know if you know who he is or not, but he's one of the grandfathers of Ehlers-Danlos and just an amazing man. But he published a study in 1972 comparing student nurses versus student ballet dancers. And he found that even the fifth finger, how much it could extend and also with 10 pounds of pressure, how far it extended, he found that that joint was more hypermobile in the student ballet dancers as compared to the student nurses, which would suggest that part of it, at least, is that, that when people are hypermobile, they will stay in dance longer. They're more drawn to the profession because they can excel at it.
 
 But, Will, to answer your question, there's also a lot of additional factors that can be involved. For example, let's say you have hip dysplasia. So that's when you have a really, really shallow hip socket, right? So if you have hip dysplasia, you can have incredible range of motion of your hips, but you might not have any other excessive range of motion in other joints. So that can be very beneficial in something like ballet, but maybe you don't have a connective tissue disorder.
 
@@ -201,7 +201,7 @@ Kristen Flannery: Yeah, yeah, yeah. And I had no problem. It was great because, 
 
 But yeah, it did. It made it easier to be a gymnast. But then, you know, now I'm like, I've got two daughters. I don't know if I want to put them in gymnastics because, you know, they're interested. And it was so fun. And it was such— I mean, I love gymnastics to the point, like you, I'm sure that it's part of your identity, right?
 
-Will Flannery: Totally. Um, but it has also done a lot. I don't know, it and my hypermobility probably have, have done a lot of damage. Um, So yeah, it's always tricky thinking about, do you want your kids to do that stuff or maybe try to get them in, I don't know, swimming?
+Will Flannery: Totally. but it has also done a lot. I don't know, it and my hypermobility probably have, have done a lot of damage. So yeah, it's always tricky thinking about, do you want your kids to do that stuff or maybe try to get them in, I don't know, swimming?
 
 Dr. Linda Bluestein: Yeah. Couldn't be better. I think the devil is really in the details. You know, if you are at a school where, whether it's a dance school or a gymnastics studio or gym where the teachers are really respectful of the students and they're really trying to train them in the healthiest possible way, I really think that those kinds of activities are hugely beneficial because they're good for our psyche, they're good for building muscle mass, as you pointed out, they're good for social engagement, which especially nowadays, you know, it's so easy to be disconnected from people, even for kids. So I think there's tremendous benefit that we can get from doing those kinds of activities. I think it's all in how we do them.
 
@@ -215,13 +215,13 @@ Kristen Flannery: Exactly. I didn't know I was abnormal. You can probably relate
 
 But yeah, my husband is the same way. He's, you know, a lot less flexible than I am. But yeah, we just don't know. And you're right, dealing with a skewed population, if you're training in ballet or something, then you— everyone around you is crazy flexible too, often. So it just seems normal.
 
-But yeah, that's why he ended up having to like do all the baths of our kids, you know, because you have to like lean over the tub, and I could not do that without just really having a lot of shoulder pain. And I mean, example after example after example. And I know you're familiar them. But what can— so our audience is largely, um, you know, physicians or healthcare workers or people training to be one or people who know one. Um, what can you look for as a medical professional? What should they be paying attention to? Or what should, what should make the little bell go off in their head that says, oh, maybe this person is hypermobile? And then what do they do about it?
+But yeah, that's why he ended up having to like do all the baths of our kids, you know, because you have to like lean over the tub, and I could not do that without just really having a lot of shoulder pain. And I mean, example after example after example. And I know you're familiar them. But what can— so our audience is largely, you know, physicians or healthcare workers or people training to be one or people who know one. what can you look for as a medical professional? What should they be paying attention to? Or what should, what should make the little bell go off in their head that says, oh, maybe this person is hypermobile? And then what do they do about it?
 
 Dr. Linda Bluestein: Sure. So that's a fabulous question, and I will start out with the punchline and then we'll back up. There's a saying that was, I believe, first said by Dr. Heidi Collins: if you can't connect the issues, think connective tissues. And I think that summarizes it beautifully because, you know, someone comes into your office and they've got gastrointestinal complaints, they're dizzy when they stand up, they've got some musculoskeletal stuff that you can't explain, right?
 
 Will Flannery: Tendinopathies.
 
-Dr. Linda Bluestein: You know, it is interesting though, because I also see so often people But also on the flip side, you know, thinking that everything is related. So, you know, it's, um, it's having that balance of, you know, understanding connective tissue and what it does and that it is present everywhere in the body. And so, you know, a great example is if you have lax connective tissue in your gastrointestinal tract, it makes sense that you're going to have slower motility through the gastrointestinal tract, which could put you at risk for SIBO, small intestinal bacterial overgrowth, in the upper gastrointestinal tract. And then constipation is an extremely common problem for people in the lower gastrointestinal tract, and they can have evacuatory disorders, etc.
+Dr. Linda Bluestein: You know, it is interesting though, because I also see so often people But also on the flip side, you know, thinking that everything is related. So, you know, it's, it's having that balance of, you know, understanding connective tissue and what it does and that it is present everywhere in the body. And so, you know, a great example is if you have lax connective tissue in your gastrointestinal tract, it makes sense that you're going to have slower motility through the gastrointestinal tract, which could put you at risk for SIBO, small intestinal bacterial overgrowth, in the upper gastrointestinal tract. And then constipation is an extremely common problem for people in the lower gastrointestinal tract, and they can have evacuatory disorders, etc.
 
 Gastroparesis, or slow gastric emptying, is just extremely common. And so people get nausea, they get pain, abdominal pain after eating, and things like that. So it's, it's so incredibly important for people no matter what your specialty is, to just be aware that connective tissue is everywhere. So regardless of your specialty, you will see these patients. And so having it on your radar can just be so incredibly helpful.
 
@@ -243,9 +243,9 @@ Dr. Linda Bluestein: Right, right. Well, one thing I wanted to ask you about is 
 
 Will Flannery: Okay. Well, if I'm going to be truthful, man, I would have left the operating room a long time ago. And it wasn't the ophthalmologists that were the most guilty, but my husband is a surgeon. My husband, my husband is a urologist with a U. Yes. And I say with a U because urology and neurology, of course, sound similar. So that's why I clarify. But he used to say to me all the time, you have so many issues. Your issues have issues.
 
-Kristen Flannery: Yep. Um, you know, because we didn't know what was wrong with me, like you guys, you know, we didn't know.
+Kristen Flannery: Yep. you know, because we didn't know what was wrong with me, like you guys, you know, we didn't know.
 
-Will Flannery: Right. And, uh, it was hard for him, you know, to understand. And, and, you know, as a surgeon, you're very used to having more discrete problems and you have— you— yeah.
+Will Flannery: Right. And, it was hard for him, you know, to understand. And, and, you know, as a surgeon, you're very used to having more discrete problems and you have— you— yeah.
 
 Dr. Linda Bluestein: And you're either— yeah, I love having just one problem to deal with.
 
@@ -277,15 +277,15 @@ Oh my God. Not I's and O's. And I just like, oh, and they— oh, you must have d
 
 Will Flannery: Oh, I'm sure.
 
-Dr. Linda Bluestein: Yeah. And then of course, when I had to come back and, you know, with my head hanging and, and tell my staff, okay, so apparently you were asking for I's and O's and not I's and no's. You know, that misunderstanding actually, I think, might have saved you, because, um, going into a room where a bunch of nurses are doing sign out and interrupting their sign out and asking a question, that's like another way to, to get, uh, disappeared in medicine. So yeah, exactly. Uh, I think instead you gave them a laugh, which I'm sure they probably needed that anyway.
+Dr. Linda Bluestein: Yeah. And then of course, when I had to come back and, you know, with my head hanging and, and tell my staff, okay, so apparently you were asking for I's and O's and not I's and no's. You know, that misunderstanding actually, I think, might have saved you, because, going into a room where a bunch of nurses are doing sign out and interrupting their sign out and asking a question, that's like another way to, to get, disappeared in medicine. So yeah, exactly. I think instead you gave them a laugh, which I'm sure they probably needed that anyway.
 
 Will Flannery: So right, right. I love it.
 
-Kristen Flannery: Oh, that's funny. And then you gave it one more, uh, this time as a— I love stories as whenever a physician can relate to or, you know, experiences as a patient as well. And so you also have one that involves a tennis ball at a wedding. I love— see, this is the way we need to do it. I, I want like 2 or 3 words.
+Kristen Flannery: Oh, that's funny. And then you gave it one more, this time as a— I love stories as whenever a physician can relate to or, you know, experiences as a patient as well. And so you also have one that involves a tennis ball at a wedding. I love— see, this is the way we need to do it. I, I want like 2 or 3 words.
 
 Dr. Linda Bluestein: Yeah, yeah, really get me like, okay, what on earth is this gonna be about?
 
-Will Flannery: As soon as you said that, I was like, you probably were wondering, what, a tennis ball at a wedding? Um, so, so this was when I was in a really dark time health-wise and had no idea what was going on, and my doctors didn't know what was going on, and I was undergoing all kinds of procedures. And they kept thinking that my problem, my main problem at that point was like radicular pain going down my left leg. So pain that was kind of shooting from my, my back down the back aspect of my left leg.
+Will Flannery: As soon as you said that, I was like, you probably were wondering, what, a tennis ball at a wedding? so, so this was when I was in a really dark time health-wise and had no idea what was going on, and my doctors didn't know what was going on, and I was undergoing all kinds of procedures. And they kept thinking that my problem, my main problem at that point was like radicular pain going down my left leg. So pain that was kind of shooting from my, my back down the back aspect of my left leg.
 
 And so I was going to a wedding of a cousin, another cousin story, and I was gonna go even though I was in a lot of pain. And I had figured out that by sitting on a tennis ball and kind of putting it underneath that hamstring insertion area probably just was painful enough that it kind of distracted me from my original pain. And that's how it was felt to be helpful. But anyway, I brought a tennis ball for this purpose, right?
 
@@ -309,9 +309,9 @@ Kristen Flannery: Exactly. If there's anyone that was in attendance that's liste
 
 Dr. Linda Bluestein: Yeah.
 
-Will Flannery: Well, let's, um, I want to get into the, uh, because I'm really excited about this, this game. This is the first time we've played this little game.
+Will Flannery: Well, let's, I want to get into the, because I'm really excited about this, this game. This is the first time we've played this little game.
 
-Kristen Flannery: Okay. Um, it's, uh, called for me.
+Kristen Flannery: Okay. it's, called for me.
 
 Will Flannery: Yeah, that's for you. It's called Backwards Medical Smret. Smret. Smret. Smret. Because what we're going to be doing is spelling.
 
@@ -319,7 +319,7 @@ Kristen Flannery: It's a spelling test.
 
 Dr. Linda Bluestein: Oh no.
 
-Will Flannery: Yes, yes it is. It's a— there are two different types of words that, that, um, actually Kristen has— I helped her put together the list, but I don't know which one she's going to ask. Um, there's, there's hypermobility terms And there's also some ophthalmology terms in there.
+Will Flannery: Yes, yes it is. It's a— there are two different types of words that, that, actually Kristen has— I helped her put together the list, but I don't know which one she's going to ask. there's, there's hypermobility terms And there's also some ophthalmology terms in there.
 
 Dr. Linda Bluestein: Oh boy.
 
@@ -339,7 +339,7 @@ Will Flannery: Then don't give an ophthalmology term.
 
 Kristen Flannery: Well, I was gonna say, given that it's in the hypermobility area— yeah, given that I was struggling with terms, I'm getting a little nervous right now and I'm getting out a pen.
 
-Dr. Linda Bluestein: Okay, yeah, there you go. Um, okay, this— see, I think this might be the easiest one I have. I don't even know how to say these things, so apologies to the listeners. This is going to be so fun because Kristen has never— she actually This is the first time she's seen this list. And I am not in medicine, so.
+Dr. Linda Bluestein: Okay, yeah, there you go. okay, this— see, I think this might be the easiest one I have. I don't even know how to say these things, so apologies to the listeners. This is going to be so fun because Kristen has never— she actually This is the first time she's seen this list. And I am not in medicine, so.
 
 Will Flannery: Yeah, so we get to hear her pronounce these.
 
@@ -363,13 +363,13 @@ Will Flannery: All right, give me— okay, give me one.
 
 Kristen Flannery: Okay, one for you. What is osteopenia?
 
-Will Flannery: Lack of, uh, Low bone density. Low bone density.
+Will Flannery: Lack of, Low bone density. Low bone density.
 
 Kristen Flannery: Yeah, something I'm getting evaluated for this week. Osteopenia, osteoporosis. So yeah, okay, is that more common in hypermobile patients or just—
 
 Dr. Linda Bluestein: It is.
 
-Kristen Flannery: Okay, yeah. Um, okay, I'll do the same. I'll start with an easier ophthalmology one for you and then I won't be nice anymore. So, um, aniridia.
+Kristen Flannery: Okay, yeah. okay, I'll do the same. I'll start with an easier ophthalmology one for you and then I won't be nice anymore. So, aniridia.
 
 Will Flannery: Aniridia. Yeah, lack of an iris.
 
@@ -387,7 +387,7 @@ Dr. Linda Bluestein: That's true. And you have so many acronyms.
 
 Kristen Flannery: Oh my God, we do. Yes, we, we, we, we throw them at people.
 
-Dr. Linda Bluestein: Yeah. Yep. Okay, Dr. Bluestein, let's go with— oh, this is, um, you know, topical.
+Dr. Linda Bluestein: Yeah. Yep. Okay, Dr. Bluestein, let's go with— oh, this is, you know, topical.
 
 Will Flannery: Spondylolisthesis.
 
@@ -419,15 +419,15 @@ Dr. Linda Bluestein: Yeah, it's not going to change what's happening. It's not a
 
 Kristen Flannery: Yeah, that's smart. All right, don't give me— give me a— give me a hypermobility word.
 
-Will Flannery: Oh, I spent all day with ophthalmology terms. Those words are harder. Okay, I'll give you— I'll give you a hypermobility, and then I'm coming back. Okay, um, kyphoscoliosis.
+Will Flannery: Oh, I spent all day with ophthalmology terms. Those words are harder. Okay, I'll give you— I'll give you a hypermobility, and then I'm coming back. Okay, kyphoscoliosis.
 
-Dr. Linda Bluestein: Kyphoscoliosis. Uh, S-I-S O-I-L-O-C-S-O-H-P-Y-K.
+Dr. Linda Bluestein: Kyphoscoliosis. S-I-S O-I-L-O-C-S-O-H-P-Y-K.
 
 Kristen Flannery: You got it. Woo. Does covering one eye help? You had your eye covered the whole time. That's my— I was trying to— I'm just smashing my head to hold my brain in place so that I can think better that way.
 
-Will Flannery: I love it. Okay, what is scoliosis? Yeah, right, just covering one eye. Oh my God, is it better one or two? Um, yeah, so what is kyphoscoliosis?
+Will Flannery: I love it. Okay, what is scoliosis? Yeah, right, just covering one eye. Oh my God, is it better one or two? yeah, so what is kyphoscoliosis?
 
-Dr. Linda Bluestein: Oh, um, uh, yes, kyphoscoliosis is, is where, um, it's a, an abnormal curvature of the spine. Um, I guess I think of like lordosis as, as like a concave kind of, and then kypho is like the opposite.
+Dr. Linda Bluestein: Oh, yes, kyphoscoliosis is, is where, it's a, an abnormal curvature of the spine. I guess I think of like lordosis as, as like a concave kind of, and then kypho is like the opposite.
 
 Kristen Flannery: How do you do, Dr. Lustig?
 
@@ -439,7 +439,7 @@ Dr. Linda Bluestein: Oh, it's like a kind of Sideways curve.
 
 Will Flannery: Yeah, it says a curvature of the spine in both the lateral and posterior directions, which can be caused by EDS.
 
-Kristen Flannery: Ah, okay, so it's going to be like a— yeah, probably could be lumbar or thoracic. Okay, okay, um, a couple more. Dr. Bluestein, um, dysautonomia.
+Kristen Flannery: Ah, okay, so it's going to be like a— yeah, probably could be lumbar or thoracic. Okay, okay, a couple more. Dr. Bluestein, dysautonomia.
 
 Dr. Linda Bluestein: A-I-M-O-N-O-T-U-A-S-Y-D.
 
@@ -481,7 +481,7 @@ Will Flannery: Which is a treatment for glaucoma.
 
 Dr. Linda Bluestein: Well, there you go. And I've never heard that word before in my life.
 
-Kristen Flannery: Yeah. And you probably will never hear it, uh, again.
+Kristen Flannery: Yeah. And you probably will never hear it, again.
 
 Dr. Linda Bluestein: Yeah. That's, that's the last time. Unless you end up needing it, which hope you don't.
 
@@ -495,11 +495,11 @@ Kristen Flannery: Oh yeah, we tried. Let's take another quick break and we'll co
 
 All right, we are back. Let's take a look at some of our favorite medical stories sent in by our listeners. And we have Dr. Linda Bluestein here to listen to these stories with us. Our first one is from an anonymous source.
 
-Will Flannery: Hello, Dr. G and Lady G. I have an embarrassing mistake story from intern year. Uh, first, I was only a couple weeks into my general surgery intern year when all the best stories happen, like the first few weeks of intern year. You can attest, Linda.
+Will Flannery: Hello, Dr. G and Lady G. I have an embarrassing mistake story from intern year. first, I was only a couple weeks into my general surgery intern year when all the best stories happen, like the first few weeks of intern year. You can attest, Linda.
 
 Dr. Linda Bluestein: Oh yeah.
 
-Will Flannery: Um, on a night float service— it's getting even better— uh, so covering multiple teams. And you know, when you're on night float, yeah, you don't know the patients like super well. Like, you just, you kind of like, you're aware of the issues, but you know, you're just stepping in and taking, trying to to just make sure everyone survives over the next few steps. And hopefully nothing bad happens.
+Will Flannery: on a night float service— it's getting even better— so covering multiple teams. And you know, when you're on night float, yeah, you don't know the patients like super well. Like, you just, you kind of like, you're aware of the issues, but you know, you're just stepping in and taking, trying to to just make sure everyone survives over the next few steps. And hopefully nothing bad happens.
 
 Dr. Linda Bluestein: Yes, exactly. So I got a page from a nurse that a patient's blood sugar was 700, which is very high. I referred to my insulin sliding scale, gave the nurse an order to give a lot of insulin. Maybe an hour later, I got a page. Is this the intern on call? I said, yes. Said, this is Dr. C, the chief resident. Did you just give my wife insulin? My first thought was, of course not, but the patient from before was indeed his wife. So his patient's spouse is his chief resident?
 
@@ -523,7 +523,7 @@ Kristen Flannery: Lesson, lesson learned here. Oh no. So this is the, the story.
 
 Dr. Linda Bluestein: I bet.
 
-Will Flannery: Yeah, that is— I mean, we all have things like that though, right? I mean, yeah, you know, you learn something like that and it's true, you never make a mistake like that again. Uh, some of the decisions that the chief resident was involved, you know, that it wasn't just like an anonymous patient and their family.
+Will Flannery: Yeah, that is— I mean, we all have things like that though, right? I mean, yeah, you know, you learn something like that and it's true, you never make a mistake like that again. some of the decisions that the chief resident was involved, you know, that it wasn't just like an anonymous patient and their family.
 
 Dr. Linda Bluestein: Exactly.
 
@@ -531,9 +531,9 @@ Kristen Flannery: Yeah. And some of the mistakes you just never make because you
 
 Dr. Linda Bluestein: That's another way to do it.
 
-Kristen Flannery: Yeah, for sure. All right, our second, uh, story comes from Colby. The first time I felt like an actual doctor was as an August intern— again, intern year, beginning of intern year— during an emergency medicine rotation. A guy in his early 20s came in with intense lower abdominal pain so severe he was vomiting. After passing him through the donut of truth, which is another name for the CT scanner, He had a, he had a testicle in his inguinal canal. I don't know what that is, but I take it it does not belong there.
+Kristen Flannery: Yeah, for sure. All right, our second, story comes from Colby. The first time I felt like an actual doctor was as an August intern— again, intern year, beginning of intern year— during an emergency medicine rotation. A guy in his early 20s came in with intense lower abdominal pain so severe he was vomiting. After passing him through the donut of truth, which is another name for the CT scanner, He had a, he had a testicle in his inguinal canal. I don't know what that is, but I take it it does not belong there.
 
-Dr. Linda Bluestein: Nope, it does not. It's too high, too high up. Uh, it's not in the scrotum, it's up in the body.
+Dr. Linda Bluestein: Nope, it does not. It's too high, too high up. it's not in the scrotum, it's up in the body.
 
 Will Flannery: Yep. So he either had 3 testicles or one had retracted back into his inguinal canal. The patient was unaware of any issues with his testicles, and when he checked on his boys, he started to panic as there was only one, only one home. Home.
 
@@ -543,13 +543,13 @@ Dr. Linda Bluestein: Oh my God, that's hilarious. Colby sounds like a party. I l
 
 Will Flannery: Yeah, keeps you going.
 
-Kristen Flannery: Totally. Uh, so thank you guys for those stories. Send us your stories, knockknockhigh@human-content.com. Uh, Dr. Linda Bluestein, thank you so much for joining us. Uh, before we go though, um, tell us what you, what you got going on. Anything you promote? Where can people find you? Find you all the things?
+Kristen Flannery: Totally. so thank you guys for those stories. Send us your stories, knockknockhigh@human-content.com. Dr. Linda Bluestein, thank you so much for joining us. before we go though, tell us what you, what you got going on. Anything you promote? Where can people find you? Find you all the things?
 
 Dr. Linda Bluestein: Sure, sure. So a few years ago, I founded an organization called Bendy Bodies. So my medical practice is Hypermobility MD, and I— it was originally Wisconsin-based and I had a different name, but then I changed the name a few years ago. So that's my medical practice, and then the rest of my work is through Bendy Bodies, which is an organization designed to help people anywhere on the spectrum, regardless of where they are on the hypermobility spectrum, and supporting them in creating a better quality of life through educational resources like my free podcast.
 
 And I also do offer one-on-one sessions through Bendy Bodies, which allows people who cannot become a patient because they cannot travel to Colorado or Wisconsin, allows them to get a consultation and information that they can either enact on their own and/or take to their local healthcare professionals to take the next steps.
 
-Will Flannery: That's amazing. I wish I had had something like that, you know, 10 years ago or something when I had no idea what was going on. And you've also posted a couple of articles, um, that are on your website, correct? That are, that are really, really fascinating and have a lot of great information.
+Will Flannery: That's amazing. I wish I had had something like that, you know, 10 years ago or something when I had no idea what was going on. And you've also posted a couple of articles, that are on your website, correct? That are, that are really, really fascinating and have a lot of great information.
 
 Dr. Linda Bluestein: Yeah, it sounds like they are— Hope for Hypermobility. They are directed mostly towards medical professionals too for some continuing education, right?
 
@@ -577,7 +577,7 @@ Dr. Linda Bluestein: Bye-bye.
 
 Will Flannery: Well, that was a lot of fun.
 
-Kristen Flannery: Yes, so interesting. I could talk for days and days and days about that. She, she was, was really fascinating to listen to and her story. And, and I know, uh, you've been— it's like Christmas morning for you.
+Kristen Flannery: Yes, so interesting. I could talk for days and days and days about that. She, she was, was really fascinating to listen to and her story. And, and I know, you've been— it's like Christmas morning for you.
 
 Will Flannery: I know. Well, when you go your whole life with this thing that no one can explain and everyone tells you is all in your head, and then you find an explanation for it, you know, you just want to shout it from the rooftops. So I love what she's doing. I hope everybody goes to check out her work for sure and learn more about hypermobility and Ehlers-Danlos syndromes. It's, it's important things. And like she said, you all have them, and you are seeing these patients every day. You just may not be recognizing it yet. So definitely go check out how to recognize them.
 
@@ -593,7 +593,7 @@ Kristen Flannery: Oh, yay. I love that. We like that. That's some of my favorite
 
 Will Flannery: Yes, awesome. Thank you. Dorky doctor songs. Absolutely. Keep sending us all of your, your guest ideas, your stories, your jokes. We'd love to hear all that stuff. And maybe send your songs over too. That's right, your dorky doctor songs.
 
-Kristen Flannery: Yeah. Um, full video episodes of this podcast are up every week on my YouTube channel at D Glockenflecken. We also have a Patreon, lots of fun perks, bonus episodes, or react to medical shows and movies, hang out with other members of this community. We're there, we love commenting, all the stuff. Early ad-free episode access, interactive Q&A livestream events, behind the scenes stuff, lots more. Uh, patreon.com/glockenflecken or go to glockenflecken.com.
+Kristen Flannery: Yeah. full video episodes of this podcast are up every week on my YouTube channel at D Glockenflecken. We also have a Patreon, lots of fun perks, bonus episodes, or react to medical shows and movies, hang out with other members of this community. We're there, we love commenting, all the stuff. Early ad-free episode access, interactive Q&A livestream events, behind the scenes stuff, lots more. patreon.com/glockenflecken or go to glockenflecken.com.
 
 Speaking of Patreon community perks, new member shout out to Shaban S. Hey Shaban, how you doing? Thanks joining. Shout out to all the Jonathans as always. We got Steven G, Abby H, Brianna Lee C, Shaver W, Dr. J, Edward K, Jonathan A, Jonathan F. Love having two Jonathans in the Jonathan Patreon tier. Caitlin C, K L Leah, Lucia C, Marian W, Mark, Mary H, Mr. Granddaddy, Omar, Patrick, Roskbox, and Sharon S.
 
