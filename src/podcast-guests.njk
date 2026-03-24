@@ -67,7 +67,7 @@ permalink: /podcast-guests/
 </div>
 
 {% block scripts %}
-<script src="/js/data.js"></script>
+<script src="/js/data.js?v={{ "now" | isoDate }}"></script>
 <script>
 // Build guest index from episode data
 const HOST_PATTERNS = [/linda\s+bluestein/i];
