@@ -1,12 +1,6 @@
 {
   "key": "keeya steel",
   "bio": "Keeya Steel is a chronic illness advocate and creator of Hell's Bells and Mast Cells, raising awareness about MCAS, EDS, and dysautonomia through humor and education. She lives with hEDS, POTS, and MCAS, and achieved MCAS remission in 2021.",
-  "credentials": "",
   "affiliation": "Hell's Bells and Mast Cells",
-  "links": [
-    {
-      "url": "https://hellsbellsandmastcells.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://hellsbellsandmastcells.com/"
 }

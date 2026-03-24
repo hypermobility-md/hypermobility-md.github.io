@@ -3,10 +3,5 @@
   "bio": "Vita Bachman is a former international Ukrainian rhythmic gymnast and coach who trained with Natalia Kiseleva in Kiev. She is the owner and head coach of Stretching Beyond Limits, a cross-training program for dancers, gymnasts, aerialists, and contortionists.",
   "credentials": "MBA",
   "affiliation": "Stretching Beyond Limits",
-  "links": [
-    {
-      "url": "http://www.stretchingbeyondlimits.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "http://www.stretchingbeyondlimits.com/"
 }

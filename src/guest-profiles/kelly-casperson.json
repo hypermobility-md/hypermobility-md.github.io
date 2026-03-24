@@ -3,10 +3,5 @@
   "bio": "Dr. Kelly Casperson is a board-certified urologic surgeon and founder of The Casperson Clinic. She is the host of the podcast 'You Are Not Broken' and a bestselling author on hormones and sexual health.",
   "credentials": "MD",
   "affiliation": "The Casperson Clinic",
-  "links": [
-    {
-      "url": "https://kellycaspersonmd.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://kellycaspersonmd.com/"
 }

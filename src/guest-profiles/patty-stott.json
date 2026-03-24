@@ -3,10 +3,5 @@
   "bio": "Patricia Stott is a physical therapist, athletic trainer, and certified hand therapist who treats primarily those with HSD/EDS. She is the co-author of 'Taming the Zebra,' a definitive physical therapy guide to managing HSD/EDS.",
   "credentials": "PT, DPT, MS, ATC, CHT",
   "affiliation": "Elevation Wellness",
-  "links": [
-    {
-      "url": "https://www.ehlers-danlos.com/patricia-stott/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.ehlers-danlos.com/patricia-stott/"
 }

@@ -3,14 +3,6 @@
   "bio": "Dr. Janet Settle is an integrative psychiatrist in Denver with over 35 years of experience, board certified in psychiatry, holistic medicine, and integrative medicine. She draws from a broad range of modalities to address root causes of psychiatric symptoms.",
   "credentials": "MD",
   "affiliation": "Integrative Psychiatric Care",
-  "links": [
-    {
-      "url": "https://janetsettle.com/",
-      "label": "Website"
-    },
-    {
-      "url": "https://www.linkedin.com/in/janet-settle-md-b2666142/",
-      "label": "LinkedIn"
-    }
-  ]
+  "website": "https://janetsettle.com/",
+  "linkedin": "https://www.linkedin.com/in/janet-settle-md-b2666142/"
 }

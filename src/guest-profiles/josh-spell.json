@@ -3,10 +3,5 @@
   "bio": "Josh Spell is a licensed clinical social worker who specializes in eating disorders and the mental health of performing artists. He is the consulting mental health therapist for Pacific Northwest Ballet and owner of Flexible Mind Counseling.",
   "credentials": "MSW, LICSW",
   "affiliation": "Flexible Mind Counseling",
-  "links": [
-    {
-      "url": "https://flexiblemindcounseling.org/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://flexiblemindcounseling.org/"
 }

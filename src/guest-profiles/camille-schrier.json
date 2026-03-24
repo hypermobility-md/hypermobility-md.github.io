@@ -3,10 +3,5 @@
   "bio": "Camille Schrier is Miss America 2020, a Doctor of Pharmacy, and an EDS advocate who was diagnosed with Ehlers-Danlos Syndrome at age 11. She won the Miss America title with a chemistry demonstration and has used her platform to raise awareness of EDS and promote STEM education.",
   "credentials": "PharmD, BS in Biochemistry",
   "affiliation": "The Ehlers Danlos Society",
-  "links": [
-    {
-      "url": "https://www.camilleschrier.com",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.camilleschrier.com"
 }

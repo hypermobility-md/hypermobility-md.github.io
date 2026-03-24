@@ -3,30 +3,10 @@
   "bio": "Dr. Shimi Kang is an award-winning psychiatrist, Clinical Associate Professor at UBC, and bestselling author of 'The Dolphin Parent' and 'The Tech Solution.' She received the Queen Elizabeth II Diamond Jubilee Medal.",
   "credentials": "MD",
   "affiliation": "University of British Columbia",
-  "links": [
-    {
-      "url": "https://www.drshimikang.com",
-      "label": "Website"
-    },
-    {
-      "url": "https://www.linkedin.com/in/drshimikang/",
-      "label": "LinkedIn"
-    },
-    {
-      "url": "https://www.facebook.com/drshimikang/",
-      "label": "Facebook"
-    },
-    {
-      "url": "https://www.instagram.com/drshimikang/",
-      "label": "Instagram"
-    },
-    {
-      "url": "https://www.youtube.com/channel/UCfqNKUKkxgM8M7Psn2f8fPA",
-      "label": "YouTube"
-    },
-    {
-      "url": "https://x.com/drshimikang",
-      "label": "Twitter/X"
-    }
-  ]
+  "website": "https://www.drshimikang.com",
+  "linkedin": "https://www.linkedin.com/in/drshimikang/",
+  "facebook": "https://www.facebook.com/drshimikang/",
+  "instagram": "https://www.instagram.com/drshimikang/",
+  "youtube": "https://www.youtube.com/channel/UCfqNKUKkxgM8M7Psn2f8fPA",
+  "twitter": "https://x.com/drshimikang"
 }

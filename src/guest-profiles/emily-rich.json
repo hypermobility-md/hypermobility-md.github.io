@@ -3,10 +3,5 @@
   "bio": "Emily Rich is an occupational therapist, researcher, and educator specializing in POTS, Ehlers-Danlos syndromes, and chronic conditions at Tucson Medical Center. She earned her PhD studying POTS rehabilitation and is also a patient with hypermobile EDS and POTS.",
   "credentials": "PhD, MOT, OTR/L",
   "affiliation": "Tucson Medical Center, Dysautonomia International, The Ehlers-Danlos Society",
-  "links": [
-    {
-      "url": "https://www.otemily.com",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.otemily.com"
 }

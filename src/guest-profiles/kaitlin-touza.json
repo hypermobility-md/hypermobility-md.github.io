@@ -3,10 +3,5 @@
   "bio": "Dr. Kaitlin Touza is a pain psychologist and Acting Assistant Professor at the University of Washington School of Medicine. She completed training in Clinical Pain Psychology at Stanford.",
   "credentials": "PhD",
   "affiliation": "University of Washington Medicine",
-  "links": [
-    {
-      "url": "https://www.uwmedicine.org/bios/kaitlin-touza",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.uwmedicine.org/bios/kaitlin-touza"
 }

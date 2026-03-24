@@ -3,10 +3,5 @@
   "bio": "Dr. Matthew Watto is a Clinical Assistant Professor at the University of Pennsylvania and co-founder of The Curbsiders, a weekly internal medicine podcast with over 100,000 active monthly listeners.",
   "credentials": "MD, FACP",
   "affiliation": "University of Pennsylvania, The Curbsiders",
-  "links": [
-    {
-      "url": "https://www.mattwattomd.com",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.mattwattomd.com"
 }

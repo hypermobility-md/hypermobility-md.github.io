@@ -3,10 +3,5 @@
   "bio": "Cailey Brandon is the founder of Verb Movement Rehabilitation, bridging physical therapy and Pilates methodology for clients with chronic pain and neurological conditions. She founded Verb after her own diagnosis with a connective tissue disorder and autonomic disease.",
   "credentials": "MS Cognitive Neuroscience, NCPT",
   "affiliation": "Verb Movement Rehabilitation",
-  "links": [
-    {
-      "url": "https://www.verb-madetomove.com",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.verb-madetomove.com"
 }

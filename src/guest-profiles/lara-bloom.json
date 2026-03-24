@@ -3,10 +3,5 @@
   "bio": "Lara Bloom is the President and CEO of The Ehlers-Danlos Society, leading global efforts in awareness, research funding, and medical collaboration for EDS and hypermobility spectrum disorders. She is an Academic Affiliate Professor of Practice at Penn State College of Medicine and a Fellow of the Royal Society of Medicine.",
   "credentials": "Fellow of the Royal Society of Medicine",
   "affiliation": "The Ehlers-Danlos Society, Penn State College of Medicine",
-  "links": [
-    {
-      "url": "https://www.larabloom.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.larabloom.com/"
 }

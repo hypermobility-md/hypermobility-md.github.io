@@ -3,22 +3,8 @@
   "bio": "Dr. Zachary Spiritos is a neurogastroenterologist and founder of EverBetter Medicine, treating complex digestive conditions, dysautonomia, and MCAS. He specializes in GI complications of hypermobility syndromes.",
   "credentials": "MD, MPH",
   "affiliation": "EverBetter Medicine",
-  "links": [
-    {
-      "url": "https://everbettermedicine.health",
-      "label": "Website"
-    },
-    {
-      "url": "https://www.everbettermedicine.health",
-      "label": "Website"
-    },
-    {
-      "url": "https://www.facebook.com/zachary.spiritos/",
-      "label": "Facebook"
-    },
-    {
-      "url": "https://www.instagram.com/drzacspiritos/",
-      "label": "Instagram"
-    }
-  ]
+  "website": "https://everbettermedicine.health",
+  "website2": "https://www.everbettermedicine.health",
+  "facebook": "https://www.facebook.com/zachary.spiritos/",
+  "instagram": "https://www.instagram.com/drzacspiritos/"
 }

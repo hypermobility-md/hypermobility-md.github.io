@@ -3,10 +3,5 @@
   "bio": "Dr. Jill Carnahan is a functional medicine physician and founder of Flatiron Functional Medicine. A survivor of both breast cancer and Crohn's disease, she is board certified in Integrative Holistic Medicine.",
   "credentials": "MD, ABIHM, IFMCP",
   "affiliation": "Flatiron Functional Medicine",
-  "links": [
-    {
-      "url": "https://www.jillcarnahan.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.jillcarnahan.com/"
 }

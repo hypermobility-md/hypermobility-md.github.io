@@ -3,10 +3,5 @@
   "bio": "Dr. Paldeep Atwal is a board-certified clinical and medical biochemical geneticist and director of Atwal Clinic for Genomic and Personalized Medicine. He has co-discovered two new genetic connective tissue syndromes and published over 100 publications.",
   "credentials": "MD",
   "affiliation": "Atwal Clinic for Genomic & Personalized Medicine",
-  "links": [
-    {
-      "url": "https://atwalclinic.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://atwalclinic.com/"
 }

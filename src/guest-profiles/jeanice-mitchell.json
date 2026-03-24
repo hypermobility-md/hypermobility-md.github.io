@@ -3,10 +3,5 @@
   "bio": "Jeanice Mitchell is a pelvic health physical therapist and president of Integrity Rehab & Home Health in Texas, specializing in pelvic floor rehabilitation with particular expertise in the hypermobile population. She founded myPFM, a nonprofit pelvic health public service campaign.",
   "credentials": "PT, MPT, WCS, BCB-PMD",
   "affiliation": "Integrity Rehab & Home Health, myPFM",
-  "links": [
-    {
-      "url": "https://integrityrehab.net/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://integrityrehab.net/"
 }

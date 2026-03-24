@@ -3,10 +3,5 @@
   "bio": "Dr. Heather Tick holds the Gunn-Loke Endowed Professorship of Integrative Pain Medicine at the University of Washington. She specializes in non-pharmacologic pain treatments and authored Holistic Pain Relief.",
   "credentials": "MD, MA",
   "affiliation": "University of Washington",
-  "links": [
-    {
-      "url": "https://heathertickmd.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://heathertickmd.com/"
 }

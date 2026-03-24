@@ -3,10 +3,5 @@
   "bio": "Dr. Satish Raj is a Professor of Cardiac Science at the University of Calgary and a global leader in POTS research. He founded the Calgary Autonomic Investigation & Management Clinic and was named Dysautonomia International Physician of the Year.",
   "credentials": "MD, MSCI, FRCPC",
   "affiliation": "University of Calgary, Libin Cardiovascular Institute",
-  "links": [
-    {
-      "url": "https://libin.ucalgary.ca/node/240",
-      "label": "Website"
-    }
-  ]
+  "website": "https://libin.ucalgary.ca/node/240"
 }

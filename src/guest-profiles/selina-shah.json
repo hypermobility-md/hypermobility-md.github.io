@@ -3,10 +3,5 @@
   "bio": "Dr. Selina Shah is a board-certified sports medicine physician and Director of Dance Medicine at the Center for Sports Medicine in San Francisco. She serves as team physician for USA Synchronized Swimming, USA Weight Lifting, and USA Figure Skating.",
   "credentials": "MD, FACP, FAMSSM",
   "affiliation": "BASS Medical Group",
-  "links": [
-    {
-      "url": "https://selinashah.com",
-      "label": "Website"
-    }
-  ]
+  "website": "https://selinashah.com"
 }

@@ -3,14 +3,6 @@
   "bio": "Dr. Patrick Agnew is a podiatric surgery specialist board certified in foot and ankle surgery. He serves on the Medical and Scientific Board of The Ehlers-Danlos Society.",
   "credentials": "DPM",
   "affiliation": "The Ehlers-Danlos Society",
-  "links": [
-    {
-      "url": "https://www.ehlers-danlos.com/patrick-agnew/",
-      "label": "Website"
-    },
-    {
-      "url": "https://www.facebook.com/profile.php?id=100068257805669",
-      "label": "Facebook"
-    }
-  ]
+  "website": "https://www.ehlers-danlos.com/patrick-agnew/",
+  "facebook": "https://www.facebook.com/profile.php?id=100068257805669"
 }

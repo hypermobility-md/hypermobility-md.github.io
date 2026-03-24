@@ -3,10 +3,5 @@
   "bio": "Katie Dettelbach is a former critical care cardiac registered nurse and co-founder of Whealth, helping people with hypermobility and chronic pain build strength and manage their conditions. Diagnosed with hEDS, she combined her nursing background with movement to develop specialized programming.",
   "credentials": "RN, Certified Pilates Instructor, FRCms",
   "affiliation": "Whealth",
-  "links": [
-    {
-      "url": "https://spreadwhealth.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://spreadwhealth.com/"
 }

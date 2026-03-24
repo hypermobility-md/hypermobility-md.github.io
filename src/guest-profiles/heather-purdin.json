@@ -3,10 +3,5 @@
   "bio": "Heather Purdin is a physical therapist and owner of Good Health Physical Therapy & Wellness in Portland, Oregon, specializing in hypermobility spectrum disorders and EDS. She is President of the Oregon Area Ehlers-Danlos Society and co-authored the book 'Taming the Zebra.'",
   "credentials": "MS, PT, CMPT",
   "affiliation": "Good Health Physical Therapy & Wellness, Oregon Area Ehlers-Danlos Society",
-  "links": [
-    {
-      "url": "https://goodhealthphysicaltherapy.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://goodhealthphysicaltherapy.com/"
 }

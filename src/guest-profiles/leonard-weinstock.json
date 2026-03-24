@@ -3,10 +3,5 @@
   "bio": "Dr. Leonard Weinstock is a board-certified gastroenterologist recognized as a leading expert on MCAS and SIBO. He is an associate professor at Washington University School of Medicine with over 80 publications.",
   "credentials": "MD",
   "affiliation": "Specialists in Gastroenterology",
-  "links": [
-    {
-      "url": "https://www.gidoctor.net/leonard-weinstock/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.gidoctor.net/leonard-weinstock/"
 }

@@ -3,10 +3,5 @@
   "bio": "Dr. Victor M. Montori is an endocrinologist, health services researcher, and care activist at the Mayo Clinic. He is the author of more than 750 peer-reviewed publications and a pioneer in shared decision making and minimally disruptive medicine.",
   "credentials": "MD",
   "affiliation": "Mayo Clinic",
-  "links": [
-    {
-      "url": "https://www.mayoclinic.org/biographies/montori-victor-m-m-d/bio-20054635",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.mayoclinic.org/biographies/montori-victor-m-m-d/bio-20054635"
 }

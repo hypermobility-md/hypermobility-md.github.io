@@ -3,10 +3,5 @@
   "bio": "Dr. Amanda Cassil is a licensed clinical psychologist and founder of STEM Psychological Services. She specializes in supporting women in STEM fields and is the author of The Empowered Highly Sensitive Person.",
   "credentials": "PhD",
   "affiliation": "STEM Psychological Services",
-  "links": [
-    {
-      "url": "https://www.stempsychology.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.stempsychology.com/"
 }

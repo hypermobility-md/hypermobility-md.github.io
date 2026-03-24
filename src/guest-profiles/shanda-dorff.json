@@ -3,10 +3,5 @@
   "bio": "Dr. Shanda Dorff is a board-certified family medicine physician who founded Complex Cares LLC to focus on treating EDS, MCAS, and POTS. She practices in the Minneapolis/St. Paul area.",
   "credentials": "MD, FAAFP",
   "affiliation": "Complex Cares LLC",
-  "links": [
-    {
-      "url": "https://www.complexcaresmn.com",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.complexcaresmn.com"
 }

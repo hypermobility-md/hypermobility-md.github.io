@@ -1,12 +1,6 @@
 {
   "key": "jenelle manzi",
   "bio": "Jenelle Manzi is a professional ballet dancer with the New York City Ballet who was diagnosed with Ehlers-Danlos syndrome at age 18. She launched a recipe blog and founded Get Golden, a snack bar company, after re-evaluating her nutrition approach.",
-  "credentials": "",
   "affiliation": "New York City Ballet, Get Golden",
-  "links": [
-    {
-      "url": "http://ballerinajournal.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "http://ballerinajournal.com/"
 }

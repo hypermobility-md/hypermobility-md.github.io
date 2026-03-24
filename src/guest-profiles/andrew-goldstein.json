@@ -3,14 +3,6 @@
   "bio": "Dr. Andrew Goldstein is a board-certified gynecologist and Director of the Centers for Vulvovaginal Disorders. A past president of ISSWSH, he has published over 100 peer-reviewed articles on vulvodynia and female sexual pain.",
   "credentials": "MD, FACOG",
   "affiliation": "Centers for Vulvovaginal Disorders",
-  "links": [
-    {
-      "url": "https://vulvodynia.com/",
-      "label": "Website"
-    },
-    {
-      "url": "https://www.instagram.com/the.cvvd/",
-      "label": "Instagram"
-    }
-  ]
+  "website": "https://vulvodynia.com/",
+  "instagram": "https://www.instagram.com/the.cvvd/"
 }

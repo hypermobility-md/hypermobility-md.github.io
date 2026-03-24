@@ -3,26 +3,9 @@
   "bio": "Adriaan Louw is a physical therapist, pain scientist, and leading authority on pain neuroscience education. He has published over 70 peer-reviewed papers and serves as Senior Faculty and Pain Science Director for Evidence in Motion.",
   "credentials": "PT, PhD",
   "affiliation": "Evidence in Motion, UNLV",
-  "links": [
-    {
-      "url": "https://whyyouhurt.com/",
-      "label": "Website"
-    },
-    {
-      "url": "https://www.facebook.com/EIMTeam",
-      "label": "Facebook"
-    },
-    {
-      "url": "https://www.linkedin.com/company/evidence-in-motion-eim-",
-      "label": "LinkedIn"
-    },
-    {
-      "url": "https://www.instagram.com/eimteam/",
-      "label": "Instagram"
-    },
-    {
-      "url": "https://www.twitter.com/EIMTeam",
-      "label": "Twitter"
-    }
-  ]
+  "website": "https://whyyouhurt.com/",
+  "facebook": "https://www.facebook.com/EIMTeam",
+  "linkedin": "https://www.linkedin.com/company/evidence-in-motion-eim-",
+  "instagram": "https://www.instagram.com/eimteam/",
+  "twitter": "https://www.twitter.com/EIMTeam"
 }

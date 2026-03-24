@@ -3,10 +3,5 @@
   "bio": "Dr. David Kaufman is an internal medicine specialist and founder of the Center for Complex Diseases, with expertise in ME/CFS, Long Covid, dysautonomia, POTS, MCAS, and autoimmune disease.",
   "credentials": "MD",
   "affiliation": "Center for Complex Diseases",
-  "links": [
-    {
-      "url": "https://www.centerforcomplexdiseases.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.centerforcomplexdiseases.com/"
 }

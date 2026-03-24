@@ -3,10 +3,5 @@
   "bio": "Jeannie Di Bon is an internationally recognized movement therapist specializing in hypermobility, EDS, and chronic pain with over 16 years of experience. She is the creator of the Integral Movement Method and founder of The Zebra Club app, drawing from her own diagnoses of hEDS, MCAS, POTS, and CFS.",
   "credentials": "MSc (Pain Management)",
   "affiliation": "The Zebra Club, London Hypermobility Network of Excellence, The Ehlers Danlos Society",
-  "links": [
-    {
-      "url": "https://jeanniedibon.com",
-      "label": "Website"
-    }
-  ]
+  "website": "https://jeanniedibon.com"
 }

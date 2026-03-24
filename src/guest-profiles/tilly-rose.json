@@ -1,28 +1,10 @@
 {
   "key": "tilly rose",
   "bio": "Tilly Rose is an author and patient advocate who spent 20 years searching for a diagnosis before being identified with hypermobile Ehlers-Danlos Syndrome. Her debut memoir 'Be Patient' offers an account of her patient journey, and she founded @thatpatientcollective.",
-  "credentials": "",
   "affiliation": "The Patient Collective",
-  "links": [
-    {
-      "url": "https://linktr.ee/bepatientbook",
-      "label": "Website"
-    },
-    {
-      "url": "https://www.facebook.com/people/Tilly-Rose-Author/61575923876707/",
-      "label": "Facebook"
-    },
-    {
-      "url": "https://www.linkedin.com/in/tillyrose/",
-      "label": "LinkedIn"
-    },
-    {
-      "url": "https://www.tiktok.com/@thattillyrose",
-      "label": "TikTok"
-    },
-    {
-      "url": "https://www.instagram.com/thattillyrose/",
-      "label": "Instagram"
-    }
-  ]
+  "website": "https://linktr.ee/bepatientbook",
+  "facebook": "https://www.facebook.com/people/Tilly-Rose-Author/61575923876707/",
+  "linkedin": "https://www.linkedin.com/in/tillyrose/",
+  "tiktok": "https://www.tiktok.com/@thattillyrose",
+  "instagram": "https://www.instagram.com/thattillyrose/"
 }

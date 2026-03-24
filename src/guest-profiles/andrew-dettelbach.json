@@ -3,10 +3,5 @@
   "bio": "Andrew Dettelbach is the co-founder of Whealth, a coaching program that has helped over 22,000 people overcome chronic pain since 2012. He has hypermobile Ehlers-Danlos Syndrome and recovered from a severe disc herniation without surgery.",
   "credentials": "BS in Kinesiology, FRCms",
   "affiliation": "Whealth",
-  "links": [
-    {
-      "url": "https://spreadwhealth.com",
-      "label": "Website"
-    }
-  ]
+  "website": "https://spreadwhealth.com"
 }

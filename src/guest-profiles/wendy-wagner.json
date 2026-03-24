@@ -3,10 +3,5 @@
   "bio": "Dr. Wendy Wagner Franklin is a board-certified physical therapist specializing in connective tissue disorders and hypermobility. She personally manages hEDS, POTS, and MCAS, and trains medical providers to recognize and treat hypermobility spectrum disorders.",
   "credentials": "DPT",
   "affiliation": "Wendy4Therapy",
-  "links": [
-    {
-      "url": "https://www.wendy4therapy.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.wendy4therapy.com/"
 }

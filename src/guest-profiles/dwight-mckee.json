@@ -3,11 +3,6 @@
   "bio": "Dr. Dwight McKee is a board-certified oncologist-hematologist also certified in nutrition and integrative/holistic medicine, with over 45 years of medical experience. He authored After Cancer Care.",
   "credentials": "MD",
   "affiliation": "Independent practice",
-  "links": [
-    {
-      "url": "https://re-enliven.info/dwight-mckee/",
-      "label": "Website"
-    }
-  ],
+  "website": "https://re-enliven.info/dwight-mckee/",
   "image": "/Guests/Dwight_Mckee.jpg"
 }

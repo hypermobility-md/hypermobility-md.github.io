@@ -3,10 +3,5 @@
   "bio": "Lorna Ryan is an internationally recognized specialist in clinical nutrition and lifestyle medicine for hypermobility and EDS, and the founder of Lorna Ryan Health. She chairs the Diet and Nutrition Working Group of the International Consortium on EDS and HSD.",
   "credentials": "DipION, mBANT, rCNHC",
   "affiliation": "Lorna Ryan Health, The London Hypermobility Network, The Ehlers-Danlos Society",
-  "links": [
-    {
-      "url": "https://lornaryanhealth.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://lornaryanhealth.com/"
 }

@@ -3,10 +3,5 @@
   "bio": "Dr. Laurence Kinsella is a board-certified neurologist specializing in autonomic dysfunction, neuropathy, and complex neurological issues at the intersection of dysautonomia, hypermobility, and MCAS.",
   "credentials": "MD",
   "affiliation": "SSM Neuroscience Institute, Saint Louis University",
-  "links": [
-    {
-      "url": "https://psnmo.net/member-providers/dr-laurence-kinsella-neurology/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://psnmo.net/member-providers/dr-laurence-kinsella-neurology/"
 }

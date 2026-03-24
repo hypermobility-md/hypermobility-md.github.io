@@ -3,10 +3,5 @@
   "bio": "Dr. Leslie Russek is Professor Emeritus of Physical Therapy at Clarkson University with over 30 years of clinical experience, including 25 years working with patients with hypermobile EDS.",
   "credentials": "PT, DPT, PhD, OCS",
   "affiliation": "Clarkson University",
-  "links": [
-    {
-      "url": "https://www.clarkson.edu/people/leslie-russek",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.clarkson.edu/people/leslie-russek"
 }

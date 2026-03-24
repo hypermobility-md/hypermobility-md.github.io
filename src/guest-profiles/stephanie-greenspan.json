@@ -3,10 +3,5 @@
   "bio": "Dr. Stephanie Greenspan is a physical therapist specializing in circus artists and dancers, and founder of Artletic Science. She co-authored clinical guidelines for management of hypermobility in performing artists.",
   "credentials": "PT, DPT, OCS, NCS",
   "affiliation": "Artletic Science",
-  "links": [
-    {
-      "url": "https://artleticscience.com/about",
-      "label": "Website"
-    }
-  ]
+  "website": "https://artleticscience.com/about"
 }

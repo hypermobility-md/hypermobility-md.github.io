@@ -20,6 +20,30 @@ module.exports = function () {
         );
         if (data.key) {
           const { key, image, ...rest } = data;
+
+          // Build links array from individual social fields (if not already present)
+          if (!rest.links) {
+            const socialFields = [
+              { field: 'website', label: 'Website' },
+              { field: 'website2', label: 'Site 2' },
+              { field: 'linkedin', label: 'LinkedIn' },
+              { field: 'twitter', label: 'Twitter' },
+              { field: 'substack', label: 'Substack' },
+              { field: 'instagram', label: 'Instagram' },
+              { field: 'facebook', label: 'Facebook' },
+              { field: 'youtube', label: 'YouTube' },
+              { field: 'tiktok', label: 'TikTok' },
+              { field: 'wikipedia', label: 'Wikipedia' },
+            ];
+            const links = [];
+            socialFields.forEach(({ field, label }) => {
+              if (rest[field]) {
+                links.push({ url: rest[field], label });
+              }
+            });
+            if (links.length) rest.links = links;
+          }
+
           profiles[key] = rest;
           // If profile has a photo, add it to the images map too
           if (image) {

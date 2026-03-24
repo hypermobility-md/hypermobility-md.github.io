@@ -3,10 +3,5 @@
   "bio": "Corinne McLees is an occupational therapist turned hand coach specializing in helping people with chronic hand pain and hypermobility. She has nearly 8 years of experience in hand therapy, including 5 years in a Level 1 trauma hospital, and has a connective tissue disorder herself.",
   "credentials": "MS in Occupational Therapy, OTR/L",
   "affiliation": "Hand Coach Corinne, Mobile OT & Wellness Group",
-  "links": [
-    {
-      "url": "https://www.handcoachcorinne.com",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.handcoachcorinne.com"
 }

@@ -3,10 +3,5 @@
   "bio": "Bonnie Moore Southgate is a former elite ballet dancer who performed as a soloist with American Ballet Theatre and the Royal Ballet, winning the Prix de Lausanne. After being diagnosed with Ehlers-Danlos Syndrome, she transitioned into a career as a neurokinetic therapist and Pilates trainer specializing in hypermobility.",
   "credentials": "Sports Therapist, Neurokinetic Therapist",
   "affiliation": "Movement Anatomy Essentials, SEDSConnective",
-  "links": [
-    {
-      "url": "https://movementanatomyessentials.co.uk",
-      "label": "Website"
-    }
-  ]
+  "website": "https://movementanatomyessentials.co.uk"
 }

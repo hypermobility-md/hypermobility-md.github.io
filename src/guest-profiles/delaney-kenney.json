@@ -3,10 +3,5 @@
   "bio": "Delaney Kenney is a neuroscience graduate from Haverford College diagnosed with hypermobile Ehlers-Danlos Syndrome. She conducted EDS research at the University of Colorado Anschutz Medical Campus, working on reprogramming hEDS patient fibroblasts into induced pluripotent stem cells.",
   "credentials": "BA in Neuroscience (Haverford College)",
   "affiliation": "Haverford College",
-  "links": [
-    {
-      "url": "https://www.linkedin.com/in/delaneykenney/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.linkedin.com/in/delaneykenney/"
 }

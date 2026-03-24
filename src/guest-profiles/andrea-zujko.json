@@ -3,10 +3,5 @@
   "bio": "Andrea Zujko is a board-certified orthopedic physical therapist and dance medicine specialist. She has been the senior physical therapist at Westside Dance Physical Therapy since 2002, providing care for the New York City Ballet.",
   "credentials": "PT, DPT, OCS, COMT",
   "affiliation": "Westside Dance Physical Therapy",
-  "links": [
-    {
-      "url": "https://www.dancemedei.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.dancemedei.com/"
 }

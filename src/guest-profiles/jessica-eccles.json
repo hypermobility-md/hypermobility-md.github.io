@@ -3,10 +3,5 @@
   "bio": "Dr. Jessica Eccles is a Reader in Brain-Body Medicine at Brighton and Sussex Medical School and a Consultant Neurodevelopmental Psychiatrist who co-leads the world's first Neurodivergent Brain-Body Clinic.",
   "credentials": "MB ChB, MRCPsych, PhD",
   "affiliation": "Brighton and Sussex Medical School",
-  "links": [
-    {
-      "url": "https://www.bsms.ac.uk/about/contact-us/staff/dr-jessica-eccles.aspx",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.bsms.ac.uk/about/contact-us/staff/dr-jessica-eccles.aspx"
 }

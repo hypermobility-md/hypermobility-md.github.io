@@ -3,10 +3,5 @@
   "bio": "Dr. Kara Wada is a board-certified allergist, immunologist, and lifestyle medicine physician. She founded The Immune Confidence Institute and lives with Sjogren's disease and dysautonomia herself.",
   "credentials": "MD",
   "affiliation": "The Immune Confident MD",
-  "links": [
-    {
-      "url": "https://www.drkarawada.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.drkarawada.com/"
 }

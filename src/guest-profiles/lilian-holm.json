@@ -3,10 +3,5 @@
   "bio": "Lilian Holm is a physical therapist with over 30 years of experience who has focused exclusively on patients with hypermobility spectrum disorders and Ehlers-Danlos syndromes.",
   "credentials": "PT, DPT, CHC",
   "affiliation": "Lilian Holm Wellness",
-  "links": [
-    {
-      "url": "https://www.lilianholm.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.lilianholm.com/"
 }

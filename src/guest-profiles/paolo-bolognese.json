@@ -3,10 +3,5 @@
   "bio": "Dr. Paolo Bolognese is a neurosurgeon and Surgical Director of the Chiari EDS Center, specializing in Chiari malformation, craniocervical instability, and tethered cord surgery. He co-founded The Chiari Institute and is a global authority on the surgical management of EDS-related neurological conditions.",
   "credentials": "MD",
   "affiliation": "Chiari EDS Center",
-  "links": [
-    {
-      "url": "https://chiarieds.com/dr-paolo-a-bolognese/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://chiarieds.com/dr-paolo-a-bolognese/"
 }

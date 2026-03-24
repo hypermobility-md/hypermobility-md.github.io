@@ -3,10 +3,5 @@
   "bio": "Colin Halverson is a bioethicist and Assistant Professor of Medicine at Indiana University School of Medicine. His research focuses on the ethical care of patients with rare diseases, particularly Ehlers-Danlos Syndrome.",
   "credentials": "PhD",
   "affiliation": "Indiana University Center for Bioethics",
-  "links": [
-    {
-      "url": "https://bioethics.iu.edu/people/colin-halverson.html",
-      "label": "Website"
-    }
-  ]
+  "website": "https://bioethics.iu.edu/people/colin-halverson.html"
 }

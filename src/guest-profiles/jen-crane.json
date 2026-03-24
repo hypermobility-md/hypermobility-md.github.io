@@ -3,10 +3,5 @@
   "bio": "Dr. Jen Crane is a physical therapist and athletic trainer specializing in circus arts, pelvic floor therapy, and hypermobility. She herself scores 9/9 on the Beighton hypermobility scale.",
   "credentials": "PT, DPT, OCS, ATC",
   "affiliation": "Cirque Physio",
-  "links": [
-    {
-      "url": "https://www.cirquephysio.com",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.cirquephysio.com"
 }

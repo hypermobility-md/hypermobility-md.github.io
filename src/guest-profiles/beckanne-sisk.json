@@ -1,12 +1,6 @@
 {
   "key": "beckanne sisk",
   "bio": "Beckanne Sisk is a principal ballet dancer now with the National Ballet of Canada, having previously spent 12 years at Ballet West. She has scoliosis and hypermobility that have both challenged and shaped her career, and her accolades include the Jerome Robbins Award and a Princess Grace Dance Fellowship.",
-  "credentials": "",
   "affiliation": "National Ballet of Canada",
-  "links": [
-    {
-      "url": "https://www.instagram.com/beckannesisk/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.instagram.com/beckannesisk/"
 }

@@ -3,10 +3,5 @@
   "bio": "Aiko Callahan is a board-certified orthopedic physical therapist with over 13 years of experience treating performing artists and hypermobility-related conditions. She co-created a new hypermobility assessment tool for clinicians.",
   "credentials": "DPT, OCS",
   "affiliation": "Aiko Callahan Physical Therapy LLC",
-  "links": [
-    {
-      "url": "https://www.aikocallahanpt.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.aikocallahanpt.com/"
 }

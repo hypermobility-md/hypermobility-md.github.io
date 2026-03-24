@@ -82,27 +82,47 @@ collections:
       - { label: "Bio", name: "bio", widget: "text", required: false }
       - { label: "Credentials", name: "credentials", widget: "string", required: false, hint: "e.g. MD, PhD, DPT" }
       - { label: "Affiliation", name: "affiliation", widget: "string", required: false }
-      - label: "Links"
-        name: "links"
-        widget: "list"
-        required: false
-        fields:
-          - { label: "URL", name: "url", widget: "string" }
-          - label: "Label"
-            name: "label"
-            widget: "select"
-            required: false
-            options:
-              - "Website"
-              - "Site 2"
-              - "LinkedIn"
-              - "Twitter"
-              - "Substack"
-              - "Instagram"
-              - "Facebook"
-              - "YouTube"
-              - "TikTok"
-              - "Wikipedia"
-              - "Other"
-            hint: "Select the type of link"
+      - { label: "Website", name: "website", widget: "string", required: false, hint: "https://yourwebsite.com" }
+      - { label: "Website 2", name: "website2", widget: "string", required: false, hint: "https://secondsite.com" }
+      - { label: "LinkedIn", name: "linkedin", widget: "string", required: false, hint: "https://linkedin.com/in/yourprofile" }
+      - { label: "Twitter / X", name: "twitter", widget: "string", required: false, hint: "https://twitter.com/yourhandle" }
+      - { label: "Substack", name: "substack", widget: "string", required: false, hint: "https://yourname.substack.com" }
+      - { label: "Instagram", name: "instagram", widget: "string", required: false, hint: "https://instagram.com/yourhandle" }
+      - { label: "Facebook", name: "facebook", widget: "string", required: false, hint: "https://facebook.com/yourpage" }
+      - { label: "YouTube", name: "youtube", widget: "string", required: false, hint: "https://youtube.com/@yourchannel" }
+      - { label: "TikTok", name: "tiktok", widget: "string", required: false, hint: "https://tiktok.com/@yourhandle" }
+      - { label: "Wikipedia", name: "wikipedia", widget: "string", required: false, hint: "https://en.wikipedia.org/wiki/Your_Name" }
       - { label: "Photo", name: "image", widget: "image", required: false, hint: "Upload or select a guest photo" }
+
+  - name: "guest-appearances"
+    label: "Guest Appearances"
+    folder: "src/guest-appearances"
+    create: true
+    extension: "json"
+    format: "json"
+    slug: "{{fields.showName | slugify}}"
+    identifier_field: "showName"
+    summary: "{{fields.showName}} — {{fields.episodeTitle}}"
+    fields:
+      - { label: "Show Name", name: "showName", widget: "string", hint: "Name of the podcast or show" }
+      - { label: "Episode Title", name: "episodeTitle", widget: "string" }
+      - { label: "Link", name: "url", widget: "string", hint: "URL to listen or watch" }
+      - { label: "Image URL", name: "imageUrl", widget: "string", required: false, hint: "Show logo or thumbnail URL" }
+      - label: "Type"
+        name: "type"
+        widget: "select"
+        default: "listen"
+        options:
+          - { label: "Listen", value: "listen" }
+          - { label: "Watch", value: "watch" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false, hint: "Appearance date (for sorting)" }
+      - { label: "Website", name: "website", widget: "string", required: false, hint: "https://showwebsite.com" }
+      - { label: "Website 2", name: "website2", widget: "string", required: false, hint: "https://secondsite.com" }
+      - { label: "LinkedIn", name: "linkedin", widget: "string", required: false, hint: "https://linkedin.com/in/profile" }
+      - { label: "Twitter / X", name: "twitter", widget: "string", required: false, hint: "https://twitter.com/handle" }
+      - { label: "Substack", name: "substack", widget: "string", required: false, hint: "https://name.substack.com" }
+      - { label: "Instagram", name: "instagram", widget: "string", required: false, hint: "https://instagram.com/handle" }
+      - { label: "Facebook", name: "facebook", widget: "string", required: false, hint: "https://facebook.com/page" }
+      - { label: "YouTube", name: "youtube", widget: "string", required: false, hint: "https://youtube.com/@channel" }
+      - { label: "TikTok", name: "tiktok", widget: "string", required: false, hint: "https://tiktok.com/@handle" }
+      - { label: "Wikipedia", name: "wikipedia", widget: "string", required: false, hint: "https://en.wikipedia.org/wiki/Name" }

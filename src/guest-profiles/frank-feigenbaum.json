@@ -3,10 +3,5 @@
   "bio": "Dr. Frank Feigenbaum is a Board-Certified Neurosurgeon who has treated over 2,000 Tarlov and meningeal cyst patients. He developed refined surgical techniques with proven outcomes and serves on the Tarlov Cyst Foundation advisory board.",
   "credentials": "MD, FACS, FAANS",
   "affiliation": "Feigenbaum Neurosurgery",
-  "links": [
-    {
-      "url": "https://www.frankfeigenbaum.com/",
-      "label": "Website"
-    }
-  ]
+  "website": "https://www.frankfeigenbaum.com/"
 }
