@@ -42,6 +42,11 @@ permalink: /podcast-episodes/
         <span class="search-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
         <input type="text" id="searchInput" placeholder="Search episodes, guests, topics..." autocomplete="off" spellcheck="false">
       </div>
+      <select class="sort-select" id="searchScope">
+        <option value="transcript">Search Transcript</option>
+        <option value="title-desc">Search Title & Description</option>
+        <option value="all">Search All</option>
+      </select>
       <select class="sort-select" id="sortSelect">
         <option value="newest">Newest First</option>
         <option value="oldest">Oldest First</option>
@@ -146,6 +151,7 @@ permalink: /podcast-episodes/
 let activeTag = 'all';
 let searchQuery = '';
 let sortMode = 'newest';
+let searchScope = 'transcript';
 
 const TAG_COLORS = {
   'EDS': '#4a2d7a', 'POTS': '#2a7a9d', 'MCAS': '#9d2a6b',
@@ -303,16 +309,25 @@ function buildCard(ep) {
   const guestLine = guestStr ? `<div class="guest-name${isMulti ? ' multi-guest' : ''}">with ${guestStr}</div>` : '';
   const meta = [ep.date ? formatDate(ep.date) : '', ep.duration].filter(Boolean).join(' · ');
   const idx = EPISODES.indexOf(ep);
+  const q = searchQuery.trim();
+  const isSearching = !!q;
+  const showTitleHighlight = isSearching && (searchScope === 'title-desc' || searchScope === 'all');
+  const showTranscriptSnippets = isSearching && (searchScope === 'transcript' || searchScope === 'all');
 
-  // Show transcript snippets when search matches transcript
+  // Highlight title when searching title/description
+  const titleHtml = showTitleHighlight ? highlightText(cleanTitle(ep.title), q) : cleanTitle(ep.title);
+  const descText = truncateAtSentence(ep.description, 280);
+  const descHtml = showTitleHighlight ? highlightText(descText, q) : descText;
+
+  // Show transcript snippets when searching transcript
   let snippetsHtml = '';
-  if (searchQuery.trim() && ep.transcript) {
-    const snippets = getTranscriptSnippets(ep.transcript, searchQuery.trim(), 3);
+  if (showTranscriptSnippets && ep.transcript) {
+    const snippets = getTranscriptSnippets(ep.transcript, q, 3);
     if (snippets.length > 0) {
       snippetsHtml = '<div class="card-transcript-snippets">' +
         snippets.map(s => {
           const truncated = s.length > 200 ? s.substring(0, 200).trim() + '...' : s;
-          return `<div class="card-transcript-snippet">${highlightText(truncated, searchQuery.trim())}</div>`;
+          return `<div class="card-transcript-snippet">${highlightText(truncated, q)}</div>`;
         }).join('') + '</div>';
     }
   }
@@ -323,12 +338,12 @@ function buildCard(ep) {
       ${epNum}
       <div class="card-header-text">
         ${guestLine}
-        <h3>${cleanTitle(ep.title)}</h3>
+        <h3>${titleHtml}</h3>
       </div>
       ${buildAvatarHtml(ep)}
     </div>
     <div class="card-body">
-      <p class="card-description">${truncateAtSentence(ep.description, 280)}</p>
+      <p class="card-description">${descHtml}</p>
       ${snippetsHtml}
       <div class="card-tags">${tagChips}</div>
     </div>
@@ -349,34 +364,58 @@ function stripHtml(html) {
 }
 
 // Extract up to 3 sentence-level snippets from transcript matching query
-// Supports non-consecutive word matching ("blood test" matches "test the blood")
+// Prioritizes: 1) exact whole word matches, 2) exact phrase, 3) substring, 4) non-consecutive words
 function getTranscriptSnippets(transcript, query, maxSnippets) {
   if (!transcript || !query) return [];
   const plain = stripHtml(transcript);
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);
   const plainLower = plain.toLowerCase();
+  const max = maxSnippets || 3;
 
   // Check if any match exists at all
   if (!wordsMatch(plainLower, words)) return [];
 
   // Split into sentences (rough heuristic)
   const sentences = plain.split(/(?<=[.!?])\s+(?=[A-Z])/);
+  const added = new Set();
   const matches = [];
-  // Prefer exact phrase matches first, then non-consecutive
-  for (let i = 0; i < sentences.length && matches.length < (maxSnippets || 3); i++) {
-    if (sentences[i].toLowerCase().includes(query.toLowerCase())) {
-      matches.push(sentences[i].trim());
+
+  function addSnippet(s) {
+    const trimmed = s.trim();
+    if (!added.has(trimmed) && matches.length < max) {
+      added.add(trimmed);
+      matches.push(trimmed);
     }
   }
-  // Fill remaining with non-consecutive word matches
-  if (matches.length < (maxSnippets || 3) && words.length > 1) {
-    for (let i = 0; i < sentences.length && matches.length < (maxSnippets || 3); i++) {
-      const sLower = sentences[i].toLowerCase();
-      if (!matches.includes(sentences[i].trim()) && wordsMatch(sLower, words)) {
-        matches.push(sentences[i].trim());
-      }
+
+  // Pass 1: sentences with exact whole-word matches for all query words
+  for (const s of sentences) {
+    if (matches.length >= max) break;
+    if (allExactWords(s, words)) addSnippet(s);
+  }
+
+  // Pass 2: exact phrase match (consecutive)
+  if (words.length > 1) {
+    for (const s of sentences) {
+      if (matches.length >= max) break;
+      if (s.toLowerCase().includes(query.toLowerCase())) addSnippet(s);
     }
   }
+
+  // Pass 3: substring containment (any word appears, even as part of another word)
+  for (const s of sentences) {
+    if (matches.length >= max) break;
+    if (wordsMatch(s.toLowerCase(), words)) addSnippet(s);
+  }
+
+  // Pass 4: non-consecutive word matches (multi-word queries)
+  if (words.length > 1) {
+    for (const s of sentences) {
+      if (matches.length >= max) break;
+      if (wordsMatch(s.toLowerCase(), words)) addSnippet(s);
+    }
+  }
+
   return matches;
 }
 
@@ -412,6 +451,10 @@ function allExactWords(text, words) {
 
 // Score an episode for relevance ranking
 // Higher score = more relevant. 0 = no match.
+// Search scope controls which fields are searched:
+//   'transcript' (default) — guest name + transcript
+//   'title-desc' — guest name + title + description
+//   'all' — all fields
 function scoreEpisode(ep, queryStr) {
   const q = queryStr.toLowerCase();
   const words = q.split(/\s+/).filter(Boolean);
@@ -422,7 +465,10 @@ function scoreEpisode(ep, queryStr) {
   const descLower = ep.description.toLowerCase();
   const transcriptPlain = ep.transcript ? stripHtml(ep.transcript).toLowerCase() : '';
 
-  // --- Guest Name matches (highest priority: 1000+) ---
+  const includeTranscript = searchScope === 'transcript' || searchScope === 'all';
+  const includeTitleDesc = searchScope === 'title-desc' || searchScope === 'all';
+
+  // --- Guest Name matches (always searched, highest priority: 1000+) ---
   if (words.length === 1) {
     if (hasExactWord(guestStr, words[0]))       score += 1200;
     else if (guestStr.includes(words[0]))        score += 1000;
@@ -431,33 +477,38 @@ function scoreEpisode(ep, queryStr) {
     else if (wordsMatch(guestStr, words))        score += 1000;
   }
 
-  // --- Title matches (second priority: 500+) ---
-  if (words.length === 1) {
-    if (hasExactWord(titleLower, words[0]))      score += 600;
-    else if (titleLower.includes(words[0]))      score += 500;
-  } else {
-    if (titleLower.includes(q))                  score += 700;  // exact phrase in title
-    else if (allExactWords(titleLower, words))   score += 600;
-    else if (wordsMatch(titleLower, words))      score += 500;
-  }
-
-  // --- Description matches (50+) ---
-  if (words.length === 1) {
-    if (hasExactWord(descLower, words[0]))        score += 75;
-    else if (descLower.includes(words[0]))        score += 50;
-  } else {
-    if (descLower.includes(q))                    score += 75;
-    else if (wordsMatch(descLower, words))        score += 50;
-  }
-
-  // --- Transcript matches (lowest priority: 10+) ---
-  if (transcriptPlain) {
+  // --- Transcript matches (primary when in transcript/all mode) ---
+  if (includeTranscript && transcriptPlain) {
     if (words.length === 1) {
-      if (hasExactWord(transcriptPlain, words[0]))  score += 20;
-      else if (transcriptPlain.includes(words[0]))  score += 10;
+      if (hasExactWord(transcriptPlain, words[0]))  score += 600;
+      else if (transcriptPlain.includes(words[0]))  score += 400;
     } else {
-      if (transcriptPlain.includes(q))               score += 25;
-      else if (wordsMatch(transcriptPlain, words))   score += 10;
+      if (transcriptPlain.includes(q))               score += 700;
+      else if (allExactWords(transcriptPlain, words)) score += 600;
+      else if (wordsMatch(transcriptPlain, words))   score += 400;
+    }
+  }
+
+  // --- Title matches (primary when in title-desc/all mode) ---
+  if (includeTitleDesc) {
+    if (words.length === 1) {
+      if (hasExactWord(titleLower, words[0]))      score += 600;
+      else if (titleLower.includes(words[0]))      score += 400;
+    } else {
+      if (titleLower.includes(q))                  score += 700;
+      else if (allExactWords(titleLower, words))   score += 600;
+      else if (wordsMatch(titleLower, words))      score += 400;
+    }
+  }
+
+  // --- Description matches (when in title-desc/all mode) ---
+  if (includeTitleDesc) {
+    if (words.length === 1) {
+      if (hasExactWord(descLower, words[0]))        score += 75;
+      else if (descLower.includes(words[0]))        score += 50;
+    } else {
+      if (descLower.includes(q))                    score += 75;
+      else if (wordsMatch(descLower, words))        score += 50;
     }
   }
 
@@ -510,7 +561,9 @@ function renderEpisodes() {
 function clearAll() {
   searchQuery = '';
   activeTag = 'all';
+  searchScope = 'transcript';
   document.getElementById('searchInput').value = '';
+  document.getElementById('searchScope').value = 'transcript';
   document.querySelectorAll('.filter-tag').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.tag === 'all');
   });
@@ -527,6 +580,11 @@ document.getElementById('searchInput').addEventListener('input', function(e) {
 
 document.getElementById('sortSelect').addEventListener('change', function(e) {
   sortMode = e.target.value;
+  renderEpisodes();
+});
+
+document.getElementById('searchScope').addEventListener('change', function(e) {
+  searchScope = e.target.value;
   renderEpisodes();
 });
 

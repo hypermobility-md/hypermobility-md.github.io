@@ -252,6 +252,16 @@
 }
 
 /* Transcript search snippets on episode cards */
+/* Search highlight marks in card header & body */
+.episode-card .card-header mark,
+.episode-card .card-description mark {
+  background: color-mix(in srgb, var(--teal) 30%, transparent);
+  color: inherit;
+  padding: 1px 3px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
 .card-transcript-snippets {
   margin-top: 10px;
   display: flex;
