@@ -1,0 +1,15 @@
+name: Install yt-dlp
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install yt-dlp
+        run: pip install yt-dlp
+
+      - name: Verify installation
+        run: yt-dlp --version
