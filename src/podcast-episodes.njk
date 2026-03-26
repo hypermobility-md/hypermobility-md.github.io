@@ -364,7 +364,10 @@ function stripHtml(html) {
 }
 
 // Extract up to 3 sentence-level snippets from transcript matching query
-// Prioritizes: 1) exact whole word matches, 2) exact phrase, 3) substring, 4) non-consecutive words
+// Scores each sentence and returns the best matches:
+//   3 = word-start match (e.g. "test" in "tests")
+//   2 = exact phrase match (multi-word)
+//   1 = substring match (e.g. "test" in "gastrointestinal")
 function getTranscriptSnippets(transcript, query, maxSnippets) {
   if (!transcript || !query) return [];
   const plain = stripHtml(transcript);
@@ -377,46 +380,31 @@ function getTranscriptSnippets(transcript, query, maxSnippets) {
 
   // Split into sentences (rough heuristic)
   const sentences = plain.split(/(?<=[.!?])\s+(?=[A-Z])/);
-  const added = new Set();
-  const matches = [];
+  const scored = [];
 
-  function addSnippet(s) {
-    const trimmed = s.trim();
-    if (!added.has(trimmed) && matches.length < max) {
-      added.add(trimmed);
-      matches.push(trimmed);
-    }
-  }
-
-  // Pass 1: sentences with exact whole-word matches for all query words
   for (const s of sentences) {
-    if (matches.length >= max) break;
-    if (allExactWords(s, words)) addSnippet(s);
+    const sLower = s.toLowerCase();
+    let snippetScore = 0;
+
+    if (allExactWords(s, words))                      snippetScore = 3;
+    else if (words.length > 1 && sLower.includes(query.toLowerCase())) snippetScore = 2;
+    else if (wordsMatch(sLower, words))               snippetScore = 1;
+
+    if (snippetScore > 0) scored.push({ text: s.trim(), score: snippetScore });
   }
 
-  // Pass 2: exact phrase match (consecutive)
-  if (words.length > 1) {
-    for (const s of sentences) {
-      if (matches.length >= max) break;
-      if (s.toLowerCase().includes(query.toLowerCase())) addSnippet(s);
+  // Sort by score descending, take top N
+  scored.sort((a, b) => b.score - a.score);
+  const seen = new Set();
+  const results = [];
+  for (const item of scored) {
+    if (results.length >= max) break;
+    if (!seen.has(item.text)) {
+      seen.add(item.text);
+      results.push(item.text);
     }
   }
-
-  // Pass 3: substring containment (any word appears, even as part of another word)
-  for (const s of sentences) {
-    if (matches.length >= max) break;
-    if (wordsMatch(s.toLowerCase(), words)) addSnippet(s);
-  }
-
-  // Pass 4: non-consecutive word matches (multi-word queries)
-  if (words.length > 1) {
-    for (const s of sentences) {
-      if (matches.length >= max) break;
-      if (wordsMatch(s.toLowerCase(), words)) addSnippet(s);
-    }
-  }
-
-  return matches;
+  return results;
 }
 
 // Highlight query text within a string (HTML-safe)
@@ -438,9 +426,11 @@ function wordsMatch(text, words) {
   return words.every(w => text.includes(w));
 }
 
-// Check if text contains query as an exact (whole) word
+// Check if query appears as a word-start match (not buried inside another word)
+// "test" matches "test", "tests", "testing" but NOT "gastrointestinal" or "greatest"
 function hasExactWord(text, word) {
-  const re = new RegExp('\\b' + word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
+  const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp('(?:^|\\W)' + escaped + '(?:\\w*?)(?:$|\\W)', 'i');
   return re.test(text);
 }
 
