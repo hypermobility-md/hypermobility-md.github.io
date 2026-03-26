@@ -1,5 +1,14 @@
 {
   "title": "Hypermobility MD",
   "description": "Dr. Linda Bluestein — Integrative pain medicine specialist focused on hypermobility disorders",
-  "url": "https://hypermobilitymd.com"
+  "url": "https://hypermobilitymd.com",
+  "podcastName": "Bendy Bodies with Dr. Linda Bluestein",
+  "podcastFeedUrl": "https://feeds.megaphone.fm/bendybodies",
+  "twitterHandle": "@BluesteinLinda",
+  "defaultOgImage": "/assets/podcast-hero-warm.png",
+  "author": {
+    "name": "Dr. Linda Bluestein",
+    "credentials": "MD",
+    "url": "https://hypermobilitymd.com/about/"
+  }
 }

@@ -1,0 +1,58 @@
+{# ── Open Graph + Twitter Card Meta Tags ── #}
+
+{# Determine og:type #}
+{% if audioUrl %}
+  {% set ogType = "article" %}
+{% elif guestName %}
+  {% set ogType = "profile" %}
+{% else %}
+  {% set ogType = "website" %}
+{% endif %}
+
+{# Resolve overrides from nested seoOverrides object or top-level fields #}
+{% set _ogTitle = (seoOverrides.ogTitle if seoOverrides) or ogTitle %}
+{% set _ogDesc = (seoOverrides.ogDescription if seoOverrides) or ogDescription %}
+{% set _ogImage = (seoOverrides.ogImage if seoOverrides) or ogImage %}
+
+{# Determine og:image with priority chain #}
+{% if _ogImage %}
+  {% set socialImage = _ogImage | absoluteUrl(site.url) %}
+{% elif audioUrl and videoUrl %}
+  {% set ytId = videoUrl | youtubeId %}
+  {% if ytId %}
+    {% set socialImage = "https://img.youtube.com/vi/" + ytId + "/maxresdefault.jpg" %}
+  {% elif guestImages and guestImages.length %}
+    {% set socialImage = guestImages[0] | absoluteUrl(site.url) %}
+  {% else %}
+    {% set socialImage = site.defaultOgImage | absoluteUrl(site.url) %}
+  {% endif %}
+{% elif audioUrl and guestImages and guestImages.length %}
+  {% set socialImage = guestImages[0] | absoluteUrl(site.url) %}
+{% elif guestName and guestData.images[guestName] %}
+  {% set socialImage = guestData.images[guestName] | absoluteUrl(site.url) %}
+{% else %}
+  {% set socialImage = site.defaultOgImage | absoluteUrl(site.url) %}
+{% endif %}
+
+{# Determine title and description #}
+{% set socialTitle = _ogTitle or title %}
+{% set socialDesc = (_ogDesc or description or site.description) | truncate(200, true, '...') %}
+
+{# Open Graph #}
+<meta property="og:title" content="{{ socialTitle }}">
+<meta property="og:description" content="{{ socialDesc }}">
+<meta property="og:url" content="{{ site.url }}{{ page.url }}">
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="{{ ogType }}">
+<meta property="og:image" content="{{ socialImage }}">
+{% if audioUrl %}
+<meta property="og:audio" content="{{ audioUrl }}">
+{% endif %}
+
+{# Twitter Card #}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="{{ site.twitterHandle }}">
+<meta name="twitter:title" content="{{ socialTitle }}">
+<meta name="twitter:description" content="{{ socialDesc }}">
+<meta name="twitter:image" content="{{ socialImage }}">

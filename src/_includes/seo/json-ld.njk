@@ -1,0 +1,108 @@
+{# ── JSON-LD Structured Data ── #}
+
+{% if podcastSubpage == "main" %}
+{# ── PodcastSeries (podcast hub page) ── #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "PodcastSeries",
+  "name": "{{ site.podcastName | jsonEscape | safe }}",
+  "description": "{{ description | jsonEscape | safe }}",
+  "url": "{{ site.url }}/podcast/",
+  "webFeed": "{{ site.podcastFeedUrl }}",
+  "image": "{{ site.defaultOgImage | absoluteUrl(site.url) }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ site.author.name }}",
+    "url": "{{ site.author.url }}"
+  }
+}
+</script>
+
+{% elif audioUrl %}
+{# ── PodcastEpisode (individual episode pages) ── #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "PodcastEpisode",
+  "name": "{{ title | cleanTitle | jsonEscape | safe }}",
+  "description": "{{ description | truncate(300, true, '...') | jsonEscape | safe }}",
+  "url": "{{ site.url }}{{ page.url }}",
+  "datePublished": "{{ date | isoDate }}"{% if num %},
+  "episodeNumber": {{ num }}{% endif %}{% if duration %},
+  "timeRequired": "{{ duration | isoDuration }}"{% endif %},
+  "associatedMedia": {
+    "@type": "AudioObject",
+    "contentUrl": "{{ audioUrl }}"
+  }{% if videoUrl %},
+  "video": {
+    "@type": "VideoObject",
+    "name": "{{ title | cleanTitle | jsonEscape | safe }}",
+    "url": "{{ videoUrl }}"{% set vtId = videoUrl | youtubeId %}{% if vtId %},
+    "thumbnailUrl": "https://img.youtube.com/vi/{{ vtId }}/maxresdefault.jpg",
+    "embedUrl": "https://www.youtube.com/embed/{{ vtId }}"{% endif %}
+  }{% endif %},
+  "partOfSeries": {
+    "@type": "PodcastSeries",
+    "name": "{{ site.podcastName | jsonEscape | safe }}",
+    "url": "{{ site.url }}/podcast/"
+  }{% if guests and guests.length %},
+  "actor": [{% for g in guests %}
+    {%- set gKey = g | guestKey -%}
+    {%- set gProfile = guestData.profiles[gKey] -%}
+    {
+      "@type": "Person",
+      "name": "{{ g | jsonEscape | safe }}",
+      "url": "{{ site.url }}/guests/{{ gKey | slug }}/"{% if gProfile and gProfile.credentials %},
+      "jobTitle": "{{ gProfile.credentials | jsonEscape | safe }}"{% endif %}{% if gProfile and gProfile.affiliation %},
+      "affiliation": {
+        "@type": "Organization",
+        "name": "{{ gProfile.affiliation | jsonEscape | safe }}"
+      }{% endif %}
+    }{% if not loop.last %},{% endif %}
+  {% endfor %}]{% endif %}
+}
+</script>
+
+{% elif guestName %}
+{# ── Person (guest profile pages) ── #}
+{% set profile = guestData.profiles[guestName] %}
+{% set img = guestData.images[guestName] %}
+{% set displayName = collections.guestDisplayNames[guestName] or guestName %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "{{ displayName | jsonEscape | safe }}",
+  "url": "{{ site.url }}{{ page.url }}"{% if profile and profile.bio %},
+  "description": "{{ profile.bio | truncate(300, true, '...') | jsonEscape | safe }}"{% endif %}{% if profile and profile.credentials %},
+  "jobTitle": "{{ profile.credentials | jsonEscape | safe }}"{% endif %}{% if profile and profile.affiliation %},
+  "affiliation": {
+    "@type": "Organization",
+    "name": "{{ profile.affiliation | jsonEscape | safe }}"
+  }{% endif %}{% if img %},
+  "image": "{{ img | absoluteUrl(site.url) }}"{% endif %}{% if profile and profile.links and profile.links.length %},
+  "sameAs": [{% for link in profile.links %}
+    "{{ link.url }}"{% if not loop.last %},{% endif %}
+  {% endfor %}]{% endif %}
+}
+</script>
+
+{% else %}
+{# ── WebSite / WebPage fallback ── #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  {% if page.url == "/" %}"@type": "WebSite"{% else %}"@type": "WebPage"{% endif %},
+  "name": "{{ title | jsonEscape | safe }}",
+  "url": "{{ site.url }}{{ page.url }}",
+  "description": "{{ (description or site.description) | truncate(200, true, '...') | jsonEscape | safe }}"{% if page.url == "/" %},
+  "publisher": {
+    "@type": "Person",
+    "name": "{{ site.author.name }}",
+    "url": "{{ site.author.url }}"
+  }{% endif %}
+}
+</script>
+
+{% endif %}

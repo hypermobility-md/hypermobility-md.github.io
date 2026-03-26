@@ -66,6 +66,16 @@ collections:
         required: false
         hint: "Auto-filled paths (e.g. Guests/Name.jpg)"
       - { label: "Transcript", name: "body", widget: "markdown", required: false, hint: "Full episode transcript — paste the text here" }
+      - label: "SEO & Sharing Overrides"
+        name: "seoOverrides"
+        widget: "object"
+        collapsed: true
+        required: false
+        hint: "Optional — auto-generated from episode data if left empty"
+        fields:
+          - { label: "Social Title", name: "ogTitle", widget: "string", required: false, hint: "Custom title for social sharing (defaults to episode title)" }
+          - { label: "Social Description", name: "ogDescription", widget: "text", required: false, hint: "Custom description for social sharing (defaults to episode description)" }
+          - { label: "Social Image", name: "ogImage", widget: "image", required: false, hint: "Custom social sharing image, 1200x630px recommended (defaults to YouTube thumbnail)" }
 
   - name: "guest-profiles"
     label: "Guest Profiles"

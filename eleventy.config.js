@@ -136,6 +136,36 @@ module.exports = function(eleventyConfig) {
     return links.slice().sort((a, b) => linkPriority(a) - linkPriority(b));
   });
 
+  // ---- SEO Filters ----
+
+  // Convert "1h 12m" → "PT1H12M" for JSON-LD
+  eleventyConfig.addFilter("isoDuration", (dur) => {
+    if (!dur) return '';
+    const h = dur.match(/(\d+)\s*h/i);
+    const m = dur.match(/(\d+)\s*m/i);
+    return 'PT' + (h ? h[1] + 'H' : '') + (m ? m[1] + 'M' : '');
+  });
+
+  // Extract YouTube video ID from URL
+  eleventyConfig.addFilter("youtubeId", (url) => {
+    if (!url) return '';
+    const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]+)/);
+    return m ? m[1] : '';
+  });
+
+  // Resolve relative path to absolute URL
+  eleventyConfig.addFilter("absoluteUrl", (path, siteUrl) => {
+    if (!path) return '';
+    if (path.startsWith('http')) return path;
+    return (siteUrl || '') + (path.startsWith('/') ? path : '/' + path);
+  });
+
+  // Escape string for safe JSON-LD embedding
+  eleventyConfig.addFilter("jsonEscape", (str) => {
+    if (!str) return '';
+    return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '');
+  });
+
   // YouTube URL → embed URL
   eleventyConfig.addFilter("youtubeEmbed", (url) => {
     if (!url) return '';
