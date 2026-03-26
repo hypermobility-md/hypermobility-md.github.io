@@ -3,12 +3,24 @@
   "version": "1.0.0",
   "description": "Hypermobility MD website — Dr. Linda Bluestein",
   "scripts": {
+    "prebuild": "node scripts/generate-og-images.mjs",
     "build": "eleventy",
     "start": "eleventy --serve",
-    "debug": "DEBUG=Eleventy* eleventy"
+    "debug": "DEBUG=Eleventy* eleventy",
+    "transcribe": "node --env-file=.env scripts/transcribe.mjs",
+    "label-speakers": "node scripts/label-speakers.mjs",
+    "format-transcripts": "node scripts/format-transcripts.mjs",
+    "sync-rss": "node --env-file=.env scripts/sync-rss.mjs",
+    "sync-rss:dry": "node --env-file=.env scripts/sync-rss.mjs --dry-run"
   },
   "dependencies": {
     "@11ty/eleventy": "^3.0.0",
+    "@anthropic-ai/sdk": "^0.80.0",
     "markdown-it": "^14.1.1"
+  },
+  "devDependencies": {
+    "assemblyai": "^4.28.0",
+    "gray-matter": "^4.0.3",
+    "sharp": "^0.34.5"
   }
 }

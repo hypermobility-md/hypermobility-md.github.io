@@ -160,6 +160,15 @@ module.exports = function(eleventyConfig) {
     return (siteUrl || '') + (path.startsWith('/') ? path : '/' + path);
   });
 
+  // Convert guest photo path to OG image path
+  // /Guests/Forest_Tennant.jpg → /assets/og-guests/Forest_Tennant.jpg
+  eleventyConfig.addFilter("guestOgImage", (imagePath) => {
+    if (!imagePath) return '';
+    const filename = imagePath.split('/').pop();
+    const base = filename.replace(/\.[^.]+$/, '');
+    return '/assets/og-guests/' + base + '.jpg';
+  });
+
   // Escape string for safe JSON-LD embedding
   eleventyConfig.addFilter("jsonEscape", (str) => {
     if (!str) return '';
