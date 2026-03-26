@@ -28,8 +28,6 @@
   {% endif %}
 {% elif audioUrl and guestImages and guestImages.length %}
   {% set socialImage = guestImages[0] | absoluteUrl(site.url) %}
-{% elif guestName and guestData.images[guestName] %}
-  {% set socialImage = guestData.images[guestName] | absoluteUrl(site.url) %}
 {% else %}
   {% set socialImage = site.defaultOgImage | absoluteUrl(site.url) %}
 {% endif %}
