@@ -363,11 +363,56 @@ function stripHtml(html) {
   return html.replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
+// Extract a ~150-char window around each match occurrence in plain text
+function extractWindows(plain, words, max) {
+  const plainLower = plain.toLowerCase();
+  const results = [];
+  const usedPositions = [];
+  // Find positions of word-start matches first, then substring matches
+  const positions = [];
+  for (const w of words) {
+    const escaped = w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // Word-start matches (higher priority)
+    const reExact = new RegExp('(?:^|\\W)(' + escaped + '\\w*)', 'gi');
+    let m;
+    while ((m = reExact.exec(plainLower)) !== null) {
+      positions.push({ pos: m.index, exact: true });
+    }
+    // Substring matches
+    let idx = plainLower.indexOf(w);
+    while (idx !== -1) {
+      positions.push({ pos: idx, exact: false });
+      idx = plainLower.indexOf(w, idx + 1);
+    }
+  }
+  // Sort: exact first, then by position
+  positions.sort((a, b) => (b.exact - a.exact) || (a.pos - b.pos));
+
+  for (const { pos } of positions) {
+    if (results.length >= max) break;
+    // Skip if too close to an already-used position
+    if (usedPositions.some(p => Math.abs(p - pos) < 120)) continue;
+    usedPositions.push(pos);
+    // Extract window around match
+    let start = Math.max(0, pos - 60);
+    let end = Math.min(plain.length, pos + 90);
+    // Snap to word boundaries
+    if (start > 0) { const sp = plain.indexOf(' ', start); if (sp !== -1 && sp < start + 15) start = sp + 1; }
+    if (end < plain.length) { const sp = plain.lastIndexOf(' ', end); if (sp > end - 15) end = sp; }
+    let snippet = plain.substring(start, end).trim();
+    if (start > 0) snippet = '...' + snippet;
+    if (end < plain.length) snippet += '...';
+    results.push(snippet);
+  }
+  return results;
+}
+
 // Extract up to 3 sentence-level snippets from transcript matching query
 // Scores each sentence and returns the best matches:
 //   3 = word-start match (e.g. "test" in "tests")
 //   2 = exact phrase match (multi-word)
 //   1 = substring match (e.g. "test" in "gastrointestinal")
+// Falls back to text-window extraction if sentence splitting finds nothing
 function getTranscriptSnippets(transcript, query, maxSnippets) {
   if (!transcript || !query) return [];
   const plain = stripHtml(transcript);
@@ -378,10 +423,15 @@ function getTranscriptSnippets(transcript, query, maxSnippets) {
   // Check if any match exists at all
   if (!wordsMatch(plainLower, words)) return [];
 
-  // Split into sentences (rough heuristic)
-  const sentences = plain.split(/(?<=[.!?])\s+(?=[A-Z])/);
-  const scored = [];
+  // Split into sentences (rough heuristic — try multiple patterns)
+  let sentences = plain.split(/(?<=[.!?])\s+(?=[A-Z])/);
+  // If splitting produced very few long chunks, try splitting on speaker labels too
+  if (sentences.length < 5 && plain.length > 500) {
+    sentences = plain.split(/(?<=[.!?])\s+(?=[A-Z])|(?<=\.\s)(?=[A-Z])|(?:\n+)|(?:(?:^|\s)[A-Z][a-z]+ [A-Z][a-z]+:\s)/);
+    sentences = sentences.filter(s => s && s.trim().length > 10);
+  }
 
+  const scored = [];
   for (const s of sentences) {
     const sLower = s.toLowerCase();
     let snippetScore = 0;
@@ -403,6 +453,11 @@ function getTranscriptSnippets(transcript, query, maxSnippets) {
       seen.add(item.text);
       results.push(item.text);
     }
+  }
+
+  // Fallback: if sentence splitting found nothing, extract text windows around matches
+  if (results.length === 0) {
+    return extractWindows(plain, words, max);
   }
   return results;
 }
