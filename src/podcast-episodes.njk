@@ -349,51 +349,143 @@ function stripHtml(html) {
 }
 
 // Extract up to 3 sentence-level snippets from transcript matching query
+// Supports non-consecutive word matching ("blood test" matches "test the blood")
 function getTranscriptSnippets(transcript, query, maxSnippets) {
   if (!transcript || !query) return [];
   const plain = stripHtml(transcript);
-  const q = query.toLowerCase();
-  if (!plain.toLowerCase().includes(q)) return [];
+  const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+  const plainLower = plain.toLowerCase();
+
+  // Check if any match exists at all
+  if (!wordsMatch(plainLower, words)) return [];
 
   // Split into sentences (rough heuristic)
   const sentences = plain.split(/(?<=[.!?])\s+(?=[A-Z])/);
   const matches = [];
+  // Prefer exact phrase matches first, then non-consecutive
   for (let i = 0; i < sentences.length && matches.length < (maxSnippets || 3); i++) {
-    if (sentences[i].toLowerCase().includes(q)) {
+    if (sentences[i].toLowerCase().includes(query.toLowerCase())) {
       matches.push(sentences[i].trim());
+    }
+  }
+  // Fill remaining with non-consecutive word matches
+  if (matches.length < (maxSnippets || 3) && words.length > 1) {
+    for (let i = 0; i < sentences.length && matches.length < (maxSnippets || 3); i++) {
+      const sLower = sentences[i].toLowerCase();
+      if (!matches.includes(sentences[i].trim()) && wordsMatch(sLower, words)) {
+        matches.push(sentences[i].trim());
+      }
     }
   }
   return matches;
 }
 
 // Highlight query text within a string (HTML-safe)
+// Highlights each individual word for non-consecutive matching
 function highlightText(text, query) {
   if (!query) return text;
-  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const re = new RegExp('(' + escaped + ')', 'gi');
-  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(re, '<mark>$1</mark>');
+  let safe = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const words = query.split(/\s+/).filter(Boolean);
+  for (const word of words) {
+    const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp('(' + escaped + ')', 'gi');
+    safe = safe.replace(re, '<mark>$1</mark>');
+  }
+  return safe;
+}
+
+// Check if ALL query words appear in text (non-consecutive, any order)
+function wordsMatch(text, words) {
+  return words.every(w => text.includes(w));
+}
+
+// Check if text contains query as an exact (whole) word
+function hasExactWord(text, word) {
+  const re = new RegExp('\\b' + word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
+  return re.test(text);
+}
+
+// Check if ALL query words appear as exact whole words
+function allExactWords(text, words) {
+  return words.every(w => hasExactWord(text, w));
+}
+
+// Score an episode for relevance ranking
+// Higher score = more relevant. 0 = no match.
+function scoreEpisode(ep, queryStr) {
+  const q = queryStr.toLowerCase();
+  const words = q.split(/\s+/).filter(Boolean);
+  let score = 0;
+
+  const titleLower = ep.title.toLowerCase();
+  const guestStr = (ep.guests || []).join(' ').toLowerCase();
+  const descLower = ep.description.toLowerCase();
+  const transcriptPlain = ep.transcript ? stripHtml(ep.transcript).toLowerCase() : '';
+
+  // --- Guest Name matches (highest priority: 1000+) ---
+  if (words.length === 1) {
+    if (hasExactWord(guestStr, words[0]))       score += 1200;
+    else if (guestStr.includes(words[0]))        score += 1000;
+  } else {
+    if (allExactWords(guestStr, words))          score += 1200;
+    else if (wordsMatch(guestStr, words))        score += 1000;
+  }
+
+  // --- Title matches (second priority: 500+) ---
+  if (words.length === 1) {
+    if (hasExactWord(titleLower, words[0]))      score += 600;
+    else if (titleLower.includes(words[0]))      score += 500;
+  } else {
+    if (titleLower.includes(q))                  score += 700;  // exact phrase in title
+    else if (allExactWords(titleLower, words))   score += 600;
+    else if (wordsMatch(titleLower, words))      score += 500;
+  }
+
+  // --- Description matches (50+) ---
+  if (words.length === 1) {
+    if (hasExactWord(descLower, words[0]))        score += 75;
+    else if (descLower.includes(words[0]))        score += 50;
+  } else {
+    if (descLower.includes(q))                    score += 75;
+    else if (wordsMatch(descLower, words))        score += 50;
+  }
+
+  // --- Transcript matches (lowest priority: 10+) ---
+  if (transcriptPlain) {
+    if (words.length === 1) {
+      if (hasExactWord(transcriptPlain, words[0]))  score += 20;
+      else if (transcriptPlain.includes(words[0]))  score += 10;
+    } else {
+      if (transcriptPlain.includes(q))               score += 25;
+      else if (wordsMatch(transcriptPlain, words))   score += 10;
+    }
+  }
+
+  return score;
 }
 
 function getFilteredSorted() {
   let list = EPISODES.slice();
   if (activeTag !== 'all') list = list.filter(ep => ep.tags.includes(activeTag));
   if (searchQuery.trim()) {
-    const q = searchQuery.trim().toLowerCase();
-    list = list.filter(ep => {
-      if (ep.title.toLowerCase().includes(q)) return true;
-      if (ep.guests && ep.guests.some(g => g.toLowerCase().includes(q))) return true;
-      if (ep.description.toLowerCase().includes(q)) return true;
-      if (ep.tags.some(t => t.toLowerCase().includes(q))) return true;
-      // Search transcript
-      if (ep.transcript && stripHtml(ep.transcript).toLowerCase().includes(q)) return true;
-      return false;
-    });
+    const q = searchQuery.trim();
+    // Score and filter
+    list = list.map(ep => ({ ep, score: scoreEpisode(ep, q) }))
+               .filter(x => x.score > 0)
+               .sort((a, b) => {
+                 if (b.score !== a.score) return b.score - a.score;
+                 // Tiebreak by date
+                 return sortMode === 'oldest'
+                   ? new Date(a.ep.date) - new Date(b.ep.date)
+                   : new Date(b.ep.date) - new Date(a.ep.date);
+               })
+               .map(x => x.ep);
+  } else {
+    list.sort((a, b) => sortMode === 'oldest'
+      ? new Date(a.date) - new Date(b.date)
+      : new Date(b.date) - new Date(a.date)
+    );
   }
-  list.sort((a, b) => sortMode === 'oldest'
-    ? new Date(a.date) - new Date(b.date)
-    : new Date(b.date) - new Date(a.date)
-  );
   return list;
 }
 

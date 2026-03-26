@@ -263,13 +263,13 @@
   line-height: 1.45;
   color: var(--text-light);
   background: var(--section-alt);
-  border-left: 3px solid var(--primary);
+  border-left: 3px solid var(--teal);
   padding: 6px 10px;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   font-family: var(--body-font);
 }
 .card-transcript-snippet mark {
-  background: color-mix(in srgb, var(--primary) 25%, transparent);
+  background: color-mix(in srgb, var(--teal) 25%, transparent);
   color: var(--text);
   padding: 1px 2px;
   border-radius: 2px;
@@ -383,7 +383,7 @@
   transition: border-color 0.2s;
   outline: none;
 }
-.search-box input:focus { border-color: var(--primary); background: var(--card-bg); }
+.search-box input:focus { border-color: var(--teal); background: var(--card-bg); }
 .search-box .search-icon {
   position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
   color: var(--text-light); font-size: 1.1rem; pointer-events: none;
@@ -401,7 +401,7 @@
   outline: none;
   min-width: 160px;
 }
-.sort-select:focus { border-color: var(--primary); }
+.sort-select:focus { border-color: var(--teal); }
 
 .tag-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 
@@ -418,8 +418,8 @@
   transition: all 0.15s;
   user-select: none;
 }
-.filter-tag:hover { border-color: var(--primary); color: var(--primary); }
-.filter-tag.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.filter-tag:hover { border-color: var(--teal); color: var(--teal); }
+.filter-tag.active { background: var(--teal); color: #fff; border-color: var(--teal); }
 
 /* ---- Results Bar ---- */
 .results-bar { padding: 16px 0; display: flex; align-items: center; justify-content: space-between; }
