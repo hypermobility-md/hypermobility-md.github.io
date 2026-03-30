@@ -24,16 +24,21 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="/css/styles.css">
   {% if extraCss %}<link rel="stylesheet" href="/css/{{ extraCss }}">{% endif %}
+  {% if needsRecaptcha %}
   <script src="https://www.google.com/recaptcha/api.js?render=6LejW5AsAAAAACTV9UzbWn_qHvRQXXH6oFtMxqhe" defer></script>
+  {% endif %}
 </head>
 <body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}>
 
 {% include "nav.njk" %}
 
+<main>
 {{ content | safe }}
+</main>
 
 {% include "footer.njk" %}
 

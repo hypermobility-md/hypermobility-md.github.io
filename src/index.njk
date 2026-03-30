@@ -1,6 +1,7 @@
 ---
 layout: base.njk
 title: "Dr. Linda Bluestein"
+description: "Dr. Linda Bluestein is an integrative pain medicine specialist focused on hypermobility disorders, Ehlers-Danlos syndromes, and complex chronic conditions. Physician, educator, and host of the Bendy Bodies podcast."
 activePage: "home"
 permalink: /
 ---
@@ -23,8 +24,12 @@ permalink: /
         </div>
       </div>
       <div class="hero-image-wrap">
-        <img src="/assets/Linda_Main.jpg" alt="Dr. Linda Bluestein, MD" class="hero-image"
-             onerror="this.style.background='var(--section-alt)'; this.style.minHeight='380px'; this.alt='Photo placeholder'">
+        <picture>
+          <source srcset="/assets/Linda_Main.webp" type="image/webp">
+          <img src="/assets/Linda_Main_opt.jpg" alt="Dr. Linda Bluestein, MD" class="hero-image"
+               width="960" height="1210" loading="eager" fetchpriority="high"
+               onerror="this.style.background='var(--section-alt)'; this.style.minHeight='380px'; this.alt='Photo placeholder'">
+        </picture>
       </div>
     </div>
   </div>
@@ -197,6 +202,7 @@ const dotsContainer = document.getElementById('carouselDots');
 for (let i = 0; i < totalSlides; i++) {
   const dot = document.createElement('button');
   dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+  dot.setAttribute('aria-label', 'Go to testimonial ' + (i + 1));
   dot.onclick = () => goToSlide(i);
   dotsContainer.appendChild(dot);
 }
