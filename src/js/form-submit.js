@@ -13,8 +13,8 @@
  *    (RECAPTCHA_SECRET_KEY variable — NOT in this file!)
  */
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQmZZm7F8o9KQGFo1wMQ3uYFpD89hT5WgyVP6R4FnilXJn4kxCFlQrZPxSJMMbO5e0wg/exec';
-const RECAPTCHA_SITE_KEY = '6LdllJAsAAAAAEC9voQiGG1M1CEb_xtjpx-eT7Yv';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXGMUHDiAGu3qz2jM-WLSLQl7-JwA_YUASYl1UJbzZfcpmGx7m81lgfqdh6zceYDR49A/exec';
+const RECAPTCHA_SITE_KEY = '6LeEm5ksAAAAAJL3lpiSAZ6621GqXH_Gw4AN8fkw';
 
 /**
  * Submit form data to Google Sheets via Apps Script.

@@ -138,3 +138,21 @@
 </script>
 
 {% endif %}
+
+{# ── SiteNavigationElement (all pages) ── #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SiteNavigationElement",
+  "name": "Main Navigation",
+  "url": "{{ site.url }}/",
+  "hasPart": [
+    { "@type": "WebPage", "name": "Home", "url": "{{ site.url }}/" },
+    { "@type": "WebPage", "name": "About", "url": "{{ site.url }}/about/" },
+    { "@type": "WebPage", "name": "Services", "url": "{{ site.url }}/services/" },
+    { "@type": "WebPage", "name": "FAQ", "url": "{{ site.url }}/faq/" },
+    { "@type": "WebPage", "name": "Podcast", "url": "{{ site.url }}/podcast/" },
+    { "@type": "WebPage", "name": "Products We Love", "url": "{{ site.url }}/projects/" }
+  ]
+}
+</script>

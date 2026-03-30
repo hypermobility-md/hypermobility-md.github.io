@@ -19,6 +19,8 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/Populate");
   eleventyConfig.addPassthroughCopy("src/.nojekyll");
   eleventyConfig.addPassthroughCopy("src/js");
+  eleventyConfig.addPassthroughCopy("src/favicon.ico");
+  eleventyConfig.addPassthroughCopy("src/site.webmanifest");
 
   // Generate data.js from episode markdown files at build time
   eleventyConfig.addCollection("episodes", function(collectionApi) {
