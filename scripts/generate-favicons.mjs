@@ -6,7 +6,7 @@
  * Style: Purple BB logo on a white circle background.
  *
  * Outputs:
- *   src/favicon.ico                         (32x32)
+ *   src/favicon.ico                         (multi-size: 16x16, 32x32, 48x48)
  *   src/assets/favicon-16x16.png
  *   src/assets/favicon-32x32.png
  *   src/assets/favicon-48x48.png
@@ -20,6 +20,7 @@
 import { join } from 'path';
 import { existsSync, writeFileSync, readFileSync } from 'fs';
 import sharp from 'sharp';
+import pngToIco from 'png-to-ico';
 
 const ROOT = join(import.meta.dirname, '..');
 const SVG = join(ROOT, 'src', 'assets', 'BBLogo.svg');
@@ -48,7 +49,7 @@ const sizes = [
  */
 async function generateFavicon(size, { maskable = false } = {}) {
   // Maskable icons need more padding (safe zone is inner 80%) and opaque background
-  const padding = maskable ? Math.round(size * 0.18) : Math.round(size * 0.12);
+  const padding = maskable ? Math.round(size * 0.12) : Math.round(size * 0.06);
   const logoSize = size - padding * 2;
 
   // Create background: opaque white square for maskable, white circle for others
@@ -130,10 +131,13 @@ async function main() {
     console.log(`  ✓ ${name} (${size}x${size}${maskable ? ', maskable' : ''})`);
   }
 
-  // Generate favicon.ico (32x32 PNG)
-  const ico = await generateFavicon(32);
-  await sharp(ico).toFile(join(SRC, 'favicon.ico'));
-  console.log('  ✓ favicon.ico (32x32)');
+  // Generate favicon.ico (multi-size: 16x16, 32x32, 48x48)
+  const ico16 = await generateFavicon(16);
+  const ico32 = await generateFavicon(32);
+  const ico48 = await generateFavicon(48);
+  const icoBuffer = await pngToIco([ico16, ico32, ico48]);
+  writeFileSync(join(SRC, 'favicon.ico'), icoBuffer);
+  console.log('  ✓ favicon.ico (16x16, 32x32, 48x48)');
 
   // Generate SVG favicon — read original SVG, change fill to purple,
   // wrap in a circle background
