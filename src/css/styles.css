@@ -292,6 +292,7 @@ p a:hover, li a:hover, td a:hover, dd a:hover, figcaption a:hover { text-decorat
 }
 .hero-image {
   width: 100%;
+  height: auto;
   max-width: 480px;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
