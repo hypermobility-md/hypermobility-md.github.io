@@ -422,8 +422,8 @@ async function main() {
         }
       }
 
-      // Clean up description — strip HTML tags
-      const cleanDesc = item.description
+      // Clean up description — strip HTML tags and boilerplate
+      let cleanDesc = item.description
         .replace(/<[^>]+>/g, '')
         .replace(/&amp;/g, '&')
         .replace(/&lt;/g, '<')
@@ -432,6 +432,14 @@ async function main() {
         .replace(/&#39;/g, "'")
         .replace(/\n{3,}/g, '\n\n')
         .trim();
+
+      // Trim RSS boilerplate: cut at takeaways, transcript link, or social blocks
+      const boilerplateCut = cleanDesc.search(
+        /\n\s*(Takeaways?:?\s*\n|Find the episode transcript|Want more Dr\. Linda Bluestein)/i
+      );
+      if (boilerplateCut > 0) {
+        cleanDesc = cleanDesc.slice(0, boilerplateCut).trim();
+      }
 
       const episode = {
         num: epNum,
