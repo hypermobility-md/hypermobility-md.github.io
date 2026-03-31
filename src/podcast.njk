@@ -227,7 +227,7 @@ permalink: /podcast/
 </div>
 
 {% block scripts %}
-<script src="/js/data.js?v={{ "now" | isoDate }}"></script>
+<script src="/js/data.js?v={{ "" | cacheBust }}"></script>
 <script>
 // ---- Helpers ----
 function formatDate(d) {

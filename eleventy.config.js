@@ -52,6 +52,10 @@ module.exports = function(eleventyConfig) {
   // ---- Filters ----
 
   // Date formatting filter
+  // Build-unique cache buster (changes every build, unlike isoDate which is daily)
+  const buildHash = Date.now().toString(36);
+  eleventyConfig.addFilter("cacheBust", () => buildHash);
+
   eleventyConfig.addFilter("isoDate", (date) => {
     if (!date) return '';
     if (date === 'now') return new Date().toISOString().split('T')[0];
