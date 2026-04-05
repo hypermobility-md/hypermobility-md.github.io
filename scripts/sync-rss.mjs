@@ -82,11 +82,15 @@ function parseEpNumber(title) {
 const HOST_NAME = 'Dr. Linda Bluestein';
 const COHOST_NAMES = ['Dr. Dacre Knight', 'Jennifer Milner'];
 
-/** Check if a name refers to the host or a cohost. */
-function isHostOrCohost(name) {
+/** Check if a name refers to the host. */
+function isHost(name) {
+  const norm = name.toLowerCase().replace(/^(dr\.|prof\.)\s+/i, '').replace(/,?\s*(md|do|phd|dpt|m\.d\.)\b/gi, '').trim();
+  return norm.includes('linda bluestein') || norm.includes('bluestein');
+}
+
+/** Check if a name refers to a cohost (not the host). */
+function isCohost(name) {
   const norm = name.toLowerCase().replace(/^(dr\.|prof\.)\s+/i, '').replace(/,?\s*(md|do|phd|dpt)\b/gi, '').trim();
-  const hostNorm = HOST_NAME.toLowerCase().replace(/^dr\.\s+/, '');
-  if (norm === hostNorm || norm.includes('linda bluestein') || norm.includes('bluestein')) return true;
   for (const cohost of COHOST_NAMES) {
     const cohostNorm = cohost.toLowerCase().replace(/^dr\.\s+/, '');
     if (norm === cohostNorm || norm.includes(cohostNorm)) return true;
@@ -108,20 +112,26 @@ Title: "${title}"
 Description: "${description.slice(0, 1000)}"
 
 Rules:
-- Extract ONLY the names of people who appear as GUESTS on this episode
-- Do NOT include the host "Dr. Linda Bluestein" / "Linda Bluestein" — she hosts every episode
+- Extract the names of people who appear as GUESTS on this episode
+- For solo episodes or Office Hours where Dr. Linda Bluestein is the only speaker (or is joined only by producers like Aron, Tessa, or Shanti), include "Dr. Linda Bluestein" as a guest
+- Do NOT include "Dr. Linda Bluestein" when there are other named guests — she is the host
 - Do NOT include cohost "Dr. Dacre Knight" unless the title features him as a guest (e.g., "Topic with Dr. Dacre Knight")
 - Do NOT include "Jennifer Milner" unless the title explicitly names her as a guest or "Guest Co-Host"
-- "Office Hours" episodes may have guests — check the description carefully
-- Include credentials/titles as they appear in the TITLE (prefer title names over description names)
 - A "Guest Co-Host" or "Guest Cohost" named in the title IS a guest — include them
 - For round table episodes, extract guest names from the description if they are clearly listed
 - Only include people clearly identified as appearing on THIS episode
 - Do NOT guess or infer guests from general topic mentions
 
+Credential formatting:
+- Use "Dr." prefix for MDs/DOs/PhDs (e.g., "Dr. Jane Smith")
+- Append other credentials after a comma (e.g., "Jane Smith, DPT" or "Jane Smith, RDN")
+- Prefer the name as it appears in the TITLE over the description
+- Do NOT include "MD" or "M.D." after "Dr." — the "Dr." replaces it
+
 Respond with ONLY a JSON array of strings (no markdown, no explanation). Examples:
 ["Dr. Jane Smith"]
-["Dr. Jane Smith", "Dr. Bob Jones"]
+["Dr. Jane Smith", "Jane Doe, DPT"]
+["Dr. Linda Bluestein"]
 []`,
     }],
   });
@@ -445,8 +455,13 @@ async function main() {
         rssGuests = [];
       }
 
-      // Filter out host/cohost that slipped through
-      rssGuests = rssGuests.filter(g => !isHostOrCohost(g));
+      // If the only "guest" is Linda (solo/Office Hours), keep her.
+      // If there are other guests, remove Linda — she's the host.
+      // Cohost filtering is handled by the Haiku prompt.
+      const hasNonHostGuests = rssGuests.some(g => !isHost(g));
+      if (hasNonHostGuests) {
+        rssGuests = rssGuests.filter(g => !isHost(g));
+      }
 
       const matchedGuests = [];
       const matchedImages = [];
