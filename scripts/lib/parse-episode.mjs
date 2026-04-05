@@ -26,7 +26,7 @@ export function parseEpisode(filePath) {
   const knownCohosts = [
     'Jennifer Milner',
     'Pradeep Chopra',
-    'Daker Knight',
+    'Dacre Knight',
   ];
 
   // Host name variations to filter out from guest list

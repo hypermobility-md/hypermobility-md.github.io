@@ -11,7 +11,7 @@
  *   node scripts/sync-rss.mjs --dry-run        # Preview without writing files
  *   node scripts/sync-rss.mjs --rss-only       # Skip YouTube backfill
  *   node scripts/sync-rss.mjs --yt-only        # Skip RSS, only backfill YouTube
- *   node scripts/sync-rss.mjs --no-captions    # Skip pulling YouTube auto-captions
+ *   node scripts/sync-rss.mjs --no-captions    # (deprecated — captions now handled by transcribe workflow)
  */
 
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
@@ -78,30 +78,64 @@ function parseEpNumber(title) {
   return null;
 }
 
-/** Extract guest name(s) from title like "Topic with Dr. Name & Dr. Name2 (Ep N)". */
-function parseGuestFromTitle(title) {
-  // Remove episode tags: "(Ep 188)" or leading "95. "
-  let cleaned = title.replace(/\s*\((?:Ep|EP|BEN)\s*\d+\)\s*$/i, '').trim();
-  cleaned = cleaned.replace(/^\d+\.\s+/, '');
+// ── Host / cohost filtering ─────────────────────────────────────────────
+const HOST_NAME = 'Dr. Linda Bluestein';
+const COHOST_NAMES = ['Dr. Dacre Knight', 'Jennifer Milner'];
 
-  // Match "with Guest" or "from Guest" patterns
-  const m = cleaned.match(/\b(?:with|from)\s+(.+)$/i);
-  if (!m) return [];
+/** Check if a name refers to the host or a cohost. */
+function isHostOrCohost(name) {
+  const norm = name.toLowerCase().replace(/^(dr\.|prof\.)\s+/i, '').replace(/,?\s*(md|do|phd|dpt)\b/gi, '').trim();
+  const hostNorm = HOST_NAME.toLowerCase().replace(/^dr\.\s+/, '');
+  if (norm === hostNorm || norm.includes('linda bluestein') || norm.includes('bluestein')) return true;
+  for (const cohost of COHOST_NAMES) {
+    const cohostNorm = cohost.toLowerCase().replace(/^dr\.\s+/, '');
+    if (norm === cohostNorm || norm.includes(cohostNorm)) return true;
+  }
+  return false;
+}
 
-  let guestStr = m[1];
+/** Use Haiku to extract guest names from episode title and description. */
+async function extractGuestsWithHaiku(title, description) {
+  const anthropic = new Anthropic();
+  const response = await anthropic.messages.create({
+    model: 'claude-haiku-4-5-20251001',
+    max_tokens: 512,
+    messages: [{
+      role: 'user',
+      content: `You are extracting podcast guest names from an episode of "Bendy Bodies" hosted by Dr. Linda Bluestein.
 
-  // Handle "Guest Cohost" or "Guest Co-Host" prefix — strip the label but keep the name
-  guestStr = guestStr.replace(/\bGuest\s+Co-?[Hh]ost,?\s*/g, '');
+Title: "${title}"
+Description: "${description.slice(0, 1000)}"
 
-  // Split on ", and " or " and " or " & " — but only between guest names
-  // First split on " and " / " & " that separate distinct people
-  const guests = guestStr.split(/,?\s+(?:&(?:amp;)?|and)\s+/i)
-    .map(n => n.trim())
-    .filter(Boolean)
-    // Filter out descriptive suffixes that aren't guest names
-    .filter(n => !n.match(/^(Hand Coach|Guest|Cohost|Co-Host)$/i));
+Rules:
+- Extract ONLY the names of people who appear as GUESTS on this episode
+- Do NOT include the host "Dr. Linda Bluestein" / "Linda Bluestein" — she hosts every episode
+- Do NOT include cohost "Dr. Dacre Knight" unless the title features him as a guest (e.g., "Topic with Dr. Dacre Knight")
+- Do NOT include "Jennifer Milner" unless the title explicitly names her as a guest or "Guest Co-Host"
+- "Office Hours" episodes may have guests — check the description carefully
+- Include credentials/titles as they appear in the TITLE (prefer title names over description names)
+- A "Guest Co-Host" or "Guest Cohost" named in the title IS a guest — include them
+- For round table episodes, extract guest names from the description if they are clearly listed
+- Only include people clearly identified as appearing on THIS episode
+- Do NOT guess or infer guests from general topic mentions
 
-  return guests;
+Respond with ONLY a JSON array of strings (no markdown, no explanation). Examples:
+["Dr. Jane Smith"]
+["Dr. Jane Smith", "Dr. Bob Jones"]
+[]`,
+    }],
+  });
+
+  try {
+    let text = response.content[0].text.trim();
+    // Strip markdown code fences if present
+    text = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+    const guests = JSON.parse(text);
+    return Array.isArray(guests) ? guests : [];
+  } catch {
+    console.error('  ⚠ Failed to parse Haiku guest extraction:', response.content[0].text);
+    return [];
+  }
 }
 
 /** Convert seconds to "Xh Xm" format. */
@@ -382,46 +416,6 @@ async function main() {
 
       console.log(`✨ New episode: ${item.title}`);
 
-      // Parse and match guest names
-      const rssGuests = parseGuestFromTitle(item.title);
-      const matchedGuests = [];
-      const matchedImages = [];
-
-      for (const rssGuest of rssGuests) {
-        // First try direct key match
-        const normalized = normalizeGuest(rssGuest);
-        const directMatch = profileKeys.find(k => k === normalized);
-
-        if (directMatch) {
-          // Use the guest name format from existing episodes
-          const img = guestImagesMap[directMatch] || '';
-          matchedGuests.push(rssGuest);
-          matchedImages.push(img);
-          console.log(`   ✓ Guest matched directly: "${rssGuest}" → "${directMatch}"`);
-        } else {
-          // Use Haiku for fuzzy matching
-          console.log(`   🤖 Asking Haiku to match: "${rssGuest}"`);
-          try {
-            const result = await matchGuestWithHaiku(rssGuest, canonicalNames);
-            if (result.matched) {
-              matchedGuests.push(result.canonical);
-              const matchedKey = normalizeGuest(result.canonical);
-              const img = guestImagesMap[matchedKey] || '';
-              matchedImages.push(img);
-              console.log(`   ✓ Haiku matched: "${rssGuest}" → "${result.canonical}"`);
-            } else {
-              matchedGuests.push(rssGuest);
-              matchedImages.push('');
-              console.log(`   ⚠ No match found, using RSS name: "${rssGuest}"`);
-            }
-          } catch (e) {
-            console.error(`   ✗ Haiku error: ${e.message}`);
-            matchedGuests.push(rssGuest);
-            matchedImages.push('');
-          }
-        }
-      }
-
       // Clean up description — strip HTML tags and boilerplate
       let cleanDesc = item.description
         .replace(/<[^>]+>/g, '')
@@ -439,6 +433,56 @@ async function main() {
       );
       if (boilerplateCut > 0) {
         cleanDesc = cleanDesc.slice(0, boilerplateCut).trim();
+      }
+
+      // Extract guest names using Haiku (handles multi-guest, host/cohost filtering)
+      console.log(`   🤖 Extracting guests with Haiku...`);
+      let rssGuests;
+      try {
+        rssGuests = await extractGuestsWithHaiku(item.title, cleanDesc);
+      } catch (e) {
+        console.error(`   ✗ Haiku extraction error: ${e.message}`);
+        rssGuests = [];
+      }
+
+      // Filter out host/cohost that slipped through
+      rssGuests = rssGuests.filter(g => !isHostOrCohost(g));
+
+      const matchedGuests = [];
+      const matchedImages = [];
+
+      for (const rssGuest of rssGuests) {
+        // First try direct key match
+        const normalized = normalizeGuest(rssGuest);
+        const directMatch = profileKeys.find(k => k === normalized);
+
+        if (directMatch) {
+          const img = guestImagesMap[directMatch] || '';
+          matchedGuests.push(rssGuest);
+          matchedImages.push(img);
+          console.log(`   ✓ Guest matched directly: "${rssGuest}" → "${directMatch}"`);
+        } else {
+          // Use Haiku for fuzzy matching to canonical name
+          console.log(`   🤖 Matching: "${rssGuest}"`);
+          try {
+            const result = await matchGuestWithHaiku(rssGuest, canonicalNames);
+            if (result.matched) {
+              matchedGuests.push(result.canonical);
+              const matchedKey = normalizeGuest(result.canonical);
+              const img = guestImagesMap[matchedKey] || '';
+              matchedImages.push(img);
+              console.log(`   ✓ Matched: "${rssGuest}" → "${result.canonical}"`);
+            } else {
+              matchedGuests.push(rssGuest);
+              matchedImages.push('');
+              console.log(`   ⚠ No match found, using RSS name: "${rssGuest}"`);
+            }
+          } catch (e) {
+            console.error(`   ✗ Haiku error: ${e.message}`);
+            matchedGuests.push(rssGuest);
+            matchedImages.push('');
+          }
+        }
       }
 
       const episode = {
@@ -493,16 +537,6 @@ async function main() {
           const newEp = newEpisodes.find(e => e.num === ep.num);
           if (newEp) {
             newEp.videoUrl = videoUrl;
-
-            // Pull auto-captions if no transcript yet
-            if (!newEp.transcript) {
-              console.log(`   📝 Pulling auto-captions for Ep ${ep.num}...`);
-              const captions = fetchYouTubeCaptions(ytMatch.id);
-              if (captions) {
-                newEp.transcript = captions;
-                console.log(`   ✓ Got ${captions.split('\n').length} lines of captions`);
-              }
-            }
           } else {
             // Existing episode — update its file
             if (!DRY_RUN) {
@@ -510,18 +544,7 @@ async function main() {
               const { data, content } = matter(raw);
               data.videoUrl = videoUrl;
 
-              let updatedContent = content;
-              // Pull captions if episode has no transcript
-              if (!ep.hasTranscript) {
-                console.log(`   📝 Pulling auto-captions for Ep ${ep.num}...`);
-                const captions = fetchYouTubeCaptions(ytMatch.id);
-                if (captions) {
-                  updatedContent = captions;
-                  console.log(`   ✓ Got ${captions.split('\n').length} lines of captions`);
-                }
-              }
-
-              writeFileSync(ep.filePath, matter.stringify(updatedContent, data));
+              writeFileSync(ep.filePath, matter.stringify(content, data));
               console.log(`   ✓ Updated ${ep.slug}.md with videoUrl`);
             } else {
               console.log(`   (dry run) Would update ${ep.slug}.md with videoUrl`);

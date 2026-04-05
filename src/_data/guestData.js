@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const matter = require('gray-matter');
 
 module.exports = function () {
   // Read guest images map
@@ -53,5 +54,48 @@ module.exports = function () {
       });
   }
 
+  // Merge images from episode frontmatter (CMS uploads via guestImage/guestImages)
+  const episodesDir = path.join(__dirname, '..', 'episodes');
+  if (fs.existsSync(episodesDir)) {
+    fs.readdirSync(episodesDir)
+      .filter(f => f.endsWith('.md'))
+      .forEach(f => {
+        const raw = fs.readFileSync(path.join(episodesDir, f), 'utf8');
+        const { data } = matter(raw);
+        const guests = data.guests || [];
+
+        // guestImages list (parallel to guests array)
+        const epImages = data.guestImages || [];
+        guests.forEach((g, i) => {
+          if (epImages[i]) {
+            const key = normalizeKey(g);
+            if (!images[key]) {
+              images[key] = epImages[i];
+            }
+          }
+        });
+
+        // Single guestImage (for single-guest episodes)
+        if (data.guestImage && guests.length === 1) {
+          const key = normalizeKey(guests[0]);
+          if (!images[key]) {
+            images[key] = data.guestImage;
+          }
+        }
+      });
+  }
+
   return { images, profiles };
 };
+
+/** Normalize a guest name to a lookup key (mirrors normalizeGuestKey in eleventy.config.js). */
+function normalizeKey(name) {
+  if (!name) return '';
+  let n = name.replace(/^(Dr\.?|Prof\.?|Professor)\s+/i, '');
+  let prev;
+  do {
+    prev = n;
+    n = n.replace(/[,\s]+(M\.?D\.?|Ph\.?D\.?|D\.?P\.?T\.?|D\.?O\.?|P\.?A\.?-?C?|R\.?D\.?N\.?|O\.?T\.?|P\.?T\.?|J\.?D\.?|LICSW|NCPT|ATC|MS|MA|MPT|DMSC|MRCPsych|DDS|D\.?C\.?|FACP|FACS|FAANS|FAAFP|FAAN|FAMSSM|FACOG|FRCPC|IFMCP|ABIHM|CCSP|CEDS-S|FAED|CHT|CYT|CHC|CMTPT|COMT|NCS|OCS|CES|MHCM)\.?\s*$/i, '');
+  } while (n !== prev);
+  return n.replace(/[,.\s]+$/, '').trim().toLowerCase().replace(/\s+/g, ' ');
+}

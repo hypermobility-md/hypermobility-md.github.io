@@ -1,19 +1,29 @@
 ---
 num: null
-title: "Season 4 Wrap: Reading Your Comments"
-date: "2024-06-13"
-duration: "7m"
-description: "Welcome back, every Bendy Body! In this special episode, I wrap up season four and share exciting plans for season five. Join me as I reflect on our journey, from focusing on high-risk populations like dancers and gymnasts to diving deep into medical topics. Listen in for gratitude-filled shoutouts from our wonderful listeners as I read their heartwarming reviews! See you soon for Season 5!\nConnect with YOUR Bendy Specialist, Dr. Linda Bluestein, MD at https://www.hypermobilitymd.com/."
+title: 'Season 4 Wrap: Reading Your Comments'
+date: '2024-06-13'
+duration: 7m
+description: >-
+  Welcome back, every Bendy Body! In this special episode, I wrap up season four
+  and share exciting plans for season five. Join me as I reflect on our journey,
+  from focusing on high-risk populations like dancers and gymnasts to diving
+  deep into medical topics. Listen in for gratitude-filled shoutouts from our
+  wonderful listeners as I read their heartwarming reviews! See you soon for
+  Season 5!
+
+  Connect with YOUR Bendy Specialist, Dr. Linda Bluestein, MD at
+  https://www.hypermobilitymd.com/.
 tags:
-  - "Hypermobility"
-audioUrl: "https://p.podderapp.com/9752035609/traffic.megaphone.fm/TCAHH6435896896.mp3?updated=1721669786"
-videoUrl: "https://youtu.be/kPT_QKaWrjA"
+  - Hypermobility
+audioUrl: >-
+  https://p.podderapp.com/9752035609/traffic.megaphone.fm/TCAHH6435896896.mp3?updated=1721669786
+videoUrl: 'https://youtu.be/kPT_QKaWrjA'
 snippets: []
 guests:
-  - "Dr. Linda Bluestein"
+  - Dr. Linda Bluestein
 guestImages: []
 ---
-Dr. Linda Bluestein: Welcome back, every bendy body. This is the Bendy Bodies Podcast, and I'm your host and founder, Dr. Linda Bluestein, the Hypermobility MD. This is going to be a great episode, so be sure to stick around until the very end so you don't miss any of our special hypermobility hacks. As always, this information is for educational purposes only and is not a substitute for personalized medical advice.
+[00:23] Dr. Linda Bluestein: Welcome back, every bendy body. This is the Bendy Bodies Podcast, and I'm your host and founder, Dr. Linda Bluestein, the Hypermobility MD. This is going to be a great episode, so be sure to stick around until the very end so you don't miss any of our special hypermobility hacks. As always, this information is for educational purposes only and is not a substitute for personalized medical advice.
 
 Today is a wrap of season 4, and I'm really excited to share with you what we are going to be planning for season 5. But first, I want to thank you so very much for listening to the podcast. And I'm so excited about the next chapter of this show. We have now reached the milestone of over 100 episodes, and I just love to think about how the podcast has grown, evolved, and changed lives. Your messages mean so much to me, letting me know how much the podcast has helped you, and for so many healthcare professionals, how that's helped you help other people.
 
