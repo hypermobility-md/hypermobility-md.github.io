@@ -53,6 +53,26 @@ async function submitToSheet(formType, data) {
 }
 
 /**
+ * Add yellow highlight to invalid fields on submit attempt.
+ * Forms get a 'submitted' class so CSS :invalid styles activate.
+ */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', () => {
+      form.classList.add('submitted');
+    });
+    // Clear highlight once the user fixes a field
+    form.addEventListener('input', (e) => {
+      if (e.target.validity && e.target.validity.valid) {
+        e.target.style.borderColor = '';
+        e.target.style.background = '';
+        e.target.style.boxShadow = '';
+      }
+    });
+  });
+});
+
+/**
  * Convert a File object to a base64 string.
  * Used for headshot uploads in the guest form.
  */

@@ -4,6 +4,7 @@ title: "Ask the Podcast a Question"
 activePage: "ask"
 permalink: /ask/
 needsRecaptcha: true
+description: "Submit a question for a future Bendy Bodies Podcast episode. Selected questions about EDS, hypermobility, and related conditions will be answered on-air."
 ---
 
 <div class="page-header">
@@ -54,7 +55,7 @@ needsRecaptcha: true
         </div>
 
         <div class="form-group">
-          <label class="form-label">How should we credit your question on the podcast?</label>
+          <label class="form-label">Name preference</label>
           <p class="form-hint">This controls how you'll be referred to if your question is selected.</p>
 
           <div class="form-option-card selected" data-attr="anonymous" onclick="selectAttribution('anonymous')">
@@ -68,16 +69,16 @@ needsRecaptcha: true
           <div class="form-option-card" data-attr="first_name" onclick="selectAttribution('first_name')">
             <input type="radio" name="attribution" value="first_name" style="display:none;">
             <div style="flex:1;">
-              <div class="form-option-title">First name only</div>
+              <div class="form-option-title">First name</div>
               <div class="form-option-desc">e.g. "Sarah asks&hellip;"</div>
               <input type="text" class="form-input" id="askFirstName" name="display_name" placeholder="Your first name" style="display:none; margin-top: 10px; width: 220px;">
             </div>
           </div>
 
-          <div class="form-option-card" data-attr="custom" onclick="selectAttribution('custom')">
-            <input type="radio" name="attribution" value="custom" style="display:none;">
+          <div class="form-option-card" data-attr="alias" onclick="selectAttribution('alias')">
+            <input type="radio" name="attribution" value="alias" style="display:none;">
             <div style="flex:1;">
-              <div class="form-option-title">Custom alias</div>
+              <div class="form-option-title">Alias</div>
               <div class="form-option-desc">Pick a nickname or handle</div>
               <input type="text" class="form-input" id="askAlias" name="alias" placeholder="Your alias or nickname" style="display:none; margin-top: 10px; width: 220px;">
             </div>
@@ -165,7 +166,7 @@ function selectAttribution(val) {
     c.querySelector('input[type="radio"]').checked = isSelected;
   });
   document.getElementById('askFirstName').style.display = val === 'first_name' ? 'block' : 'none';
-  document.getElementById('askAlias').style.display = val === 'custom' ? 'block' : 'none';
+  document.getElementById('askAlias').style.display = val === 'alias' ? 'block' : 'none';
 }
 
 // Submit

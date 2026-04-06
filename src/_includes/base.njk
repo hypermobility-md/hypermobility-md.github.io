@@ -11,6 +11,9 @@
   {% include "seo/open-graph.njk" %}
   {% include "seo/json-ld.njk" %}
 
+  {# Podcast RSS feed #}
+  <link rel="alternate" type="application/rss+xml" title="{{ site.podcastName }}" href="{{ site.podcastFeedUrl }}">
+
   {# Favicons #}
   <link rel="icon" href="/favicon.ico" sizes="48x48">
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">

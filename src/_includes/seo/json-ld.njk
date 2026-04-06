@@ -15,7 +15,37 @@
     "@type": "Person",
     "name": "{{ site.author.name }}",
     "url": "{{ site.author.url }}"
-  }
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "bestRating": "5",
+    "ratingCount": "228",
+    "ratingSource": "Apple Podcasts"
+  },
+  "review": [
+    {
+      "@type": "Review",
+      "author": { "@type": "Person", "name": "Dr. Hollie R" },
+      "datePublished": "2025-01-26",
+      "reviewBody": "The subject matter is relevant, the content is peer-reviewed, and the guests are reputable. Not sure you can ask for more in the EDS society! Doing a deep dive into these episodes is an effective method to really learning about how to care for your EDS, which is so much more than a bendy body as we all know.",
+      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
+    },
+    {
+      "@type": "Review",
+      "author": { "@type": "Person", "name": "Jwpcrbm" },
+      "datePublished": "2025-01-19",
+      "reviewBody": "Really love the wide range of guests this podcast hosts — it has been really valuable for gaining different perspectives and insights. The information is superbly helpful, and it's so wonderful that there is a consolidated bank of information that we can look to!",
+      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
+    },
+    {
+      "@type": "Review",
+      "author": { "@type": "Person", "name": "Katie" },
+      "datePublished": "2024-10-08",
+      "reviewBody": "The Bendy Bodies podcast has empowered and encouraged me as a patient and professional in more ways than I can describe! Thank you for your generosity, compassion, and hard work in bringing so much visibility to connective tissue disorders!",
+      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
+    }
+  ]
 }
 </script>
 
@@ -48,7 +78,8 @@
     "@type": "PodcastSeries",
     "name": "{{ site.podcastName | jsonEscape | safe }}",
     "url": "{{ site.url }}/podcast/"
-  }{% if guests and guests.length %},
+  }{% set epItem = collections.episodes | findByUrl(page.url) %}{% if epItem and epItem.content | trim %},
+  "transcript": "{{ epItem.content | stripHtml | truncate(5000, true, '...') | jsonEscape | safe }}"{% endif %}{% if guests and guests.length %},
   "actor": [{% for g in guests %}
     {%- set gKey = g | guestKey -%}
     {%- set gProfile = guestData.profiles[gKey] -%}
@@ -117,6 +148,171 @@
     { "@type": "ListItem", "position": 3, "name": "Guests", "item": "{{ site.url }}/podcast-guests/" },
     { "@type": "ListItem", "position": 4, "name": "{{ displayName | jsonEscape | safe }}" }
   ]
+}
+</script>
+
+{% elif pageType == "about" %}
+{# ── ProfilePage + Person (about page) ── #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "name": "{{ title | jsonEscape | safe }}",
+  "url": "{{ site.url }}{{ page.url }}",
+  "description": "{{ description | jsonEscape | safe }}",
+  "mainEntity": [
+    {
+      "@type": "Person",
+      "name": "{{ site.author.name }}",
+      "url": "{{ site.author.url }}",
+      "jobTitle": "Board-Certified Anesthesiologist, Hypermobility Specialist",
+      "image": "{{ site.url }}/assets/dr-bluestein-about-me.png",
+      "description": "{{ description | jsonEscape | safe }}",
+      "sameAs": [
+        "https://hypermobilitymd.substack.com/",
+        "https://www.instagram.com/hypermobility_md/",
+        "https://x.com/BluesteinLinda",
+        "https://www.youtube.com/@BendyBodiesPodcast"
+      ]
+    },
+    {
+      "@type": "Person",
+      "name": "Rebecca Gluck",
+      "jobTitle": "PA-C, EduCoaching Provider",
+      "description": "Rebecca Gluck, PA-C offers EduCoaching through Bendy Bodies, LLC with specialized experience in Ehlers-Danlos syndromes, hypermobility spectrum disorders, and complex chronic conditions."
+    }
+  ]
+}
+</script>
+
+{% elif pageType == "faq" %}
+{# ── FAQPage (faq page) — questions generated at build time ── #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "name": "{{ title | jsonEscape | safe }}",
+  "url": "{{ site.url }}{{ page.url }}",
+  "description": "{{ description | jsonEscape | safe }}",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the difference between being a patient and being an EduCoaching client?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Medical patients must meet Dr. Bluestein in person in Colorado or Wisconsin. She can write prescriptions, order labs, and imaging. Follow-ups can be virtual for up to one year. EduCoaching clients can live anywhere and meet online. Dr. Bluestein or Rebecca Gluck, PA-C provides guidance to work with your local healthcare team. Prescriptions and lab work cannot be ordered in coaching sessions." }
+    },
+    {
+      "@type": "Question",
+      "name": "What services are offered by Dr. Linda Bluestein, the Hypermobility MD?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Dr. Bluestein offers EduCoaching (personalized one-on-one coaching via live video calls, available worldwide) and is accepting a very limited number of new medical patients. She also hosts the Bendy Bodies Podcast featuring expert conversations on EDS, hypermobility, and related conditions." }
+    },
+    {
+      "@type": "Question",
+      "name": "What services are offered by Rebecca Gluck, PA-C?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Rebecca Gluck, PA-C offers EduCoaching sessions through Bendy Bodies, LLC. She brings specialized experience in Ehlers-Danlos syndromes, hypermobility spectrum disorders, and other complex chronic conditions. She may be a more affordable option for education and coaching support." }
+    },
+    {
+      "@type": "Question",
+      "name": "Are virtual appointments available?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Virtual appointments are available for EduCoaching clients and for some patient follow-up visits. New and existing EduCoaching clients can schedule through Bendy Bodies, LLC. Existing patients can schedule through the patient portal." }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the payment options?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Clients and patients are directly responsible for payment. We accept credit cards and Venmo." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do we create an environment where a diverse range of patients and clients feel comfortable seeking care?",
+      "acceptedAnswer": { "@type": "Answer", "text": "We are dedicated to fostering an inclusive atmosphere, recognizing the potential disparities in healthcare — especially for chronic and complex conditions. Every patient and client is treated with respect, sincerity, and empathy, receiving considerate and tailored care." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Hypermobility MD currently accepting new patients?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Hypermobility MD accepts a very small number of patients. You can join the waiting list by completing the intake form on the Services page. Dr. Bluestein and Rebecca are accepting new clients for EduCoaching through Bendy Bodies, LLC." }
+    },
+    {
+      "@type": "Question",
+      "name": "What medical treatments does Hypermobility MD offer?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Current patients are evaluated at each visit and prescribed a comprehensive treatment plan which may include medications, supplements, physical therapy, and occupational therapy. Laboratory studies and imaging will be ordered where medically indicated. Dr. Bluestein also provides referrals to appropriate specialists." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I know which medical package to choose?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Three options are available: Gold (single, limited concern, 90-minute first visit), Platinum (comprehensive review or multiple concerns, 150-minute first visit), and Diamond (complex medical histories, recommended for most EDS/HSD/POTS/MCAS patients, 210-minute first visit). Each includes follow-up appointments." }
+    },
+    {
+      "@type": "Question",
+      "name": "Where can I find more details about the medical services?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The complete policies and procedures for medical services are available on the patient portal and in the office policies and procedures document linked on the Services page." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is EduCoaching?",
+      "acceptedAnswer": { "@type": "Answer", "text": "EduCoaching is a process developed by Dr. Bluestein combining personalized information with one-on-one coaching. All sessions are live, interactive video calls available worldwide. You receive guidance to help self-manage your condition and advocate for yourself in healthcare settings. Coaching is for educational purposes only and does not replace medical care." }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the differences between the EduCoaching session levels, and which one is right for me?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Four levels are available: Bronze (20 min, single issue), Silver (45 min, 2-3 issues, up to 10 pages of records reviewed), Gold (100 min, complex multi-system problems, up to 30 pages, complimentary follow-up), and Platinum (100 min, includes peer-to-peer consultation with your primary care provider)." }
+    },
+    {
+      "@type": "Question",
+      "name": "Where can I find more details about the coaching services?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The complete policies and procedures for coaching services are available in the document linked on the Services page." }
+    },
+    {
+      "@type": "Question",
+      "name": "Who is professional mentorship for?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Professional mentorship is for healthcare providers, coaches, and movement professionals who work with individuals navigating complex conditions like EDS, HSD, POTS, MCAS, and chronic pain. Sessions cover clinical topics like diagnosing and managing EDS, as well as business topics like building a niche practice." }
+    },
+    {
+      "@type": "Question",
+      "name": "What kinds of topics will be covered in professional mentorship?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Clinical topics include diagnosing and managing EDS/HSD, navigating complex comorbidities (POTS, MCAS, CCI), and improving patient care. Business topics include building a niche practice, ethical entrepreneurship, and finding balance. Each session is tailored to your needs — you can bring challenging cases, treatment planning questions, or practice growth goals." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is professional mentorship a medical consultation?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Professional mentoring is not a substitute for medical advice or patient care. Sessions are for educational and professional development purposes only. Dr. Bluestein does not provide direct clinical recommendations for patients who are not under her medical care." }
+    },
+    {
+      "@type": "Question",
+      "name": "How long is each mentorship session and how do I book?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Sessions can be 20, 50, or 80 minutes and are held via Jane. You can book directly through the coaching portal, where you'll find available time slots and payment details." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I book more than one mentorship session?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Absolutely. While a single session can be valuable, some professionals prefer ongoing mentorship. You're welcome to book sessions as needed, or select a package for longer-term support." }
+    }
+  ]
+}
+</script>
+
+{% elif pageType == "article" %}
+{# ── Article (FAQ deep-dive articles) ── #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ title | jsonEscape | safe }}",
+  "url": "{{ site.url }}{{ page.url }}",
+  "description": "{{ description | jsonEscape | safe }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ site.author.name }}",
+    "url": "{{ site.author.url }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hypermobility MD",
+    "url": "{{ site.url }}/"
+  },
+  "isPartOf": {
+    "@type": "WebPage",
+    "name": "Frequently Asked Questions",
+    "url": "{{ site.url }}/faq/"
+  }
 }
 </script>
 

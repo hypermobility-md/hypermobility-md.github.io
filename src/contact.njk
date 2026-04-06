@@ -4,6 +4,7 @@ title: "Contact Us"
 activePage: "contact"
 permalink: /contact/
 needsRecaptcha: true
+description: "Get in touch with Dr. Linda Bluestein and the Bendy Bodies team. Questions about EduCoaching, medical services, or the podcast."
 ---
 
 <div class="page-header">
@@ -43,17 +44,17 @@ needsRecaptcha: true
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="contact-subject">Subject</label>
-          <select class="form-select" id="contact-subject" name="subject" required>
-            <option value="" disabled selected>Select a topic</option>
-            <option value="coaching">Education &amp; Coaching</option>
-            <option value="medical">Medical Services</option>
-            <option value="mentorship">Professional Mentorship</option>
-            <option value="medico-legal">Medico-Legal Consulting</option>
-            <option value="podcast">Podcast</option>
-            <option value="billing">Billing &amp; Payment</option>
-            <option value="other">Other</option>
-          </select>
+          <label class="form-label">Topic</label>
+          <div class="form-chips" id="contactTopicChips">
+            <button type="button" class="form-chip" data-value="coaching">Education &amp; Coaching</button>
+            <button type="button" class="form-chip" data-value="medical">Medical Services</button>
+            <button type="button" class="form-chip" data-value="mentorship">Professional Mentorship</button>
+            <button type="button" class="form-chip" data-value="medico-legal">Medico-Legal Consulting</button>
+            <button type="button" class="form-chip" data-value="podcast">Podcast</button>
+            <button type="button" class="form-chip" data-value="billing">Billing &amp; Payment</button>
+            <button type="button" class="form-chip" data-value="other">Other</button>
+          </div>
+          <input type="hidden" name="subject" id="contact-subject">
         </div>
 
         <div class="form-group">
@@ -89,6 +90,15 @@ needsRecaptcha: true
 {% block scripts %}
 <script src="/js/form-submit.js"></script>
 <script>
+// Topic chips
+document.querySelectorAll('#contactTopicChips .form-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('#contactTopicChips .form-chip').forEach(c => c.classList.remove('selected'));
+    chip.classList.add('selected');
+    document.getElementById('contact-subject').value = chip.dataset.value;
+  });
+});
+
 document.getElementById('contactForm').addEventListener('submit', async function(e) {
   e.preventDefault();
   const btn = document.getElementById('contactSubmitBtn');

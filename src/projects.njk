@@ -3,6 +3,7 @@ layout: base.njk
 title: "Products We Love"
 activePage: "projects"
 permalink: /projects/
+description: "Products, tools, and resources recommended by Dr. Linda Bluestein for the hypermobility and EDS community, including podcast supporters and affiliate picks."
 ---
 
 <!-- Page Header -->
@@ -23,6 +24,27 @@ permalink: /projects/
     <div class="supporter-grid">
 
       <div class="supporter-card">
+        <img src="/assets/supporters/uva-health.png" alt="UVA Health" class="supporter-logo">
+        <h3>UVA Health EDS Center</h3>
+        <p>The EDS &amp; Hypermobility Disorders Center at the University of Virginia, directed by podcast co-host Dr. Dacre Knight.</p>
+        <a href="https://www.uvahealth.com/locations/EDS-and-Hypermobility-Disorders-Center-LOC0000269619" class="btn btn-secondary" target="_blank" rel="noopener">Visit</a>
+      </div>
+
+      <div class="supporter-card">
+        <img src="/assets/supporters/cozy-earth.png" alt="Cozy Earth" class="supporter-logo">
+        <h3>Cozy Earth</h3>
+        <p>Premium bamboo bedding, loungewear, and bath products — comfort that supports better sleep.</p>
+        <a href="https://cozyearth.com/" class="btn btn-secondary" target="_blank" rel="noopener">Shop Cozy Earth</a>
+      </div>
+
+      <div class="supporter-card">
+        <img src="/assets/supporters/bendy-boutique.png" alt="Bendy Bodies Boutique" class="supporter-logo">
+        <h3>Bendy Bodies Boutique</h3>
+        <p>Show off your bendy pride with playful, empowering merchandise — tees, mugs, hoodies, bags, and more. 50% of proceeds on most designs goes to EDS Guardians.</p>
+        <a href="https://bendybodies.threadless.com/" class="btn btn-secondary" target="_blank" rel="noopener">Shop Boutique</a>
+      </div>
+
+      <div class="supporter-card">
         <img src="/assets/supporters/eds-guardians.png" alt="EDS Guardians" class="supporter-logo">
         <h3>EDS Guardians</h3>
         <p>The world's first patient-to-patient, caregiver-to-caregiver, "pay-it-forward" organization dedicated to helping EDS patients who lack support and need vital medical treatment, community, and compassionate care.</p>
@@ -38,31 +60,10 @@ permalink: /projects/
       </div>
 
       <div class="supporter-card">
-        <img src="/assets/supporters/bendy-boutique.png" alt="Bendy Bodies Boutique" class="supporter-logo">
-        <h3>Bendy Bodies Boutique</h3>
-        <p>Show off your bendy pride with playful, empowering merchandise — tees, mugs, hoodies, bags, and more. 50% of proceeds on most designs goes to EDS Guardians.</p>
-        <a href="https://bendybodies.threadless.com/" class="btn btn-secondary" target="_blank" rel="noopener">Shop Boutique</a>
-      </div>
-
-      <div class="supporter-card">
-        <img src="/assets/supporters/uva-health.png" alt="UVA Health" class="supporter-logo">
-        <h3>UVA Health EDS Center</h3>
-        <p>The EDS &amp; Hypermobility Disorders Center at the University of Virginia, directed by podcast co-host Dr. Dacre Knight.</p>
-        <a href="https://www.uvahealth.com/locations/EDS-and-Hypermobility-Disorders-Center-LOC0000269619" class="btn btn-secondary" target="_blank" rel="noopener">Visit</a>
-      </div>
-
-      <div class="supporter-card">
         <img src="/assets/supporters/podpage.png" alt="Podpage" class="supporter-logo">
         <h3>Podpage</h3>
         <p>Build a website for your podcast in five minutes. The Bendy Bodies Podcast site is a Podpage site — powerful in function and simple in setup.</p>
         <a href="https://podpage.com/?via=linda-bluestein" class="btn btn-secondary" target="_blank" rel="noopener">Visit Podpage</a>
-      </div>
-
-      <div class="supporter-card">
-        <img src="/assets/supporters/cozy-earth.png" alt="Cozy Earth" class="supporter-logo">
-        <h3>Cozy Earth</h3>
-        <p>Premium bamboo bedding, loungewear, and bath products — comfort that supports better sleep.</p>
-        <a href="https://cozyearth.com/" class="btn btn-secondary" target="_blank" rel="noopener">Shop Cozy Earth</a>
       </div>
 
     </div>
@@ -210,3 +211,21 @@ permalink: /projects/
     </p>
   </div>
 </section>
+
+{% block scripts %}
+<script>
+document.querySelectorAll('.discount-code').forEach(el => {
+  el.title = 'Click to copy code';
+  el.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const code = this.textContent.split('—')[0].trim().split('—')[0].trim();
+    navigator.clipboard.writeText(code).then(() => {
+      const orig = this.textContent;
+      this.textContent = 'Copied!';
+      setTimeout(() => { this.textContent = orig; }, 1500);
+    });
+  });
+});
+</script>
+{% endblock %}

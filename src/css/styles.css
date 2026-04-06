@@ -435,6 +435,11 @@ p a:hover, li a:hover, td a:hover, dd a:hover, figcaption a:hover { text-decorat
   font-weight: 600;
   font-size: 0.9rem;
 }
+.testimonial-date {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
 
 /* ---- Conditions Treated (tag cloud) ---- */
 .condition-tags {
@@ -1189,6 +1194,11 @@ a.logo-card:hover {
   margin-bottom: 12px;
   font-family: monospace;
   letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.supporter-card .discount-code:hover {
+  background: var(--primary-bg);
 }
 
 /* ---- Products Page ---- */
@@ -1259,6 +1269,11 @@ a.product-card:hover {
   font-family: monospace;
   letter-spacing: 0.05em;
   text-align: center;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.product-card .discount-code:hover {
+  background: var(--primary-bg);
 }
 .product-card .btn {
   margin-top: auto;
@@ -1376,6 +1391,18 @@ a.product-card:hover {
 .form-input::placeholder,
 .form-textarea::placeholder {
   color: var(--text-light);
+}
+/* Highlight invalid fields after submit attempt */
+form.submitted .form-input:invalid,
+form.submitted .form-textarea:invalid,
+form.submitted .form-select:invalid {
+  border-color: #D4A03C;
+  background: #FFFDF5;
+  box-shadow: 0 0 0 3px rgba(212, 160, 60, 0.15);
+}
+form.submitted .form-check input:invalid {
+  outline: 2px solid #D4A03C;
+  outline-offset: 2px;
 }
 .form-textarea {
   resize: vertical;
