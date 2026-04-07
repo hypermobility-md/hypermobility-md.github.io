@@ -1,36 +1,39 @@
 ---
 num: null
 title: >-
- Hypermobility Problems with Anesthesiologist Dr. Linda Bluestein |
- Glaucomfleckens Bonus Episode
+  Hypermobility Problems with Anesthesiologist Dr. Linda Bluestein |
+  Glaucomfleckens Bonus Episode
 date: '2025-09-22'
 duration: 1h 7m
 description: >-
- In honor of Pain Awareness Month, I wanted to share an episode of one of my
- favorite healthcare podcasts, "Knock Knock Hi with the Glaucomfleckens." In
- this interview from last July, Will and Kristin Flanary (AKA Dr. and Lady
- Glaucomflecken) kindly invited me on to talk about my journey from ballet to
- anesthesiology to integrative pain care, and how hypermobility and chronic
- pain are often overlooked or misunderstood in both medicine and everyday life.
+  In honor of Pain Awareness Month, I wanted to share an episode of one of my
+  favorite healthcare podcasts, "Knock Knock Hi with the Glaucomfleckens." In
+  this interview from last July, Will and Kristin Flanary (AKA Dr. and Lady
+  Glaucomflecken) kindly invited me on to talk about my journey from ballet to
+  anesthesiology to integrative pain care, and how hypermobility and chronic
+  pain are often overlooked or misunderstood in both medicine and everyday life.
 
 
- Listen to more episodes of "Knock Knock, Hi! with the Glaucomfleckens"
- wherever you get your podcasts, or watch on YouTube.
- https://www.human-content.com/kkh
+  Listen to more episodes of "Knock Knock, Hi! with the Glaucomfleckens"
+  wherever you get your podcasts, or watch on YouTube.
+  https://www.human-content.com/kkh
 
 
- Bendy Bodies, alongside Knock Knock Hi with the Glaucomfleckens, is a proud
- part of the Human Content Podcast Network
+  Bendy Bodies, alongside Knock Knock Hi with the Glaucomfleckens, is a proud
+  part of the Human Content Podcast Network
 tags:
- - Pain
- - Surgery
- - Hypermobility
+  - Hypermobility
+  - Anesthesia
+  - Pain
+  - Dance & Performing Arts
+  - Integrative Medicine
+  - Patient Advocacy
 audioUrl: 'https://p.podderapp.com/9752035609/traffic.megaphone.fm/TCAHH9366654775.mp3'
 videoUrl: 'https://youtu.be/WIwNaTeBC7U'
 snippets: []
 guests:
- - Will Flanary
- - Kristin Flanary
+  - Will Flanary
+  - Kristin Flanary
 guestImages: []
 ---
 [01:34] Will Flannery: Hello everybody. Welcome to Knock Knock High with The Glockenfleckens. I am your host, Will Flannery, also known as Dr. Glockenflecken. 

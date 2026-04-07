@@ -1,0 +1,46 @@
+{
+  "tags": [
+    { "name": "EDS", "aliases": ["hEDS", "Connective Tissue Disorders", "Ehlers-Danlos", "Ehlers-Danlos Syndrome"] },
+    { "name": "Hypermobility", "aliases": ["Joint Hypermobility", "HSD", "Hypermobility Spectrum Disorder", "Hypermobility Spectrum Disorders"] },
+    { "name": "POTS", "aliases": ["Postural Orthostatic Tachycardia"] },
+    { "name": "Dysautonomia", "aliases": ["Autonomic Dysfunction", "Autonomic Nervous System"] },
+    { "name": "MCAS", "aliases": ["Mast Cell Activation", "Mast Cell Disorders", "Histamine Intolerance"] },
+    { "name": "Chiari Malformation", "aliases": [] },
+    { "name": "Craniocervical Instability", "aliases": ["CCI", "Cervical Instability", "Joint Instability"] },
+    { "name": "Long COVID", "aliases": ["Post-Viral Syndromes"] },
+    { "name": "ME/CFS", "aliases": ["Chronic Fatigue Syndrome"] },
+    { "name": "MALS", "aliases": ["Median Arcuate Ligament Syndrome"] },
+    { "name": "Fibromyalgia", "aliases": [] },
+    { "name": "TMJ/TMD", "aliases": ["TMD", "TMJ", "Temporomandibular"] },
+
+    { "name": "Pain", "aliases": ["Chronic Pain", "Pain Management", "Central Sensitization"] },
+    { "name": "Fatigue", "aliases": ["Energy Management"] },
+    { "name": "GI Issues", "aliases": ["Gastroparesis", "SIBO", "Gut Health", "Abdominal Pain"] },
+    { "name": "Sleep", "aliases": ["Sleep Disorders"] },
+    { "name": "Brain Fog", "aliases": [] },
+    { "name": "Headaches", "aliases": ["Migraines"] },
+    { "name": "Pelvic Health", "aliases": ["Pelvic Floor", "Pelvic Pain"] },
+    { "name": "Inflammation", "aliases": ["Neuroinflammation"] },
+
+    { "name": "Physical Therapy", "aliases": ["Rehabilitation", "Physiotherapy"] },
+    { "name": "Nutrition", "aliases": ["Supplements", "Sports Nutrition"] },
+    { "name": "Surgery", "aliases": ["Neurosurgery", "Surgery Preparation", "Oral Surgery"] },
+    { "name": "Anesthesia", "aliases": ["Anesthesiology"] },
+    { "name": "Integrative Medicine", "aliases": ["Functional Medicine", "Regenerative Medicine"] },
+    { "name": "Genetics", "aliases": ["Genetic Testing", "Epigenetics", "Pharmacogenetics"] },
+
+    { "name": "Dance & Performing Arts", "aliases": ["Dance", "Ballet", "Dance Medicine", "Performing Arts", "Performing Arts Medicine", "Circus Arts", "Career Longevity"] },
+    { "name": "Exercise", "aliases": ["Strength Training", "Pilates", "Yoga", "Athletic Training", "Athletic Performance"] },
+    { "name": "Injury Prevention", "aliases": ["Joint Stability", "Biomechanics", "Proprioception"] },
+
+    { "name": "Mental Health", "aliases": ["Anxiety", "Depression", "Stress Management", "Coping Strategies", "Resilience", "Perfectionism", "Psychiatry"] },
+    { "name": "Eating Disorders", "aliases": ["Disordered Eating", "Body Image"] },
+    { "name": "Neurodivergence", "aliases": ["Autism", "Neurodiversity", "ADHD"] },
+
+    { "name": "Diagnosis", "aliases": ["Diagnostic Criteria", "Diagnostic Challenges", "Misdiagnosis", "Diagnostic Imaging"] },
+    { "name": "Patient Advocacy", "aliases": ["Medical Advocacy", "Medical Gaslighting", "Medical Stigma", "Healthcare Navigation", "Healthcare Communication", "Patient Education"] },
+    { "name": "Women's Health", "aliases": ["Sexual Health"] },
+    { "name": "Neurology", "aliases": ["Nerve Compression", "Neuro-Ophthalmology", "Neurological Symptoms", "Spinal Cord"] },
+    { "name": "Research", "aliases": ["Medical Education", "Clinical Education", "Medical Research"] }
+  ]
+}

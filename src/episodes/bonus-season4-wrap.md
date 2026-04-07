@@ -15,6 +15,10 @@ description: >-
   https://www.hypermobilitymd.com/.
 tags:
   - Hypermobility
+  - EDS
+  - Dance & Performing Arts
+  - Patient Advocacy
+  - Research
 audioUrl: >-
   https://p.podderapp.com/9752035609/traffic.megaphone.fm/TCAHH6435896896.mp3?updated=1721669786
 videoUrl: 'https://youtu.be/kPT_QKaWrjA'
