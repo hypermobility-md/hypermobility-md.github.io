@@ -88,9 +88,10 @@ This outro content should STAY — it's the show's standard sign-off, not an ad.
 
 ## Task 2: Format into Readable Paragraphs
 
-The transcript uses the format "Speaker Name: text". Maintain this format, but:
+The transcript uses the format "[MM:SS] Speaker Name: text" (or "[H:MM:SS] Speaker Name: text" after the 1-hour mark). Each speaker turn starts with a timestamp in square brackets. Maintain this format, but:
+- Preserve all timestamps exactly as they appear — do NOT remove, modify, or add timestamps
 - Ensure there is a blank line between each speaker turn
-- Break long speaker turns into multiple paragraphs at natural points (topic shifts, new ideas, after ~3-5 sentences). Keep the speaker label only on the first paragraph of their turn — continuation paragraphs should NOT repeat the speaker name, just continue as plain text
+- Break long speaker turns into multiple paragraphs at natural points (topic shifts, new ideas, after ~3-5 sentences). Keep the speaker label and timestamp only on the first paragraph of their turn — continuation paragraphs should NOT repeat the speaker name or timestamp, just continue as plain text
 - Do NOT merge separate speaker turns together
 
 ## Task 3: Proofread

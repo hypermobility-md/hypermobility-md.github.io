@@ -29,7 +29,8 @@ audioUrl: 'https://p.podderapp.com/9752035609/traffic.megaphone.fm/TCAHH93666547
 videoUrl: 'https://youtu.be/WIwNaTeBC7U'
 snippets: []
 guests:
- - Dr. Linda Bluestein
+ - Will Flanary
+ - Kristin Flanary
 guestImages: []
 ---
 [01:34] Will Flannery: Hello everybody. Welcome to Knock Knock High with The Glockenfleckens. I am your host, Will Flannery, also known as Dr. Glockenflecken. 

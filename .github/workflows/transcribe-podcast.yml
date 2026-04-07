@@ -1,0 +1,100 @@
+name: Transcribe New Episodes
+
+on:
+  # Chain after sync-podcast completes
+  workflow_run:
+    workflows: ["Sync Podcast from RSS"]
+    types: [completed]
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  transcribe:
+    runs-on: ubuntu-latest
+    # Only run if sync succeeded (skip on failure or if manually triggered)
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for episodes needing transcription
+        id: check
+        run: |
+          OUTPUT=$(node scripts/transcribe-new.mjs --dry-run 2>&1)
+          echo "$OUTPUT"
+          if echo "$OUTPUT" | grep -q "No episodes need transcription"; then
+            echo "needed=false" >> $GITHUB_OUTPUT
+          else
+            echo "needed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Transcribe new episodes
+        if: steps.check.outputs.needed == 'true'
+        env:
+          ASSEMBLY_AI_API_KEY: ${{ secrets.ASSEMBLY_AI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/transcribe-new.mjs --max 3
+        timeout-minutes: 30
+
+      - name: Commit transcripts
+        if: steps.check.outputs.needed == 'true'
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/episodes/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            git commit -m "Add transcripts for new podcast episodes"
+            git push
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+  build-deploy:
+    needs: transcribe
+    if: needs.transcribe.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4

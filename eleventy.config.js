@@ -175,6 +175,18 @@ module.exports = function(eleventyConfig) {
     return '/assets/og-guests/' + base + '.jpg';
   });
 
+  // Strip HTML tags for plain-text output (e.g. JSON-LD transcript)
+  eleventyConfig.addFilter("stripHtml", (html) => {
+    if (!html) return '';
+    return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+  });
+
+  // Find a collection item by its URL
+  eleventyConfig.addFilter("findByUrl", (collection, url) => {
+    if (!collection || !url) return null;
+    return collection.find(item => item.url === url) || null;
+  });
+
   // Escape string for safe JSON-LD embedding
   eleventyConfig.addFilter("jsonEscape", (str) => {
     if (!str) return '';

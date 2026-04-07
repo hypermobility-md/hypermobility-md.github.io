@@ -76,6 +76,21 @@ function stripInlineAds(text) {
 }
 
 /**
+ * Format milliseconds as [MM:SS] or [H:MM:SS] (H:MM:SS once ≥ 1 hour).
+ */
+function formatTimestamp(ms) {
+  const totalSeconds = Math.floor(ms / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  if (hours > 0) {
+    return `[${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}]`;
+  }
+  return `[${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}]`;
+}
+
+/**
  * Convert labeled utterances to formatted markdown transcript.
  */
 function formatTranscript(labeled) {
@@ -85,6 +100,7 @@ function formatTranscript(labeled) {
   const paragraphs = [];
   let currentSpeaker = null;
   let currentText = [];
+  let currentStart = null;
   let isFirstUtterance = true;
 
   for (const u of utterances) {
@@ -104,17 +120,24 @@ function formatTranscript(labeled) {
       // New speaker — flush previous
       if (currentSpeaker !== null) {
         const joined = currentText.join(' ').trim();
-        if (joined) paragraphs.push(`${currentSpeaker}: ${joined}`);
+        if (joined) {
+          const ts = formatTimestamp(currentStart);
+          paragraphs.push(`${ts} ${currentSpeaker}: ${joined}`);
+        }
       }
       currentSpeaker = u.speakerName;
       currentText = [text];
+      currentStart = u.start;
     }
   }
 
   // Flush last speaker
   if (currentSpeaker !== null) {
     const joined = currentText.join(' ').trim();
-    if (joined) paragraphs.push(`${currentSpeaker}: ${joined}`);
+    if (joined) {
+      const ts = formatTimestamp(currentStart);
+      paragraphs.push(`${ts} ${currentSpeaker}: ${joined}`);
+    }
   }
 
   return paragraphs.join('\n\n');
