@@ -1,0 +1,11 @@
+{
+  "layout": "appearance.njk",
+  "activePage": "podcast",
+  "extraCss": "podcast-styles.css",
+  "bodyClass": "podcast-page",
+  "podcastSubpage": "appearances",
+  "permalink": "/podcast-appearances/{{ page.fileSlug }}/",
+  "eleventyComputed": {
+    "title": "{{ episodeTitle }} — {{ showName }}"
+  }
+}

@@ -20,20 +20,47 @@ permalink: /podcast-appearances/
   </div>
 </div>
 
-<!-- Appearances Grid -->
+<!-- Featured Appearances -->
 <section class="section">
   <div class="container">
+    <h2 class="appearances-section-heading">Featured</h2>
     <div class="appearances-grid">
-      {% for appearance in guestAppearances %}
-      <div class="appearance-card">
-        {% if appearance.imageUrl %}
-        <img class="appearance-card-img" src="{{ appearance.imageUrl }}" alt="{{ appearance.showName }}">
+      {% for appearance in collections.appearances %}
+        {% if appearance.data.featured %}
+        <a href="{{ appearance.url }}" class="appearance-card">
+          {% if appearance.data.imageUrl %}
+          <img class="appearance-card-img" src="{{ appearance.data.imageUrl }}" alt="{{ appearance.data.showName }}">
+          {% endif %}
+          <div class="appearance-card-body">
+            <div class="appearance-card-show">{{ appearance.data.showName }}</div>
+            <h3>{{ appearance.data.episodeTitle }}</h3>
+            {% if appearance.data.date %}<div class="appearance-card-date">{{ appearance.data.date | formatDate }}</div>{% endif %}
+          </div>
+        </a>
         {% endif %}
-        <div class="appearance-card-body">
-          <h3>{{ appearance.episodeTitle }}</h3>
-          <a href="{{ appearance.url }}" target="_blank" rel="noopener" class="btn-listen">{{ "Watch" if appearance.type == "watch" else "Listen" }} &rarr;</a>
-        </div>
-      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- All Other Appearances -->
+<section class="section">
+  <div class="container">
+    <h2 class="appearances-section-heading">Other Appearances</h2>
+    <div class="appearances-grid">
+      {% for appearance in collections.appearances %}
+        {% if not appearance.data.featured %}
+        <a href="{{ appearance.url }}" class="appearance-card">
+          {% if appearance.data.imageUrl %}
+          <img class="appearance-card-img" src="{{ appearance.data.imageUrl }}" alt="{{ appearance.data.showName }}">
+          {% endif %}
+          <div class="appearance-card-body">
+            <div class="appearance-card-show">{{ appearance.data.showName }}</div>
+            <h3>{{ appearance.data.episodeTitle }}</h3>
+            {% if appearance.data.date %}<div class="appearance-card-date">{{ appearance.data.date | formatDate }}</div>{% endif %}
+          </div>
+        </a>
+        {% endif %}
       {% endfor %}
     </div>
   </div>
