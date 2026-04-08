@@ -134,7 +134,7 @@ permalink: /podcast-episodes/
 //  Episode Search & Filter Engine
 // ============================================
 
-let activeTag = 'all';
+let activeTags = [];
 let searchQuery = '';
 let sortMode = 'newest';
 let searchScope = 'transcript';
@@ -298,9 +298,18 @@ function buildAvatarHtml(ep, linkable, showAll) {
 }
 
 function buildCard(ep) {
-  const tagChips = ep.tags.slice(0, 3).map(t => {
+  // Show active tags first, then fill remaining slots up to 3
+  const activeSet = new Set(activeTags);
+  const activeInEp = ep.tags.filter(t => activeSet.has(t));
+  const rest = ep.tags.filter(t => !activeSet.has(t));
+  const displayTags = [...activeInEp, ...rest].slice(0, Math.max(3, activeInEp.length));
+  const tagChips = displayTags.map(t => {
     const color = TAG_COLORS[t] || '#4a2d7a';
-    return `<span class="tag-chip" style="background:${color}18; color:${color}; border-color:${color}30;">${t}</span>`;
+    const isActive = activeSet.has(t);
+    const style = isActive
+      ? `background:${color}; color:#fff; border-color:${color};`
+      : `background:${color}18; color:${color}; border-color:${color}30;`;
+    return `<span class="tag-chip" style="${style}">${t}</span>`;
   }).join('');
 
   const epNum = ep.num ? `<div class="ep-number">${ep.num}</div>` : '';
@@ -507,6 +516,14 @@ function allExactWords(text, words) {
   return words.every(w => hasExactWord(text, w));
 }
 
+// Check if ALL query words appear as exact whole words (not just word-start)
+function allWholeWords(text, words) {
+  return words.every(w => {
+    const esc = w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return new RegExp('\\b' + esc + '\\b', 'i').test(text);
+  });
+}
+
 // Score an episode for relevance ranking
 // Higher score = more relevant. 0 = no match.
 // Search scope controls which fields are searched:
@@ -536,24 +553,29 @@ function scoreEpisode(ep, queryStr) {
   }
 
   // --- Transcript matches (primary when in transcript/all mode) ---
+  //   800 = whole word, 600 = word-start, 400 = substring
   if (includeTranscript && transcriptPlain) {
     if (words.length === 1) {
-      if (hasExactWord(transcriptPlain, words[0]))  score += 600;
-      else if (transcriptPlain.includes(words[0]))  score += 400;
+      if (allWholeWords(transcriptPlain, words))      score += 800;
+      else if (hasExactWord(transcriptPlain, words[0]))  score += 600;
+      else if (transcriptPlain.includes(words[0]))       score += 400;
     } else {
-      if (transcriptPlain.includes(q))               score += 700;
-      else if (allExactWords(transcriptPlain, words)) score += 600;
-      else if (wordsMatch(transcriptPlain, words))   score += 400;
+      if (transcriptPlain.includes(q))                   score += 800;
+      else if (allWholeWords(transcriptPlain, words))    score += 750;
+      else if (allExactWords(transcriptPlain, words))    score += 600;
+      else if (wordsMatch(transcriptPlain, words))       score += 400;
     }
   }
 
   // --- Title matches (primary when in title-desc/all mode) ---
   if (includeTitleDesc) {
     if (words.length === 1) {
-      if (hasExactWord(titleLower, words[0]))      score += 600;
+      if (allWholeWords(titleLower, words))        score += 800;
+      else if (hasExactWord(titleLower, words[0])) score += 600;
       else if (titleLower.includes(words[0]))      score += 400;
     } else {
-      if (titleLower.includes(q))                  score += 700;
+      if (titleLower.includes(q))                  score += 800;
+      else if (allWholeWords(titleLower, words))   score += 750;
       else if (allExactWords(titleLower, words))   score += 600;
       else if (wordsMatch(titleLower, words))      score += 400;
     }
@@ -575,7 +597,7 @@ function scoreEpisode(ep, queryStr) {
 
 function getFilteredSorted() {
   let list = EPISODES.slice();
-  if (activeTag !== 'all') list = list.filter(ep => ep.tags.includes(activeTag));
+  if (activeTags.length > 0) list = list.filter(ep => activeTags.every(t => ep.tags.includes(t)));
   if (searchQuery.trim()) {
     const q = searchQuery.trim();
     // Score and filter
@@ -613,13 +635,13 @@ function renderEpisodes() {
 
   noResults.style.display = 'none';
   grid.innerHTML = list.map(buildCard).join('');
-  const tagLabel = activeTag !== 'all' ? ` tagged <strong>${activeTag}</strong>` : '';
+  const tagLabel = activeTags.length > 0 ? ` tagged <strong>${activeTags.join('</strong> + <strong>')}</strong>` : '';
   countEl.innerHTML = `Showing <strong>${list.length}</strong> of <strong>${EPISODES.length}</strong> episodes${tagLabel}`;
 }
 
 function clearAll() {
   searchQuery = '';
-  activeTag = 'all';
+  activeTags = [];
   searchScope = 'transcript';
   document.getElementById('searchInput').value = '';
   document.getElementById('searchScope').value = 'transcript';
@@ -650,11 +672,17 @@ document.getElementById('searchScope').addEventListener('change', function(e) {
 document.querySelectorAll('.filter-tag').forEach(btn => {
   btn.addEventListener('click', function() {
     const tag = this.dataset.tag;
-    activeTag = (tag === 'all') ? 'all' : (activeTag === tag ? 'all' : tag);
+    if (tag === 'all') {
+      activeTags = [];
+    } else {
+      const idx = activeTags.indexOf(tag);
+      if (idx !== -1) activeTags.splice(idx, 1);
+      else activeTags.push(tag);
+    }
     document.querySelectorAll('.filter-tag').forEach(b => {
       b.classList.toggle('active',
-        (activeTag === 'all' && b.dataset.tag === 'all') ||
-        (activeTag !== 'all' && b.dataset.tag === activeTag)
+        (activeTags.length === 0 && b.dataset.tag === 'all') ||
+        activeTags.includes(b.dataset.tag)
       );
     });
     updateActiveTagLabel();
@@ -674,7 +702,7 @@ tagToggle.addEventListener('click', () => {
 });
 
 function updateActiveTagLabel() {
-  activeTagLabelEl.textContent = activeTag === 'all' ? '' : activeTag;
+  activeTagLabelEl.textContent = activeTags.length === 0 ? '' : activeTags.join(' + ');
 }
 
 // ---- Episode Detail Modal ----
@@ -843,7 +871,7 @@ renderEpisodes();
 
 // ---- Filter by tag (from modal click or URL param) ----
 function filterByTag(tag) {
-  activeTag = tag;
+  activeTags = [tag];
   document.querySelectorAll('.filter-tag').forEach(b => {
     b.classList.toggle('active', b.dataset.tag === tag);
   });
