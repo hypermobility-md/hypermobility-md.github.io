@@ -327,7 +327,8 @@ function buildCard(ep) {
       snippetsHtml = '<div class="card-transcript-snippets">' +
         snippets.map(s => {
           const truncated = s.length > 200 ? s.substring(0, 200).trim() + '...' : s;
-          return `<div class="card-transcript-snippet">${highlightText(truncated, q)}</div>`;
+          const snippetText = encodeURIComponent(s.substring(0, 80)).replace(/'/g, '%27');
+          return `<div class="card-transcript-snippet clickable-snippet" onclick="event.stopPropagation();openEpisodeAtSnippet(${idx},'${snippetText}')">${highlightText(truncated, q)}</div>`;
         }).join('') + '</div>';
     }
   }
@@ -432,19 +433,31 @@ function getTranscriptSnippets(transcript, query, maxSnippets) {
   }
 
   const scored = [];
-  for (const s of sentences) {
+  for (let i = 0; i < sentences.length; i++) {
+    const s = sentences[i];
     const sLower = s.toLowerCase();
     let snippetScore = 0;
 
-    if (allExactWords(s, words))                      snippetScore = 3;
-    else if (words.length > 1 && sLower.includes(query.toLowerCase())) snippetScore = 2;
-    else if (wordsMatch(sLower, words))               snippetScore = 1;
+    // Score 5: all query words appear as exact whole words (e.g. "test" matches "test" not "testing")
+    const allWholeWord = words.every(w => {
+      const esc = w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return new RegExp('\\b' + esc + '\\b', 'i').test(s);
+    });
+    if (allWholeWord)                                    snippetScore = 5;
+    // Score 4: all words match at word-start (e.g. "test" matches "testing" but not "intestinal")
+    else if (allExactWords(s, words))                    snippetScore = 4;
+    // Score 3: exact multi-word phrase as substring
+    else if (words.length > 1 && sLower.includes(query.toLowerCase())) snippetScore = 3;
+    // Score 2: at least one word at word-start, rest as substrings
+    else if (words.some(w => hasExactWord(s, w)) && wordsMatch(sLower, words)) snippetScore = 2;
+    // Score 1: substring match only (e.g. "test" in "intestinal")
+    else if (wordsMatch(sLower, words))                  snippetScore = 1;
 
-    if (snippetScore > 0) scored.push({ text: s.trim(), score: snippetScore });
+    if (snippetScore > 0) scored.push({ text: s.trim(), score: snippetScore, pos: i });
   }
 
-  // Sort by score descending, take top N
-  scored.sort((a, b) => b.score - a.score);
+  // Sort by score descending, then by position (earlier in transcript = higher priority)
+  scored.sort((a, b) => b.score - a.score || a.pos - b.pos);
   const seen = new Set();
   const results = [];
   for (const item of scored) {
@@ -600,7 +613,8 @@ function renderEpisodes() {
 
   noResults.style.display = 'none';
   grid.innerHTML = list.map(buildCard).join('');
-  countEl.innerHTML = `Showing <strong>${list.length}</strong> of <strong>${EPISODES.length}</strong> episodes`;
+  const tagLabel = activeTag !== 'all' ? ` tagged <strong>${activeTag}</strong>` : '';
+  countEl.innerHTML = `Showing <strong>${list.length}</strong> of <strong>${EPISODES.length}</strong> episodes${tagLabel}`;
 }
 
 function clearAll() {
@@ -761,6 +775,45 @@ function openEpisode(idx) {
 
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
+}
+
+function openEpisodeAtSnippet(idx, encodedSnippet) {
+  const snippetText = decodeURIComponent(encodedSnippet);
+  openEpisode(idx);
+  setTimeout(() => {
+    const transcriptSection = document.getElementById('modalTranscriptSection');
+    const transcriptEl = document.getElementById('modalTranscript');
+    if (!transcriptEl || transcriptSection.style.display === 'none') return;
+    // Find and highlight the snippet text in the transcript
+    const content = transcriptEl.querySelector('.transcript-content');
+    if (!content) return;
+    const plain = content.textContent;
+    const matchIdx = plain.toLowerCase().indexOf(snippetText.toLowerCase());
+    if (matchIdx === -1) return;
+    // Use TreeWalker to find the text node containing the match
+    const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT);
+    let charCount = 0;
+    let startNode = null, startOffset = 0;
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      if (charCount + node.length > matchIdx && !startNode) {
+        startNode = node;
+        startOffset = matchIdx - charCount;
+      }
+      charCount += node.length;
+      if (charCount >= matchIdx + snippetText.length) break;
+    }
+    if (startNode) {
+      try {
+        const parentEl = startNode.parentElement;
+        if (parentEl) {
+          parentEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          parentEl.classList.add('transcript-highlight');
+          setTimeout(() => parentEl.classList.remove('transcript-highlight'), 4000);
+        }
+      } catch (e) { /* ignore range errors */ }
+    }
+  }, 150);
 }
 
 function closeModal() {
