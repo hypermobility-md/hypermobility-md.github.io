@@ -31,6 +31,13 @@ layout: base.njk
             {% if date and duration %} &middot; {% endif %}
             {% if duration %}{{ duration }}{% endif %}
           </div>
+          {% if tags and tags.length %}
+          <div class="episode-detail-header-tags">
+            {% for tag in tags %}
+            <a href="/podcast-episodes/?tag={{ tag | urlencode }}" class="tag-chip tag-chip-header">{{ tag }}</a>
+            {% endfor %}
+          </div>
+          {% endif %}
         </div>
         {% if guests and guests.length %}
         <div class="episode-detail-avatars">
@@ -137,18 +144,6 @@ layout: base.njk
             <div class="guest-card-bio">{{ profile.bio }}</div>
             {% endif %}
           </div>
-        {% endfor %}
-      </div>
-    </section>
-    {% endif %}
-
-    <!-- Tags -->
-    {% if tags and tags.length %}
-    <section class="episode-section">
-      <h2>Tags</h2>
-      <div class="episode-detail-tags">
-        {% for tag in tags %}
-        <span class="tag-chip">{{ tag }}</span>
         {% endfor %}
       </div>
     </section>

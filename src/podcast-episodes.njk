@@ -94,6 +94,7 @@ permalink: /podcast-episodes/
         <div>
           <div class="modal-guest" id="modalGuest"></div>
           <div class="modal-meta" id="modalMeta"></div>
+          <div class="modal-header-tags" id="modalTags"></div>
         </div>
         <div id="modalAvatars"></div>
       </div>
@@ -122,9 +123,6 @@ permalink: /podcast-episodes/
         <h4>Guests</h4>
         <div class="modal-guest-cards" id="modalGuestCards"></div>
       </div>
-
-      <h4>Tags</h4>
-      <div class="modal-tags" id="modalTags"></div>
     </div>
   </div>
 </div>
@@ -756,10 +754,9 @@ function openEpisode(idx) {
     guestCardsSection.style.display = 'none';
   }
 
-  // Tags
+  // Tags (in modal header)
   document.getElementById('modalTags').innerHTML = ep.tags.map(t => {
-    const color = TAG_COLORS[t] || '#4a2d7a';
-    return `<span class="tag-chip" style="background:${color}18; color:${color}; border-color:${color}30;">${t}</span>`;
+    return `<span class="tag-chip" onclick="closeModal();filterByTag('${t.replace(/'/g, "\\'")}')">${t}</span>`;
   }).join('');
 
   modal.classList.add('open');
@@ -791,13 +788,30 @@ function openEpisodeVideo(idx) {
 document.getElementById('episodeCountHero').textContent = `${EPISODES.length} episodes — Search by topic, guest, or keyword`;
 renderEpisodes();
 
-// ---- Auto-open episode from URL param ----
+// ---- Filter by tag (from modal click or URL param) ----
+function filterByTag(tag) {
+  activeTag = tag;
+  document.querySelectorAll('.filter-tag').forEach(b => {
+    b.classList.toggle('active', b.dataset.tag === tag);
+  });
+  updateActiveTagLabel();
+  // Open tag dropdown so user sees the active filter
+  tagDropdown.style.display = 'flex';
+  tagToggle.classList.add('open');
+  renderEpisodes();
+}
+
+// ---- Auto-open episode or filter by tag from URL params ----
 const urlParams = new URLSearchParams(window.location.search);
 const epParam = urlParams.get('ep');
 if (epParam) {
   const epNum = parseInt(epParam, 10);
   const idx = EPISODES.findIndex(e => e.num === epNum);
   if (idx !== -1) openEpisode(idx);
+}
+const tagParam = urlParams.get('tag');
+if (tagParam) {
+  filterByTag(tagParam);
 }
 </script>
 {% endblock %}

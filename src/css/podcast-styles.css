@@ -769,6 +769,38 @@
   font-family: var(--body-font);
   margin-top: 8px;
 }
+.episode-detail-header-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+.tag-chip-header {
+  background: rgba(255,255,255,0.15) !important;
+  color: rgba(255,255,255,0.9) !important;
+  border-color: rgba(255,255,255,0.25) !important;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.tag-chip-header:hover {
+  background: rgba(255,255,255,0.25) !important;
+}
+.modal-header-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.modal-header-tags .tag-chip {
+  background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.9);
+  border: 1px solid rgba(255,255,255,0.25);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.modal-header-tags .tag-chip:hover {
+  background: rgba(255,255,255,0.25);
+}
 .episode-detail-avatars {
   display: flex;
   gap: 8px;
