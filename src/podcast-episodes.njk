@@ -335,7 +335,7 @@ function buildCard(ep) {
     if (snippets.length > 0) {
       snippetsHtml = '<div class="card-transcript-snippets">' +
         snippets.map(s => {
-          const truncated = s.length > 200 ? s.substring(0, 200).trim() + '...' : s;
+          const truncated = s.length > 150 ? s.substring(0, 150).trim() + '...' : s;
           const snippetText = encodeURIComponent(s.substring(0, 80)).replace(/'/g, '%27');
           return `<div class="card-transcript-snippet clickable-snippet" onclick="event.stopPropagation();openEpisodeAtSnippet(${idx},'${snippetText}')">${highlightText(truncated, q)}</div>`;
         }).join('') + '</div>';
@@ -462,7 +462,26 @@ function getTranscriptSnippets(transcript, query, maxSnippets) {
     // Score 1: substring match only (e.g. "test" in "intestinal")
     else if (wordsMatch(sLower, words))                  snippetScore = 1;
 
-    if (snippetScore > 0) scored.push({ text: s.trim(), score: snippetScore, pos: i });
+    if (snippetScore > 0) {
+      // Trim long sentences to a window around the first match
+      let text = s.trim();
+      if (text.length > 160) {
+        const tLower = text.toLowerCase();
+        let bestPos = -1;
+        for (const w of words) {
+          const p = tLower.indexOf(w);
+          if (p !== -1 && (bestPos === -1 || p < bestPos)) bestPos = p;
+        }
+        if (bestPos !== -1) {
+          let start = Math.max(0, bestPos - 50);
+          let end = Math.min(text.length, bestPos + 110);
+          if (start > 0) { const sp = text.indexOf(' ', start); if (sp !== -1 && sp < start + 15) start = sp + 1; }
+          if (end < text.length) { const sp = text.lastIndexOf(' ', end); if (sp > end - 15) end = sp; }
+          text = (start > 0 ? '...' : '') + text.substring(start, end).trim() + (end < text.length ? '...' : '');
+        }
+      }
+      scored.push({ text, score: snippetScore, pos: i });
+    }
   }
 
   // Sort by score descending, then by position (earlier in transcript = higher priority)
