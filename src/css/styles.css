@@ -76,6 +76,10 @@
 html { font-size: 16px; scroll-behavior: smooth; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
+img {
+  background: color-mix(in srgb, var(--primary) 8%, var(--body-bg));
+}
+
 body {
   font-family: var(--body-font);
   background: var(--body-bg);
