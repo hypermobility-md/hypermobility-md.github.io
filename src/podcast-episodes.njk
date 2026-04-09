@@ -1,6 +1,7 @@
 ---
 layout: base.njk
 title: "All Episodes"
+description: "Browse and search all episodes of the Bendy Bodies Podcast with Dr. Linda Bluestein — conversations about EDS, hypermobility, POTS, MCAS, and chronic pain."
 activePage: "podcast"
 extraCss: "podcast-styles.css"
 bodyClass: "podcast-page"
@@ -42,11 +43,13 @@ permalink: /podcast-episodes/
         <span class="search-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
         <input type="text" id="searchInput" placeholder="Search episodes, guests, topics..." autocomplete="off" spellcheck="false">
       </div>
+      <label for="searchScope" class="sr-only">Search scope</label>
       <select class="sort-select" id="searchScope">
         <option value="transcript">Search Transcript</option>
         <option value="title-desc">Search Title & Description</option>
         <option value="all">Search All</option>
       </select>
+      <label for="sortSelect" class="sr-only">Sort order</label>
       <select class="sort-select" id="sortSelect">
         <option value="newest">Newest First</option>
         <option value="oldest">Oldest First</option>
@@ -70,6 +73,7 @@ permalink: /podcast-episodes/
 
 <!-- Main Content -->
   <div class="container" style="padding-top: 24px; padding-bottom: 64px;">
+    <h2 class="sr-only">Episodes</h2>
     <div class="results-bar">
       <span class="results-count" id="resultsCount">Loading episodes...</span>
     </div>
