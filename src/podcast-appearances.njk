@@ -41,16 +41,26 @@ permalink: /podcast-appearances/
     <div class="appearances-grid">
       {% for appearance in collections.appearances %}
         {% if appearance.data.featured %}
-        <a href="{{ appearance.url }}" class="appearance-card">
+        <article class="appearance-card" onclick="window.location='{{ appearance.url }}'">
           {% if appearance.data.imageUrl %}
           <img class="appearance-card-img" src="{{ appearance.data.imageUrl }}" alt="{{ appearance.data.showName }}">
           {% endif %}
           <div class="appearance-card-body">
             <div class="appearance-card-show">{{ appearance.data.showName }}</div>
             <h3>{{ appearance.data.episodeTitle }}</h3>
-            {% if appearance.data.date %}<div class="appearance-card-date">{{ appearance.data.date | formatDate }}</div>{% endif %}
           </div>
-        </a>
+          <div class="card-footer">
+            <span class="card-meta">{{ appearance.data.date | formatDate }}</span>
+            <div class="card-footer-actions">
+              {% if appearance.data.videoUrl or appearance.data.youtubeUrl %}
+              <a href="{{ appearance.data.youtubeUrl or appearance.data.videoUrl }}" target="_blank" rel="noopener" class="btn-watch" onclick="event.stopPropagation()">Watch</a>
+              {% endif %}
+              {% if appearance.data.url %}
+              <a href="{{ appearance.data.url }}" target="_blank" rel="noopener" class="btn-listen" onclick="event.stopPropagation()">{{ appearance.data.type | capitalize }}</a>
+              {% endif %}
+            </div>
+          </div>
+        </article>
         {% endif %}
       {% endfor %}
     </div>
@@ -64,16 +74,26 @@ permalink: /podcast-appearances/
     <div class="appearances-grid">
       {% for appearance in collections.appearances %}
         {% if not appearance.data.featured %}
-        <a href="{{ appearance.url }}" class="appearance-card">
+        <article class="appearance-card" onclick="window.location='{{ appearance.url }}'">
           {% if appearance.data.imageUrl %}
           <img class="appearance-card-img" src="{{ appearance.data.imageUrl }}" alt="{{ appearance.data.showName }}">
           {% endif %}
           <div class="appearance-card-body">
             <div class="appearance-card-show">{{ appearance.data.showName }}</div>
             <h3>{{ appearance.data.episodeTitle }}</h3>
-            {% if appearance.data.date %}<div class="appearance-card-date">{{ appearance.data.date | formatDate }}</div>{% endif %}
           </div>
-        </a>
+          <div class="card-footer">
+            <span class="card-meta">{{ appearance.data.date | formatDate }}</span>
+            <div class="card-footer-actions">
+              {% if appearance.data.videoUrl or appearance.data.youtubeUrl %}
+              <a href="{{ appearance.data.youtubeUrl or appearance.data.videoUrl }}" target="_blank" rel="noopener" class="btn-watch" onclick="event.stopPropagation()">Watch</a>
+              {% endif %}
+              {% if appearance.data.url %}
+              <a href="{{ appearance.data.url }}" target="_blank" rel="noopener" class="btn-listen" onclick="event.stopPropagation()">{{ appearance.data.type | capitalize }}</a>
+              {% endif %}
+            </div>
+          </div>
+        </article>
         {% endif %}
       {% endfor %}
     </div>

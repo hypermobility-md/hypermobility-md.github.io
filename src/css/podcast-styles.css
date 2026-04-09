@@ -572,17 +572,18 @@
 .appearance-card {
   background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border);
   overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; display: flex;
-  flex-direction: column; text-decoration: none; color: inherit; cursor: pointer;
+  flex-direction: column; cursor: pointer;
 }
-.appearance-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); text-decoration: none; color: inherit; }
+.appearance-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
 .appearance-card-img { width: 100%; aspect-ratio: 1; object-fit: cover; background: var(--section-alt); }
 .appearance-card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
 .appearance-card-show {
   font-size: 0.78rem; font-family: var(--body-font); font-weight: 700;
   color: var(--primary); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px;
 }
-.appearance-card-body h3 { font-size: 1rem; line-height: 1.4; margin-bottom: 8px; color: var(--text); flex: 1; font-family: var(--heading-font); }
-.appearance-card-date { font-size: 0.82rem; color: var(--text-muted); font-family: var(--body-font); }
+.appearance-card-body h3 { font-size: 1rem; line-height: 1.4; margin-bottom: 0; color: var(--text); flex: 1; font-family: var(--heading-font); }
+.appearance-card .card-footer { border-top: 1px solid var(--border); margin-top: auto; }
+.appearance-card .btn-listen, .appearance-card .btn-watch { text-decoration: none; }
 
 /* ---- Appearance Detail Page ---- */
 .appearance-detail-header {
