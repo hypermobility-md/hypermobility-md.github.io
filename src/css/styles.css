@@ -777,15 +777,16 @@ a.logo-card:hover {
   margin-top: 20px;
 }
 .carousel-dot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   position: relative;
   background: var(--border);
   border: none;
   cursor: pointer;
   transition: background 0.2s;
-  padding: 0;
+  padding: 10px;
+  background-clip: content-box;
 }
 .carousel-dot::after {
   content: '';
@@ -798,6 +799,7 @@ a.logo-card:hover {
 }
 .carousel-dot.active {
   background: var(--primary);
+  background-clip: content-box;
 }
 @media (max-width: 768px) {
   .carousel-arrow { width: 36px; height: 36px; }

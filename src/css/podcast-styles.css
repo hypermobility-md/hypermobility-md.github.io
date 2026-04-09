@@ -637,8 +637,8 @@
 }
 .btn-subscribe.apple { background: #fff; color: var(--primary-dark); }
 .btn-subscribe.apple:hover { background: var(--section-alt); text-decoration: none; color: var(--primary-dark); }
-.btn-subscribe.spotify { background: #158c3f; color: #fff; }
-.btn-subscribe.spotify:hover { background: #117a36; text-decoration: none; color: #fff; }
+.btn-subscribe.spotify { background: #0f7a33; color: #fff; }
+.btn-subscribe.spotify:hover { background: #0d6a2c; text-decoration: none; color: #fff; }
 .btn-subscribe.youtube { background: #cc0000; color: #fff; }
 .btn-subscribe.youtube:hover { background: #a30000; text-decoration: none; color: #fff; }
 
