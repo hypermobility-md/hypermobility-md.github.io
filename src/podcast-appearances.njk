@@ -43,7 +43,7 @@ permalink: /podcast-appearances/
         {% if appearance.data.featured %}
         <article class="appearance-card" onclick="window.location='{{ appearance.url }}'">
           {% if appearance.data.imageUrl %}
-          <img class="appearance-card-img" src="{{ appearance.data.imageUrl }}" alt="{{ appearance.data.showName }}">
+          <img class="appearance-card-img" src="{{ appearance.data.imageUrl }}" alt="{{ appearance.data.showName }}" loading="lazy">
           {% endif %}
           <div class="appearance-card-body">
             <div class="appearance-card-show">{{ appearance.data.showName }}</div>
@@ -76,7 +76,7 @@ permalink: /podcast-appearances/
         {% if not appearance.data.featured %}
         <article class="appearance-card" onclick="window.location='{{ appearance.url }}'">
           {% if appearance.data.imageUrl %}
-          <img class="appearance-card-img" src="{{ appearance.data.imageUrl }}" alt="{{ appearance.data.showName }}">
+          <img class="appearance-card-img" src="{{ appearance.data.imageUrl }}" alt="{{ appearance.data.showName }}" loading="lazy">
           {% endif %}
           <div class="appearance-card-body">
             <div class="appearance-card-show">{{ appearance.data.showName }}</div>

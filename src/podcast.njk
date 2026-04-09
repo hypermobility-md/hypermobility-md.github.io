@@ -33,7 +33,10 @@ permalink: /podcast/
       </div>
     </div>
     <div class="podcast-hero-image">
-      <img src="/assets/podcast-hero-warm.png" alt="The Bendy Bodies Podcast with Linda Bluestein MD and Dacre Knight MD">
+      <picture>
+        <source srcset="/assets/podcast-hero-warm.webp" type="image/webp">
+        <img src="/assets/podcast-hero-warm_opt.png" alt="The Bendy Bodies Podcast with Linda Bluestein MD and Dacre Knight MD" width="1000" height="1000" loading="eager" fetchpriority="high">
+      </picture>
     </div>
   </div>
 </section>
@@ -42,7 +45,7 @@ permalink: /podcast/
 <div class="sponsor-banner">
   <div class="container">
     <span class="sponsor-text">Proudly sponsored by</span>
-    <img src="/assets/uva-health-banner.png" alt="UVA Health" class="sponsor-logo">
+    <img src="/assets/uva-health-banner.png" alt="UVA Health" class="sponsor-logo" loading="lazy">
   </div>
 </div>
 
@@ -85,7 +88,7 @@ permalink: /podcast/
         <p>Multi-systemic symptoms affect quality of life &mdash; with pain, frequent injury, joints "giving way," fatigue, headache, gastrointestinal problems, and insomnia being common. Learn from specialists with diverse areas of medical and scientific expertise. <strong>Learn to optimize your hypermobile health!</strong></p>
       </div>
       <div style="flex-shrink: 0;">
-        <img src="/Populate/BB.png" alt="Bendy Bodies logo" style="width: 180px; border-radius: var(--radius); opacity: 0.85;">
+        <img src="/Populate/BB.png" alt="Bendy Bodies logo" loading="lazy" width="400" height="356" style="width: 180px; border-radius: var(--radius); opacity: 0.85;">
       </div>
     </div>
   </div>
@@ -102,7 +105,7 @@ permalink: /podcast/
 
       <div class="host-card">
         <div class="host-header">
-          <img src="/Populate/Linda.avif" alt="Dr. Linda Bluestein" class="host-avatar">
+          <img src="/Populate/Linda.avif" alt="Dr. Linda Bluestein" class="host-avatar" loading="lazy">
           <div>
             <h3>Dr. Linda Bluestein, MD</h3>
             <p class="host-title">Founder &amp; Host &middot; The Hypermobility MD</p>
@@ -122,7 +125,7 @@ permalink: /podcast/
 
       <div class="host-card">
         <div class="host-header">
-          <img src="/Populate/Knight.avif" alt="Dr. Dacre Knight" class="host-avatar">
+          <img src="/Populate/Knight.avif" alt="Dr. Dacre Knight" class="host-avatar" loading="lazy">
           <div>
             <h3>Dr. Dacre Knight, MD</h3>
             <p class="host-title">Co-Host &middot; Medical Director, UVA EDS Center</p>
@@ -233,6 +236,19 @@ permalink: /podcast/
 {% block scripts %}
 <script src="/js/data.js?v={{ "" | cacheBust }}"></script>
 <script>
+// ---- Lazy transcript loading ----
+const transcriptCache = {};
+async function fetchTranscript(ep) {
+  const id = ep.transcriptId;
+  if (transcriptCache[id]) return transcriptCache[id];
+  try {
+    const resp = await fetch('/transcripts/' + id + '.json');
+    const data = await resp.json();
+    transcriptCache[id] = data.transcript;
+    return data.transcript;
+  } catch (e) { return null; }
+}
+
 // ---- Helpers ----
 function formatDate(d) {
   if (!d) return '';
@@ -279,7 +295,7 @@ function buildAvatarHtml(ep) {
   const MAX_SHOW = 2;
   const isMulti = resolved.length > 1;
   let html = resolved.slice(0, MAX_SHOW).map(src =>
-    `<img class="guest-avatar-img" src="${src}" alt="">`
+    `<img class="guest-avatar-img" src="${src}" alt="" loading="lazy">`
   ).join('');
   if (resolved.length > MAX_SHOW) {
     html += `<span class="guest-avatar-overflow">+${resolved.length - MAX_SHOW}</span>`;
@@ -412,7 +428,7 @@ function getGuestProfile(name) { return typeof GUEST_PROFILES !== 'undefined' ? 
 function buildModalGuestCard(name) {
   const img = resolveGuestImage(name);
   const profile = getGuestProfile(name);
-  const imgHtml = img ? `<img class="guest-card-img" src="${img}" alt="${name}">` : '';
+  const imgHtml = img ? `<img class="guest-card-img" src="${img}" alt="${name}" loading="lazy">` : '';
   const affiliationHtml = profile && profile.affiliation ? `<div class="guest-card-affiliation">${profile.affiliation}</div>` : '';
   const bioHtml = profile && profile.bio ? `<div class="guest-card-bio">${profile.bio}</div>` : '';
   const linksHtml = profile && profile.links && profile.links.length
@@ -425,7 +441,7 @@ function buildModalAvatarHtml(ep) {
   if (!ep.guests || ep.guests.length === 0) return '';
   const guestsWithImages = ep.guests.map(g => ({ name: g, src: resolveGuestImage(g) })).filter(x => x.src);
   if (guestsWithImages.length === 0) return '';
-  let html = guestsWithImages.map(g => `<a href="${guestLink(g.name)}" title="${g.name}"><img class="guest-avatar-img" src="${g.src}" alt=""></a>`).join('');
+  let html = guestsWithImages.map(g => `<a href="${guestLink(g.name)}" title="${g.name}"><img class="guest-avatar-img" src="${g.src}" alt="" loading="lazy"></a>`).join('');
   return `<div class="guest-avatars modal-avatars-all">${html}</div>`;
 }
 
@@ -480,14 +496,19 @@ function openLatestModal(idx) {
     }).join('');
   } else { snippetsSection.style.display = 'none'; }
 
-  // Transcript
+  // Transcript — fetch on demand
   const transcriptSection = document.getElementById('modalTranscriptSection');
   const transcriptEl = document.getElementById('modalTranscript');
-  if (ep.transcript) {
+  if (ep.hasTranscript) {
     transcriptSection.style.display = 'block';
-    if (ep.transcript.startsWith('http')) {
-      transcriptEl.innerHTML = `<a href="${ep.transcript}" target="_blank" class="transcript-link">View Full Transcript &rarr;</a>`;
-    } else { transcriptEl.innerHTML = `<div class="transcript-content">${ep.transcript}</div>`; }
+    transcriptEl.innerHTML = '<p style="opacity:0.6;">Loading transcript...</p>';
+    fetchTranscript(ep).then(html => {
+      if (html) {
+        transcriptEl.innerHTML = `<div class="transcript-content">${html}</div>`;
+      } else {
+        transcriptEl.innerHTML = '<p style="opacity:0.6;">Transcript unavailable.</p>';
+      }
+    });
   } else { transcriptSection.style.display = 'none'; }
 
   // Guest Cards

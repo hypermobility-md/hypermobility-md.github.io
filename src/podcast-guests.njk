@@ -205,7 +205,7 @@ function buildGuestCard(name) {
   const episodes = guestMap[name];
   const img = getGuestImage(name);
   const profile = getGuestProfile(name);
-  const imgHtml = img ? `<img class="guest-card-img" src="${img}" alt="${name}">` : '';
+  const imgHtml = img ? `<img class="guest-card-img" src="${img}" alt="${name}" loading="lazy">` : '';
   const affiliationHtml = profile && profile.affiliation
     ? `<div class="guest-card-affiliation">${profile.affiliation}</div>` : '';
   const bioHtml = profile && profile.bio

@@ -139,6 +139,48 @@ let searchQuery = '';
 let sortMode = 'newest';
 let searchScope = 'transcript';
 
+// --- Lazy transcript loading ---
+let transcriptSearchIndex = null;  // { id: plainText } — loaded on first transcript search
+let transcriptSearchLoading = false;
+const transcriptCache = {};  // { id: html } — individual transcripts for modal display
+
+async function ensureSearchIndex() {
+  if (transcriptSearchIndex) return transcriptSearchIndex;
+  if (transcriptSearchLoading) {
+    // Wait for in-flight load
+    while (transcriptSearchLoading) await new Promise(r => setTimeout(r, 50));
+    return transcriptSearchIndex;
+  }
+  transcriptSearchLoading = true;
+  try {
+    const resp = await fetch('/transcripts/search-index.json');
+    transcriptSearchIndex = await resp.json();
+  } catch (e) {
+    console.warn('Failed to load transcript search index:', e);
+    transcriptSearchIndex = {};
+  }
+  transcriptSearchLoading = false;
+  return transcriptSearchIndex;
+}
+
+async function fetchTranscript(ep) {
+  const id = ep.transcriptId;
+  if (transcriptCache[id]) return transcriptCache[id];
+  try {
+    const resp = await fetch('/transcripts/' + id + '.json');
+    const data = await resp.json();
+    transcriptCache[id] = data.transcript;
+    return data.transcript;
+  } catch (e) {
+    return null;
+  }
+}
+
+function getTranscriptPlainText(ep) {
+  if (!transcriptSearchIndex || !ep.hasTranscript) return '';
+  return (transcriptSearchIndex[ep.transcriptId] || '').toLowerCase();
+}
+
 const TAG_COLORS = {
   // Conditions
   'EDS': '#4a2d7a', 'Hypermobility': '#5c3d8f', 'POTS': '#2a7a9d',
@@ -257,7 +299,7 @@ function getGuestProfile(name) {
 function buildModalGuestCard(name) {
   const img = resolveGuestImage(name);
   const profile = getGuestProfile(name);
-  const imgHtml = img ? `<img class="guest-card-img" src="${img}" alt="${name}">` : '';
+  const imgHtml = img ? `<img class="guest-card-img" src="${img}" alt="${name}" loading="lazy">` : '';
   const affiliationHtml = profile && profile.affiliation
     ? `<div class="guest-card-affiliation">${profile.affiliation}</div>` : '';
   const bioHtml = profile && profile.bio
@@ -284,7 +326,7 @@ function buildAvatarHtml(ep, linkable, showAll) {
   const MAX_SHOW = showAll ? guestsWithImages.length : 2;
   const isMulti = guestsWithImages.length > 1 && !showAll;
   let html = guestsWithImages.slice(0, MAX_SHOW).map((g) => {
-    const img = `<img class="guest-avatar-img" src="${g.src}" alt="">`;
+    const img = `<img class="guest-avatar-img" src="${g.src}" alt="" loading="lazy">`;
     if (linkable) {
       return `<a href="${guestLink(g.name)}" title="${g.name}" onclick="event.stopPropagation();">${img}</a>`;
     }
@@ -328,10 +370,11 @@ function buildCard(ep) {
   const descText = truncateAtSentence(ep.description, 280);
   const descHtml = showTitleHighlight ? highlightText(descText, q) : descText;
 
-  // Show transcript snippets when searching transcript
+  // Show transcript snippets when searching transcript (uses search index plain text)
   let snippetsHtml = '';
-  if (showTranscriptSnippets && ep.transcript) {
-    const snippets = getTranscriptSnippets(ep.transcript, q, 3);
+  const transcriptPlainForSnippets = transcriptSearchIndex && ep.hasTranscript ? (transcriptSearchIndex[ep.transcriptId] || '') : '';
+  if (showTranscriptSnippets && transcriptPlainForSnippets) {
+    const snippets = getTranscriptSnippetsFromPlain(transcriptPlainForSnippets, q, 3);
     if (snippets.length > 0) {
       snippetsHtml = '<div class="card-transcript-snippets">' +
         snippets.map(s => {
@@ -423,9 +466,8 @@ function extractWindows(plain, words, max) {
 //   2 = exact phrase match (multi-word)
 //   1 = substring match (e.g. "test" in "gastrointestinal")
 // Falls back to text-window extraction if sentence splitting finds nothing
-function getTranscriptSnippets(transcript, query, maxSnippets) {
-  if (!transcript || !query) return [];
-  const plain = stripHtml(transcript);
+function getTranscriptSnippetsFromPlain(plain, query, maxSnippets) {
+  if (!plain || !query) return [];
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);
   const plainLower = plain.toLowerCase();
   const max = maxSnippets || 3;
@@ -557,7 +599,7 @@ function scoreEpisode(ep, queryStr) {
   const titleLower = ep.title.toLowerCase();
   const guestStr = (ep.guests || []).join(' ').toLowerCase();
   const descLower = ep.description.toLowerCase();
-  const transcriptPlain = ep.transcript ? stripHtml(ep.transcript).toLowerCase() : '';
+  const transcriptPlain = getTranscriptPlainText(ep);
 
   const includeTranscript = searchScope === 'transcript' || searchScope === 'all';
   const includeTitleDesc = searchScope === 'title-desc' || searchScope === 'all';
@@ -639,10 +681,18 @@ function getFilteredSorted() {
   return list;
 }
 
-function renderEpisodes() {
+async function renderEpisodes() {
   const grid = document.getElementById('episodeGrid');
   const noResults = document.getElementById('noResults');
   const countEl = document.getElementById('resultsCount');
+
+  // Load transcript search index on demand when searching transcripts
+  const needsTranscripts = searchQuery.trim() && (searchScope === 'transcript' || searchScope === 'all');
+  if (needsTranscripts && !transcriptSearchIndex) {
+    countEl.innerHTML = 'Loading transcript search...';
+    await ensureSearchIndex();
+  }
+
   const list = getFilteredSorted();
 
   if (list.length === 0) {
@@ -791,16 +841,19 @@ function openEpisode(idx) {
     snippetsSection.style.display = 'none';
   }
 
-  // Transcript
+  // Transcript — fetch on demand
   const transcriptSection = document.getElementById('modalTranscriptSection');
   const transcriptEl = document.getElementById('modalTranscript');
-  if (ep.transcript) {
+  if (ep.hasTranscript) {
     transcriptSection.style.display = 'block';
-    if (ep.transcript.startsWith('http')) {
-      transcriptEl.innerHTML = `<a href="${ep.transcript}" target="_blank" class="transcript-link">View Full Transcript &rarr;</a>`;
-    } else {
-      transcriptEl.innerHTML = `<div class="transcript-content">${ep.transcript}</div>`;
-    }
+    transcriptEl.innerHTML = '<p style="opacity:0.6;">Loading transcript...</p>';
+    fetchTranscript(ep).then(html => {
+      if (html) {
+        transcriptEl.innerHTML = `<div class="transcript-content">${html}</div>`;
+      } else {
+        transcriptEl.innerHTML = '<p style="opacity:0.6;">Transcript unavailable.</p>';
+      }
+    });
   } else {
     transcriptSection.style.display = 'none';
   }
@@ -827,25 +880,24 @@ function openEpisode(idx) {
 function openEpisodeAtSnippet(idx, encodedSnippet) {
   const snippetText = decodeURIComponent(encodedSnippet);
   openEpisode(idx);
-  setTimeout(() => {
-    const transcriptSection = document.getElementById('modalTranscriptSection');
+  // Wait for transcript to load, then highlight
+  function tryHighlight(attempts) {
     const transcriptEl = document.getElementById('modalTranscript');
-    if (!transcriptEl || transcriptSection.style.display === 'none') return;
-    // Find and highlight the snippet text in the transcript
-    const content = transcriptEl.querySelector('.transcript-content');
-    if (!content) return;
+    const content = transcriptEl && transcriptEl.querySelector('.transcript-content');
+    if (!content) {
+      if (attempts > 0) setTimeout(() => tryHighlight(attempts - 1), 200);
+      return;
+    }
     const plain = content.textContent;
     const matchIdx = plain.toLowerCase().indexOf(snippetText.toLowerCase());
     if (matchIdx === -1) return;
-    // Use TreeWalker to find the text node containing the match
     const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT);
     let charCount = 0;
-    let startNode = null, startOffset = 0;
+    let startNode = null;
     while (walker.nextNode()) {
       const node = walker.currentNode;
       if (charCount + node.length > matchIdx && !startNode) {
         startNode = node;
-        startOffset = matchIdx - charCount;
       }
       charCount += node.length;
       if (charCount >= matchIdx + snippetText.length) break;
@@ -860,7 +912,9 @@ function openEpisodeAtSnippet(idx, encodedSnippet) {
         }
       } catch (e) { /* ignore range errors */ }
     }
-  }, 150);
+  }
+  // Retry up to 15 times (3 seconds) waiting for transcript fetch
+  setTimeout(() => tryHighlight(15), 200);
 }
 
 function closeModal() {

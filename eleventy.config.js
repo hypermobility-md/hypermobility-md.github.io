@@ -10,6 +10,10 @@ function normalizeGuestKey(name) {
   return n.replace(/[,.\s]+$/, '').trim().toLowerCase().replace(/\s+/g, ' ');
 }
 
+const CleanCSS = require("clean-css");
+const fs = require("fs");
+const path = require("path");
+
 module.exports = function(eleventyConfig) {
   // Pass through static assets
   eleventyConfig.addPassthroughCopy("src/assets");
@@ -21,6 +25,64 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/js");
   eleventyConfig.addPassthroughCopy("src/favicon.ico");
   eleventyConfig.addPassthroughCopy("src/site.webmanifest");
+
+  // Post-build: minify CSS and generate transcript files
+  eleventyConfig.on("eleventy.after", () => {
+    // --- Minify CSS ---
+    const cssDir = path.join(__dirname, "_site", "css");
+    if (fs.existsSync(cssDir)) {
+      const cssFiles = fs.readdirSync(cssDir).filter(f => f.endsWith(".css"));
+      const minifier = new CleanCSS({ level: 2 });
+      for (const file of cssFiles) {
+        const filePath = path.join(cssDir, file);
+        const source = fs.readFileSync(filePath, "utf8");
+        const output = minifier.minify(source);
+        if (output.styles) {
+          fs.writeFileSync(filePath, output.styles);
+        }
+      }
+    }
+
+    // --- Generate transcript files for lazy loading ---
+    const md = require("markdown-it")();
+    const transcriptsDir = path.join(__dirname, "_site", "transcripts");
+    if (!fs.existsSync(transcriptsDir)) fs.mkdirSync(transcriptsDir, { recursive: true });
+
+    const episodeFiles = fs.readdirSync(path.join(__dirname, "src", "episodes"))
+      .filter(f => f.endsWith(".md"));
+
+    const searchIndex = {};
+
+    for (const file of episodeFiles) {
+      const raw = fs.readFileSync(path.join(__dirname, "src", "episodes", file), "utf8");
+      // Parse frontmatter
+      const fmMatch = raw.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+      if (!fmMatch) continue;
+      const body = fmMatch[2].trim();
+      if (!body || body.length < 10) continue;
+
+      // Determine episode identifier (num or slug)
+      const numMatch = fmMatch[1].match(/^num:\s*(\d+)/m);
+      const slug = file.replace(/\.md$/, '');
+      const id = numMatch ? numMatch[1] : slug;
+
+      // Render transcript HTML for modal display
+      const html = md.render(body);
+      fs.writeFileSync(
+        path.join(transcriptsDir, id + ".json"),
+        JSON.stringify({ transcript: html })
+      );
+
+      // Plain text for search index (strip HTML)
+      const plain = html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+      searchIndex[id] = plain;
+    }
+
+    fs.writeFileSync(
+      path.join(transcriptsDir, "search-index.json"),
+      JSON.stringify(searchIndex)
+    );
+  });
 
   // Generate data.js from episode markdown files at build time
   eleventyConfig.addCollection("episodes", function(collectionApi) {

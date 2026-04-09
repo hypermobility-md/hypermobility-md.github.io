@@ -46,9 +46,9 @@ layout: base.njk
             {%- set img = guestData.images[gKey] -%}
             {% if img %}
               {%- if guestData.profiles[gKey] -%}
-                <a href="/guests/{{ gKey | slug }}/" title="{{ g }}"><img class="guest-avatar-img" src="{{ img }}" alt="{{ g }}"></a>
+                <a href="/guests/{{ gKey | slug }}/" title="{{ g }}"><img class="guest-avatar-img" src="{{ img }}" alt="{{ g }}" loading="lazy"></a>
               {%- else -%}
-                <img class="guest-avatar-img" src="{{ img }}" alt="{{ g }}">
+                <img class="guest-avatar-img" src="{{ img }}" alt="{{ g }}" loading="lazy">
               {%- endif -%}
             {% endif %}
           {% endfor %}
@@ -128,7 +128,7 @@ layout: base.njk
           {%- set profile = guestData.profiles[gKey] -%}
           <div class="guest-card">
             <div class="guest-card-header">
-              {% if img %}<img class="guest-card-img" src="{{ img }}" alt="{{ g }}">{% endif %}
+              {% if img %}<img class="guest-card-img" src="{{ img }}" alt="{{ g }}" loading="lazy">{% endif %}
               <h3>
                 {%- if profile -%}
                   <a href="/guests/{{ gKey | slug }}/" style="color:inherit;text-decoration:none;">{{ g }}</a>

@@ -24,7 +24,8 @@ const EPISODES = [
     "audioUrl": "{{ ep.data.audioUrl }}",
     "videoUrl": "{{ ep.data.videoUrl }}",
     "snippets": {{ ep.data.snippets | jsonify | safe }},
-    "transcript": {{ ep.content | jsonify | safe }},
+    "hasTranscript": {{ "true" if ep.content and ep.content | length > 10 else "false" }},
+    "transcriptId": "{{ ep.data.num if ep.data.num else ep.page.fileSlug }}",
     "guests": {{ ep.data.guests | jsonify | safe }},
     "guestImages": {{ ep.data.guestImages | jsonify | safe }}
   }{% if not loop.last %},{% endif %}

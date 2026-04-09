@@ -27,7 +27,7 @@ eleventyComputed:
     <div class="container">
       <div class="guest-detail-header-inner">
         {% if img %}
-        <img class="guest-detail-photo" src="{{ img }}" alt="{{ displayName }}">
+        <img class="guest-detail-photo" src="{{ img }}" alt="{{ displayName }}" loading="lazy">
         {% endif %}
         <div>
           <h1>{{ displayName }}</h1>
