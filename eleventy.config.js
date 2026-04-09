@@ -43,10 +43,13 @@ module.exports = function(eleventyConfig) {
       }
     }
 
-    // --- Generate transcript files for lazy loading ---
+    // --- Generate transcript + description files for lazy loading ---
     const md = require("markdown-it")();
+    const matter = require("gray-matter");
     const transcriptsDir = path.join(__dirname, "_site", "transcripts");
+    const descriptionsDir = path.join(__dirname, "_site", "descriptions");
     if (!fs.existsSync(transcriptsDir)) fs.mkdirSync(transcriptsDir, { recursive: true });
+    if (!fs.existsSync(descriptionsDir)) fs.mkdirSync(descriptionsDir, { recursive: true });
 
     const episodeFiles = fs.readdirSync(path.join(__dirname, "src", "episodes"))
       .filter(f => f.endsWith(".md"));
@@ -55,27 +58,40 @@ module.exports = function(eleventyConfig) {
 
     for (const file of episodeFiles) {
       const raw = fs.readFileSync(path.join(__dirname, "src", "episodes", file), "utf8");
-      // Parse frontmatter
-      const fmMatch = raw.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
-      if (!fmMatch) continue;
-      const body = fmMatch[2].trim();
-      if (!body || body.length < 10) continue;
+      const { data: frontmatter, content: body } = matter(raw);
 
       // Determine episode identifier (num or slug)
-      const numMatch = fmMatch[1].match(/^num:\s*(\d+)/m);
       const slug = file.replace(/\.md$/, '');
-      const id = numMatch ? numMatch[1] : slug;
+      const id = frontmatter.num ? String(frontmatter.num) : slug;
 
-      // Render transcript HTML for modal display
-      const html = md.render(body);
-      fs.writeFileSync(
-        path.join(transcriptsDir, id + ".json"),
-        JSON.stringify({ transcript: html })
-      );
+      // Generate full description file
+      if (frontmatter.description) {
+        fs.writeFileSync(
+          path.join(descriptionsDir, id + ".json"),
+          JSON.stringify({ description: frontmatter.description })
+        );
+      }
 
-      // Plain text for search index (strip HTML)
-      const plain = html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
-      searchIndex[id] = plain;
+      // Generate transcript file
+      const trimmedBody = (body || '').trim();
+      if (trimmedBody && trimmedBody.length >= 10) {
+        const html = md.render(trimmedBody);
+        fs.writeFileSync(
+          path.join(transcriptsDir, id + ".json"),
+          JSON.stringify({ transcript: html })
+        );
+
+        // Plain text for search index (strip HTML)
+        const plain = html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+        searchIndex[id] = { transcript: plain };
+      } else {
+        searchIndex[id] = {};
+      }
+
+      // Add description to search index
+      if (frontmatter.description) {
+        searchIndex[id].description = frontmatter.description;
+      }
     }
 
     fs.writeFileSync(
@@ -148,6 +164,28 @@ module.exports = function(eleventyConfig) {
     const [y, m, d] = str.split('-').map(Number);
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     return `${months[m - 1]} ${d}, ${y}`;
+  });
+
+  // Truncate text at a sentence boundary near maxChars
+  eleventyConfig.addFilter("truncateSentence", (text, maxChars) => {
+    if (!text || text.length <= maxChars) return text;
+    const firstPara = text.split('\n\n')[0];
+    if (firstPara.length <= maxChars) return firstPara;
+    // Look for sentence end (.!?) between 50% and 150% of maxChars
+    const abbrevs = /(?:Dr|Mr|Mrs|Ms|Prof|Sr|Jr|St|vs|etc|e\.g|i\.e|Vol|Ep|Inc|Ltd|M\.?D|Ph\.?D|D\.?P\.?T|P\.?A|R\.?D\.?N|O\.?T|P\.?T|J\.?D)\s*$/i;
+    let lastGoodEnd = -1;
+    for (let i = Math.floor(maxChars * 0.5); i < Math.min(firstPara.length, Math.floor(maxChars * 1.5)); i++) {
+      const ch = firstPara[i];
+      if ((ch === '.' || ch === '!' || ch === '?') && (i + 1 >= firstPara.length || firstPara[i + 1] === ' ' || firstPara[i + 1] === '\n')) {
+        const before = firstPara.substring(Math.max(0, i - 15), i + 1);
+        if (!abbrevs.test(before)) {
+          lastGoodEnd = i + 1;
+          if (i >= maxChars * 0.8) break;
+        }
+      }
+    }
+    if (lastGoodEnd > 0) return firstPara.substring(0, lastGoodEnd).trim();
+    return firstPara.substring(0, maxChars).trim();
   });
 
   // JSON stringify filter

@@ -182,7 +182,26 @@ async function fetchTranscript(ep) {
 
 function getTranscriptPlainText(ep) {
   if (!transcriptSearchIndex || !ep.hasTranscript) return '';
-  return (transcriptSearchIndex[ep.transcriptId] || '').toLowerCase();
+  const entry = transcriptSearchIndex[ep.transcriptId];
+  return (entry && entry.transcript ? entry.transcript : '').toLowerCase();
+}
+
+function getDescriptionFromIndex(ep) {
+  if (!transcriptSearchIndex) return '';
+  const entry = transcriptSearchIndex[ep.transcriptId];
+  return (entry && entry.description ? entry.description : '').toLowerCase();
+}
+
+const descriptionCache = {};
+async function fetchDescription(ep) {
+  const id = ep.transcriptId;
+  if (descriptionCache[id]) return descriptionCache[id];
+  try {
+    const resp = await fetch('/descriptions/' + id + '.json');
+    const data = await resp.json();
+    descriptionCache[id] = data.description;
+    return data.description;
+  } catch (e) { return ep.shortDescription || ''; }
 }
 
 const TAG_COLORS = {
@@ -371,12 +390,13 @@ function buildCard(ep) {
 
   // Highlight title when searching title/description
   const titleHtml = showTitleHighlight ? highlightText(cleanTitle(ep.title), q) : cleanTitle(ep.title);
-  const descText = truncateAtSentence(ep.description, 280);
+  const descText = truncateAtSentence(ep.shortDescription || '', 280);
   const descHtml = showTitleHighlight ? highlightText(descText, q) : descText;
 
   // Show transcript snippets when searching transcript (uses search index plain text)
   let snippetsHtml = '';
-  const transcriptPlainForSnippets = transcriptSearchIndex && ep.hasTranscript ? (transcriptSearchIndex[ep.transcriptId] || '') : '';
+  const searchEntry = transcriptSearchIndex && ep.hasTranscript ? (transcriptSearchIndex[ep.transcriptId] || {}) : {};
+  const transcriptPlainForSnippets = searchEntry.transcript || '';
   if (showTranscriptSnippets && transcriptPlainForSnippets) {
     const snippets = getTranscriptSnippetsFromPlain(transcriptPlainForSnippets, q, 3);
     if (snippets.length > 0) {
@@ -602,7 +622,7 @@ function scoreEpisode(ep, queryStr) {
 
   const titleLower = ep.title.toLowerCase();
   const guestStr = (ep.guests || []).join(' ').toLowerCase();
-  const descLower = ep.description.toLowerCase();
+  const descLower = getDescriptionFromIndex(ep) || (ep.shortDescription || '').toLowerCase();
   const transcriptPlain = getTranscriptPlainText(ep);
 
   const includeTranscript = searchScope === 'transcript' || searchScope === 'all';
@@ -780,10 +800,12 @@ function updateActiveTagLabel() {
 
 // ---- Episode Detail Modal ----
 const modal = document.getElementById('episodeModal');
+let currentModalIdx = -1;
 
 function openEpisode(idx) {
   const ep = EPISODES[idx];
   if (!ep) return;
+  currentModalIdx = idx;
 
   document.getElementById('modalEpNum').textContent = ep.num ? `Episode ${ep.num}` : '';
   const titleEl = document.getElementById('modalTitle');
@@ -803,7 +825,14 @@ function openEpisode(idx) {
   }
   document.getElementById('modalAvatars').innerHTML = buildAvatarHtml(ep, true, true);
   document.getElementById('modalMeta').textContent = [formatDate(ep.date), ep.duration].filter(Boolean).join(' · ');
-  document.getElementById('modalDescription').innerHTML = ep.description.split('\n\n').map(p => `<p>${p}</p>`).join('');
+  // Show short description immediately, then fetch full
+  const descEl = document.getElementById('modalDescription');
+  descEl.innerHTML = (ep.shortDescription || '').split('\n\n').map(p => `<p>${p}</p>`).join('');
+  fetchDescription(ep).then(full => {
+    if (full && currentModalIdx === idx) {
+      descEl.innerHTML = full.split('\n\n').map(p => `<p>${p}</p>`).join('');
+    }
+  });
 
   // Audio
   const audioEl = document.getElementById('modalAudio');

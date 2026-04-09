@@ -19,15 +19,14 @@ const EPISODES = [
     "title": {{ ep.data.title | jsonify | safe }},
     "date": "{{ ep.data.date }}",
     "duration": "{{ ep.data.duration }}",
-    "description": {{ ep.data.description | jsonify | safe }},
+    "shortDescription": {{ ep.data.description | truncateSentence(400) | jsonify | safe }},
     "tags": {{ ep.data.tags | jsonify | safe }},
     "audioUrl": "{{ ep.data.audioUrl }}",
     "videoUrl": "{{ ep.data.videoUrl }}",
     "snippets": {{ ep.data.snippets | jsonify | safe }},
     "hasTranscript": {{ "true" if ep.content and ep.content | length > 10 else "false" }},
     "transcriptId": "{{ ep.data.num if ep.data.num else ep.page.fileSlug }}",
-    "guests": {{ ep.data.guests | jsonify | safe }},
-    "guestImages": {{ ep.data.guestImages | jsonify | safe }}
+    "guests": {{ ep.data.guests | jsonify | safe }}
   }{% if not loop.last %},{% endif %}
 {%- endfor %}
 ];

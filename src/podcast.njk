@@ -249,6 +249,18 @@ async function fetchTranscript(ep) {
   } catch (e) { return null; }
 }
 
+const descriptionCache = {};
+async function fetchDescription(ep) {
+  const id = ep.transcriptId;
+  if (descriptionCache[id]) return descriptionCache[id];
+  try {
+    const resp = await fetch('/descriptions/' + id + '.json');
+    const data = await resp.json();
+    descriptionCache[id] = data.description;
+    return data.description;
+  } catch (e) { return ep.shortDescription || ''; }
+}
+
 // ---- Helpers ----
 function formatDate(d) {
   if (!d) return '';
@@ -322,7 +334,7 @@ function buildLatest(ep, idx) {
     <div>
       <h2 style="margin:0;"><a href="#" onclick="openLatestModal(${idx});return false;" style="color:inherit;text-decoration:none;">${cleanTitle(ep.title)}</a></h2>
     </div>
-    <p class="featured-description">${truncateAtSentence(ep.description, 350)}</p>
+    <p class="featured-description">${truncateAtSentence(ep.shortDescription || '', 350)}</p>
     ${ep.audioUrl ? `<div style="margin-bottom: 20px;"><audio controls preload="none" style="width:100%; border-radius:28px;"><source src="${ep.audioUrl}" type="audio/mpeg">Your browser does not support audio.</audio></div>` : ''}
     <div class="featured-actions">
       <a href="#" onclick="openLatestModal(${idx});return false;" class="btn btn-primary">Full Episode Details</a>
@@ -364,7 +376,7 @@ function buildCard(ep) {
       ${buildAvatarHtml(ep)}
     </div>
     <div class="card-body">
-      <p class="card-description">${truncateAtSentence(ep.description, 200)}</p>
+      <p class="card-description">${truncateAtSentence(ep.shortDescription || '', 200)}</p>
     </div>
     <div class="card-footer">
       <span class="card-meta">${meta}</span>
@@ -446,10 +458,12 @@ function buildModalAvatarHtml(ep) {
 }
 
 const modal = document.getElementById('episodeModal');
+let currentModalIdx = -1;
 
 function openLatestModal(idx) {
   const ep = EPISODES[idx];
   if (!ep) return;
+  currentModalIdx = idx;
 
   document.getElementById('modalEpNum').textContent = ep.num ? `Episode ${ep.num}` : '';
   const titleEl = document.getElementById('modalTitle');
@@ -466,7 +480,14 @@ function openLatestModal(idx) {
 
   document.getElementById('modalAvatars').innerHTML = buildModalAvatarHtml(ep);
   document.getElementById('modalMeta').textContent = [formatDate(ep.date), ep.duration].filter(Boolean).join(' · ');
-  document.getElementById('modalDescription').innerHTML = ep.description.split('\n\n').map(p => `<p>${p}</p>`).join('');
+  // Show short description immediately, then fetch full
+  const descEl = document.getElementById('modalDescription');
+  descEl.innerHTML = (ep.shortDescription || '').split('\n\n').map(p => `<p>${p}</p>`).join('');
+  fetchDescription(ep).then(full => {
+    if (full && currentModalIdx === idx) {
+      descEl.innerHTML = full.split('\n\n').map(p => `<p>${p}</p>`).join('');
+    }
+  });
 
   // Audio
   const audioEl = document.getElementById('modalAudio');
