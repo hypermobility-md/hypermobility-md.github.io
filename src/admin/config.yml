@@ -104,20 +104,25 @@ collections:
       - { label: "Wikipedia", name: "wikipedia", widget: "string", required: false, hint: "https://en.wikipedia.org/wiki/Your_Name" }
       - { label: "Photo", name: "image", widget: "image", required: false, hint: "Upload or select a guest photo" }
 
-  - name: "guest-appearances"
+  - name: "appearances"
     label: "Guest Appearances"
-    folder: "src/guest-appearances"
+    folder: "src/appearances"
     create: true
-    extension: "json"
-    format: "json"
     slug: "{{fields.showName | slugify}}"
     identifier_field: "showName"
     summary: "{{fields.showName}} — {{fields.episodeTitle}}"
+    sortable_fields: ["date", "showName"]
+    view_groups:
+      - label: Year
+        field: date
+        pattern: \d{4}
     fields:
       - { label: "Show Name", name: "showName", widget: "string", hint: "Name of the podcast or show" }
       - { label: "Episode Title", name: "episodeTitle", widget: "string" }
-      - { label: "Link", name: "url", widget: "string", hint: "URL to listen or watch" }
-      - { label: "Image URL", name: "imageUrl", widget: "string", required: false, hint: "Show logo or thumbnail URL" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false, hint: "Appearance date (for sorting)" }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Episode URL", name: "url", widget: "string", hint: "URL to the episode page" }
+      - { label: "Image URL", name: "imageUrl", widget: "string", required: false, hint: "Show logo or cover art URL" }
       - label: "Type"
         name: "type"
         widget: "select"
@@ -125,14 +130,7 @@ collections:
         options:
           - { label: "Listen", value: "listen" }
           - { label: "Watch", value: "watch" }
-      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false, hint: "Appearance date (for sorting)" }
-      - { label: "Website", name: "website", widget: "string", required: false, hint: "https://showwebsite.com" }
-      - { label: "Website 2", name: "website2", widget: "string", required: false, hint: "https://secondsite.com" }
-      - { label: "LinkedIn", name: "linkedin", widget: "string", required: false, hint: "https://linkedin.com/in/profile" }
-      - { label: "Twitter / X", name: "twitter", widget: "string", required: false, hint: "https://twitter.com/handle" }
-      - { label: "Substack", name: "substack", widget: "string", required: false, hint: "https://name.substack.com" }
-      - { label: "Instagram", name: "instagram", widget: "string", required: false, hint: "https://instagram.com/handle" }
-      - { label: "Facebook", name: "facebook", widget: "string", required: false, hint: "https://facebook.com/page" }
-      - { label: "YouTube", name: "youtube", widget: "string", required: false, hint: "https://youtube.com/@channel" }
-      - { label: "TikTok", name: "tiktok", widget: "string", required: false, hint: "https://tiktok.com/@handle" }
-      - { label: "Wikipedia", name: "wikipedia", widget: "string", required: false, hint: "https://en.wikipedia.org/wiki/Name" }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false, hint: "Show in Featured row on appearances page" }
+      - { label: "Audio URL", name: "audioUrl", widget: "string", required: false, hint: "Direct MP3 link for embedded player" }
+      - { label: "Video URL", name: "videoUrl", widget: "string", required: false, hint: "YouTube URL for embedded video" }
+      - { label: "YouTube URL", name: "youtubeUrl", widget: "string", required: false, hint: "YouTube link (shown as button if different from Video URL)" }

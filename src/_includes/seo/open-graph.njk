@@ -1,7 +1,7 @@
 {# ── Open Graph + Twitter Card Meta Tags ── #}
 
 {# Determine og:type #}
-{% if audioUrl %}
+{% if audioUrl or showName %}
   {% set ogType = "article" %}
 {% elif guestName %}
   {% set ogType = "profile" %}
@@ -30,6 +30,8 @@
   {% set socialImage = guestImages[0] | absoluteUrl(site.url) %}
 {% elif guestName and guestData.images[guestName] %}
   {% set socialImage = (guestData.images[guestName] | guestOgImage) | absoluteUrl(site.url) %}
+{% elif showName and imageUrl %}
+  {% set socialImage = imageUrl %}
 {% else %}
   {% set socialImage = site.defaultOgImage | absoluteUrl(site.url) %}
 {% endif %}
