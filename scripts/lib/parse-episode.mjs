@@ -47,6 +47,17 @@ export function parseEpisode(filePath) {
     }
   }
 
+  // Also detect known co-hosts mentioned in title/description even if not in guests array
+  // (sync-rss correctly excludes co-hosts from guests, but we still need to count them as speakers)
+  if (hasCohostMention) {
+    for (const kc of knownCohosts) {
+      const kcLower = kc.toLowerCase();
+      if (titleAndDesc.includes(kcLower) && !cohosts.some(c => c.toLowerCase().includes(kcLower))) {
+        cohosts.push(kc);
+      }
+    }
+  }
+
   // speakers_expected = 1 (host) + co-hosts + guest speakers
   const speakersExpected = 1 + cohosts.length + guestSpeakers.length;
 

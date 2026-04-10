@@ -7,7 +7,7 @@
  *   1. Submit to AssemblyAI → raw transcript with word-level timestamps
  *   2. Label speakers (map A/B/C → real names)
  *   3. Format as plain text for proofreading
- *   4. Proofread with Haiku (fix speakers, terminology, remove ads + fillers)
+ *   4. Proofread with Claude (fix speakers, terminology, remove ads + fillers)
  *   5. Add timestamps via word-level alignment
  *   6. Write to episode file
  *
@@ -17,6 +17,7 @@
  *   node scripts/transcribe-new.mjs --max 3        # Limit to 3 episodes per run
  *   node scripts/transcribe-new.mjs --episode 190  # Single episode
  *   node scripts/transcribe-new.mjs --episode 50 --force  # Re-process with existing raw data
+ *   node scripts/transcribe-new.mjs --model claude-haiku-4-5-20251001  # Use Haiku for proofreading (default: Sonnet)
  */
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
@@ -59,16 +60,18 @@ const maxIdx = args.indexOf('--max');
 const maxEpisodes = maxIdx !== -1 ? parseInt(args[maxIdx + 1], 10) : 5;
 const episodeIdx = args.indexOf('--episode');
 const singleEpisode = episodeIdx !== -1 ? args[episodeIdx + 1] : null;
+const modelIdx = args.indexOf('--model');
+const PROOFREAD_MODEL = modelIdx !== -1 ? args[modelIdx + 1] : 'claude-sonnet-4-6';
 
 const anthropic = new Anthropic({
-  timeout: 20 * 60 * 1000,
+  timeout: 30 * 60 * 1000, // 30 min — Sonnet needs more time for long transcripts
 });
 
 // ── Proofreading ──────────────────────────────────────────────────────
 
 const PROOFREAD_SYSTEM_PROMPT = `You are a professional transcript editor for the Bendy Bodies Podcast, a medical podcast about hypermobility and Ehlers-Danlos syndromes hosted by Dr. Linda Bluestein (the Hypermobility MD).
 
-You will receive a podcast transcript and must perform three tasks:
+You will receive a podcast transcript and must perform three tasks. ALL THREE are equally important — do not skip or rush any of them.
 
 ## Task 1: Remove Advertisements
 
@@ -91,20 +94,35 @@ Remove ALL ad/sponsor reads, including:
 
 This outro content should STAY — it's the show's standard sign-off, not an ad. Only remove the final sponsor tag line if one appears after the outro (e.g., "This episode of the Bendy Bodies Podcast was brought to you by Bauerfeind Premium Braces and Supports...").
 
-## Task 2: Format into Readable Paragraphs
+## Task 2: Break Up Long Speaker Turns into Paragraphs
+
+THIS IS CRITICAL. Long speaker turns MUST be split into multiple paragraphs. Readers should never see a wall of text.
 
 The transcript uses the format "Speaker Name: text". Maintain this format, but:
 - Ensure there is a blank line between each speaker turn
-- Break long speaker turns into multiple paragraphs at natural points (topic shifts, new ideas, after ~3-5 sentences). Keep the speaker label only on the first paragraph of their turn — continuation paragraphs should NOT repeat the speaker name, just continue as plain text
+- **Every speaker turn longer than ~3-5 sentences MUST be broken into multiple paragraphs.** Insert a blank line at natural breakpoints: topic shifts, new examples, new ideas, rhetorical pivots. A long monologue should become 3-6 paragraphs, not one giant block.
+- Keep the speaker label only on the FIRST paragraph of their turn. Continuation paragraphs within the same turn are plain text (no speaker name, no timestamp).
 - Do NOT merge separate speaker turns together
+
+Example of correct paragraph breaking:
+
+Dr. Anne Maitland: Within the past 50 years, we've seen a huge shift in the burden of disease. Since the 1960s, we started seeing the rise of both immediate disorders such as food allergies, rhinitis, asthma, and some neuropsychiatric and neurodevelopmental disorders as well.
+
+There's been various theories put forward to try to explain the rise of these hypersensitivity disorders. There was the hygiene hypothesis, but that wouldn't explain individuals in communities that are not necessarily considered high net worth.
+
+And so the best set of ideas that brought it together was the fact that we have so changed our environment that the genes we've inherited to detect and respond to classic dangers have been confused by industrialization.
 
 ## Task 3: Proofread and Clean
 
+Fix transcription errors and clean up spoken disfluencies:
+- **Remove ALL filler words:** "um", "uh", "like" (when used as filler, not comparison), "you know" (when filler, not literal). Every instance. Do not leave any.
+- **Remove verbal stammers and false starts:** "I, I, I think" → "I think". "And, and, and so" → "And so". "So, so, so" → "So". Clean every repeated word/phrase.
+- **Remove meaningless hedges:** "I would have to say" (when it adds nothing), "I mean", etc. — trim these when they are empty verbal tics, not when they carry meaning.
 - Fix obvious transcription errors in medical/scientific terminology (EDS, POTS, MCAS, collagen, proprioception, etc.)
 - Fix misspelled proper nouns and speaker names if clearly wrong
-- Fix garbled or nonsensical phrases where the intended meaning is clear
-- Remove filler words (um, uh) and verbal stammers (e.g., repeated false starts like "I, I, I think"), but keep affirmative responses like "uh-huh" and "mm-hmm"
-- Do NOT rewrite for style — preserve the conversational, spoken tone
+- Fix garbled or nonsensical phrases where the intended meaning is clear from context
+- Keep affirmative responses like "uh-huh", "mm-hmm", "right", "yeah" when they are meaningful backchannel responses
+- Do NOT rewrite for style — preserve the conversational, spoken tone. Just clean it up.
 
 ## Output Format
 
@@ -136,20 +154,59 @@ The full cleaned, formatted, proofread transcript goes here as plain text with r
 Important: The transcript section must contain the FULL cleaned transcript, not a summary or truncation.`;
 
 const MAX_RETRIES = 5;
+const CHUNK_WORD_LIMIT = 5000; // split transcripts longer than this into chunks
 
-async function proofreadTranscript(slug, text) {
+/**
+ * Split transcript text into chunks along speaker turn boundaries.
+ * Each chunk stays under CHUNK_WORD_LIMIT words (approximately).
+ */
+function splitIntoChunks(text) {
+  const wordCount = text.split(/\s+/).length;
+  if (wordCount <= CHUNK_WORD_LIMIT) return [text];
+
+  const turns = text.split(/\n\n/);
+  const chunks = [];
+  let current = [];
+  let currentWords = 0;
+
+  for (const turn of turns) {
+    const turnWords = turn.split(/\s+/).length;
+    if (currentWords + turnWords > CHUNK_WORD_LIMIT && current.length > 0) {
+      chunks.push(current.join('\n\n'));
+      current = [turn];
+      currentWords = turnWords;
+    } else {
+      current.push(turn);
+      currentWords += turnWords;
+    }
+  }
+  if (current.length > 0) chunks.push(current.join('\n\n'));
+
+  return chunks;
+}
+
+/**
+ * Proofread a single chunk of transcript text.
+ * @param {string} slug - Episode slug
+ * @param {string} text - Transcript text to proofread
+ * @param {string} chunkLabel - Label like "the transcript" or "part 1 of 3"
+ * @param {string} episodeContext - Title and description for spelling/name context
+ */
+async function proofreadChunk(slug, text, chunkLabel, episodeContext) {
   const estInputTokens = Math.round(text.length / 4);
   const maxTokens = Math.min(64000, Math.max(16000, Math.round(estInputTokens * 1.3)));
+
+  const contextBlock = episodeContext ? `\n\nFor reference, here is the episode title and description (use this for correct spellings of names, terms, and topics):\n${episodeContext}\n` : '';
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
       const message = await anthropic.messages.create({
-        model: 'claude-haiku-4-5-20251001',
+        model: PROOFREAD_MODEL,
         max_tokens: maxTokens,
         system: [{ type: 'text', text: PROOFREAD_SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
         messages: [{
           role: 'user',
-          content: `Here is the transcript for episode ${slug} of the Bendy Bodies Podcast. Please clean, format, and proofread it.\n\n<transcript>\n${text}\n</transcript>`,
+          content: `Here is ${chunkLabel} of the transcript for episode ${slug} of the Bendy Bodies Podcast. Please clean, format, and proofread it.${contextBlock}\n\n<transcript>\n${text}\n</transcript>`,
         }],
       });
 
@@ -182,13 +239,51 @@ async function proofreadTranscript(slug, text) {
       const isRetryable = err?.status === 429 || err?.status === 529 || err?.status >= 500;
       if (isRetryable && attempt < MAX_RETRIES) {
         const backoff = (err?.status === 429 ? 15000 : 5000) * attempt;
-        console.log(`  ⚠ ${slug} ${err.status || 'error'} attempt ${attempt}, retrying in ${backoff / 1000}s...`);
+        console.log(`  ⚠ ${slug} ${chunkLabel} ${err.status || 'error'} attempt ${attempt}, retrying in ${backoff / 1000}s...`);
         await new Promise(r => setTimeout(r, backoff));
         continue;
       }
       throw err;
     }
   }
+}
+
+/**
+ * Proofread a full transcript, chunking if needed to avoid API timeouts.
+ * @param {string} slug - Episode slug
+ * @param {string} text - Full transcript text
+ * @param {object} episode - Episode object with title and description for context
+ */
+async function proofreadTranscript(slug, text, episode) {
+  const chunks = splitIntoChunks(text);
+  const episodeContext = episode ? `Title: ${episode.title}\nDescription: ${episode.description}` : '';
+
+  if (chunks.length === 1) {
+    console.log(`  Proofreading with ${PROOFREAD_MODEL}...`);
+    return proofreadChunk(slug, text, 'the transcript', episodeContext);
+  }
+
+  console.log(`  Proofreading with ${PROOFREAD_MODEL} (${chunks.length} chunks)...`);
+  const results = [];
+  for (let i = 0; i < chunks.length; i++) {
+    const label = `part ${i + 1} of ${chunks.length}`;
+    console.log(`    Chunk ${i + 1}/${chunks.length} (${chunks[i].split(/\s+/).length} words)...`);
+    results.push(await proofreadChunk(slug, chunks[i], label, episodeContext));
+  }
+
+  // Merge chunked results
+  const mergedTranscript = results.map(r => r.transcript).join('\n\n');
+  const mergedReport = {
+    ads_removed: results.flatMap(r => r.report.ads_removed || []),
+    flags: results.flatMap(r => r.report.flags || []),
+    changes_summary: results.map(r => r.report.changes_summary).filter(Boolean).join(' '),
+  };
+  const mergedUsage = {
+    input_tokens: results.reduce((sum, r) => sum + r.usage.input_tokens, 0),
+    output_tokens: results.reduce((sum, r) => sum + r.usage.output_tokens, 0),
+  };
+
+  return { transcript: mergedTranscript, report: mergedReport, usage: mergedUsage };
 }
 
 // ── Formatting ────────────────────────────────────────────────────────
@@ -422,7 +517,19 @@ Select 3-8 tags that apply. Respond with ONLY a JSON array.`,
     .replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
   const tags = JSON.parse(text);
   const validNames = new Set(taxonomy.tags.map(t => t.name));
-  return Array.isArray(tags) ? tags.filter(t => validNames.has(t)) : [];
+  // Also match by alias → canonical name
+  const aliasMap = new Map();
+  for (const t of taxonomy.tags) {
+    aliasMap.set(t.name.toLowerCase(), t.name);
+    for (const a of (t.aliases || [])) {
+      aliasMap.set(a.toLowerCase(), t.name);
+    }
+  }
+  if (!Array.isArray(tags)) return [];
+  const resolved = tags
+    .map(t => validNames.has(t) ? t : aliasMap.get(t.toLowerCase()) || null)
+    .filter(Boolean);
+  return [...new Set(resolved)];
 }
 
 // ── Main ──────────────────────────────────────────────────────────────
@@ -547,9 +654,8 @@ async function main() {
       writeFileSync(join(OUTPUT_FORMATTED, `${ep.slug}.md`), plainText);
       console.log(`  ✓ Formatted plain text for proofreading`);
 
-      // Stage 4: Proofread with Haiku
-      console.log(`  Proofreading with Haiku...`);
-      const proofread = await proofreadTranscript(ep.slug, plainText);
+      // Stage 4: Proofread transcript
+      const proofread = await proofreadTranscript(ep.slug, plainText, ep);
 
       writeFileSync(join(OUTPUT_PROOFREAD, `${ep.slug}.md`), proofread.transcript);
 
@@ -578,7 +684,11 @@ async function main() {
         try {
           const taxonomy = JSON.parse(readFileSync(taxonomyPath, 'utf-8'));
           autoTags = await tagEpisode(ep, timestamped, taxonomy);
-          console.log(`  ✓ Tagged: ${autoTags.join(', ')}`);
+          if (autoTags.length > 0) {
+            console.log(`  ✓ Tagged: ${autoTags.join(', ')}`);
+          } else {
+            console.log(`  ⚠ Tagging returned no tags — check taxonomy or episode content`);
+          }
         } catch (err) {
           console.log(`  ⚠ Tagging failed: ${err.message}`);
         }
