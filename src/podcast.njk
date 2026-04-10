@@ -10,6 +10,7 @@ permalink: /podcast/
 ---
 
 {% block head %}
+  <link rel="preload" as="image" type="image/webp" href="/assets/podcast-hero-warm.webp">
 {%- set latestEp = collections.episodes[0] -%}
 {%- if latestEp and latestEp.data.guests -%}
   {%- for guest in latestEp.data.guests -%}
@@ -57,7 +58,10 @@ permalink: /podcast/
 <div class="sponsor-banner">
   <div class="container">
     <span class="sponsor-text">Proudly sponsored by</span>
-    <img src="/assets/uva-health-banner.png" alt="UVA Health" class="sponsor-logo" loading="lazy" width="3263" height="488">
+    <picture>
+        <source srcset="/assets/uva-health-banner.webp" type="image/webp">
+        <img src="/assets/uva-health-banner_sm.png" alt="UVA Health" class="sponsor-logo" loading="lazy" width="481" height="72">
+      </picture>
   </div>
 </div>
 
