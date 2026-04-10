@@ -9,6 +9,18 @@ podcastSubpage: "main"
 permalink: /podcast/
 ---
 
+{% block head %}
+{%- set latestEp = collections.episodes[0] -%}
+{%- if latestEp and latestEp.data.guests -%}
+  {%- for guest in latestEp.data.guests -%}
+    {%- set guestImg = guestData.images[guest | guestKey] -%}
+    {%- if guestImg %}
+  <link rel="preload" as="image" href="{{ guestImg }}">
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+{% endblock %}
+
 {% include "podcast-subnav.njk" %}
 
 <!-- Podcast Hero -->
@@ -300,14 +312,15 @@ function resolveGuestImage(name) {
   return GUEST_IMAGES[n] || null;
 }
 
-function buildAvatarHtml(ep) {
+function buildAvatarHtml(ep, lazy) {
   if (!ep.guests || ep.guests.length === 0) return '';
   const resolved = ep.guests.map(g => resolveGuestImage(g)).filter(Boolean);
   if (resolved.length === 0) return '';
   const MAX_SHOW = 2;
   const isMulti = resolved.length > 1;
+  const loadAttr = lazy !== false ? ' loading="lazy"' : '';
   let html = resolved.slice(0, MAX_SHOW).map(src =>
-    `<img class="guest-avatar-img" src="${src}" alt="" loading="lazy">`
+    `<img class="guest-avatar-img" src="${src}" alt=""${loadAttr}>`
   ).join('');
   if (resolved.length > MAX_SHOW) {
     html += `<span class="guest-avatar-overflow">+${resolved.length - MAX_SHOW}</span>`;
@@ -327,7 +340,7 @@ function buildLatest(ep, idx) {
   return `
   <div class="featured-top-bar">
     ${ep.num ? `<div class="featured-latest-num">${ep.num}</div>` : ''}
-    ${buildAvatarHtml(ep)}
+    ${buildAvatarHtml(ep, false)}
     ${guestLabel}
   </div>
   <div class="featured-bottom">

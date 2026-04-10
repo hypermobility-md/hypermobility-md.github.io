@@ -35,6 +35,7 @@
   {% if needsRecaptcha %}
   <script src="https://www.google.com/recaptcha/api.js?render=6LejW5AsAAAAACTV9UzbWn_qHvRQXXH6oFtMxqhe" defer></script>
   {% endif %}
+  {% block head %}{% endblock %}
 </head>
 <body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}>
 
