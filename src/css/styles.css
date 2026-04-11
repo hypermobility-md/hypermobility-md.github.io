@@ -708,6 +708,37 @@ a.logo-card:hover {
   .logo-expand-inline { align-self: center; text-align: center; }
 }
 
+/* ---- Aggregate Rating ---- */
+.aggregate-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.aggregate-stars {
+  color: #f5a623;
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+}
+.aggregate-score {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text);
+}
+.aggregate-count {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+.aggregate-count a {
+  color: var(--primary);
+  text-decoration: none;
+}
+.aggregate-count a:hover {
+  text-decoration: underline;
+}
+
 /* ---- Testimonial Grid ---- */
 .testimonial-grid {
   display: grid;
@@ -722,6 +753,14 @@ a.logo-card:hover {
   position: static;
   display: block;
   margin-bottom: -16px;
+}
+
+/* ---- Testimonial Page (carousel of grids) ---- */
+.testimonial-page {
+  min-width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 /* ---- Testimonial Carousel ---- */
