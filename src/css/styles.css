@@ -718,14 +718,14 @@ a.logo-card:hover {
   flex-wrap: wrap;
 }
 .aggregate-stars {
-  color: #f5a623;
+  color: var(--primary-light);
   font-size: 1.3rem;
   letter-spacing: 2px;
 }
 .aggregate-score {
   font-weight: 700;
   font-size: 1rem;
-  color: var(--text);
+  color: var(--text-muted);
 }
 .aggregate-count {
   font-size: 0.9rem;
@@ -742,7 +742,7 @@ a.logo-card:hover {
 /* ---- Testimonial Grid ---- */
 .testimonial-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 .testimonial-grid .testimonial-card {
@@ -753,6 +753,9 @@ a.logo-card:hover {
   position: static;
   display: block;
   margin-bottom: -16px;
+}
+@media (max-width: 768px) {
+  .testimonial-grid { grid-template-columns: 1fr; }
 }
 
 /* ---- Testimonial Page (carousel of grids) ---- */
