@@ -560,7 +560,7 @@ function openLatestModal(idx) {
   document.getElementById('modalMeta').textContent = [formatDate(ep.date), ep.duration].filter(Boolean).join(' · ');
   // Load full description directly to prevent flash
   const descEl = document.getElementById('modalDescription');
-  descEl.innerHTML = '<p style="opacity:0.6;">Loading description...</p>';
+  descEl.innerHTML = '';
   fetchDescription(ep).then(full => {
     if (currentModalIdx === idx) {
       const text = full || ep.shortDescription || '';
