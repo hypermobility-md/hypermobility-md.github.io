@@ -160,7 +160,7 @@ permalink: /podcast/
 
 <!-- Community Testimonials -->
 <section class="section">
-  <div class="container">
+  <div class="container container-wide">
     <div class="section-header">
       <p class="section-eyebrow">Community</p>
       <h2>From the Bendy Bodies Community</h2>
@@ -558,12 +558,13 @@ function openLatestModal(idx) {
 
   document.getElementById('modalAvatars').innerHTML = buildModalAvatarHtml(ep);
   document.getElementById('modalMeta').textContent = [formatDate(ep.date), ep.duration].filter(Boolean).join(' · ');
-  // Show short description immediately, then fetch full
+  // Load full description directly to prevent flash
   const descEl = document.getElementById('modalDescription');
-  descEl.innerHTML = (ep.shortDescription || '').split('\n\n').map(p => `<p>${p}</p>`).join('');
+  descEl.innerHTML = '<p style="opacity:0.6;">Loading description...</p>';
   fetchDescription(ep).then(full => {
-    if (full && currentModalIdx === idx) {
-      descEl.innerHTML = full.split('\n\n').map(p => `<p>${p}</p>`).join('');
+    if (currentModalIdx === idx) {
+      const text = full || ep.shortDescription || '';
+      descEl.innerHTML = text.split('\n\n').map(p => `<p>${p}</p>`).join('');
     }
   });
 

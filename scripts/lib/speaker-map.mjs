@@ -1,5 +1,30 @@
 const HOST_NAME = 'Dr. Linda Bluestein';
 
+// Known non-guest speakers who appear in Office Hours / solo episodes
+// Map of name variants to canonical name
+const KNOWN_PRODUCERS = {
+  'aaron': 'Aron',
+  'aron': 'Aron',
+  'tessa': 'Tessa',
+  'shanti': 'Shanti',
+};
+
+/**
+ * Extract additional speaker names from episode title/description.
+ * Looks for patterns like "joined by producer Aron" or "with Aron from Human Content".
+ * Returns an array of names found.
+ */
+export function extractSpeakersFromDescription(title, description) {
+  const text = `${title} ${description}`.toLowerCase();
+  const found = [];
+  for (const [variant, canonical] of Object.entries(KNOWN_PRODUCERS)) {
+    if (text.includes(variant)) {
+      if (!found.includes(canonical)) found.push(canonical);
+    }
+  }
+  return found;
+}
+
 // Phrases the host typically says in the intro
 const HOST_INTRO_PHRASES = [
   'welcome back',
@@ -132,6 +157,32 @@ export function mapSpeakers(utterances, episode) {
   const allSpeakers = [...episode.cohosts, ...episode.guestSpeakers];
 
   if (allSpeakers.length === 0) {
+    // Try to find additional speaker names from the episode title/description
+    const descSpeakers = extractSpeakersFromDescription(episode.title || '', episode.description || '');
+
+    if (descSpeakers.length > 0 && remainingLabels.length > 0) {
+      // Map detected speakers to description-extracted names by speaking order
+      const labelOrder = remainingLabels.sort((a, b) => {
+        const aFirst = contentUtterances.findIndex(u => u.speaker === a);
+        const bFirst = contentUtterances.findIndex(u => u.speaker === b);
+        return aFirst - bFirst;
+      });
+      let idx = 0;
+      for (const name of descSpeakers) {
+        if (idx < labelOrder.length) {
+          speakerMap[labelOrder[idx]] = name;
+          idx++;
+        }
+      }
+      // Any remaining labels become generic speakers
+      while (idx < labelOrder.length) {
+        speakerMap[labelOrder[idx]] = `Speaker ${labelOrder[idx]}`;
+        idx++;
+      }
+      flags.push(`extracted speaker name(s) from description: ${descSpeakers.join(', ')}`);
+      return { speakerMap, confidence: 'medium', flags, adSpeakers: pureAdSpeakers, contentStartIndex };
+    }
+
     // Solo episode — map any extra detected speakers to host (audio artifacts)
     for (const label of remainingLabels) {
       speakerMap[label] = HOST_NAME;
@@ -151,8 +202,26 @@ export function mapSpeakers(utterances, episode) {
   }
 
   if (remainingLabels.length > 1 && allSpeakers.length === 0) {
-    for (const label of remainingLabels) {
-      speakerMap[label] = `Speaker ${label}`;
+    // Try description extraction for multiple unknown speakers
+    const descSpeakers = extractSpeakersFromDescription(episode.title || '', episode.description || '');
+    const labelOrder = remainingLabels.sort((a, b) => {
+      const aFirst = contentUtterances.findIndex(u => u.speaker === a);
+      const bFirst = contentUtterances.findIndex(u => u.speaker === b);
+      return aFirst - bFirst;
+    });
+    let idx = 0;
+    for (const name of descSpeakers) {
+      if (idx < labelOrder.length) {
+        speakerMap[labelOrder[idx]] = name;
+        idx++;
+      }
+    }
+    while (idx < labelOrder.length) {
+      speakerMap[labelOrder[idx]] = `Speaker ${labelOrder[idx]}`;
+      idx++;
+    }
+    if (descSpeakers.length > 0) {
+      flags.push(`extracted speaker name(s) from description: ${descSpeakers.join(', ')}`);
     }
     flags.push(`${remainingLabels.length} non-host speakers detected but no guests listed`);
     return { speakerMap, confidence: 'low', flags, adSpeakers: pureAdSpeakers, contentStartIndex };

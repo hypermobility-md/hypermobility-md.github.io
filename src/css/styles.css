@@ -103,6 +103,7 @@ p a:hover, li a:hover, td a:hover, dd a:hover, figcaption a:hover { text-decorat
 
 /* ---- Layout ---- */
 .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+.container-wide { max-width: 1400px; }
 .section { padding: 80px 0; }
 .section-alt { background: var(--section-alt); transition: background 0.4s; }
 .section-header { text-align: center; margin-bottom: 48px; }

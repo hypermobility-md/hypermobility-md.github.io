@@ -201,11 +201,14 @@ function sortSocialLinks(links) {
   return links.slice().sort((a, b) => priority(a) - priority(b));
 }
 
+let guestCardIndex = 0;
 function buildGuestCard(name) {
   const episodes = guestMap[name];
   const img = getGuestImage(name);
   const profile = getGuestProfile(name);
-  const imgHtml = img ? `<img class="guest-card-img" src="${img}" alt="${name}" loading="lazy">` : '';
+  const loadAttr = guestCardIndex < 8 ? 'eager' : 'lazy';
+  guestCardIndex++;
+  const imgHtml = img ? `<img class="guest-card-img" src="${img}" alt="${name}" loading="${loadAttr}">` : '';
   const affiliationHtml = profile && profile.affiliation
     ? `<div class="guest-card-affiliation">${profile.affiliation}</div>` : '';
   const bioHtml = profile && profile.bio
@@ -246,6 +249,7 @@ function buildGuestCard(name) {
 }
 
 function renderGuests() {
+  guestCardIndex = 0;
   const container = document.getElementById('guestsContainer');
   const noGuests = document.getElementById('noGuests');
   const q = searchQ.toLowerCase();

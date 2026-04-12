@@ -101,6 +101,7 @@ The transcript uses the format "[MM:SS] Speaker Name: text" (or "[H:MM:SS] Speak
 - Fix garbled or nonsensical phrases where the intended meaning is clear
 - Do NOT rewrite for style — preserve the conversational, spoken tone
 - Do NOT remove filler words (um, uh, you know) — these are part of the natural speech
+- Do NOT use em dashes (—). Use commas, periods, or other punctuation instead
 
 ## Output Format
 
