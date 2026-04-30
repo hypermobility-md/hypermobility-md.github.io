@@ -22,16 +22,26 @@ export function parseEpisode(filePath) {
   const cohostPattern = /co-?host/i;
   const hasCohostMention = cohostPattern.test(titleAndDesc);
 
-  // Known co-hosts. Each entry has a canonical name and any name variants
-  // (alt spellings, with/without title) that should be recognized as the same
-  // person — variants are matched against title/description and guest lists,
-  // but the canonical name is what gets stored in `cohosts` so the speaker
-  // count stays correct (no double-counting of the same person).
+  // Known co-hosts. Each entry has a canonical name, any name variants
+  // (alt spellings or with/without title), and a "role" hint:
+  //   - "always": always classify as cohost when their name appears anywhere
+  //     (e.g. Aron, the producer — never a guest of the show)
+  //   - "contextual": cohost when they appear *alongside* another guest, OR
+  //     when they're mentioned in title/description but NOT in the guests
+  //     array. Treated as the featured guest when they're the only guest in
+  //     the guests array (e.g. Dr. Dacre Knight is a recurring cohost, but
+  //     ep 184 ["…with Dr. Dacre Knight"] features him as guest).
+  //   - "keyword" (default): the original conservative behavior — only
+  //     classified as cohost if the title/description explicitly says
+  //     "co-host" / "cohost" near their name.
+  // Variants are matched against title/description and guest lists, but the
+  // canonical name is what gets stored in `cohosts` so the speaker count
+  // stays correct (no double-counting of the same person).
   const knownCohosts = [
-    { canonical: 'Jennifer Milner', aliases: [] },
-    { canonical: 'Pradeep Chopra', aliases: [] },
-    { canonical: 'Dacre Knight', aliases: [] },
-    { canonical: 'Aron', aliases: ['Aaron'] }, // Human Content producer; transcripts often render as "Aaron"
+    { canonical: 'Jennifer Milner', aliases: [], role: 'keyword' },
+    { canonical: 'Pradeep Chopra', aliases: [], role: 'keyword' },
+    { canonical: 'Dacre Knight', aliases: [], role: 'contextual' },
+    { canonical: 'Aron', aliases: ['Aaron'], role: 'always' }, // Human Content producer
   ];
 
   // Word-boundary match — prevents 'Aron' from matching 'macaron' or 'Aaron'.
@@ -56,28 +66,56 @@ export function parseEpisode(filePath) {
   const cohosts = [];
   const guestSpeakers = [];
 
+  // First pass: how many of the named guests are *actual* guests (not host,
+  // not always-cohost producer)? "Contextual" cohosts switch role based on
+  // whether other guests are present, so we need this count up front.
+  const nonHostGuests = guests.filter(g => {
+    const lower = g.toLowerCase();
+    return !hostNames.some(h => lower.includes(h));
+  });
+  const otherGuestsCount = (kc) => nonHostGuests.filter(g => !cohostMatchesName(kc, g.toLowerCase())).length;
+
   for (const guest of guests) {
     const guestLower = guest.toLowerCase();
-    // Skip the host if listed as a guest (solo/office hours episodes)
     if (hostNames.some(h => guestLower.includes(h))) continue;
-    const matchedCohost = hasCohostMention
-      ? knownCohosts.find(kc => cohostMatchesName(kc, guestLower))
-      : null;
-    if (matchedCohost) {
-      if (!alreadyHaveCohost(matchedCohost)) cohosts.push(matchedCohost.canonical);
+
+    const kc = knownCohosts.find(c => cohostMatchesName(c, guestLower));
+    let isCohost = false;
+    if (kc) {
+      if (kc.role === 'always') {
+        isCohost = true;
+      } else if (kc.role === 'contextual') {
+        // Cohost when there's at least one other guest besides them, or when
+        // the description explicitly says "co-host". Sole-guest episodes
+        // (e.g. "with Dr. Dacre Knight" as a feature interview) → guest.
+        isCohost = otherGuestsCount(kc) > 0 || hasCohostMention;
+      } else {
+        isCohost = hasCohostMention;
+      }
+    }
+
+    if (isCohost) {
+      if (!alreadyHaveCohost(kc)) cohosts.push(kc.canonical);
     } else {
       guestSpeakers.push(guest);
     }
   }
 
-  // Also detect known co-hosts mentioned in title/description even if not in guests array
-  // (sync-rss correctly excludes co-hosts from guests, but we still need to count them as speakers)
-  if (hasCohostMention) {
-    for (const kc of knownCohosts) {
-      if (cohostMatchesName(kc, titleAndDesc) && !alreadyHaveCohost(kc)) {
-        cohosts.push(kc.canonical);
-      }
-    }
+  // Also detect known co-hosts mentioned in title/description even if not in
+  // the guests array (sync-rss correctly excludes co-hosts from guests, but
+  // we still need to count them as speakers). For "always" / "contextual"
+  // cohosts, the keyword "co-host" isn't required — a name mention is enough.
+  for (const kc of knownCohosts) {
+    if (alreadyHaveCohost(kc)) continue;
+    const inGuests = nonHostGuests.some(g => cohostMatchesName(kc, g.toLowerCase()));
+    if (inGuests) continue; // already handled in the guests loop above
+    const nameInDesc = cohostMatchesName(kc, titleAndDesc);
+    if (!nameInDesc) continue;
+    const shouldAdd =
+      kc.role === 'always' ||
+      kc.role === 'contextual' ||
+      (kc.role === 'keyword' && hasCohostMention);
+    if (shouldAdd) cohosts.push(kc.canonical);
   }
 
   // Frontmatter override: explicit `cohosts:` array (e.g. for solo/office-hours
