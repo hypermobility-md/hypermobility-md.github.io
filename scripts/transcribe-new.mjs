@@ -46,6 +46,11 @@ const OUTPUT_LABELED = join(SCRIPTS_DIR, 'output', 'labeled');
 const OUTPUT_FORMATTED = join(SCRIPTS_DIR, 'output', 'formatted');
 const OUTPUT_PROOFREAD = join(SCRIPTS_DIR, 'output', 'proofread');
 const REPORTS_DIR = join(OUTPUT_PROOFREAD, 'reports');
+const GUEST_PROFILES_DIR = join(SCRIPTS_DIR, '..', 'src', 'guest-profiles');
+
+// Hosts and recurring co-hosts whose profiles aren't auto-created from episodes
+// (their guestImages.json entry covers the photo; bios are managed elsewhere).
+const HOST_KEYS = new Set(['linda bluestein']);
 
 mkdirSync(OUTPUT_RAW, { recursive: true });
 mkdirSync(OUTPUT_LABELED, { recursive: true });
@@ -121,6 +126,9 @@ Fix transcription errors and clean up spoken disfluencies:
 - Fix obvious transcription errors in medical/scientific terminology (EDS, POTS, MCAS, collagen, proprioception, etc.)
 - Fix misspelled proper nouns and speaker names if clearly wrong
 - Fix garbled or nonsensical phrases where the intended meaning is clear from context
+- **UVA EDS Center contact details (canonical spellings — fix any variant to these):**
+  - Email: \`RUVAEDSCenter@uvahealth.org\` (note the leading "R as in Robert", and the domain is **uvahealth.org**, NOT \`uvahelp.org\`). Common transcription errors include dropped "R", "our" instead of "R", and the domain rendered as \`uvahelp.org\`. All of these are wrong — the correct email is \`RUVAEDSCenter@uvahealth.org\`.
+  - Website: \`uvahealth.com/support/eds/FAQ\` (domain is **uvahealth.com**, NOT \`uvahelp.com\`). The path is \`/support/eds/FAQ\` — fix variants like \`/support/edscenter/faq\` or \`/eds\` to this canonical path.
 - Keep affirmative responses like "uh-huh", "mm-hmm", "right", "yeah" when they are meaningful backchannel responses
 - Do NOT rewrite for style — preserve the conversational, spoken tone. Just clean it up.
 
@@ -154,67 +162,50 @@ The full cleaned, formatted, proofread transcript goes here as plain text with r
 Important: The transcript section must contain the FULL cleaned transcript, not a summary or truncation.`;
 
 const MAX_RETRIES = 5;
-const CHUNK_WORD_LIMIT = 5000; // split transcripts longer than this into chunks
+const PROOFREAD_MAX_TOKENS = 64000; // Sonnet 4.6 output ceiling
+const LONG_CONTEXT_BETA = 'context-1m-2025-08-07';
 
 /**
- * Split transcript text into chunks along speaker turn boundaries.
- * Each chunk stays under CHUNK_WORD_LIMIT words (approximately).
- */
-function splitIntoChunks(text) {
-  const wordCount = text.split(/\s+/).length;
-  if (wordCount <= CHUNK_WORD_LIMIT) return [text];
-
-  const turns = text.split(/\n\n/);
-  const chunks = [];
-  let current = [];
-  let currentWords = 0;
-
-  for (const turn of turns) {
-    const turnWords = turn.split(/\s+/).length;
-    if (currentWords + turnWords > CHUNK_WORD_LIMIT && current.length > 0) {
-      chunks.push(current.join('\n\n'));
-      current = [turn];
-      currentWords = turnWords;
-    } else {
-      current.push(turn);
-      currentWords += turnWords;
-    }
-  }
-  if (current.length > 0) chunks.push(current.join('\n\n'));
-
-  return chunks;
-}
-
-/**
- * Proofread a single chunk of transcript text.
+ * Proofread a full transcript in a single streamed Sonnet 4.6 call.
+ *
+ * Uses the 1M-context beta header so even ~3-hour episodes (~40k input tokens)
+ * fit in one request. Streams to avoid SDK HTTP timeouts on long outputs.
+ *
  * @param {string} slug - Episode slug
- * @param {string} text - Transcript text to proofread
- * @param {string} chunkLabel - Label like "the transcript" or "part 1 of 3"
- * @param {string} episodeContext - Title and description for spelling/name context
+ * @param {string} text - Full transcript text
+ * @param {object} episode - Episode object with title and description for context
  */
-async function proofreadChunk(slug, text, chunkLabel, episodeContext) {
-  const estInputTokens = Math.round(text.length / 4);
-  const maxTokens = Math.min(64000, Math.max(16000, Math.round(estInputTokens * 1.3)));
-
+async function proofreadTranscript(slug, text, episode) {
+  const episodeContext = episode ? `Title: ${episode.title}\nDescription: ${episode.description}` : '';
   const contextBlock = episodeContext ? `\n\nFor reference, here is the episode title and description (use this for correct spellings of names, terms, and topics):\n${episodeContext}\n` : '';
+  const wordCount = text.split(/\s+/).length;
+
+  console.log(`  Proofreading with ${PROOFREAD_MODEL} (1M context, single pass, ${wordCount} words)...`);
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
-      const message = await anthropic.messages.create({
+      const stream = anthropic.beta.messages.stream({
         model: PROOFREAD_MODEL,
-        max_tokens: maxTokens,
+        max_tokens: PROOFREAD_MAX_TOKENS,
+        betas: [LONG_CONTEXT_BETA],
         system: [{ type: 'text', text: PROOFREAD_SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
         messages: [{
           role: 'user',
-          content: `Here is ${chunkLabel} of the transcript for episode ${slug} of the Bendy Bodies Podcast. Please clean, format, and proofread it.${contextBlock}\n\n<transcript>\n${text}\n</transcript>`,
+          content: `Here is the full transcript for episode ${slug} of the Bendy Bodies Podcast. Please clean, format, and proofread the entire thing in one pass.${contextBlock}\n\n<transcript>\n${text}\n</transcript>`,
         }],
       });
 
+      const message = await stream.finalMessage();
+
       if (message.stop_reason === 'max_tokens') {
-        throw new Error(`Proofread output truncated at ${maxTokens} max_tokens`);
+        throw new Error(`Proofread output truncated at ${PROOFREAD_MAX_TOKENS} max_tokens`);
       }
 
-      const responseText = message.content[0].text;
+      const responseText = message.content
+        .filter(b => b.type === 'text')
+        .map(b => b.text)
+        .join('');
+
       const transcriptMatch = responseText.match(/<transcript>\s*\n?([\s\S]*?)\n?\s*<\/transcript>/);
       const reportMatch = responseText.match(/<report>\s*\n?([\s\S]*?)\n?\s*<\/report>/);
 
@@ -233,57 +224,24 @@ async function proofreadChunk(slug, text, chunkLabel, episodeContext) {
       return {
         transcript: transcriptMatch[1].trim(),
         report,
-        usage: { input_tokens: message.usage.input_tokens, output_tokens: message.usage.output_tokens },
+        usage: {
+          input_tokens: message.usage.input_tokens,
+          output_tokens: message.usage.output_tokens,
+          cache_read_input_tokens: message.usage.cache_read_input_tokens || 0,
+          cache_creation_input_tokens: message.usage.cache_creation_input_tokens || 0,
+        },
       };
     } catch (err) {
       const isRetryable = err?.status === 429 || err?.status === 529 || err?.status >= 500;
       if (isRetryable && attempt < MAX_RETRIES) {
         const backoff = (err?.status === 429 ? 15000 : 5000) * attempt;
-        console.log(`  ⚠ ${slug} ${chunkLabel} ${err.status || 'error'} attempt ${attempt}, retrying in ${backoff / 1000}s...`);
+        console.log(`  ⚠ ${slug} ${err.status || 'error'} attempt ${attempt}, retrying in ${backoff / 1000}s...`);
         await new Promise(r => setTimeout(r, backoff));
         continue;
       }
       throw err;
     }
   }
-}
-
-/**
- * Proofread a full transcript, chunking if needed to avoid API timeouts.
- * @param {string} slug - Episode slug
- * @param {string} text - Full transcript text
- * @param {object} episode - Episode object with title and description for context
- */
-async function proofreadTranscript(slug, text, episode) {
-  const chunks = splitIntoChunks(text);
-  const episodeContext = episode ? `Title: ${episode.title}\nDescription: ${episode.description}` : '';
-
-  if (chunks.length === 1) {
-    console.log(`  Proofreading with ${PROOFREAD_MODEL}...`);
-    return proofreadChunk(slug, text, 'the transcript', episodeContext);
-  }
-
-  console.log(`  Proofreading with ${PROOFREAD_MODEL} (${chunks.length} chunks)...`);
-  const results = [];
-  for (let i = 0; i < chunks.length; i++) {
-    const label = `part ${i + 1} of ${chunks.length}`;
-    console.log(`    Chunk ${i + 1}/${chunks.length} (${chunks[i].split(/\s+/).length} words)...`);
-    results.push(await proofreadChunk(slug, chunks[i], label, episodeContext));
-  }
-
-  // Merge chunked results
-  const mergedTranscript = results.map(r => r.transcript).join('\n\n');
-  const mergedReport = {
-    ads_removed: results.flatMap(r => r.report.ads_removed || []),
-    flags: results.flatMap(r => r.report.flags || []),
-    changes_summary: results.map(r => r.report.changes_summary).filter(Boolean).join(' '),
-  };
-  const mergedUsage = {
-    input_tokens: results.reduce((sum, r) => sum + r.usage.input_tokens, 0),
-    output_tokens: results.reduce((sum, r) => sum + r.usage.output_tokens, 0),
-  };
-
-  return { transcript: mergedTranscript, report: mergedReport, usage: mergedUsage };
 }
 
 // ── Formatting ────────────────────────────────────────────────────────
@@ -495,8 +453,6 @@ async function tagEpisode(ep, transcript, taxonomy) {
     return `- ${t.name}${aliases}`;
   }).join('\n');
 
-  const excerpt = transcript.split(/\s+/).slice(0, 500).join(' ');
-
   const message = await anthropic.messages.create({
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 256,
@@ -507,9 +463,11 @@ ${tagList}
 
 Title: ${ep.title}
 Description: ${ep.description}
-Transcript excerpt: ${excerpt}
 
-Select 3-8 tags that apply. Respond with ONLY a JSON array.`,
+Full transcript:
+${transcript}
+
+Select 3-8 tags that apply based on the full conversation, not just the intro. Respond with ONLY a JSON array.`,
     }],
   });
 
@@ -530,6 +488,141 @@ Select 3-8 tags that apply. Respond with ONLY a JSON array.`,
     .map(t => validNames.has(t) ? t : aliasMap.get(t.toLowerCase()) || null)
     .filter(Boolean);
   return [...new Set(resolved)];
+}
+
+// ── Guest profile auto-creation ───────────────────────────────────────
+
+/**
+ * Slug a guest key for use as a profile filename.
+ * "adji cissoko" → "adji-cissoko", "jo-anne la flèche" → "jo-anne-la-flèche"
+ */
+function profileSlug(key) {
+  return key.trim().toLowerCase().replace(/\s+/g, '-');
+}
+
+/**
+ * Mirror of normalizeGuestKey from speaker-map / eleventy.config.js.
+ * Strips titles ("Dr.") and trailing credentials ("MD", "PhD") and lowercases.
+ */
+function normalizeGuestKey(name) {
+  if (!name) return '';
+  let n = name.replace(/^(Dr\.?|Prof\.?|Professor)\s+/i, '');
+  let prev;
+  do {
+    prev = n;
+    n = n.replace(/[,\s]+(M\.?D\.?|Ph\.?D\.?|D\.?P\.?T\.?|D\.?O\.?|P\.?A\.?-?C?|R\.?D\.?N\.?|O\.?T\.?|P\.?T\.?|J\.?D\.?|LICSW|NCPT|ATC|MS|MA|MPT|DMSC|MRCPsych|DDS|D\.?C\.?|FACP|FACS|FAANS|FAAFP|FAAN|FAMSSM|FACOG|FRCPC|IFMCP|ABIHM|CCSP|CEDS-S|FAED|CHT|CYT|CHC|CMTPT|COMT|NCS|OCS|CES|MHCM)\.?\s*$/i, '');
+  } while (n !== prev);
+  return n.replace(/[,.\s]+$/, '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+const GUEST_BIO_SYSTEM_PROMPT = `You generate concise guest profiles for the Bendy Bodies Podcast (a medical podcast about hypermobility, EDS, MCAS, POTS, and related conditions hosted by Dr. Linda Bluestein).
+
+You will receive a guest's name and the episode title and description that introduces them.
+
+Your job: produce a short, factual profile entry IF you can confidently identify the guest as a real, public-facing professional (clinician, researcher, author, dancer, athlete, etc.) using your training data and the episode context. The episode description often quotes the guest's credentials and affiliation directly — those quotes are authoritative.
+
+Do NOT fabricate information. Only include facts you are confident about. If you do not recognize the guest and the episode description does not provide enough information, return {"unknown": true}. It's far better to skip than to invent.
+
+Output strict JSON in this exact shape:
+
+{
+  "bio": "1-3 sentence factual bio in plain prose",
+  "credentials": "comma-separated credentials, e.g. 'MD, PhD' (omit if none mentioned)",
+  "affiliation": "primary current affiliation (omit if not confident)",
+  "website": "https://... (omit unless you are sure of the URL)"
+}
+
+Or, if you cannot confidently identify them:
+
+{ "unknown": true }
+
+Output ONLY the JSON object, no surrounding prose.`;
+
+/**
+ * Generate a guest bio via Sonnet 4.6.
+ * Returns { bio, credentials?, affiliation?, website? } or null if the model
+ * couldn't confidently identify the guest.
+ */
+async function generateGuestBio(guestName, ep) {
+  const message = await anthropic.messages.create({
+    model: 'claude-sonnet-4-6',
+    max_tokens: 1024,
+    system: [{ type: 'text', text: GUEST_BIO_SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
+    messages: [{
+      role: 'user',
+      content: `Guest: ${guestName}\n\nEpisode title: ${ep.title}\n\nEpisode description:\n${ep.description || '(no description)'}\n\nReturn the JSON object now.`,
+    }],
+  });
+
+  const text = message.content
+    .filter(b => b.type === 'text')
+    .map(b => b.text)
+    .join('')
+    .trim()
+    .replace(/^```(?:json)?\s*/i, '')
+    .replace(/\s*```$/, '')
+    .trim();
+
+  let parsed;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    return null;
+  }
+
+  if (parsed.unknown) return null;
+  if (!parsed.bio || typeof parsed.bio !== 'string') return null;
+
+  const profile = { bio: parsed.bio.trim() };
+  for (const field of ['credentials', 'affiliation', 'website']) {
+    if (typeof parsed[field] === 'string' && parsed[field].trim()) {
+      profile[field] = parsed[field].trim();
+    }
+  }
+  return profile;
+}
+
+/**
+ * For each guest in the episode, create a guest-profiles/<slug>.json file
+ * if one doesn't already exist. Skips hosts and unknown guests.
+ *
+ * Returns an array of { key, action } records for the run summary.
+ */
+async function ensureGuestProfiles(ep) {
+  const guests = ep.guests || [];
+  const records = [];
+
+  for (const guestName of guests) {
+    const key = normalizeGuestKey(guestName);
+    if (!key || key.length < 3) continue;
+    if (HOST_KEYS.has(key)) {
+      records.push({ key, action: 'skipped-host' });
+      continue;
+    }
+
+    const slug = profileSlug(key);
+    const filePath = join(GUEST_PROFILES_DIR, `${slug}.json`);
+    if (existsSync(filePath)) {
+      records.push({ key, action: 'existing' });
+      continue;
+    }
+
+    try {
+      const profile = await generateGuestBio(guestName, ep);
+      if (!profile) {
+        records.push({ key, action: 'unknown' });
+        continue;
+      }
+      const data = { key, ...profile };
+      mkdirSync(GUEST_PROFILES_DIR, { recursive: true });
+      writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+      records.push({ key, action: 'created' });
+    } catch (err) {
+      records.push({ key, action: 'error', error: err.message });
+    }
+  }
+
+  return records;
 }
 
 // ── Main ──────────────────────────────────────────────────────────────
@@ -700,6 +793,19 @@ async function main() {
       if (autoTags.length > 0) data.tags = autoTags;
       writeFileSync(ep.filePath, matter.stringify(timestamped, data));
       console.log(`  ✓ Written to ${ep.slug}.md`);
+
+      // Stage 8: Auto-create guest profiles for any new guests
+      try {
+        const profileRecords = await ensureGuestProfiles(ep);
+        const created = profileRecords.filter(r => r.action === 'created').map(r => r.key);
+        const unknown = profileRecords.filter(r => r.action === 'unknown').map(r => r.key);
+        const errored = profileRecords.filter(r => r.action === 'error');
+        if (created.length) console.log(`  ✓ Created guest profile(s): ${created.join(', ')}`);
+        if (unknown.length) console.log(`  ⚠ Skipped (couldn't identify): ${unknown.join(', ')}`);
+        for (const e of errored) console.log(`  ⚠ Profile error for ${e.key}: ${e.error}`);
+      } catch (err) {
+        console.log(`  ⚠ Guest profile creation failed: ${err.message}`);
+      }
 
       succeeded++;
     } catch (err) {

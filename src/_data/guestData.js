@@ -2,11 +2,30 @@ const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
 
+// Normalize a guest image path to an absolute /Guests/Filename.ext path.
+// CMS uploads sometimes save without a leading slash, which breaks <img src=>
+// rendering on episode pages. This guarantees an absolute, /Guests/-rooted path.
+function normalizeImagePath(p) {
+  if (!p || typeof p !== 'string') return p;
+  let out = p.trim();
+  if (!out) return out;
+  if (!out.startsWith('/')) out = '/' + out;
+  if (!out.startsWith('/Guests/')) {
+    const parts = out.split('/');
+    out = '/Guests/' + parts[parts.length - 1];
+  }
+  return out;
+}
+
 module.exports = function () {
   // Read guest images map
-  const images = JSON.parse(
+  const rawImages = JSON.parse(
     fs.readFileSync(path.join(__dirname, 'guestImages.json'), 'utf8')
   );
+  const images = {};
+  for (const [k, v] of Object.entries(rawImages)) {
+    images[k] = normalizeImagePath(v);
+  }
 
   // Read individual guest profile files
   const profilesDir = path.join(__dirname, '..', 'guest-profiles');

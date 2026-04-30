@@ -343,30 +343,46 @@
             const guestImagePaths = [];
             const missingPhotos = [];
 
+            // Normalize an image path to absolute /Guests/Filename.ext
+            function normalizeImagePath(p) {
+              if (!p) return p;
+              if (!p.startsWith('/')) p = '/' + p;
+              if (!p.startsWith('/Guests/')) {
+                const parts = p.split('/');
+                p = '/Guests/' + parts[parts.length - 1];
+              }
+              return p;
+            }
+
             for (const guest of guests) {
               const key = normalizeGuestKey(guest);
               const photo = guestLookup[key];
               guestResults.push({ name: guest, photo: photo || null });
               if (photo) {
-                guestImagePaths.push(photo.replace(/^\//, ''));
+                guestImagePaths.push(normalizeImagePath(photo));
               } else {
+                guestImagePaths.push(null); // placeholder, may be filled by uploadedImage
                 missingPhotos.push(guest);
               }
             }
 
-            // Also check if a guestImage was uploaded directly on this episode
+            // If a guestImage was uploaded directly on this episode,
+            // attach it to the first missing guest (or the first guest if none missing).
             const uploadedImage = getData('guestImage');
-            if (uploadedImage && missingPhotos.length > 0) {
-              // Link the uploaded image to the first missing guest
-              let imgPath = uploadedImage;
-              if (!imgPath.startsWith('/')) imgPath = '/' + imgPath;
-              guestImagePaths.push(imgPath.replace(/^\//, ''));
-              // Update the first missing guest's result
-              const firstMissing = missingPhotos[0];
-              const gr = guestResults.find(g => g.name === firstMissing);
-              if (gr) gr.photo = imgPath;
-              missingPhotos.shift();
+            if (uploadedImage) {
+              const imgPath = normalizeImagePath(uploadedImage);
+              let targetIdx = guestImagePaths.indexOf(null);
+              if (targetIdx === -1) targetIdx = 0;
+              guestImagePaths[targetIdx] = imgPath;
+              const targetName = guests[targetIdx];
+              const gr = guestResults.find(g => g.name === targetName);
+              if (gr && !gr.photo) gr.photo = imgPath;
+              const missingIdx = missingPhotos.indexOf(targetName);
+              if (missingIdx !== -1) missingPhotos.splice(missingIdx, 1);
             }
+
+            // Drop any remaining nulls so we don't write empty entries
+            const finalGuestImagePaths = guestImagePaths.filter(Boolean);
 
             // Show the pre-save dialog
             const proceed = await showPreSaveDialog({
@@ -376,7 +392,7 @@
               dateAutoFilled,
               guests,
               guestResults,
-              guestImagePaths,
+              guestImagePaths: finalGuestImagePaths,
               missingPhotos
             });
 
@@ -392,8 +408,8 @@
               setData('date', date);
             }
 
-            if (guestImagePaths.length > 0) {
-              setData('guestImages', guestImagePaths);
+            if (finalGuestImagePaths.length > 0) {
+              setData('guestImages', finalGuestImagePaths);
             }
 
             return entry;

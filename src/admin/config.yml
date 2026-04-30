@@ -55,6 +55,12 @@ collections:
         name: "guests"
         widget: "list"
         required: false
+      - label: "Co-hosts"
+        name: "cohosts"
+        widget: "list"
+        required: false
+        hint: "Recurring co-hosts on this episode (e.g. Aron, Dacre Knight). Counts toward speaker detection but isn't displayed as a guest."
+      - { label: "Speakers Expected (override)", name: "speakersExpected", widget: "number", value_type: "int", required: false, hint: "Optional. Override the auto-computed speaker count for unusual episodes (e.g. uncredited panelist). Leave empty for default: 1 host + cohosts + guests." }
       - label: "Guest Photo"
         name: "guestImage"
         widget: "image"
