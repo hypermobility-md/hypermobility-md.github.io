@@ -5,6 +5,7 @@ date: "2025-06-19"
 description: "Dr. Bluestein covers diagnosis, treatment individualization, common myths, impacts on dancers, building supportive care teams, and available resources with host Dr. Alyssa Arms."
 imageUrl: ""
 url: "https://backinsteppt.com/2025/06/19/linda-bluestein-hypermobility-md/"
+applePodcastsUrl: "https://podcasts.apple.com/us/podcast/linda-bluestein-hypermobility-md/id1688797192?i=1000713541469"
 type: "watch"
 featured: false
 audioUrl: "https://media.blubrry.com/1474938/content.blubrry.com/1474938/Linda_Bluestein.mp3"
