@@ -72,7 +72,7 @@ permalink: /podcast-appearances/
   <div class="container">
     <h2 class="appearances-section-heading">Other Appearances</h2>
     <div class="appearances-grid">
-      {% for appearance in collections.appearances %}
+      {% for appearance in collections.appearances | reverse %}
         {% if not appearance.data.featured %}
         <article class="appearance-card" onclick="window.location='{{ appearance.url }}'">
           {% if appearance.data.imageUrl %}

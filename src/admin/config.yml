@@ -127,7 +127,8 @@ collections:
       - { label: "Episode Title", name: "episodeTitle", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false, hint: "Appearance date (for sorting)" }
       - { label: "Description", name: "description", widget: "text", required: false }
-      - { label: "Episode URL", name: "url", widget: "string", hint: "URL to the episode page" }
+      - { label: "Episode URL", name: "url", widget: "string", required: false, hint: "URL to the episode page (show's website). Leave empty if Apple Podcasts is the only link." }
+      - { label: "Apple Podcasts URL", name: "applePodcastsUrl", widget: "string", required: false, hint: "Apple Podcasts episode URL. Renders an Apple-styled button." }
       - { label: "Image URL", name: "imageUrl", widget: "string", required: false, hint: "Show logo or cover art URL" }
       - label: "Type"
         name: "type"
