@@ -39,9 +39,9 @@ permalink: /podcast-appearances/
   <div class="container">
     <h2 class="appearances-section-heading">Featured</h2>
     <div class="appearances-grid">
-      {% for appearance in collections.appearances | sort(true, false, "data.date") %}
+      {% for appearance in collections.appearances %}
         {% if appearance.data.featured %}
-        {% set listenHref = appearance.data.applePodcastsUrl or appearance.data.url %}
+        {% set externalListenHref = appearance.data.applePodcastsUrl or appearance.data.url %}
         <article class="appearance-card" onclick="window.location='{{ appearance.url }}'">
           {% if appearance.data.imageUrl %}
           <img class="appearance-card-img" src="{{ appearance.data.imageUrl }}" alt="{{ appearance.data.showName }}" loading="lazy">
@@ -56,8 +56,10 @@ permalink: /podcast-appearances/
               {% if appearance.data.videoUrl or appearance.data.youtubeUrl %}
               <a href="{{ appearance.data.youtubeUrl or appearance.data.videoUrl }}" target="_blank" rel="noopener" class="btn-watch" onclick="event.stopPropagation()">Watch</a>
               {% endif %}
-              {% if listenHref %}
-              <a href="{{ listenHref }}" target="_blank" rel="noopener" class="btn-listen" onclick="event.stopPropagation()">{{ appearance.data.type | capitalize }}</a>
+              {% if appearance.data.audioUrl %}
+              <a href="{{ appearance.url }}" class="btn-listen" onclick="event.stopPropagation()">{{ appearance.data.type | capitalize }}</a>
+              {% elif externalListenHref %}
+              <a href="{{ externalListenHref }}" target="_blank" rel="noopener" class="btn-listen" onclick="event.stopPropagation()">{{ appearance.data.type | capitalize }}</a>
               {% endif %}
             </div>
           </div>
@@ -73,9 +75,9 @@ permalink: /podcast-appearances/
   <div class="container">
     <h2 class="appearances-section-heading">Other Appearances</h2>
     <div class="appearances-grid">
-      {% for appearance in collections.appearances | sort(true, false, "data.date") %}
+      {% for appearance in collections.appearances %}
         {% if not appearance.data.featured %}
-        {% set listenHref = appearance.data.applePodcastsUrl or appearance.data.url %}
+        {% set externalListenHref = appearance.data.applePodcastsUrl or appearance.data.url %}
         <article class="appearance-card" onclick="window.location='{{ appearance.url }}'">
           {% if appearance.data.imageUrl %}
           <img class="appearance-card-img" src="{{ appearance.data.imageUrl }}" alt="{{ appearance.data.showName }}" loading="lazy">
@@ -90,8 +92,10 @@ permalink: /podcast-appearances/
               {% if appearance.data.videoUrl or appearance.data.youtubeUrl %}
               <a href="{{ appearance.data.youtubeUrl or appearance.data.videoUrl }}" target="_blank" rel="noopener" class="btn-watch" onclick="event.stopPropagation()">Watch</a>
               {% endif %}
-              {% if listenHref %}
-              <a href="{{ listenHref }}" target="_blank" rel="noopener" class="btn-listen" onclick="event.stopPropagation()">{{ appearance.data.type | capitalize }}</a>
+              {% if appearance.data.audioUrl %}
+              <a href="{{ appearance.url }}" class="btn-listen" onclick="event.stopPropagation()">{{ appearance.data.type | capitalize }}</a>
+              {% elif externalListenHref %}
+              <a href="{{ externalListenHref }}" target="_blank" rel="noopener" class="btn-listen" onclick="event.stopPropagation()">{{ appearance.data.type | capitalize }}</a>
               {% endif %}
             </div>
           </div>

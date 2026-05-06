@@ -108,13 +108,18 @@ module.exports = function(eleventyConfig) {
 
   // Guest appearances collection — sorted by date descending
   eleventyConfig.addCollection("appearances", function(collectionApi) {
+    const toMs = (d) => {
+      if (!d) return null;
+      const t = new Date(d).getTime();
+      return Number.isNaN(t) ? null : t;
+    };
     return collectionApi.getFilteredByGlob("src/appearances/*.md")
       .sort((a, b) => {
-        const da = a.data.date || '';
-        const db = b.data.date || '';
-        if (da && db) return db.toString().localeCompare(da.toString());
-        if (da) return -1;
-        if (db) return 1;
+        const ta = toMs(a.data.date);
+        const tb = toMs(b.data.date);
+        if (ta !== null && tb !== null) return tb - ta;
+        if (ta !== null) return -1;
+        if (tb !== null) return 1;
         return 0;
       });
   });
