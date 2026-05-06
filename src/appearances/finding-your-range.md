@@ -4,7 +4,7 @@ episodeTitle: S2:E3 — Talking Pain and Hypermobility with Dr. Bluestein
 date: 2021-12-12
 description: Jeannie Di Bon interviews Dr. Bluestein about her own EDS diagnosis, her passion for dance, and her work helping the hypermobile community of dancers and performing artists.
 url: https://tunein.com/podcasts/Health--Wellness-Podcasts/Finding-Your-Range-Podcast-p1385043/
-imageUrl: /assets/appearances/finding-your-range.png
+imageUrl: /assets/appearances/finding-your-range.webp
 type: listen
 featured: false
 audioUrl: ''
