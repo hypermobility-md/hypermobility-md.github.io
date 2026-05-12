@@ -135,9 +135,12 @@ export function parseEpisode(filePath) {
   // Frontmatter may override via `speakersExpected:` for unusual episodes
   // (e.g. an unnamed panelist, a producer who joins mid-show, audio with
   // significant background voices). Only honored if it's a positive integer.
+  // CMS stores the override nested under `seoOverrides.speakersExpected`;
+  // also accept the legacy top-level `speakersExpected` for back-compat.
   let speakersExpected = 1 + cohosts.length + guestSpeakers.length;
-  if (Number.isInteger(data.speakersExpected) && data.speakersExpected > 0) {
-    speakersExpected = data.speakersExpected;
+  const override = data.seoOverrides?.speakersExpected ?? data.speakersExpected;
+  if (Number.isInteger(override) && override > 0) {
+    speakersExpected = override;
   }
 
   return {

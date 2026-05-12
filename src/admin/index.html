@@ -190,7 +190,9 @@
         // Episode number
         html += '<div class="hmd-section-label">Episode Number</div>';
         html += '<div class="hmd-info-row"><span>';
-        if (info.numAutoFilled) {
+        if (info.isBonus) {
+          html += '<strong>Bonus / Unnumbered</strong> <span class="status ok">(no number assigned)</span>';
+        } else if (info.numAutoFilled) {
           html += '<strong>#' + info.num + '</strong> <span class="status ok">(auto-assigned)</span>';
         } else {
           html += '<strong>#' + info.num + '</strong>';
@@ -270,6 +272,46 @@
       });
     }
 
+    // ---- Appearance image-missing warning ----
+    function showAppearanceImageWarning(showName) {
+      return new Promise((resolve) => {
+        const overlay = document.createElement('div');
+        overlay.className = 'hmd-overlay';
+        const dialog = document.createElement('div');
+        dialog.className = 'hmd-dialog';
+
+        let html = '<h3>Appearance Pre-Save Review</h3>';
+        html += '<div class="hmd-dialog-subtitle">Review the information below before saving.</div>';
+        html += '<div class="hmd-section-label">Show Image</div>';
+        html += '<div class="hmd-info-row missing">';
+        html += '<span class="hmd-no-photo">✕</span>';
+        html += '<span><strong>' + showName + '</strong><br><span class="status warn">No show image set</span></span>';
+        html += '</div>';
+        html += '<div class="hmd-warning">⚠ No show image was uploaded or selected. The appearance card will render without artwork. Add a Show Image to make the card look complete.</div>';
+        html += '<div class="hmd-dialog-actions">';
+        html += '<button class="hmd-btn hmd-btn-cancel" id="hmdCancel">Go Back</button>';
+        html += '<button class="hmd-btn hmd-btn-save has-warnings" id="hmdSave">Save Anyway</button>';
+        html += '</div>';
+
+        dialog.innerHTML = html;
+
+        function close(result) {
+          overlay.remove();
+          dialog.remove();
+          document.removeEventListener('keydown', escHandler);
+          resolve(result);
+        }
+        function escHandler(e) { if (e.key === 'Escape') close(false); }
+
+        document.body.appendChild(overlay);
+        document.body.appendChild(dialog);
+        document.addEventListener('keydown', escHandler);
+        dialog.querySelector('#hmdCancel').onclick = () => close(false);
+        dialog.querySelector('#hmdSave').onclick = () => close(true);
+        overlay.onclick = () => close(false);
+      });
+    }
+
     // ---- preSave hook ----
     function registerHooks() {
       if (typeof CMS === 'undefined') {
@@ -298,6 +340,19 @@
               setData = (field, value) => { entry.data[field] = value; };
             }
 
+            // --- Appearances: warn if show image is missing ---
+            if (collection === 'appearances') {
+              const imageUrl = getData('imageUrl');
+              const showName = getData('showName') || '(unnamed show)';
+              if (!imageUrl) {
+                const proceed = await showAppearanceImageWarning(showName);
+                if (!proceed) {
+                  throw new Error('Save cancelled — no show image set.');
+                }
+              }
+              return entry;
+            }
+
             // --- Guest Profile: auto-link uploaded image ---
             if (collection === 'guest-profiles') {
               const image = getData('image');
@@ -323,10 +378,15 @@
             // --- Episodes: auto-fill num, date, guest images ---
             if (collection !== 'episodes') return;
 
+            // Bonus episodes opt out of auto-numbering.
+            const isBonus = getData('bonus') === true;
+
             // Prepare info for the pre-save dialog
             let num = getData('num');
             let numAutoFilled = false;
-            if (!num || num === 0) {
+            if (isBonus) {
+              num = null;
+            } else if (!num || num === 0) {
               num = getNextEpisodeNum();
               numAutoFilled = true;
             }
@@ -388,6 +448,7 @@
             const proceed = await showPreSaveDialog({
               num,
               numAutoFilled,
+              isBonus,
               date,
               dateAutoFilled,
               guests,
@@ -396,10 +457,16 @@
               missingPhotos
             });
 
-            if (!proceed) return false;
+            // Throw to actually abort the save — returning false isn't honored
+            // by Sveltia's preSave hook, so click-away / Cancel must raise.
+            if (!proceed) {
+              throw new Error('Save cancelled by user.');
+            }
 
             // Apply changes
-            if (numAutoFilled) {
+            if (isBonus) {
+              setData('num', null);
+            } else if (numAutoFilled) {
               setData('num', num);
               episodeNums.push(num);
             }
@@ -414,7 +481,12 @@
 
             return entry;
           } catch (err) {
+            // Re-throw cancellations so the CMS actually aborts the save.
+            // Swallowing the error (the old behavior) caused Cancel / click-away
+            // to silently fall through and save anyway.
+            if (err && /cancelled/i.test(err.message || '')) throw err;
             console.error('CMS preSave hook error:', err);
+            throw err;
           }
         }
       });

@@ -8,19 +8,26 @@ backend:
 media_folder: "src/Guests"
 public_folder: "/Guests"
 
+# Restrict image picker to local repo assets + Enter URL only.
+# Disables Sveltia's built-in stock photo providers (Unsplash, Pexels, Pixabay).
+media_libraries:
+  stock_assets:
+    providers: []
+
 collections:
   - name: "episodes"
     label: "Podcast Episodes"
     folder: "src/episodes"
     create: true
-    slug: "{{fields.num}}"
+    slug: "{{fields.num | default(fields.title | slug)}}"
     sortable_fields: ["num", "date", "title"]
     view_groups:
       - label: Year
         field: date
         pattern: \d{4}
     fields:
-      - { label: "Episode Number", name: "num", widget: "number", value_type: "int", required: false }
+      - { label: "Bonus / Unnumbered Episode", name: "bonus", widget: "boolean", default: false, required: false, hint: "Toggle on for bonus or special episodes. Skips episode-number auto-assignment and uses the title as the URL slug." }
+      - { label: "Episode Number", name: "num", widget: "number", value_type: "int", required: false, hint: "Leave blank to auto-assign the next number. Ignored when Bonus is on." }
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
       - { label: "Duration", name: "duration", widget: "string", required: false, hint: "e.g. 1h 7m" }
@@ -45,43 +52,48 @@ collections:
           - "Research"
           - "Surgery"
           - "Hypermobility"
-      - { label: "Audio URL", name: "audioUrl", widget: "string", required: false }
-      - { label: "Video URL", name: "videoUrl", widget: "string", required: false, hint: "YouTube URL" }
+      - { label: "Audio URL", name: "audioUrl", widget: "string", required: false, hint: "Direct MP3 link for the embedded player (e.g. https://traffic.libsyn.com/...mp3)" }
+      - { label: "Video URL", name: "videoUrl", widget: "string", required: false, hint: "Full YouTube URL of the episode (e.g. https://www.youtube.com/watch?v=...)" }
       - label: "YouTube Snippets/Shorts"
         name: "snippets"
         widget: "list"
         required: false
+        hint: "Optional. Paste one short/snippet YouTube URL per item — they appear under the episode."
       - label: "Guests"
         name: "guests"
         widget: "list"
         required: false
+        hint: "Full names, one per item. Used to look up guest photos and link to guest profiles."
       - label: "Co-hosts"
         name: "cohosts"
         widget: "list"
         required: false
         hint: "Recurring co-hosts on this episode (e.g. Aron, Dacre Knight). Counts toward speaker detection but isn't displayed as a guest."
-      - { label: "Speakers Expected (override)", name: "speakersExpected", widget: "number", value_type: "int", required: false, hint: "Optional. Override the auto-computed speaker count for unusual episodes (e.g. uncredited panelist). Leave empty for default: 1 host + cohosts + guests." }
       - label: "Guest Photo"
         name: "guestImage"
         widget: "image"
         required: false
-        hint: "Upload a photo for the guest (saved to /Guests/)"
+        media_folder: "/src/Guests"
+        public_folder: "/Guests"
+        choose_url: true
+        hint: "Pick from the Guests library or upload a new photo. Saved to /Guests/ and linked to the first guest above. The photo will appear on this episode and on any future episode featuring this guest. (Note: it doesn't auto-create a Guest Profile — add one in 'Guest Profiles' for the full bio/social card.)"
       - label: "Guest Photo Paths"
         name: "guestImages"
         widget: "list"
         required: false
-        hint: "Auto-filled paths (e.g. Guests/Name.jpg)"
+        hint: "Auto-filled on save from the Guests list — you don't need to edit this manually."
       - { label: "Transcript", name: "body", widget: "markdown", required: false, hint: "Full episode transcript — paste the text here" }
-      - label: "SEO & Sharing Overrides"
+      - label: "Advanced Settings"
         name: "seoOverrides"
         widget: "object"
         collapsed: true
         required: false
-        hint: "Optional — auto-generated from episode data if left empty"
+        hint: "Rarely edited. Social-sharing overrides and speaker-detection overrides for transcript generation."
         fields:
           - { label: "Social Title", name: "ogTitle", widget: "string", required: false, hint: "Custom title for social sharing (defaults to episode title)" }
           - { label: "Social Description", name: "ogDescription", widget: "text", required: false, hint: "Custom description for social sharing (defaults to episode description)" }
           - { label: "Social Image", name: "ogImage", widget: "image", required: false, hint: "Custom social sharing image, 1200x630px recommended (defaults to YouTube thumbnail)" }
+          - { label: "Speakers Expected (override)", name: "speakersExpected", widget: "number", value_type: "int", required: false, hint: "Optional. Override the auto-computed speaker count for unusual episodes (e.g. uncredited panelist). Leave empty for default: 1 host + cohosts + guests." }
 
   - name: "guest-profiles"
     label: "Guest Profiles"
@@ -108,7 +120,14 @@ collections:
       - { label: "YouTube", name: "youtube", widget: "string", required: false, hint: "https://youtube.com/@yourchannel" }
       - { label: "TikTok", name: "tiktok", widget: "string", required: false, hint: "https://tiktok.com/@yourhandle" }
       - { label: "Wikipedia", name: "wikipedia", widget: "string", required: false, hint: "https://en.wikipedia.org/wiki/Your_Name" }
-      - { label: "Photo", name: "image", widget: "image", required: false, hint: "Upload or select a guest photo" }
+      - label: "Photo"
+        name: "image"
+        widget: "image"
+        required: false
+        media_folder: "/src/Guests"
+        public_folder: "/Guests"
+        choose_url: true
+        hint: "Pick from the Guests library or upload a new photo. Saved to /Guests/."
 
   - name: "appearances"
     label: "Guest Appearances"
@@ -127,17 +146,25 @@ collections:
       - { label: "Episode Title", name: "episodeTitle", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false, hint: "Appearance date (for sorting)" }
       - { label: "Description", name: "description", widget: "text", required: false }
-      - { label: "Episode URL", name: "url", widget: "string", required: false, hint: "URL to the episode page (show's website). Leave empty if Apple Podcasts is the only link." }
-      - { label: "Apple Podcasts URL", name: "applePodcastsUrl", widget: "string", required: false, hint: "Apple Podcasts episode URL. Renders an Apple-styled button." }
-      - { label: "Image URL", name: "imageUrl", widget: "string", required: false, hint: "Show logo or cover art URL" }
+      - { label: "Episode URL", name: "url", widget: "string", required: false, hint: "Link to the episode page on the show's own website. If the show only lives on Apple Podcasts, leave this blank and use the field below." }
+      - { label: "Apple Podcasts URL", name: "applePodcastsUrl", widget: "string", required: false, hint: "Apple Podcasts link for this episode. Renders an Apple-styled button." }
+      - label: "Show Image"
+        name: "imageUrl"
+        widget: "image"
+        required: false
+        media_folder: "/src/assets/appearances"
+        public_folder: "/assets/appearances"
+        choose_url: true
+        hint: "Show logo or cover art. Click to browse uploaded images (searchable) or upload a new one. Saved to /assets/appearances/."
       - label: "Type"
         name: "type"
         widget: "select"
         default: "listen"
+        hint: "Controls the card button label — 'Listen' for audio podcasts, 'Watch' for video-first shows."
         options:
           - { label: "Listen", value: "listen" }
           - { label: "Watch", value: "watch" }
-      - { label: "Featured", name: "featured", widget: "boolean", default: false, hint: "Show in Featured row on appearances page" }
-      - { label: "Audio URL", name: "audioUrl", widget: "string", required: false, hint: "Direct MP3 link for embedded player" }
-      - { label: "Video URL", name: "videoUrl", widget: "string", required: false, hint: "YouTube URL for embedded video" }
-      - { label: "YouTube URL", name: "youtubeUrl", widget: "string", required: false, hint: "YouTube link (shown as button if different from Video URL)" }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false, hint: "Toggle on to pin this appearance to the Featured row at the top of the Guest Appearances page." }
+      - { label: "Audio URL", name: "audioUrl", widget: "string", required: false, hint: "Direct MP3 link. If present, the appearance detail page shows an embedded audio player." }
+      - { label: "Video URL", name: "videoUrl", widget: "string", required: false, hint: "YouTube URL to embed on the appearance detail page." }
+      - { label: "YouTube URL", name: "youtubeUrl", widget: "string", required: false, hint: "Public YouTube link for the 'Watch on YouTube' button. Only needed if it differs from Video URL." }
