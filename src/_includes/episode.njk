@@ -98,7 +98,7 @@ layout: base.njk
     <section class="episode-section" id="episode-video">
       <h2>Watch</h2>
       <div class="episode-video-embed">
-        <iframe src="{{ videoUrl | youtubeEmbed }}" allowfullscreen loading="lazy"></iframe>
+        <iframe src="{{ videoUrl | youtubeEmbed }}" title="{{ title | cleanTitle }} — video on YouTube" allowfullscreen loading="lazy"></iframe>
       </div>
     </section>
     {% endif %}
