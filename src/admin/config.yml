@@ -76,7 +76,7 @@ collections:
         media_folder: "/src/Guests"
         public_folder: "/Guests"
         choose_url: true
-        hint: "Pick from the Guests library or upload a new photo. Saved to /Guests/ and linked to the first guest above. The photo will appear on this episode and on any future episode featuring this guest. (Note: it doesn't auto-create a Guest Profile — add one in 'Guest Profiles' for the full bio/social card.)"
+        hint: "Pick from the Guests library or upload a new photo. Name the file to match the guest — e.g. Jane-Doe.jpg for 'Jane Doe' — so it auto-attaches to the right guest. If the filename doesn't match anyone in Guests above, it falls back to the first guest. The photo also propagates to any future episode featuring that guest. (Doesn't auto-create a Guest Profile — add one separately in 'Guest Profiles' for the full bio/social card.)"
       - label: "Guest Photo Paths"
         name: "guestImages"
         widget: "list"

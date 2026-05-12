@@ -175,6 +175,17 @@
       return n.toLowerCase().replace(/\s+/g, ' ');
     }
 
+    // Extract a normalized guest key from an uploaded filename.
+    // e.g. "/Guests/Jane-Doe.jpg" → "jane doe"
+    //      "Jane_Doe.JPG"        → "jane doe"
+    //      "IMG_1234.jpg"        → "img 1234"
+    function keyFromFilename(path) {
+      if (!path) return '';
+      const file = path.split('/').pop() || '';
+      const stem = file.replace(/\.[^.]+$/, '');
+      return stem.replace(/[-_]+/g, ' ').toLowerCase().replace(/\s+/g, ' ').trim();
+    }
+
     // ---- Pre-save dialog ----
     // Shows detailed info about what will be saved, with guest photo status
     function showPreSaveDialog(info) {
@@ -233,6 +244,15 @@
               html += '<div class="hmd-path-item">' + p + '</div>';
             }
           }
+        }
+
+        // Warning if an uploaded photo's filename didn't match any guest in
+        // the list — it was placed by position instead of by name.
+        if (info.uploadedImage && !info.uploadMatchedByName && info.guests && info.guests.length > 0) {
+          const file = (info.uploadedImage.split('/').pop() || '').replace(/\.[^.]+$/, '');
+          html += '<div class="hmd-warning">⚠ The uploaded photo <strong>' + file +
+            '</strong> didn\'t match any guest by filename. It was attached to the first guest. ' +
+            'For automatic name matching, rename the file to the guest\'s name (e.g. <code>Jane-Doe.jpg</code> for Jane Doe).</div>';
         }
 
         // Warning about missing photos
@@ -426,19 +446,35 @@
               }
             }
 
-            // If a guestImage was uploaded directly on this episode,
-            // attach it to the first missing guest (or the first guest if none missing).
+            // If a guestImage was uploaded directly on this episode, decide
+            // which guest it belongs to.
+            //   1. Match by filename (Jane-Doe.jpg → "jane doe") against the
+            //      guests list — this is the intended workflow.
+            //   2. Otherwise fall back to the first guest still missing a
+            //      photo, then to the first guest.
             const uploadedImage = getData('guestImage');
+            let uploadMatchedByName = false;
             if (uploadedImage) {
               const imgPath = normalizeImagePath(uploadedImage);
-              let targetIdx = guestImagePaths.indexOf(null);
-              if (targetIdx === -1) targetIdx = 0;
-              guestImagePaths[targetIdx] = imgPath;
-              const targetName = guests[targetIdx];
-              const gr = guestResults.find(g => g.name === targetName);
-              if (gr && !gr.photo) gr.photo = imgPath;
-              const missingIdx = missingPhotos.indexOf(targetName);
-              if (missingIdx !== -1) missingPhotos.splice(missingIdx, 1);
+              const fileKey = keyFromFilename(uploadedImage);
+              let targetIdx = -1;
+              if (fileKey) {
+                targetIdx = guests.findIndex(g => normalizeGuestKey(g) === fileKey);
+              }
+              if (targetIdx !== -1) {
+                uploadMatchedByName = true;
+              } else {
+                targetIdx = guestImagePaths.indexOf(null);
+                if (targetIdx === -1) targetIdx = 0;
+              }
+              if (guests.length > 0) {
+                guestImagePaths[targetIdx] = imgPath;
+                const targetName = guests[targetIdx];
+                const gr = guestResults.find(g => g.name === targetName);
+                if (gr) gr.photo = imgPath;
+                const missingIdx = missingPhotos.indexOf(targetName);
+                if (missingIdx !== -1) missingPhotos.splice(missingIdx, 1);
+              }
             }
 
             // Drop any remaining nulls so we don't write empty entries
@@ -454,7 +490,9 @@
               guests,
               guestResults,
               guestImagePaths: finalGuestImagePaths,
-              missingPhotos
+              missingPhotos,
+              uploadedImage,
+              uploadMatchedByName
             });
 
             // Throw to actually abort the save — returning false isn't honored
