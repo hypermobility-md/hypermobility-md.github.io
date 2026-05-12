@@ -9,8 +9,9 @@ audioUrl: ''
 videoUrl: ''
 snippets: []
 guests:
-  - Jane Smith
+  - Jane Doe
 cohosts: []
+speakersExpected: null
 guestImage: /Guests/Jane Smith.png
 guestImages:
   - /Guests/Jane Smith.png
@@ -18,5 +19,4 @@ seoOverrides:
   ogTitle: ''
   ogDescription: ''
   ogImage: ''
-speakersExpected: null
 ---
