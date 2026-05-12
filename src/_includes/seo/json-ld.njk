@@ -144,6 +144,53 @@
 }
 </script>
 
+{# ── Breadcrumbs (podcast hub) ── #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Podcast", "item": "{{ site.url }}/podcast/" }
+  ]
+}
+</script>
+
+{% elif podcastSubpage == "episodes" %}
+{# ── ItemList carousel of recent episodes ── #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Bendy Bodies Podcast Episodes",
+  "url": "{{ site.url }}/podcast-episodes/",
+  "numberOfItems": {{ collections.episodes.length }},
+  "itemListElement": [
+    {%- for ep in collections.episodes.slice(0, 10) %}
+    {
+      "@type": "ListItem",
+      "position": {{ loop.index }},
+      "url": "{{ site.url }}{{ ep.url }}",
+      "name": "{{ ep.data.title | cleanTitle | jsonEscape | safe }}"
+    }{% if not loop.last %},{% endif %}
+    {%- endfor %}
+  ]
+}
+</script>
+
+{# ── Breadcrumbs (episodes page) ── #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Podcast", "item": "{{ site.url }}/podcast/" },
+    { "@type": "ListItem", "position": 3, "name": "Episodes", "item": "{{ site.url }}/podcast-episodes/" }
+  ]
+}
+</script>
+
 {% elif audioUrl %}
 {# ── PodcastEpisode (individual episode pages) ── #}
 <script type="application/ld+json">
