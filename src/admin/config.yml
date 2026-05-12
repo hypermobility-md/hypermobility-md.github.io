@@ -20,12 +20,9 @@ collections:
     folder: "src/episodes"
     create: true
     slug: "{{fields.num | default(fields.title | slug)}}"
-    summary: "{{fields.num}} — {{fields.title}}"
     sortable_fields: ["num", "date", "title"]
-    search_fields: ["num", "title", "description", "guests", "tags"]
+    search_fields: ["title", "description", "guests"]
     view_filters:
-      - { label: "Bonus / Unnumbered", field: "bonus", pattern: true }
-      - { label: "Missing transcript", field: "body", pattern: "^$" }
       - { label: "Has video", field: "videoUrl", pattern: ".+" }
       - { label: "Tag: EDS", field: "tags", pattern: "EDS" }
       - { label: "Tag: POTS", field: "tags", pattern: "POTS" }
@@ -117,8 +114,8 @@ collections:
     sortable_fields: ["key", "affiliation"]
     search_fields: ["key", "bio", "credentials", "affiliation"]
     view_filters:
-      - { label: "Missing photo", field: "image", pattern: "^$" }
-      - { label: "Missing bio", field: "bio", pattern: "^$" }
+      - { label: "Has photo", field: "image", pattern: ".+" }
+      - { label: "Has bio", field: "bio", pattern: ".+" }
     fields:
       - { label: "Guest Key", name: "key", widget: "string", hint: "Name without titles or credentials, e.g. 'Dacre Knight'. Case and spacing don't matter — 'dacre knight', 'Dacre Knight', and 'DACRE KNIGHT' all match the same guest." }
       - { label: "Bio", name: "bio", widget: "text", required: false }
@@ -153,8 +150,7 @@ collections:
     sortable_fields: ["date", "showName"]
     search_fields: ["showName", "episodeTitle", "description"]
     view_filters:
-      - { label: "Featured", field: "featured", pattern: true }
-      - { label: "Missing image", field: "imageUrl", pattern: "^$" }
+      - { label: "Has image", field: "imageUrl", pattern: ".+" }
       - { label: "Type: Listen", field: "type", pattern: "listen" }
       - { label: "Type: Watch", field: "type", pattern: "watch" }
     view_groups:
