@@ -424,7 +424,14 @@ async function main() {
       }
       consecutiveSkips = 0;
 
-      console.log(`✨ New episode: ${item.title}`);
+      const cleanTitle = item.title
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'");
+
+      console.log(`✨ New episode: ${cleanTitle}`);
 
       // Clean up description — strip HTML tags and boilerplate
       let cleanDesc = item.description
@@ -502,7 +509,7 @@ async function main() {
 
       const episode = {
         num: epNum,
-        title: item.title,
+        title: cleanTitle,
         date: formatDate(item.pubDate),
         duration: formatDuration(item.duration),
         description: cleanDesc,
