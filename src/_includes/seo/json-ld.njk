@@ -144,6 +144,27 @@
 }
 </script>
 
+{# ── ItemList carousel of recent episodes (podcast hub) ── #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Bendy Bodies Podcast Episodes",
+  "url": "{{ site.url }}/podcast/",
+  "numberOfItems": {{ collections.episodes.length }},
+  "itemListElement": [
+    {%- for ep in collections.episodes.slice(0, 10) %}
+    {
+      "@type": "ListItem",
+      "position": {{ loop.index }},
+      "url": "{{ site.url }}{{ ep.url }}",
+      "name": "{{ ep.data.title | cleanTitle | jsonEscape | safe }}"
+    }{% if not loop.last %},{% endif %}
+    {%- endfor %}
+  ]
+}
+</script>
+
 {# ── Breadcrumbs (podcast hub) ── #}
 <script type="application/ld+json">
 {
@@ -156,8 +177,12 @@
 }
 </script>
 
-{% elif podcastSubpage == "episodes" %}
-{# ── ItemList carousel of recent episodes ── #}
+{% elif podcastSubpage == "episodes" and not audioUrl %}
+{# ── ItemList carousel of recent episodes ──
+   Gated on `not audioUrl` so this branch only matches the /podcast-episodes/
+   index page; individual /episodes/N/ pages share podcastSubpage="episodes"
+   but have audioUrl set and should fall through to the PodcastEpisode block
+   below. #}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
