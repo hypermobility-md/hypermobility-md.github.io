@@ -26,6 +26,8 @@ snippets: []
 guests:
   - Dr. Linda Bluestein
 guestImages: []
+bonus: true
+guestImage: /Guests/Linda_Bluestein.jpg
 ---
 [00:23] Dr. Linda Bluestein: Welcome back, every bendy body. This is the Bendy Bodies Podcast, and I'm your host and founder, Dr. Linda Bluestein, the Hypermobility MD. This is going to be a great episode, so be sure to stick around until the very end so you don't miss any of our special hypermobility hacks. As always, this information is for educational purposes only and is not a substitute for personalized medical advice.
 

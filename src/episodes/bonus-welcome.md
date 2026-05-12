@@ -17,6 +17,7 @@ videoUrl: ''
 snippets: []
 guests: []
 guestImages: []
+bonus: true
 ---
 [00:00] Dr. Linda Bluestein: I'm Dr. Linda Bluestein, aka the Hypermobility MD and host of the Bendy Bodies Podcast. After decades of researching and treating every imaginable kind of painful condition, I've learned the greatest way to move forward is to never stop learning. In 2020, I started this podcast as a tool I believed everyone could benefit from, whether you're a practitioner learning to better support your patients or if persistent pain is a big part of your life. I knew that there would be so much more we could accomplish together.
 
