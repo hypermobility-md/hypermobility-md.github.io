@@ -1,0 +1,59 @@
+name: Sync Guest Profile Images
+
+# After any change that could introduce a new guest photo, walk the
+# guest-profile JSON files and fill in their `image` field. If a guest has a
+# photo but no profile yet, create a stub profile { key, image }.
+#
+# This is what makes the "upload a guest photo on an episode" flow feel like
+# a single form — the photo automatically shows up on the matching Guest
+# Profile (or creates one) on the next push.
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'src/episodes/**.md'
+      - 'src/guest-profiles/**.json'
+      - 'src/Guests/**'
+      - 'src/_data/guestImages.json'
+      - 'scripts/sync-guest-profile-images.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "sync-guest-profile-images"
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    # Skip when the previous commit was this workflow itself.
+    if: "!contains(github.event.head_commit.message, '[guest-profile-sync]')"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Sync guest profile images
+        run: node scripts/sync-guest-profile-images.mjs
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/guest-profiles/
+          if git diff --cached --quiet; then
+            echo "No guest profile changes."
+          else
+            git commit -m "Sync guest profile images [guest-profile-sync]"
+            git push
+          fi

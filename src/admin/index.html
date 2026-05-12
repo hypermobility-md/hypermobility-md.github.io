@@ -85,6 +85,19 @@
       font-size: 18px;
       flex-shrink: 0;
     }
+    .hmd-pending {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #2e7d32;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      flex-shrink: 0;
+      border: 2px solid #6b5ce7;
+    }
     .hmd-path-item {
       font-size: 12px;
       color: #aaa;
@@ -175,15 +188,29 @@
       return n.toLowerCase().replace(/\s+/g, ' ');
     }
 
+    // Normalize an image path to absolute /Guests/Filename.ext
+    function normalizeImagePath(p) {
+      if (!p) return p;
+      if (!p.startsWith('/')) p = '/' + p;
+      if (!p.startsWith('/Guests/')) {
+        const parts = p.split('/');
+        p = '/Guests/' + parts[parts.length - 1];
+      }
+      return p;
+    }
+
     // Extract a normalized guest key from an uploaded filename.
+    // Any run of non-alphanumerics collapses to a single space, then lowercase.
     // e.g. "/Guests/Jane-Doe.jpg" → "jane doe"
     //      "Jane_Doe.JPG"        → "jane doe"
+    //      "jane DOE.png"        → "jane doe"
+    //      "Jane.Doe.png"        → "jane doe"
     //      "IMG_1234.jpg"        → "img 1234"
     function keyFromFilename(path) {
       if (!path) return '';
       const file = path.split('/').pop() || '';
       const stem = file.replace(/\.[^.]+$/, '');
-      return stem.replace(/[-_]+/g, ' ').toLowerCase().replace(/\s+/g, ' ').trim();
+      return stem.replace(/[^a-zA-Z0-9]+/g, ' ').toLowerCase().trim().replace(/\s+/g, ' ');
     }
 
     // ---- Pre-save dialog ----
@@ -223,11 +250,23 @@
         // Guest photos
         if (info.guests && info.guests.length > 0) {
           html += '<div class="hmd-section-label">Guest Photos</div>';
+          // The uploaded photo points at a path that hasn't been committed yet,
+          // so its <img> 404s in the dialog. We swap to a "pending" badge on
+          // error so the broken-image icon never shows.
+          const pendingPath = info.uploadedImage ? normalizeImagePath(info.uploadedImage) : null;
           for (const g of info.guestResults) {
             if (g.photo) {
+              const isPending = pendingPath && g.photo === pendingPath;
+              const fileLabel = (g.photo.split('/').pop() || '').replace(/\.[^.]+$/, '');
+              const statusText = isPending ? 'Photo uploaded — will save as ' + g.photo : 'Photo found';
+              const onerr = "this.outerHTML='<span class=\"hmd-pending\" title=\"Pending upload\">✓</span>'";
               html += '<div class="hmd-info-row found">';
-              html += '<img src="' + g.photo + '" alt="">';
-              html += '<span><strong>' + g.name + '</strong><br><span class="status ok">Photo found</span></span>';
+              if (isPending) {
+                html += '<span class="hmd-pending" title="Pending upload">✓</span>';
+              } else {
+                html += '<img src="' + g.photo + '" alt="" onerror="' + onerr + '">';
+              }
+              html += '<span><strong>' + g.name + '</strong><br><span class="status ok">' + statusText + '</span></span>';
               html += '</div>';
             } else {
               html += '<div class="hmd-info-row missing">';
@@ -292,8 +331,12 @@
       });
     }
 
-    // ---- Appearance image-missing warning ----
-    function showAppearanceImageWarning(showName) {
+    // ---- Appearance image-missing / -mismatched warning ----
+    function showAppearanceImageWarning(info) {
+      // Back-compat: callers used to pass just the show name string.
+      if (typeof info === 'string') info = { showName: info, missing: true };
+      const showName = info.showName || '(unnamed show)';
+
       return new Promise((resolve) => {
         const overlay = document.createElement('div');
         overlay.className = 'hmd-overlay';
@@ -303,11 +346,24 @@
         let html = '<h3>Appearance Pre-Save Review</h3>';
         html += '<div class="hmd-dialog-subtitle">Review the information below before saving.</div>';
         html += '<div class="hmd-section-label">Show Image</div>';
-        html += '<div class="hmd-info-row missing">';
-        html += '<span class="hmd-no-photo">✕</span>';
-        html += '<span><strong>' + showName + '</strong><br><span class="status warn">No show image set</span></span>';
-        html += '</div>';
-        html += '<div class="hmd-warning">⚠ No show image was uploaded or selected. The appearance card will render without artwork. Add a Show Image to make the card look complete.</div>';
+
+        if (info.missing) {
+          html += '<div class="hmd-info-row missing">';
+          html += '<span class="hmd-no-photo">✕</span>';
+          html += '<span><strong>' + showName + '</strong><br><span class="status warn">No show image set</span></span>';
+          html += '</div>';
+          html += '<div class="hmd-warning">⚠ No show image was uploaded or selected. The appearance card will render without artwork. Add a Show Image to make the card look complete.</div>';
+        } else if (info.mismatchedFilename) {
+          html += '<div class="hmd-info-row missing">';
+          html += '<span class="hmd-no-photo">!</span>';
+          html += '<span><strong>' + showName + '</strong><br><span class="status warn">Filename doesn\'t match the show</span></span>';
+          html += '</div>';
+          html += '<div class="hmd-warning">⚠ The uploaded file <strong>' + info.mismatchedFilename +
+            '</strong> doesn\'t look related to <strong>' + showName + '</strong>. ' +
+            'Rename it to something like <code>' + (info.expectedPrefix || 'show-name') + '.webp</code> so future edits stay tidy. ' +
+            'Saving will still work — the filename is just a label.</div>';
+        }
+
         html += '<div class="hmd-dialog-actions">';
         html += '<button class="hmd-btn hmd-btn-cancel" id="hmdCancel">Go Back</button>';
         html += '<button class="hmd-btn hmd-btn-save has-warnings" id="hmdSave">Save Anyway</button>';
@@ -360,14 +416,28 @@
               setData = (field, value) => { entry.data[field] = value; };
             }
 
-            // --- Appearances: warn if show image is missing ---
+            // --- Appearances: warn if show image is missing or mislabeled ---
             if (collection === 'appearances') {
               const imageUrl = getData('imageUrl');
               const showName = getData('showName') || '(unnamed show)';
-              if (!imageUrl) {
-                const proceed = await showAppearanceImageWarning(showName);
+              const slug = (showName || '')
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+              const fileKey = keyFromFilename(imageUrl).replace(/\s+/g, '-');
+              // Heuristic: filename should overlap the show slug somehow.
+              // Either the slug appears in the filename or vice versa.
+              const filenameMismatch = imageUrl && slug && fileKey &&
+                !fileKey.includes(slug) && !slug.includes(fileKey);
+              if (!imageUrl || filenameMismatch) {
+                const proceed = await showAppearanceImageWarning({
+                  showName,
+                  missing: !imageUrl,
+                  mismatchedFilename: filenameMismatch ? (imageUrl.split('/').pop() || '') : null,
+                  expectedPrefix: slug
+                });
                 if (!proceed) {
-                  throw new Error('Save cancelled — no show image set.');
+                  throw new Error('Save cancelled — show image issue.');
                 }
               }
               return entry;
@@ -422,17 +492,6 @@
             const guestResults = [];
             const guestImagePaths = [];
             const missingPhotos = [];
-
-            // Normalize an image path to absolute /Guests/Filename.ext
-            function normalizeImagePath(p) {
-              if (!p) return p;
-              if (!p.startsWith('/')) p = '/' + p;
-              if (!p.startsWith('/Guests/')) {
-                const parts = p.split('/');
-                p = '/Guests/' + parts[parts.length - 1];
-              }
-              return p;
-            }
 
             for (const guest of guests) {
               const key = normalizeGuestKey(guest);

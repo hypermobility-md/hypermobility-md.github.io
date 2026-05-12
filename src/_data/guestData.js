@@ -24,7 +24,7 @@ module.exports = function () {
   );
   const images = {};
   for (const [k, v] of Object.entries(rawImages)) {
-    images[k] = normalizeImagePath(v);
+    images[normalizeKey(k)] = normalizeImagePath(v);
   }
 
   // Read individual guest profile files
@@ -39,7 +39,13 @@ module.exports = function () {
           fs.readFileSync(path.join(profilesDir, f), 'utf8')
         );
         if (data.key) {
-          const { key, image, ...rest } = data;
+          // Normalize the stored key at read time so profile JSONs can use any
+          // casing/spacing (e.g. "Jane Doe", "JANE DOE", "jane doe") and still
+          // match the lookup keys produced by normalizeKey().
+          const rawKey = String(data.key);
+          const { image, ...rest } = data;
+          const key = normalizeKey(rawKey);
+          rest.key = key;
 
           // Build links array from individual social fields (if not already present)
           if (!rest.links) {
