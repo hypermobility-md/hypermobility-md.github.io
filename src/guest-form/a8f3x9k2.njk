@@ -22,14 +22,14 @@ needsRecaptcha: true
       <div class="form-alert form-alert-info">
         <svg class="form-alert-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         <div>
-          The first section becomes your <strong>public episode page</strong>. The second section is just for the host &amp; team to prep the show &mdash; nothing there is published.
+          The first section becomes your <strong>public guest profile</strong>. The second section is just for the host &amp; team to prep the show &mdash; nothing there is published.
         </div>
       </div>
 
       <form id="guestForm" action="#" method="POST" enctype="multipart/form-data">
 
         <div class="form-section-heading">
-          <h2>Your published profile</h2>
+          <h2>Your Guest Profile</h2>
           <p>This information appears on your episode page on the website.</p>
         </div>
 
@@ -46,9 +46,9 @@ needsRecaptcha: true
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="guest-affiliation">Affiliation <span class="optional">(optional)</span></label>
-          <p class="form-hint">Your practice, hospital, organization, or university. Non-traditional roles are welcome too &mdash; e.g. <em>Dancer</em>, <em>Mom</em>, <em>Patient Advocate</em>, <em>Author</em>.</p>
-          <input class="form-input" type="text" id="guest-affiliation" name="affiliation" placeholder="e.g. University of Wisconsin · Dancer · Patient Advocate">
+          <label class="form-label" for="guest-affiliation">Primary affiliation <span class="optional">(optional)</span></label>
+          <p class="form-hint">Where you primarily practice or work &mdash; a hospital, clinic, organization, or university. If none of those fit, a single role works instead &mdash; e.g. Dancer, Patient Advocate, Mom, Author.</p>
+          <input class="form-input" type="text" id="guest-affiliation" name="affiliation" placeholder="e.g. Center for Complex Diseases">
         </div>
 
         <div class="form-group">
@@ -147,19 +147,13 @@ needsRecaptcha: true
 
         <div class="form-group">
           <label class="form-label" for="guest-hack">Your hypermobility hack <span class="optional">(optional)</span></label>
-          <p class="form-hint">We wrap up each episode by sharing a hypermobility hack &mdash; a strategy or tip for living life with hypermobility. Have one you&rsquo;d like to share with our listeners?</p>
+          <p class="form-hint">We wrap up each episode by sharing a hypermobility hack &mdash; a strategy or tip for living life with hypermobility. Do you have one you&rsquo;d like to share with our listeners?</p>
           <textarea class="form-textarea" id="guest-hack" name="hypermobility_hack" rows="3" placeholder="Your go-to tip, tool, or routine..."></textarea>
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="guest-title-suggestion">Suggested episode title <span class="optional">(optional)</span></label>
-          <p class="form-hint">If you have a title in mind, share it here. The team may adapt it for clarity or SEO.</p>
-          <input class="form-input" type="text" id="guest-title-suggestion" name="title_suggestion" placeholder="e.g. The Truth About Hypermobility and Chronic Fatigue">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="guest-plug">Anything to plug? <span class="optional">(optional)</span></label>
-          <p class="form-hint">A new book, course, event, fundraiser, or project you&rsquo;d like us to mention on-air.</p>
+          <label class="form-label" for="guest-plug">Do you have any projects, releases, or announcements you&rsquo;d like mentioned? <span class="optional">(optional)</span></label>
+          <p class="form-hint">A new book, course, event, or project you&rsquo;d like us to mention on-air.</p>
           <textarea class="form-textarea" id="guest-plug" name="plug" rows="2" placeholder="e.g. My new book launches in June &mdash; pre-orders open at..." style="min-height: 70px;"></textarea>
         </div>
 
@@ -253,7 +247,6 @@ document.getElementById('guestForm').addEventListener('submit', async function(e
       social_links: socialLinks,
       questions_topics: document.getElementById('guest-questions').value,
       hypermobility_hack: document.getElementById('guest-hack').value,
-      title_suggestion: document.getElementById('guest-title-suggestion').value,
       plug: document.getElementById('guest-plug').value,
       additional: document.getElementById('guest-anything').value,
       headshot_base64: headshotBase64,

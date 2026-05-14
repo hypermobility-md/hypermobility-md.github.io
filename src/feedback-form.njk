@@ -68,23 +68,17 @@ needsRecaptcha: true
         </div>
 
         <div class="form-group">
-          <label class="form-label">Net Promoter Score (NPS)</label>
+          <label class="form-label">Would you recommend us?</label>
           <p class="form-hint">How likely are you to recommend these services to a friend or colleague?</p>
-          <div class="form-chips rating-scale rating-scale-nps" data-name="nps">
-            <button type="button" class="form-chip" data-value="0">0</button>
+          <div class="form-chips rating-scale" data-name="recommend">
             <button type="button" class="form-chip" data-value="1">1</button>
             <button type="button" class="form-chip" data-value="2">2</button>
             <button type="button" class="form-chip" data-value="3">3</button>
             <button type="button" class="form-chip" data-value="4">4</button>
             <button type="button" class="form-chip" data-value="5">5</button>
-            <button type="button" class="form-chip" data-value="6">6</button>
-            <button type="button" class="form-chip" data-value="7">7</button>
-            <button type="button" class="form-chip" data-value="8">8</button>
-            <button type="button" class="form-chip" data-value="9">9</button>
-            <button type="button" class="form-chip" data-value="10">10</button>
           </div>
-          <div class="rating-scale-labels"><span>0 &mdash; Not at all likely</span><span>10 &mdash; Extremely likely</span></div>
-          <input type="hidden" name="nps" id="nps">
+          <div class="rating-scale-labels"><span>1 &mdash; Not at all likely</span><span>5 &mdash; Extremely likely</span></div>
+          <input type="hidden" name="recommend" id="recommend">
         </div>
 
         <div class="form-group">
@@ -174,9 +168,11 @@ needsRecaptcha: true
   text-align: center;
   font-weight: 600;
 }
-.rating-scale-nps .form-chip {
-  min-width: 40px;
-  padding: 10px 10px;
+/* Darker fill on selected chips in this form for clearer feedback */
+#feedbackFormCard .form-chip.selected {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--btn-primary-text);
 }
 .rating-scale-labels {
   display: flex;
@@ -229,7 +225,7 @@ document.getElementById('feedbackForm').addEventListener('submit', async functio
       rating_session: document.getElementById('rating_session').value,
       rating_note: document.getElementById('rating_note').value,
       rating_value: document.getElementById('rating_value').value,
-      nps: document.getElementById('nps').value,
+      recommend: document.getElementById('recommend').value,
       rebook: document.getElementById('rebook').value,
       rebook_why: document.getElementById('rebook_why').value,
       most_helpful: document.getElementById('most_helpful').value,
