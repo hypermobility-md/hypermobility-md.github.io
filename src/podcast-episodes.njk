@@ -809,8 +809,8 @@ function openEpisode(idx) {
 
   document.getElementById('modalEpNum').textContent = ep.num ? `Episode ${ep.num}` : '';
   const titleEl = document.getElementById('modalTitle');
-  if (ep.num !== null && ep.num !== undefined) {
-    titleEl.innerHTML = `<a href="/episodes/${ep.num}/" class="modal-title-link">${cleanTitle(ep.title)}</a>`;
+  if (ep.url) {
+    titleEl.innerHTML = `<a href="${ep.url}" class="modal-title-link">${cleanTitle(ep.title)}</a>`;
   } else {
     titleEl.textContent = cleanTitle(ep.title);
   }

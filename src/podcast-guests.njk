@@ -229,7 +229,7 @@ function buildGuestCard(name) {
   const epList = episodes.map(ep => {
     const epNum = ep.num ? `<span class="guest-ep-num">Ep ${ep.num}</span> · ` : '';
     const cleanTitle = ep.title.replace(/\s*\((?:Ep|EP|BEN)\s*\d+\)\s*$/, '').replace(/^\d+\.\s+/, '').trim();
-    const href = (ep.num !== null && ep.num !== undefined) ? `/episodes/${ep.num}/` : '#';
+    const href = ep.url || '#';
     return `<li><a href="${href}" style="color: inherit; text-decoration: none; display: block;">${epNum}${cleanTitle}</a></li>`;
   }).join('');
   const lastName = getSortLastName(name);

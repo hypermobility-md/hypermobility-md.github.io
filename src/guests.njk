@@ -83,7 +83,7 @@ eleventyComputed:
       <h2>Episodes ({{ guestEpisodes.length }})</h2>
       <div class="guest-episode-list">
         {% for ep in guestEpisodes %}
-        <a href="/episodes/{{ ep.data.num }}/" class="guest-episode-item">
+        <a href="{{ ep.url }}" class="guest-episode-item">
           {% if ep.data.num %}<span class="guest-ep-num">Ep {{ ep.data.num }}</span>{% endif %}
           <span class="guest-ep-title">{{ ep.data.title | cleanTitle }}</span>
           {% if ep.data.date %}<span class="guest-ep-date">{{ ep.data.date | formatDate }}</span>{% endif %}

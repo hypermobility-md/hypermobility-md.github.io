@@ -16,6 +16,7 @@ const EPISODES = [
 {%- for ep in collections.episodes %}
   {
     "num": {{ ep.data.num if ep.data.num else "null" }},
+    "url": "{{ ep.url }}",
     "title": {{ ep.data.title | jsonify | safe }},
     "date": "{{ ep.data.date }}",
     "duration": "{{ ep.data.duration }}",
