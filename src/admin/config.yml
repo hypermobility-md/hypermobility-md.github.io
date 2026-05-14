@@ -107,16 +107,18 @@ collections:
     extension: "json"
     format: "json"
     slug: "{{fields.key}}"
-    identifier_field: "key"
-    summary: "{{fields.key}}"
-    sortable_fields: ["key", "affiliation"]
-    search_fields: ["key", "bio", "credentials", "affiliation"]
+    identifier_field: "name"
+    summary: "{{fields.name | default(fields.key)}}"
+    sortable_fields: ["name", "key", "affiliation"]
+    search_fields: ["name", "key", "bio", "credentials", "affiliation"]
     view_filters:
       - { label: "Missing photo", field: "image", pattern: "^$" }
       - { label: "Missing bio", field: "bio", pattern: "^$" }
       - { label: "Missing affiliation", field: "affiliation", pattern: "^$" }
+      - { label: "Missing display name", field: "name", pattern: "^$" }
     fields:
-      - { label: "Guest Key", name: "key", widget: "string", hint: "Name without titles or credentials, e.g. 'Dacre Knight'. Case and spacing don't matter — 'dacre knight', 'Dacre Knight', and 'DACRE KNIGHT' all match the same guest." }
+      - { label: "Guest Key", name: "key", widget: "string", hint: "Lookup key — the name with no titles or credentials, e.g. 'alexis cutchins'. Case and spacing don't matter; this is only used internally to match the guest across episodes." }
+      - { label: "Preferred Display Name", name: "name", widget: "string", required: false, hint: "How the guest's name appears on their profile page and episode cards, e.g. 'Dr. Alexis Cutchins'. Leave blank to fall back to whatever name was entered in an episode's Guests list." }
       - { label: "Bio", name: "bio", widget: "text", required: false }
       - { label: "Credentials", name: "credentials", widget: "string", required: false, hint: "e.g. MD, PhD, DPT" }
       - { label: "Affiliation", name: "affiliation", widget: "string", required: false }
@@ -183,3 +185,30 @@ collections:
       - { label: "Audio URL", name: "audioUrl", widget: "string", required: false, hint: "Direct MP3 link. If present, the appearance detail page shows an embedded audio player." }
       - { label: "Video URL", name: "videoUrl", widget: "string", required: false, hint: "YouTube URL to embed on the appearance detail page." }
       - { label: "YouTube URL", name: "youtubeUrl", widget: "string", required: false, hint: "Public YouTube link for the 'Watch on YouTube' button. Only needed if it differs from Video URL." }
+
+  - name: "faq-items"
+    label: "FAQ Items"
+    folder: "src/faq-items"
+    create: true
+    slug: "{{fields.question | slugify}}"
+    identifier_field: "question"
+    summary: "[{{fields.category}} · {{fields.order}}] {{fields.question}}"
+    sortable_fields: ["category", "order", "question"]
+    search_fields: ["question", "body"]
+    view_groups:
+      - label: Category
+        field: category
+    fields:
+      - { label: "Question", name: "question", widget: "string", hint: "The question as shown on the accordion (e.g. \"What is EduCoaching?\")." }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        hint: "Which section of the FAQ page this question appears in."
+        options:
+          - { label: "Medical & Coaching Services (general)", value: "general" }
+          - { label: "Medical Services", value: "medical" }
+          - { label: "Coaching Services", value: "coaching" }
+          - { label: "Professional Mentorship", value: "mentorship" }
+          - { label: "Medico-Legal Services", value: "medico-legal" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 99, hint: "Lower numbers appear higher in the section. Use 1, 2, 3, … to control position; ties fall back to alphabetical." }
+      - { label: "Answer", name: "body", widget: "markdown", hint: "The answer body. Supports markdown: **bold**, *italic*, bullet lists, [links](url), etc." }

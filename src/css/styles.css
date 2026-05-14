@@ -993,13 +993,19 @@ a.logo-card:hover {
 }
 
 .faq-container { max-width: 800px; margin: 0 auto; }
+/* Tighter vertical rhythm on FAQ sections so users don't have to scroll
+   as much between accordion groups. Per-page override of .section's 80px. */
+.section:has(.faq-container) { padding: 44px 0; }
+.section:has(.faq-hero) { padding: 56px 0 24px; }
 .faq-section-title {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   font-size: 1.5rem;
   display: flex;
   align-items: center;
   gap: 10px;
 }
+.faq-item:target,
+.faq-item.open { scroll-margin-top: 110px; }
 .faq-title-icon {
   width: 28px;
   height: 28px;
@@ -1476,6 +1482,35 @@ form.submitted .form-check input:invalid {
 /* Social Input Rows (guest form) */
 .form-socials-group { border: none; padding: 0; margin: 0 0 24px; }
 .form-socials-group legend { display: block; }
+
+/* Form section headings — visually break a long form into "published"
+   vs. "internal" sections so guests know what listeners will see. */
+.form-section-heading {
+  margin: 8px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.form-section-heading + .form-section-heading,
+.form-group + .form-section-heading,
+.form-card .form-section-heading + .form-group { margin-top: 0; }
+.form-section-heading h2 {
+  font-size: 1.15rem;
+  margin: 0 0 4px;
+  color: var(--text);
+}
+.form-section-heading p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+.form-section-heading-internal {
+  margin-top: 36px;
+  padding: 14px 16px 12px;
+  background: color-mix(in srgb, var(--primary) 5%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, var(--primary) 18%, var(--border));
+  border-radius: var(--radius-sm);
+}
+.form-section-heading-internal h2 { color: var(--primary-dark, var(--primary)); }
 .social-input-row {
   display: flex;
   align-items: center;

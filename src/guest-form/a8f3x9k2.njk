@@ -22,11 +22,16 @@ needsRecaptcha: true
       <div class="form-alert form-alert-info">
         <svg class="form-alert-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         <div>
-          This information will be used to create your episode page on our website. Please double-check your details before submitting.
+          The first section becomes your <strong>public episode page</strong>. The second section is just for the host &amp; team to prep the show &mdash; nothing there is published.
         </div>
       </div>
 
       <form id="guestForm" action="#" method="POST" enctype="multipart/form-data">
+
+        <div class="form-section-heading">
+          <h2>Your published profile</h2>
+          <p>This information appears on your episode page on the website.</p>
+        </div>
 
         <div class="form-group">
           <label class="form-label" for="guest-name">Full name</label>
@@ -35,15 +40,15 @@ needsRecaptcha: true
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="guest-credentials">Credentials</label>
+          <label class="form-label" for="guest-credentials">Credentials <span class="optional">(optional)</span></label>
           <p class="form-hint">Degrees and certifications (e.g. MD, DPT, PhD, LCSW)</p>
           <input class="form-input" type="text" id="guest-credentials" name="credentials" placeholder="e.g. MD, FAAP">
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="guest-affiliation">Affiliation</label>
-          <p class="form-hint">Your practice, hospital, organization, or university.</p>
-          <input class="form-input" type="text" id="guest-affiliation" name="affiliation" placeholder="e.g. University of Wisconsin">
+          <label class="form-label" for="guest-affiliation">Affiliation <span class="optional">(optional)</span></label>
+          <p class="form-hint">Your practice, hospital, organization, or university. Non-traditional roles are welcome too &mdash; e.g. <em>Dancer</em>, <em>Mom</em>, <em>Patient Advocate</em>, <em>Author</em>.</p>
+          <input class="form-input" type="text" id="guest-affiliation" name="affiliation" placeholder="e.g. University of Wisconsin · Dancer · Patient Advocate">
         </div>
 
         <div class="form-group">
@@ -129,9 +134,39 @@ needsRecaptcha: true
           <p class="form-hint" id="headshot-status" style="display: none; color: var(--primary); margin-top: 6px;"></p>
         </div>
 
+        <div class="form-section-heading form-section-heading-internal">
+          <h2>For the host &amp; podcast team</h2>
+          <p>This section helps the host prep the conversation. None of it is published on the website &mdash; it&rsquo;s just for us.</p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="guest-questions">Questions or topics for the episode <span class="optional">(optional)</span></label>
+          <p class="form-hint">Share at least three questions you&rsquo;d like to be asked and/or topics you&rsquo;d like to explore on the show. The host will use these as a starting point.</p>
+          <textarea class="form-textarea" id="guest-questions" name="questions_topics" rows="4" placeholder="e.g. How does diet affect MCAS flares? &nbsp;What myths about EDS would you like to bust? &nbsp;The role of strength training in HSD..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="guest-hack">Your hypermobility hack <span class="optional">(optional)</span></label>
+          <p class="form-hint">We wrap up each episode by sharing a hypermobility hack &mdash; a strategy or tip for living life with hypermobility. Have one you&rsquo;d like to share with our listeners?</p>
+          <textarea class="form-textarea" id="guest-hack" name="hypermobility_hack" rows="3" placeholder="Your go-to tip, tool, or routine..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="guest-title-suggestion">Suggested episode title <span class="optional">(optional)</span></label>
+          <p class="form-hint">If you have a title in mind, share it here. The team may adapt it for clarity or SEO.</p>
+          <input class="form-input" type="text" id="guest-title-suggestion" name="title_suggestion" placeholder="e.g. The Truth About Hypermobility and Chronic Fatigue">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="guest-plug">Anything to plug? <span class="optional">(optional)</span></label>
+          <p class="form-hint">A new book, course, event, fundraiser, or project you&rsquo;d like us to mention on-air.</p>
+          <textarea class="form-textarea" id="guest-plug" name="plug" rows="2" placeholder="e.g. My new book launches in June &mdash; pre-orders open at..." style="min-height: 70px;"></textarea>
+        </div>
+
         <div class="form-group">
           <label class="form-label" for="guest-anything">Anything else we should know? <span class="optional">(optional)</span></label>
-          <textarea class="form-textarea" id="guest-anything" name="additional" rows="3" placeholder="Pronunciation of your name, preferred pronouns, topics to highlight, etc." style="min-height: 80px;"></textarea>
+          <p class="form-hint">Pronunciation of your name, preferred pronouns, accessibility needs, recording-day notes, etc.</p>
+          <textarea class="form-textarea" id="guest-anything" name="additional" rows="3" placeholder="Anything that will help us make the recording smooth..." style="min-height: 80px;"></textarea>
         </div>
 
         <div class="form-disclaimer">
@@ -216,6 +251,10 @@ document.getElementById('guestForm').addEventListener('submit', async function(e
       bio: document.getElementById('guest-bio').value,
       website: document.getElementById('guest-website').value,
       social_links: socialLinks,
+      questions_topics: document.getElementById('guest-questions').value,
+      hypermobility_hack: document.getElementById('guest-hack').value,
+      title_suggestion: document.getElementById('guest-title-suggestion').value,
+      plug: document.getElementById('guest-plug').value,
       additional: document.getElementById('guest-anything').value,
       headshot_base64: headshotBase64,
       headshot_mime: headshotMime,

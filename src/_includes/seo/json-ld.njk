@@ -283,7 +283,7 @@
 {# ── Person (guest profile pages) ── #}
 {% set profile = guestData.profiles[guestName] %}
 {% set img = guestData.images[guestName] %}
-{% set displayName = collections.guestDisplayNames[guestName] or guestName %}
+{% set displayName = (profile.name if profile and profile.name) or collections.guestDisplayNames[guestName] or guestName %}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",

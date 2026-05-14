@@ -124,6 +124,23 @@ module.exports = function(eleventyConfig) {
       });
   });
 
+  // FAQ items grouped by category, each group sorted by `order`.
+  // Categories are defined in src/_data/faqCategories.js; items live in
+  // src/faq-items/*.md with frontmatter { question, category, order }.
+  eleventyConfig.addCollection("faqByCategory", function(collectionApi) {
+    const items = collectionApi.getFilteredByGlob("src/faq-items/*.md");
+    const grouped = {};
+    items.forEach(item => {
+      const cat = item.data.category || "general";
+      if (!grouped[cat]) grouped[cat] = [];
+      grouped[cat].push(item);
+    });
+    Object.keys(grouped).forEach(cat => {
+      grouped[cat].sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
+    });
+    return grouped;
+  });
+
   // Guest display-name map: normalized key → best display name from episode data
   eleventyConfig.addCollection("guestDisplayNames", function(collectionApi) {
     const episodes = collectionApi.getFilteredByGlob("src/episodes/*.md");

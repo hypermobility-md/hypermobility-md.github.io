@@ -1,0 +1,251 @@
+---
+layout: base.njk
+title: Session Feedback
+permalink: /feedback-form/
+eleventyExcludeFromCollections: true
+needsRecaptcha: true
+---
+
+<meta name="robots" content="noindex,nofollow">
+
+<div class="page-header">
+  <div class="container">
+    <h1>Session Feedback</h1>
+    <p>Thank you for taking a few minutes to share your experience &mdash; your feedback helps us improve and supports others who may benefit from these services.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="form-card" id="feedbackFormCard">
+
+      <div class="form-alert form-alert-info">
+        <svg class="form-alert-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div>
+          Most questions are short rating scales &mdash; you can complete this in 3&ndash;5 minutes. All fields are optional, and you can submit anonymously if you prefer.
+        </div>
+      </div>
+
+      <form id="feedbackForm" action="#" method="POST">
+
+        <div class="form-group">
+          <label class="form-label">How would you rate the clarity and usefulness of the session itself?</label>
+          <div class="form-chips rating-scale" data-name="rating_session">
+            <button type="button" class="form-chip" data-value="1">1</button>
+            <button type="button" class="form-chip" data-value="2">2</button>
+            <button type="button" class="form-chip" data-value="3">3</button>
+            <button type="button" class="form-chip" data-value="4">4</button>
+            <button type="button" class="form-chip" data-value="5">5</button>
+          </div>
+          <div class="rating-scale-labels"><span>1 &mdash; Not useful</span><span>5 &mdash; Very useful</span></div>
+          <input type="hidden" name="rating_session" id="rating_session">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Was the written summary/note clear, helpful, and valuable?</label>
+          <div class="form-chips rating-scale" data-name="rating_note">
+            <button type="button" class="form-chip" data-value="1">1</button>
+            <button type="button" class="form-chip" data-value="2">2</button>
+            <button type="button" class="form-chip" data-value="3">3</button>
+            <button type="button" class="form-chip" data-value="4">4</button>
+            <button type="button" class="form-chip" data-value="5">5</button>
+          </div>
+          <div class="rating-scale-labels"><span>1 &mdash; Not helpful</span><span>5 &mdash; Very helpful</span></div>
+          <input type="hidden" name="rating_note" id="rating_note">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Do you feel the session was worth the cost?</label>
+          <div class="form-chips rating-scale" data-name="rating_value">
+            <button type="button" class="form-chip" data-value="1">1</button>
+            <button type="button" class="form-chip" data-value="2">2</button>
+            <button type="button" class="form-chip" data-value="3">3</button>
+            <button type="button" class="form-chip" data-value="4">4</button>
+            <button type="button" class="form-chip" data-value="5">5</button>
+          </div>
+          <div class="rating-scale-labels"><span>1 &mdash; Not worth it</span><span>5 &mdash; Definitely worth it</span></div>
+          <input type="hidden" name="rating_value" id="rating_value">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Net Promoter Score (NPS)</label>
+          <p class="form-hint">How likely are you to recommend these services to a friend or colleague?</p>
+          <div class="form-chips rating-scale rating-scale-nps" data-name="nps">
+            <button type="button" class="form-chip" data-value="0">0</button>
+            <button type="button" class="form-chip" data-value="1">1</button>
+            <button type="button" class="form-chip" data-value="2">2</button>
+            <button type="button" class="form-chip" data-value="3">3</button>
+            <button type="button" class="form-chip" data-value="4">4</button>
+            <button type="button" class="form-chip" data-value="5">5</button>
+            <button type="button" class="form-chip" data-value="6">6</button>
+            <button type="button" class="form-chip" data-value="7">7</button>
+            <button type="button" class="form-chip" data-value="8">8</button>
+            <button type="button" class="form-chip" data-value="9">9</button>
+            <button type="button" class="form-chip" data-value="10">10</button>
+          </div>
+          <div class="rating-scale-labels"><span>0 &mdash; Not at all likely</span><span>10 &mdash; Extremely likely</span></div>
+          <input type="hidden" name="nps" id="nps">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Would you book another session if needed, or recommend this to a friend?</label>
+          <div class="form-chips" data-name="rebook">
+            <button type="button" class="form-chip" data-value="Yes">Yes</button>
+            <button type="button" class="form-chip" data-value="No">No</button>
+            <button type="button" class="form-chip" data-value="Maybe">Maybe</button>
+          </div>
+          <input type="hidden" name="rebook" id="rebook">
+          <textarea class="form-textarea" id="rebook_why" name="rebook_why" rows="2" placeholder="Why or why not? (optional)" style="margin-top: 12px; min-height: 70px;"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="most_helpful">What did you find most helpful or valuable about your experience?</label>
+          <textarea class="form-textarea" id="most_helpful" name="most_helpful" rows="4" placeholder="Share what stood out..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="could_improve">What could we improve about the EduCoaching experience?</label>
+          <textarea class="form-textarea" id="could_improve" name="could_improve" rows="4" placeholder="Any suggestions, friction points, or things to do differently..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-check">
+            <input type="checkbox" id="anonymous" name="anonymous">
+            <span>Submit this feedback anonymously (your name and email won&rsquo;t be recorded).</span>
+          </label>
+        </div>
+
+        <div id="identity-fields">
+          <div class="form-group">
+            <label class="form-label" for="fb_name">Your name <span class="optional">(optional)</span></label>
+            <input class="form-input" type="text" id="fb_name" name="name" placeholder="First and last name">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fb_email">Email <span class="optional">(optional)</span></label>
+            <p class="form-hint">Only used if we&rsquo;d like to follow up on your feedback.</p>
+            <input class="form-input" type="email" id="fb_email" name="email" placeholder="you@example.com">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-check">
+            <input type="checkbox" id="permission" name="permission">
+            <span>I give permission for Bendy Bodies to use my feedback &mdash; anonymously or with my name &mdash; in testimonials or marketing materials.</span>
+          </label>
+        </div>
+
+        <div class="form-disclaimer" style="background: color-mix(in srgb, var(--primary) 6%, var(--card-bg)); border-color: color-mix(in srgb, var(--primary) 20%, var(--border));">
+          <div class="form-disclaimer-title">Help others find support sooner</div>
+          <div class="form-disclaimer-text">
+            If our services have been helpful to you, a brief Google review can make a real difference. Reviews help people who are searching for answers feel more confident taking the next step.<br><br>
+            <a href="https://g.page/r/Ccu3Fnhqkt-ZEAI/review" target="_blank" rel="noopener" class="btn btn-secondary" style="margin-top: 4px;">Leave a Google review</a>
+          </div>
+        </div>
+
+        <div class="form-disclaimer">
+          <div class="form-disclaimer-title">Privacy notice</div>
+          <div class="form-disclaimer-text">
+            Your feedback is stored securely and reviewed by the Bendy Bodies team. If you submit anonymously, your name and email are never recorded. We will not share your feedback publicly unless you grant permission above.
+            This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> apply.
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="feedbackSubmitBtn">Submit feedback</button>
+        </div>
+      </form>
+
+      <!-- Success state -->
+      <div class="form-success" id="feedbackSuccess" style="display: none;">
+        <div class="form-success-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2>Feedback received</h2>
+        <p>Thank you! Your responses help us improve and continue supporting the hypermobility community.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.rating-scale .form-chip {
+  min-width: 44px;
+  padding: 10px 14px;
+  text-align: center;
+  font-weight: 600;
+}
+.rating-scale-nps .form-chip {
+  min-width: 40px;
+  padding: 10px 10px;
+}
+.rating-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: var(--text-light);
+}
+</style>
+
+{% block scripts %}
+<script src="/js/form-submit.js"></script>
+<script>
+// Chip groups: store selected value in the matching hidden input.
+document.querySelectorAll('.form-chips').forEach(group => {
+  const name = group.dataset.name;
+  group.querySelectorAll('.form-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      group.querySelectorAll('.form-chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+      const target = document.getElementById(name);
+      if (target) target.value = chip.dataset.value;
+    });
+  });
+});
+
+// Anonymous toggle: hide identity fields and clear their values.
+const anonCheckbox = document.getElementById('anonymous');
+const identityFields = document.getElementById('identity-fields');
+anonCheckbox.addEventListener('change', () => {
+  if (anonCheckbox.checked) {
+    identityFields.style.display = 'none';
+    document.getElementById('fb_name').value = '';
+    document.getElementById('fb_email').value = '';
+  } else {
+    identityFields.style.display = '';
+  }
+});
+
+document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('feedbackSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  const isAnonymous = anonCheckbox.checked;
+
+  try {
+    await submitToSheet('feedback', {
+      rating_session: document.getElementById('rating_session').value,
+      rating_note: document.getElementById('rating_note').value,
+      rating_value: document.getElementById('rating_value').value,
+      nps: document.getElementById('nps').value,
+      rebook: document.getElementById('rebook').value,
+      rebook_why: document.getElementById('rebook_why').value,
+      most_helpful: document.getElementById('most_helpful').value,
+      could_improve: document.getElementById('could_improve').value,
+      permission: document.getElementById('permission').checked ? 'Yes' : 'No',
+      anonymous: isAnonymous ? 'Yes' : 'No',
+      name: isAnonymous ? '' : document.getElementById('fb_name').value,
+      email: isAnonymous ? '' : document.getElementById('fb_email').value
+    });
+  } catch (err) {}
+
+  document.getElementById('feedbackForm').style.display = 'none';
+  const alert = document.querySelector('#feedbackFormCard .form-alert');
+  if (alert) alert.style.display = 'none';
+  document.getElementById('feedbackSuccess').style.display = 'block';
+  window.scrollTo({ top: document.getElementById('feedbackFormCard').offsetTop - 100, behavior: 'smooth' });
+});
+</script>
+{% endblock %}

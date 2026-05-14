@@ -11,15 +11,15 @@ pagination:
   addAllPagesToCollections: true
 permalink: /guests/{{ guestName | slug }}/
 eleventyComputed:
-  title: "{% set dn = collections.guestDisplayNames[guestName] %}{{ dn if dn else guestName }}"
-  description: "{% set dn = collections.guestDisplayNames[guestName] %}{{ dn if dn else guestName }} — Guest on the Bendy Bodies Podcast with Dr. Linda Bluestein"
+  title: "{% set p = guestData.profiles[guestName] %}{% set dn = collections.guestDisplayNames[guestName] %}{{ p.name if p and p.name else (dn if dn else guestName) }}"
+  description: "{% set p = guestData.profiles[guestName] %}{% set dn = collections.guestDisplayNames[guestName] %}{{ p.name if p and p.name else (dn if dn else guestName) }} — Guest on the Bendy Bodies Podcast with Dr. Linda Bluestein"
 ---
 
 {% include "podcast-subnav.njk" %}
 
 {% set profile = guestData.profiles[guestName] %}
 {% set img = guestData.images[guestName] %}
-{% set displayName = collections.guestDisplayNames[guestName] or guestName %}
+{% set displayName = (profile.name if profile and profile.name) or collections.guestDisplayNames[guestName] or guestName %}
 {% set guestEpisodes = collections.episodes | episodesForGuest(guestName) %}
 
 <div class="guest-detail">
