@@ -163,6 +163,22 @@ function formatDate(dateStr) {
   return d.toISOString().split('T')[0];
 }
 
+/** Normalize any date value (Date, ISO string, YYYY-MM-DD) to YYYY-MM-DD. */
+function toYMD(value) {
+  if (!value) return '';
+  if (value instanceof Date) return value.toISOString().split('T')[0];
+  const s = String(value);
+  const m = s.match(/^(\d{4}-\d{2}-\d{2})/);
+  if (m) return m[1];
+  const parsed = new Date(s);
+  return Number.isNaN(parsed.getTime()) ? '' : parsed.toISOString().split('T')[0];
+}
+
+/** Convert yt-dlp's compact YYYYMMDD upload date to YYYY-MM-DD. */
+function ymdFromCompact(s) {
+  return /^\d{8}$/.test(s) ? `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6, 8)}` : '';
+}
+
 /** Normalize a guest name for matching (strip titles, credentials, lowercase). */
 function normalizeGuest(name) {
   return name
@@ -212,6 +228,7 @@ function loadExistingEpisodes() {
       episodesNeedingVideo.push({
         num: data.num,
         title: data.title || '',
+        date: toYMD(data.date),
         slug,
         filePath: join(EPISODES_DIR, f),
         hasTranscript: content.trim().length > 100,
@@ -256,7 +273,23 @@ If no match is found, respond with exactly: NO_MATCH`,
   return { matched: false, canonical: rssGuestName };
 }
 
-/** Fetch top N videos from YouTube playlist using yt-dlp. */
+/** Fetch a single video's upload date (YYYY-MM-DD) via yt-dlp. */
+function fetchYouTubeUploadDate(videoId) {
+  try {
+    const out = execSync(
+      `yt-dlp --no-warnings --print "%(upload_date)s" "https://www.youtube.com/watch?v=${videoId}"`,
+      { encoding: 'utf-8', timeout: 30_000, stdio: ['pipe', 'pipe', 'pipe'] }
+    ).trim();
+    return ymdFromCompact(out);
+  } catch (e) {
+    console.error(`  ⚠  Failed to fetch upload date for ${videoId}: ${e.message}`);
+    return '';
+  }
+}
+
+/** Fetch top N videos from YouTube playlist using yt-dlp.
+ *  --flat-playlist gives a fast, private-video-tolerant listing; upload dates
+ *  (needed for date matching) are then fetched per-video. */
 function fetchYouTubePlaylist(n = YT_TOP_N) {
   try {
     const output = execSync(
@@ -268,7 +301,9 @@ function fetchYouTubePlaylist(n = YT_TOP_N) {
       const [id, ...titleParts] = line.split('\t');
       const title = titleParts.join('\t');
       const epNum = parseEpNumber(title);
-      return { id, title, epNum };
+      // Private/unavailable videos can't be matched — skip the date lookup.
+      const uploadDate = title === '[Private video]' ? '' : fetchYouTubeUploadDate(id);
+      return { id, title, epNum, uploadDate };
     });
   } catch (e) {
     console.error('  ⚠  Failed to fetch YouTube playlist:', e.message);
@@ -546,14 +581,24 @@ async function main() {
         console.log(`   Found ${ytVideos.length} videos in playlist\n`);
 
         for (const ep of needsVideo) {
-          const ytMatch = ytVideos.find(v => v.epNum === ep.num);
+          const epDate = toYMD(ep.date);
+          const isReal = v => v.title !== '[Private video]';
+
+          // Date-primary match: the podcast pubDate and the YouTube upload date
+          // are 1:1 in practice. Episode number is only a fallback for older
+          // numbered uploads — many recent video titles have no number.
+          let ytMatch = epDate
+            ? ytVideos.find(v => v.uploadDate && v.uploadDate === epDate && isReal(v))
+            : null;
+          let matchedBy = 'date';
+          if (!ytMatch && ep.num != null) {
+            ytMatch = ytVideos.find(v => v.epNum === ep.num && isReal(v));
+            matchedBy = 'number';
+          }
           if (!ytMatch) continue;
 
-          // Skip private videos
-          if (ytMatch.title === '[Private video]') continue;
-
           const videoUrl = `https://youtu.be/${ytMatch.id}`;
-          console.log(`   🔗 YouTube match: Ep ${ep.num} → ${videoUrl}`);
+          console.log(`   🔗 YouTube match (by ${matchedBy}): Ep ${ep.num} → ${videoUrl}`);
 
           // Is this a new episode from Pass 1?
           const newEp = newEpisodes.find(e => e.num === ep.num);
