@@ -188,6 +188,30 @@ function normalizeGuest(name) {
     .toLowerCase();
 }
 
+/**
+ * Create a stub guest-profile JSON if one doesn't already exist for `displayName`.
+ * Stub is intentionally minimal — name (via key) only. The podcast team can fill
+ * in bio, credentials, image, links via the CMS or the guest intake form later.
+ * Returns true if a file was created, false otherwise.
+ */
+function ensureGuestProfileStub(displayName, knownKeys) {
+  const key = normalizeGuest(displayName);
+  if (!key) return false;
+  if (knownKeys.has(key)) return false;
+  const slug = key.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  if (!slug) return false;
+  const filePath = join(PROFILES_DIR, `${slug}.json`);
+  if (existsSync(filePath)) {
+    knownKeys.add(key);
+    return false;
+  }
+  if (!DRY_RUN) {
+    writeFileSync(filePath, JSON.stringify({ key }, null, 2) + '\n');
+  }
+  knownKeys.add(key);
+  return true;
+}
+
 /** Load all canonical guest names from guest-profiles/*.json. */
 function loadGuestProfiles() {
   if (!existsSync(PROFILES_DIR)) return [];
@@ -414,12 +438,32 @@ async function main() {
   });
   // Also collect raw keys for matching
   const profileKeys = profiles.map(p => p.key);
+  const knownProfileKeys = new Set(profileKeys);
 
   // Load guest images for looking up image paths
   let guestImagesMap = {};
   if (existsSync(GUEST_IMAGES)) {
     guestImagesMap = JSON.parse(readFileSync(GUEST_IMAGES, 'utf-8'));
   }
+
+  // ── Pre-pass: Ensure every guest referenced by an existing episode has a
+  // profile stub. Catches guests added via the CMS that bypassed sync-rss. ──
+  let stubsCreated = 0;
+  for (const f of readdirSync(EPISODES_DIR).filter(f => f.endsWith('.md'))) {
+    const { data } = matter(readFileSync(join(EPISODES_DIR, f), 'utf-8'));
+    for (const g of (data.guests || [])) {
+      if (isHost(g)) continue;
+      if (ensureGuestProfileStub(g, knownProfileKeys)) {
+        stubsCreated++;
+        console.log(`   ➕ Stub guest profile: "${g}" (from ${f})`);
+      }
+    }
+  }
+  if (stubsCreated > 0) {
+    console.log(`   Created ${stubsCreated} guest profile stub(s)${DRY_RUN ? ' (dry run)' : ''}.\n`);
+  }
+  profileKeys.length = 0;
+  profileKeys.push(...knownProfileKeys);
 
   // ── Pass 1: RSS → New Episodes ──────────────────────────────────────────
 
@@ -532,7 +576,11 @@ async function main() {
             } else {
               matchedGuests.push(rssGuest);
               matchedImages.push('');
-              console.log(`   ⚠ No match found, using RSS name: "${rssGuest}"`);
+              if (ensureGuestProfileStub(rssGuest, knownProfileKeys)) {
+                console.log(`   ➕ Stub profile created for new guest: "${rssGuest}"`);
+              } else {
+                console.log(`   ⚠ No match found, using RSS name: "${rssGuest}"`);
+              }
             }
           } catch (e) {
             console.error(`   ✗ Haiku error: ${e.message}`);

@@ -15,9 +15,25 @@ function slugifyTitle(title) {
   }, '');
 }
 
+// Sanitize a manually-entered slug override to URL-safe characters.
+function safeSlug(input) {
+  return String(input || '')
+    .trim()
+    .toLowerCase()
+    .replace(/^\/+|\/+$/g, '')
+    .replace(/[^a-z0-9-]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 module.exports = {
   eleventyComputed: {
     permalink: (data) => {
+      // CMS slug override — wins over derived slug.
+      const override = data.seoOverrides && safeSlug(data.seoOverrides.slug);
+      if (override) {
+        return `/episodes/${override}/`;
+      }
       // Numbered episodes: /episodes/{num}-{title-slug}/
       if (data.num !== null && data.num !== undefined && data.num !== '') {
         const slug = slugifyTitle(data.title);

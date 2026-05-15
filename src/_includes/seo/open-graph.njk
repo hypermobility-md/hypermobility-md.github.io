@@ -17,17 +17,11 @@
 {# Determine og:image with priority chain #}
 {% if _ogImage %}
   {% set socialImage = _ogImage | absoluteUrl(site.url) %}
-{% elif audioUrl and videoUrl %}
-  {% set ytId = videoUrl | youtubeId %}
-  {% if ytId %}
-    {% set socialImage = "https://img.youtube.com/vi/" + ytId + "/maxresdefault.jpg" %}
-  {% elif guestImages and guestImages.length %}
-    {% set socialImage = guestImages[0] | absoluteUrl(site.url) %}
-  {% else %}
-    {% set socialImage = site.defaultOgImage | absoluteUrl(site.url) %}
-  {% endif %}
-{% elif audioUrl and guestImages and guestImages.length %}
-  {% set socialImage = guestImages[0] | absoluteUrl(site.url) %}
+{% elif audioUrl %}
+  {# Episode pages: prefer the build-generated branded share card, fall back to
+     YouTube thumbnail, then guest photo, then default. #}
+  {% set epOgSlug = num if num else page.fileSlug %}
+  {% set socialImage = ("/assets/og-episodes/" + epOgSlug + ".jpg") | absoluteUrl(site.url) %}
 {% elif guestName and guestData.images[guestName] %}
   {% set socialImage = (guestData.images[guestName] | guestOgImage) | absoluteUrl(site.url) %}
 {% elif showName and imageUrl %}

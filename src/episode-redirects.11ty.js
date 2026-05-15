@@ -1,29 +1,63 @@
-// Emits a redirect stub at every old /episodes/{num}/ URL pointing to the
-// episode's current /episodes/{num}-{slug}/ permalink. Generated from the
-// episodes collection at build time, so new episodes get a stub automatically.
+// Emits redirect stubs to keep old episode URLs working:
+//   1. /episodes/{num}/                  → canonical (always, for legacy short URL)
+//   2. /episodes/{num}-{derived-slug}/   → canonical (only when the CMS slug
+//                                          override differs from the derived slug)
+// Generated from the episodes collection at build time, so new episodes get
+// stubs automatically.
+
+function slugifyTitle(title) {
+  if (!title) return "";
+  const cleaned = String(title)
+    .replace(/\s*\((?:Ep|EP|BEN)\s*\d+\)\s*$/i, "")
+    .replace(/^\d+\.\s+/, "")
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return cleaned.split("-").reduce((acc, word) => {
+    const candidate = acc ? `${acc}-${word}` : word;
+    return candidate.length <= 60 ? candidate : acc;
+  }, "");
+}
+
+function derivedUrl(ep) {
+  const num = ep.data.num;
+  if (num == null || num === "") return null;
+  const slug = slugifyTitle(ep.data.title);
+  return slug ? `/episodes/${num}-${slug}/` : `/episodes/${num}/`;
+}
+
+function redirectsFor(ep) {
+  const urls = new Set();
+  const num = ep.data.num;
+  if (num != null && num !== "") urls.add(`/episodes/${num}/`);
+  const derived = derivedUrl(ep);
+  if (derived) urls.add(derived);
+  urls.delete(ep.url); // never emit a stub at the canonical URL
+  return [...urls];
+}
+
 module.exports = class {
   data() {
     return {
       pagination: {
         data: "collections.episodes",
         size: 1,
-        alias: "ep",
+        alias: "entry",
         before: (episodes) =>
-          episodes.filter((ep) => ep.data.num != null && ep.data.num !== ""),
+          episodes
+            .filter((ep) => ep.data.num != null && ep.data.num !== "")
+            .flatMap((ep) =>
+              redirectsFor(ep).map((from) => ({ ep, from }))
+            ),
       },
       eleventyExcludeFromCollections: true,
-      permalink: (data) => {
-        const oldUrl = `/episodes/${data.ep.data.num}/`;
-        // Guard: if the episode's title produced an empty slug, its canonical
-        // URL is already the bare numbered URL — don't emit a self-referential
-        // stub that would collide with the real page.
-        return data.ep.url === oldUrl ? false : oldUrl;
-      },
+      permalink: (data) => data.entry.from,
     };
   }
 
-  render({ ep }) {
-    const url = ep.url;
+  render({ entry }) {
+    const url = entry.ep.url;
     return `<!doctype html>
 <html lang="en">
 <head>

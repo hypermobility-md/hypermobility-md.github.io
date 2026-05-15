@@ -93,11 +93,12 @@ collections:
         widget: "object"
         collapsed: true
         required: false
-        hint: "Rarely edited. Social-sharing overrides and speaker-detection overrides for transcript generation."
+        hint: "Optional SEO / social / URL overrides. Leave each field blank to use the default derived from the episode's main fields."
         fields:
-          - { label: "Social Title", name: "ogTitle", widget: "string", required: false, hint: "Custom title for social sharing (defaults to episode title)" }
-          - { label: "Social Description", name: "ogDescription", widget: "text", required: false, hint: "Custom description for social sharing (defaults to episode description)" }
-          - { label: "Social Image", name: "ogImage", widget: "image", required: false, hint: "Custom social sharing image, 1200x630px recommended (defaults to YouTube thumbnail)" }
+          - { label: "SEO Title", name: "ogTitle", widget: "string", required: false, hint: "Overrides BOTH the browser-tab title and the social-share (og:title). Defaults to: the Title field above." }
+          - { label: "SEO Description", name: "ogDescription", widget: "text", required: false, hint: "Overrides BOTH the meta description and the social-share description. Defaults to: the Description field above (first ~200 chars)." }
+          - { label: "Social Image", name: "ogImage", widget: "image", required: false, hint: "Custom social sharing image, 1200x630px recommended. Defaults to: the YouTube thumbnail if videoUrl is set, otherwise the first guest photo, otherwise the site default OG image." }
+          - { label: "URL slug (advanced)", name: "slug", widget: "string", required: false, hint: "Overrides the path after /episodes/. Defaults to: '{episode-number}-{title-slug}', e.g. '196-too-flexible-to-fix-orthopedic-surgery'. ⚠ Changing this on a published episode auto-generates a redirect from the original URL, but external links and SEO rank with the original URL — only change if you have a good reason." }
           - { label: "Speakers Expected (override)", name: "speakersExpected", widget: "number", value_type: "int", required: false, hint: "Optional. Override the auto-computed speaker count for unusual episodes (e.g. uncredited panelist). Leave empty for default: 1 host + cohosts + guests." }
 
   - name: "guest-profiles"
@@ -185,6 +186,16 @@ collections:
       - { label: "Audio URL", name: "audioUrl", widget: "string", required: false, hint: "Direct MP3 link. If present, the appearance detail page shows an embedded audio player." }
       - { label: "Video URL", name: "videoUrl", widget: "string", required: false, hint: "YouTube URL to embed on the appearance detail page." }
       - { label: "YouTube URL", name: "youtubeUrl", widget: "string", required: false, hint: "Public YouTube link for the 'Watch on YouTube' button. Only needed if it differs from Video URL." }
+      - label: "Advanced Settings"
+        name: "seoOverrides"
+        widget: "object"
+        collapsed: true
+        required: false
+        hint: "Optional SEO / social overrides. Leave each field blank to use the default derived from the appearance's main fields."
+        fields:
+          - { label: "SEO Title", name: "ogTitle", widget: "string", required: false, hint: "Overrides BOTH the browser-tab title and the social-share (og:title). Defaults to: '{Show Name} — {Episode Title}'." }
+          - { label: "SEO Description", name: "ogDescription", widget: "text", required: false, hint: "Overrides BOTH the meta description and the social-share description. Defaults to: the Description field above." }
+          - { label: "Social Image", name: "ogImage", widget: "image", required: false, hint: "Custom 1200x630 social share image. Defaults to: the Show Image above." }
 
   - name: "faq-items"
     label: "FAQ Items"

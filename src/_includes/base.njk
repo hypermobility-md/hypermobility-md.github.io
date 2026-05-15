@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ title }} — Hypermobility MD</title>
-  {% if description %}<meta name="description" content="{{ description | truncate(160, true, '...') }}">{% endif %}
+  {%- set _pageTitle = (seoOverrides.ogTitle if seoOverrides) or title -%}
+  {%- set _pageDesc = (seoOverrides.ogDescription if seoOverrides) or description -%}
+  <title>{{ _pageTitle }} — Hypermobility MD</title>
+  {% if _pageDesc %}<meta name="description" content="{{ _pageDesc | truncate(160, true, '...') }}">{% endif %}
 
   {# SEO #}
   <link rel="canonical" href="{{ canonicalUrl or (site.url + page.url) }}">
