@@ -392,6 +392,7 @@ function vttToPlainText(vtt) {
 
 /** Build the YAML frontmatter + transcript content for an episode. */
 function buildEpisodeMarkdown({ num, title, date, duration, description, audioUrl, videoUrl, guests, guestImages, tags, transcript }) {
+  const firstImage = (guestImages || []).find(Boolean) || '';
   const frontmatter = {
     num: num ?? null,
     title,
@@ -403,6 +404,7 @@ function buildEpisodeMarkdown({ num, title, date, duration, description, audioUr
     videoUrl: videoUrl || '',
     snippets: [],
     guests: guests || [],
+    guestImage: firstImage,
     guestImages: guestImages || [],
   };
 

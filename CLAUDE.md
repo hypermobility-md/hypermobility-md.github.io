@@ -3,14 +3,25 @@
 Eleventy static site for Dr. Linda Bluestein's medical practice and the Bendy
 Bodies Podcast. Deployed to GitHub Pages.
 
+## Start of session: pull first
+
+`master` moves on its own between sessions (cron syncs new episodes,
+transcripts, and guest photos every few hours — see Deploy & automation).
+**Run `git pull --ff-only` at the start of every session before doing any
+work**, so you don't make edits on a stale tree and run into rebase pain
+later. If the fast-forward fails, `git fetch && git status` to see what
+diverged before deciding next steps.
+
 ## Deploy & automation
 
 GitHub Actions, all on `master`:
 
 - **`deploy.yml`** — builds and deploys to GitHub Pages on every push.
 - **`sync-podcast.yml`** — cron every 6 hours: runs `scripts/sync-rss.mjs`,
-  commits new episodes as `github-actions[bot]`, pushes, and deploys. New
-  episodes publish ~weekly, so this is effectively the weekly content update.
+  then `scripts/backfill-episode-display-fields.mjs` (sets `guestImage` etc.
+  for CMS thumbnails), commits new episodes as `github-actions[bot]`,
+  pushes, and deploys. New episodes publish ~weekly, so this is effectively
+  the weekly content update.
 - **`transcribe-podcast.yml`**, **`sync-guest-profile-images.yml`** — further
   scheduled jobs that commit transcripts / guest images.
 
@@ -19,6 +30,45 @@ Always `git fetch` before committing, and expect to rebase. When asked to
 "commit and push," check `git rev-list --count master...origin/master` first.
 
 GitHub Pages has no server-side redirects (no real 301s) — see Episode URLs.
+
+## Site structure (where things live)
+
+```
+src/
+├── _data/
+│   ├── faqCategories.js           # ordered FAQ accordion categories
+│   ├── guestImages.json           # guest key → photo path (canonical lookup)
+│   └── site.js                    # site-wide config (name, URL, etc.)
+├── _includes/
+│   ├── base.njk                   # main page layout (head, nav, footer)
+│   ├── episode.njk                # episode page layout
+│   ├── appearance.njk             # guest-appearance page layout
+│   ├── hypermobility-question.njk # FAQ article layout w/ optional embed
+│   ├── nav.njk, footer.njk        # global chrome
+│   └── seo/                       # OG, JSON-LD partials
+├── admin/                         # Sveltia CMS — config.yml drives all collections
+│   ├── config.yml
+│   └── index.html
+├── episodes/                      # podcast episodes (md, body = transcript)
+│   ├── {num}.md
+│   ├── bonus-*.md
+│   └── episodes.11tydata.js       # computes /episodes/{num}-{slug}/ URLs
+├── guest-profiles/                # one JSON per guest (key, bio, socials, photo)
+├── faq-items/                     # CMS FAQ Q&A (markdown, accordion items)
+├── hypermobility-questions/       # CMS long-form FAQ articles → /faq/<slug>/
+├── appearances/                   # Linda's external podcast/show appearances
+├── Guests/                        # guest headshots (note: capital G; CMS uploads land here)
+├── assets/                        # everything else (images, og cards, fonts)
+├── css/styles.css                 # single stylesheet
+├── js/                            # form-submit.js + small page scripts
+├── about.njk, faq.njk, services.njk, contact.njk, …
+├── guest-form/a8f3x9k2.njk        # unlisted guest-info form (obfuscated path)
+├── ask.njk, book.njk, feedback-form.njk
+├── episode-redirects.11ty.js      # emits meta-refresh stubs at /episodes/{num}/
+└── cms-data/                      # build-time JSON for the CMS to read
+scripts/                           # node ESM tools (see Content pipeline)
+google-apps-script-v2.js           # gitignored; form handler (see Forms)
+```
 
 ## Content pipeline
 
@@ -30,7 +80,9 @@ They arrive two ways:
 - **`scripts/sync-rss.mjs`** — pulls from the Megaphone RSS feed, extracts
   guests via Haiku, and backfills YouTube video URLs by matching the podcast
   publish date to the video upload date (titles often lack episode numbers, so
-  date is the primary key; number is a fallback).
+  date is the primary key; number is a fallback). Sets both `guestImages`
+  (list) and `guestImage` (singular, first match — used as the CMS list
+  thumbnail).
 
 Other `scripts/*.mjs` handle transcription, speaker labeling, transcript
 formatting, OG images, taxonomy, etc.
@@ -46,6 +98,21 @@ know about URLs.
 old `/episodes/{num}/` path, generated from the episodes collection at build
 time (so new episodes get one automatically). All internal links use the
 canonical slug URL — the stubs are only for old external/inbound links.
+
+## FAQ page
+
+Two CMS-driven sources feed `src/faq.njk`:
+
+- **`src/faq-items/*.md`** — short Q&A items rendered as a vertical accordion,
+  grouped by `category` (defined in `src/_data/faqCategories.js`). Sveltia
+  collection: "FAQ Items".
+- **`src/hypermobility-questions/*.md`** — long-form articles published at
+  `/faq/<file-slug>/` via the layout `_includes/hypermobility-question.njk`
+  + per-folder data file. Each article has an optional top-of-page
+  embed (image / YouTube / external link), wrapped in `<div class="faq-article-embed">`.
+  Sveltia collection: "Hypermobility Questions". Old `/faq/<slug>/` URLs
+  stay intact for SEO — these markdown files replaced standalone .njk pages
+  in 2026-05.
 
 ## Forms
 

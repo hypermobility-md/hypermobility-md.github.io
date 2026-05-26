@@ -79,87 +79,58 @@ pageType: "faq"
   </div>
 </section>
 
-{# --- Q&A sections, driven by CMS-editable markdown files in src/faq-items/ --- #}
-{%- for cat in faqCategories %}
-<section class="section {{ cat.altClass }}" id="{{ cat.id }}">
+{# --- Q&A vertical accordion, driven by CMS-editable markdown files in
+       src/faq-items/. All categories live in a single continuous section
+       so users can scroll instead of jumping between page sections. --- #}
+<section class="section faq-accordion-section">
   <div class="container faq-container">
-    <h2 class="faq-section-title">
-      {%- if cat.id == 'general' -%}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></svg>
-      {%- elif cat.id == 'medical' -%}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
-      {%- elif cat.id == 'coaching' -%}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      {%- elif cat.id == 'mentorship' -%}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
-      {%- elif cat.id == 'medico-legal' -%}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg>
-      {%- endif -%}
-      {{ cat.title }}
-    </h2>
+    {%- for cat in faqCategories %}
+    <div class="faq-category-block{% if not loop.first %} faq-category-block-divider{% endif %}" id="{{ cat.id }}">
+      <h2 class="faq-section-title faq-section-title-inline">
+        {%- if cat.id == 'general' -%}
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></svg>
+        {%- elif cat.id == 'medical' -%}
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+        {%- elif cat.id == 'coaching' -%}
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        {%- elif cat.id == 'mentorship' -%}
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
+        {%- elif cat.id == 'medico-legal' -%}
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg>
+        {%- endif -%}
+        {{ cat.title }}
+      </h2>
 
-    {%- for item in collections.faqByCategory[cat.id] %}
-    <div class="faq-item" id="faq-{{ item.fileSlug }}">
-      <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
-        <span>{{ item.data.question }}</span>
-        <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer">
-        {{ item.templateContent | safe }}
+      {%- for item in collections.faqByCategory[cat.id] %}
+      <div class="faq-item" id="faq-{{ item.fileSlug }}">
+        <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+          <span>{{ item.data.question }}</span>
+          <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer">
+          {{ item.templateContent | safe }}
+        </div>
       </div>
+      {%- endfor %}
     </div>
     {%- endfor %}
   </div>
 </section>
-{%- endfor %}
 
 <!-- Questions about Hypermobility Disorders -->
-<section class="section" id="hypermobility">
+<section class="section section-alt" id="hypermobility">
   <div class="container faq-container">
     <h2 class="faq-section-title"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>Questions about Hypermobility Disorders</h2>
     <p style="color: var(--text-muted); margin-bottom: 24px;">Explore in-depth articles on common questions about EDS, hypermobility, and related conditions.</p>
 
     <div class="faq-article-list">
-      <a href="/faq/heds-gene/" class="faq-article-link">
-        <span>Is there a gene for hypermobile Ehlers-Danlos syndrome?</span>
+      {%- set hypItems = collections.hypermobilityQuestions | sort(false, false, 'data.order') %}
+      {%- for item in hypItems %}
+      <a href="{{ item.url }}" class="faq-article-link">
+        <span>{{ item.data.title | safe }}</span>
         <span class="faq-article-cta">Read more &rarr;</span>
       </a>
-      <a href="/faq/kallikrein-gene/" class="faq-article-link">
-        <span>What do kallikrein gene findings mean for people with hEDS?</span>
-        <span class="faq-article-cta">Read more &rarr;</span>
-      </a>
-      <a href="/faq/navigating-healthcare/" class="faq-article-link">
-        <span>How should I navigate the healthcare system with EDS or HSD?</span>
-        <span class="faq-article-cta">Read more &rarr;</span>
-      </a>
-      <a href="/faq/why-providers-dismiss-eds/" class="faq-article-link">
-        <span>Why do some healthcare providers dismiss EDS and HSD?</span>
-        <span class="faq-article-cta">Read more &rarr;</span>
-      </a>
-      <a href="/faq/is-eds-benign/" class="faq-article-link">
-        <span>Is EDS really &ldquo;benign&rdquo;?</span>
-        <span class="faq-article-cta">Read more &rarr;</span>
-      </a>
-      <a href="/faq/eds-myths/" class="faq-article-link">
-        <span>What are the most common myths about EDS and HSD?</span>
-        <span class="faq-article-cta">Read more &rarr;</span>
-      </a>
-      <a href="/faq/should-i-pursue-diagnosis/" class="faq-article-link">
-        <span>Should I pursue a hypermobility disorder diagnosis?</span>
-        <span class="faq-article-cta">Read more &rarr;</span>
-      </a>
-      <a href="/faq/diagnostic-criteria/" class="faq-article-link">
-        <span>What are the diagnostic criteria for hypermobile EDS?</span>
-        <span class="faq-article-cta">Read more &rarr;</span>
-      </a>
-      <a href="/faq/helping-teens-hypermobility/" class="faq-article-link">
-        <span>How can I help my teen who has hypermobility?</span>
-        <span class="faq-article-cta">Read more &rarr;</span>
-      </a>
-      <a href="/faq/child-normal-life/" class="faq-article-link">
-        <span>Can my child with EDS or HSD lead a normal life?</span>
-        <span class="faq-article-cta">Read more &rarr;</span>
-      </a>
+      {%- endfor %}
     </div>
   </div>
 </section>

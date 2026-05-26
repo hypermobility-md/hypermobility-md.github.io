@@ -1227,6 +1227,88 @@ a.logo-card:hover {
   .faq-article-content { padding: 24px 20px; }
 }
 
+/* Single-section vertical accordion: all FAQ categories live in one
+   continuous flow with thin dividers between groups instead of full
+   page sections. */
+.faq-accordion-section .faq-category-block { scroll-margin-top: 110px; }
+.faq-category-block + .faq-category-block-divider,
+.faq-category-block-divider {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.faq-section-title-inline {
+  margin-bottom: 16px;
+  font-size: 1.35rem;
+}
+
+/* Hypermobility-question article: optional top-of-page embed. */
+.faq-article-embed {
+  margin-bottom: 24px;
+}
+.faq-embed-video {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.faq-embed-video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.faq-embed-image {
+  margin: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.faq-embed-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.faq-embed-image figcaption {
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background: var(--card-bg);
+  border-top: 1px solid var(--border);
+}
+.faq-embed-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 24px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: var(--text);
+  font-family: var(--heading-font);
+  font-weight: 600;
+  transition: all 0.25s;
+}
+.faq-embed-link:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+  color: var(--primary);
+  text-decoration: none;
+}
+.faq-embed-link-cta {
+  font-family: var(--body-font);
+  font-size: 0.85rem;
+  color: var(--primary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 /* ---- Supporters Grid ---- */
 .supporter-grid {
   display: grid;
@@ -1504,6 +1586,25 @@ form.submitted .form-check input:invalid {
 /* Social Input Rows (guest form) */
 .form-socials-group { border: none; padding: 0; margin: 0 0 24px; }
 .form-socials-group legend { display: block; }
+
+/* Contact row: email + phone side-by-side on the guest form. */
+.form-contact-group { border: none; padding: 0; margin: 0 0 24px; }
+.form-contact-group legend { display: block; }
+.form-contact-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.form-contact-field { display: flex; flex-direction: column; }
+.form-sublabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+@media (max-width: 600px) {
+  .form-contact-row { grid-template-columns: 1fr; }
+}
 
 /* Form section headings — visually break a long form into "published"
    vs. "internal" sections so guests know what listeners will see. */

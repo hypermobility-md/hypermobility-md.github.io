@@ -1,0 +1,55 @@
+---
+layout: base.njk
+activePage: "faq"
+pageType: "article"
+---
+
+<div class="page-header">
+  <div class="container">
+    <h1>{{ title }}</h1>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container faq-article">
+    {%- if embed and embed.type and embed.type != 'none' %}
+    <div class="faq-article-embed">
+      {%- if embed.type == 'video' and embed.videoUrl %}
+        {%- set _ytId = embed.videoUrl | youtubeId %}
+        {%- if _ytId %}
+      <div class="faq-embed-video">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/{{ _ytId }}"
+          title="{{ title | escape }}"
+          loading="lazy"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+        {%- endif %}
+      {%- elif embed.type == 'image' and embed.image %}
+      <figure class="faq-embed-image">
+        <img src="{{ embed.image }}"{% if embed.imageAlt %} alt="{{ embed.imageAlt | escape }}"{% else %} alt=""{% endif %} loading="lazy">
+        {%- if embed.imageCaption %}<figcaption>{{ embed.imageCaption }}</figcaption>{% endif %}
+      </figure>
+      {%- elif embed.type == 'link' and embed.linkUrl %}
+      <a class="faq-embed-link" href="{{ embed.linkUrl }}" target="_blank" rel="noopener">
+        <span class="faq-embed-link-label">{{ embed.linkLabel or embed.linkUrl }}</span>
+        <span class="faq-embed-link-cta">Visit &rarr;</span>
+      </a>
+      {%- endif %}
+    </div>
+    {%- endif %}
+
+    <div class="faq-article-content">
+      {{ content | safe }}
+    </div>
+
+    <div class="faq-article-footer">
+      <a href="/faq/#hypermobility" class="btn btn-secondary">&larr; Back to FAQ</a>
+      {%- if blogPostUrl %}
+      <a href="{{ blogPostUrl }}" class="btn btn-primary" target="_blank" rel="noopener">Read Original Blog Post</a>
+      {%- endif %}
+    </div>
+  </div>
+</section>

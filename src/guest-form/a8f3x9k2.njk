@@ -45,6 +45,22 @@ needsRecaptcha: true
           <input class="form-input" type="text" id="guest-credentials" name="credentials" placeholder="e.g. MD, FAAP">
         </div>
 
+        <fieldset class="form-group form-contact-group">
+          <legend class="form-label">How can we reach you to coordinate the recording? <span class="optional">(at least one)</span></legend>
+          <p class="form-hint">Used only by the host &amp; team to coordinate your recording date &mdash; not published.</p>
+          <div class="form-contact-row">
+            <div class="form-contact-field">
+              <label class="form-sublabel" for="guest-email">Email</label>
+              <input class="form-input" type="email" id="guest-email" name="email" placeholder="you@example.com" autocomplete="email">
+            </div>
+            <div class="form-contact-field">
+              <label class="form-sublabel" for="guest-phone">Phone</label>
+              <input class="form-input" type="tel" id="guest-phone" name="phone" placeholder="(555) 123-4567" autocomplete="tel">
+            </div>
+          </div>
+          <p class="form-hint form-contact-error" id="guest-contact-error" style="display: none; color: var(--danger, #c00); margin-top: 6px;">Please provide an email or a phone number so we can reach you.</p>
+        </fieldset>
+
         <div class="form-group">
           <label class="form-label" for="guest-affiliation">Primary affiliation <span class="optional">(optional)</span></label>
           <p class="form-hint">Where you primarily practice or work &mdash; a hospital, clinic, organization, or university. If none of those fit, a single role works instead &mdash; e.g. Dancer, Patient Advocate, Mom, Author.</p>
@@ -193,6 +209,18 @@ needsRecaptcha: true
 <script>
 document.getElementById('guestForm').addEventListener('submit', async function(e) {
   e.preventDefault();
+
+  // Require at least one contact method.
+  const emailVal = document.getElementById('guest-email').value.trim();
+  const phoneVal = document.getElementById('guest-phone').value.trim();
+  const contactErr = document.getElementById('guest-contact-error');
+  if (!emailVal && !phoneVal) {
+    contactErr.style.display = 'block';
+    document.getElementById('guest-email').focus();
+    return;
+  }
+  contactErr.style.display = 'none';
+
   const btn = document.getElementById('guestSubmitBtn');
   btn.disabled = true;
   btn.textContent = 'Uploading...';
@@ -241,6 +269,8 @@ document.getElementById('guestForm').addEventListener('submit', async function(e
     await submitToSheet('guest_info', {
       name: document.getElementById('guest-name').value,
       credentials: document.getElementById('guest-credentials').value,
+      email: emailVal,
+      phone: phoneVal,
       affiliation: document.getElementById('guest-affiliation').value,
       bio: document.getElementById('guest-bio').value,
       website: document.getElementById('guest-website').value,

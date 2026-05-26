@@ -108,8 +108,8 @@ collections:
     extension: "json"
     format: "json"
     slug: "{{fields.key}}"
-    identifier_field: "name"
-    summary: "{{fields.name | default(fields.key)}}"
+    identifier_field: "key"
+    summary: "{{name | default(key)}}"
     sortable_fields: ["name", "key", "affiliation"]
     search_fields: ["name", "key", "bio", "credentials", "affiliation"]
     view_filters:
@@ -203,7 +203,7 @@ collections:
     create: true
     slug: "{{fields.question | slugify}}"
     identifier_field: "question"
-    summary: "[{{fields.category}} · {{fields.order}}] {{fields.question}}"
+    summary: "{{question}}  ·  {{category}} #{{order}}"
     sortable_fields: ["category", "order", "question"]
     search_fields: ["question", "body"]
     view_groups:
@@ -214,7 +214,7 @@ collections:
       - label: "Category"
         name: "category"
         widget: "select"
-        hint: "Which section of the FAQ page this question appears in."
+        hint: "Which section of the FAQ page this question appears in. Items group by category in the CMS list."
         options:
           - { label: "Medical & Coaching Services (general)", value: "general" }
           - { label: "Medical Services", value: "medical" }
@@ -223,3 +223,41 @@ collections:
           - { label: "Medico-Legal Services", value: "medico-legal" }
       - { label: "Order", name: "order", widget: "number", value_type: "int", default: 99, hint: "Lower numbers appear higher in the section. Use 1, 2, 3, … to control position; ties fall back to alphabetical." }
       - { label: "Answer", name: "body", widget: "markdown", hint: "The answer body. Supports markdown: **bold**, *italic*, bullet lists, [links](url), etc." }
+
+  - name: "hypermobility-questions"
+    label: "Hypermobility Questions"
+    folder: "src/hypermobility-questions"
+    create: true
+    slug: "{{fields.title | slugify}}"
+    identifier_field: "title"
+    summary: "{{title}}  ·  #{{order}}"
+    sortable_fields: ["order", "title"]
+    search_fields: ["title", "description", "body"]
+    fields:
+      - { label: "Title", name: "title", widget: "string", hint: "Question / article title — shown on the FAQ page and as the page heading." }
+      - { label: "Short description (SEO)", name: "description", widget: "text", required: false, hint: "1–2 sentence summary. Used for the meta description and social shares." }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 99, hint: "Lower numbers appear higher in the Questions about Hypermobility list. Ties fall back to title." }
+      - { label: "Original Blog Post URL", name: "blogPostUrl", widget: "string", required: false, hint: "Optional. If set, a 'Read Original Blog Post' button is shown at the bottom of the article." }
+      - label: "Top-of-page embed"
+        name: "embed"
+        widget: "object"
+        collapsed: true
+        required: false
+        hint: "Optional. Pick one media type to display above the article. Leave Type as 'None' to omit entirely — no placeholder is rendered."
+        fields:
+          - label: "Type"
+            name: "type"
+            widget: "select"
+            default: "none"
+            options:
+              - { label: "None", value: "none" }
+              - { label: "Image", value: "image" }
+              - { label: "YouTube video", value: "video" }
+              - { label: "External link", value: "link" }
+          - { label: "Image", name: "image", widget: "image", required: false, media_folder: "/src/assets/hypermobility-questions", public_folder: "/assets/hypermobility-questions", choose_url: true, hint: "Used when Type = Image." }
+          - { label: "Image alt text", name: "imageAlt", widget: "string", required: false, hint: "Used when Type = Image. Brief description for screen readers." }
+          - { label: "Image caption", name: "imageCaption", widget: "string", required: false, hint: "Optional caption shown below the image." }
+          - { label: "YouTube URL", name: "videoUrl", widget: "string", required: false, hint: "Used when Type = YouTube video. Paste the full YouTube watch / share URL." }
+          - { label: "Link URL", name: "linkUrl", widget: "string", required: false, hint: "Used when Type = External link." }
+          - { label: "Link label", name: "linkLabel", widget: "string", required: false, hint: "Used when Type = External link. Text shown on the link button (defaults to the URL)." }
+      - { label: "Body", name: "body", widget: "markdown", hint: "Full article body. Supports markdown: headings, **bold**, *italic*, lists, [links](url), etc." }
