@@ -1,20 +1,38 @@
 #!/usr/bin/env node
 
 /**
- * Retroactively add timestamps to already-proofread episode transcripts.
+ * Add timestamps to proofread episode transcripts.
  *
- * Uses text-based fuzzy matching to align proofread turns with labeled
- * utterances (which have timing data from AssemblyAI). This handles:
- * - Speaker name mismatches (matches by text, not speaker name)
- * - Split turns (proofreader split one utterance into multiple turns)
- * - Merged turns (proofreader combined multiple utterances)
+ * The proofreader works on plain-text speaker turns (no timestamps) so it
+ * can read naturally — but the published markdown needs timestamps at every
+ * paragraph break so listeners can navigate long monologues. This script
+ * does that re-attachment using word-level timing data preserved by
+ * label-speakers.mjs.
+ *
+ * Algorithm (paragraph-level alignment against the raw word stream):
+ *
+ *   1. Flatten labeled.utterances[].words into a single sequence
+ *      [{ text, start }] of normalized words.
+ *   2. Split proofread markdown into paragraphs (blank-line separated).
+ *   3. For each paragraph, take its first N words, anchor on each of the
+ *      first 3 head words in turn, and score the resulting window against
+ *      the head with sequential overlap. The best window's first word's
+ *      `start` becomes the paragraph's timestamp.
+ *   4. Cursor advances only on high-confidence matches so a single weak
+ *      match doesn't poison subsequent alignments.
+ *
+ * Design choices:
+ *   - "No timestamp" is better than a wrong one — paragraphs whose best
+ *     score is below MIN_SCORE are emitted without any bracket prefix.
+ *     Readers infer the position from neighbouring paragraphs.
+ *   - Very short reactions ("Yeah.", "Mm-hmm.") are not stamped or counted
+ *     against the success rate.
  *
  * Usage:
  *   node scripts/add-timestamps.mjs                 # Preview all
  *   node scripts/add-timestamps.mjs --write         # Write to src/episodes/
- *   node scripts/add-timestamps.mjs --episode 50    # Single episode
- *   node scripts/add-timestamps.mjs --verify        # Show alignment details
- *   node scripts/add-timestamps.mjs --mismatches    # Only process episodes with known mismatches
+ *   node scripts/add-timestamps.mjs --episode 191   # Single episode
+ *   node scripts/add-timestamps.mjs --verify        # Show un-stamped paragraphs
  */
 
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 'fs';
@@ -29,81 +47,31 @@ const EPISODES_DIR = join(import.meta.dirname, '..', 'src', 'episodes');
 const args = process.argv.slice(2);
 const writeToEpisodes = args.includes('--write');
 const verify = args.includes('--verify');
-const mismatchesOnly = args.includes('--mismatches');
+const force = args.includes('--force');
 const episodeIdx = args.indexOf('--episode');
 const singleEpisode = episodeIdx !== -1 ? args[episodeIdx + 1] : null;
+const minCoverageIdx = args.indexOf('--min-coverage');
+const MIN_COVERAGE_PCT = minCoverageIdx !== -1 ? parseInt(args[minCoverageIdx + 1], 10) : 70;
 
-// Episodes with known mismatches from timestamp-mismatch-report.md
-const MISMATCH_EPISODES = new Set([
-  '000', '005', '006', '007', '011', '013', '016', '019', '022', '024',
-  '025', '026', '027', '029', '030', '037', '038', '039', '042', '046',
-  '048', '054', '055', '056', '058', '060', '064', '073', '079', '081',
-  '082', '085', '094', '095', '111', '122', '131', '133', '134', '136',
-  '141', '151', '169', '170', '174', '176', '177', '180',
-  'bonus-glaucomflecken',
-]);
+// Tuning constants
+const HEAD_WORDS = 8;
+const MAX_LOOKAHEAD = 1200;    // ~5-10 min of words from the cursor
+const MIN_SCORE = 0.5;         // Below this, leave un-stamped (don't risk a wrong stamp)
+const ADVANCE_SCORE = 0.6;     // Only advance the cursor on confident matches
+const SHORT_PARA_TOKENS = 5;   // Skip ("Yeah.", "Mm-hmm.") — not worth stamping
 
-// ── Inline ad detection ─────────────────────────────────────────────────
-const INTRO_PHRASES = [
-  'welcome back',
-  'hello and welcome',
-  'every bendy body',
-  'welcome to the bendy bodies',
-  'welcome to bendy bodies',
-];
+// ── Formatting helpers ──────────────────────────────────────────────────
 
-const INLINE_AD_PHRASES = [
-  'brought to you by bauerfeind',
-  'brought to you by bowerfine',
-  'bauerfeind premium braces',
-  'bowerfine promotes mobility',
-  'this episode of the bendy bodies podcast is brought to you',
-];
-
-function stripInlineAds(text) {
-  const lower = text.toLowerCase();
-  const hasInlineAd = INLINE_AD_PHRASES.some(p => lower.includes(p));
-  if (!hasInlineAd) return text;
-
-  let introIdx = -1;
-  for (const phrase of INTRO_PHRASES) {
-    const idx = lower.indexOf(phrase);
-    if (idx !== -1 && (introIdx === -1 || idx < introIdx)) {
-      introIdx = idx;
-    }
-  }
-
-  if (introIdx > 0) {
-    const trimmed = text.slice(introIdx);
-    return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
-  }
-
-  if (text.length < 500 && !INTRO_PHRASES.some(p => lower.includes(p))) {
-    return '';
-  }
-
-  return text;
-}
-
-/**
- * Format milliseconds as [MM:SS] or [H:MM:SS].
- */
 function formatTimestamp(ms) {
-  const totalSeconds = Math.floor(ms / 1000);
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-
-  if (hours > 0) {
-    return `[${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}]`;
-  }
-  return `[${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}]`;
+  const total = Math.floor(ms / 1000);
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
+  const pad = (n) => String(n).padStart(2, '0');
+  return h > 0 ? `[${h}:${pad(m)}:${pad(s)}]` : `[${pad(m)}:${pad(s)}]`;
 }
 
-/**
- * Normalize text for fuzzy matching: lowercase, strip punctuation, collapse whitespace.
- */
-function normalizeText(text) {
+function normalize(text) {
   return text
     .toLowerCase()
     .replace(/['']/g, "'")
@@ -113,324 +81,123 @@ function normalizeText(text) {
     .trim();
 }
 
-/**
- * Extract words from text for matching.
- */
-function extractWords(text) {
-  return normalizeText(text).split(' ').filter(Boolean);
+function tokens(text) {
+  return normalize(text).split(' ').filter(Boolean);
 }
 
-/**
- * Jaccard similarity between two word sets (bag-of-words overlap).
- * Robust to word reordering and partial edits.
- */
-function jaccardSimilarity(wordsA, wordsB) {
-  if (wordsA.length === 0 || wordsB.length === 0) return 0;
-  const setA = new Set(wordsA);
-  const setB = new Set(wordsB);
-  let intersection = 0;
-  for (const w of setA) {
-    if (setB.has(w)) intersection++;
-  }
-  return intersection / (setA.size + setB.size - intersection);
-}
+// ── Step 1: Flatten the labeled word stream ─────────────────────────────
 
-/**
- * Sequential word overlap: how many words from `query` appear in order within `target`.
- */
-function sequentialOverlap(queryWords, targetWords) {
-  if (queryWords.length === 0 || targetWords.length === 0) return 0;
-  const n = Math.min(queryWords.length, 25);
-  const query = queryWords.slice(0, n);
-  let bestMatches = 0;
-
-  for (let start = 0; start <= Math.max(0, targetWords.length - Math.floor(n / 2)); start++) {
-    let matches = 0;
-    let qi = 0;
-    for (let ti = start; ti < Math.min(start + n * 3, targetWords.length) && qi < n; ti++) {
-      if (targetWords[ti] === query[qi]) {
-        matches++;
-        qi++;
-      }
-    }
-    if (matches > bestMatches) bestMatches = matches;
-  }
-  return bestMatches / n;
-}
-
-/**
- * Combined similarity score using both Jaccard and sequential overlap.
- * Takes the higher of the two, with a bonus when both agree.
- */
-function similarityScore(queryWords, targetWords) {
-  const jaccard = jaccardSimilarity(queryWords, targetWords);
-  const sequential = sequentialOverlap(queryWords, targetWords);
-  return Math.max(jaccard, sequential);
-}
-
-/**
- * Extract utterances from labeled JSON, merging consecutive same-speaker
- * utterances and stripping ads (mirrors format-transcripts logic).
- */
-function extractLabeledUtterances(labeled) {
-  const { utterances } = labeled;
-  if (!utterances || utterances.length === 0) return [];
-
-  const result = [];
-  let currentSpeaker = null;
-  let currentStart = null;
-  let currentText = '';
-  let isFirstUtterance = true;
-  let hasFlushedAny = false;
-
-  for (const u of utterances) {
-    let text = u.text;
-
-    if (isFirstUtterance || !hasFlushedAny) {
-      text = stripInlineAds(text);
-      if (!text) continue;
-    }
-    isFirstUtterance = false;
-
-    if (u.speakerName === currentSpeaker) {
-      currentText += ' ' + text;
-    } else {
-      if (currentSpeaker !== null) {
-        result.push({ speaker: currentSpeaker, start: currentStart, text: currentText });
-        hasFlushedAny = true;
-      }
-      currentSpeaker = u.speakerName;
-      currentStart = u.start;
-      currentText = text;
+function flattenWords(labeled) {
+  const flat = [];
+  for (const u of labeled.utterances || []) {
+    if (!u.words) continue;
+    for (const w of u.words) {
+      const t = normalize(w.text);
+      if (t) flat.push({ text: t, start: w.start });
     }
   }
-
-  if (currentSpeaker !== null) {
-    result.push({ speaker: currentSpeaker, start: currentStart, text: currentText });
-  }
-
-  return result;
+  return flat;
 }
 
-/**
- * Also extract raw (unmerged) utterances for finer-grained text matching.
- */
-function extractRawUtterances(labeled) {
-  const { utterances } = labeled;
-  if (!utterances || utterances.length === 0) return [];
+// ── Step 2: Parse proofread into paragraphs ─────────────────────────────
 
-  const result = [];
-  let hasFlushedAny = false;
+const speakerRegex = /^([A-Z][^:\n]{1,60}):\s+/;
 
-  for (const u of utterances) {
-    let text = u.text;
-    if (!hasFlushedAny) {
-      text = stripInlineAds(text);
-      if (!text) continue;
-    }
-    hasFlushedAny = true;
-    result.push({ speaker: u.speakerName, start: u.start, end: u.end, text });
-  }
-
-  return result;
-}
-
-/**
- * Detect speaker names from proofread text.
- */
-function detectSpeakers(text) {
-  const lines = text.split('\n').filter(l => l.trim());
-  const candidates = new Map();
-  for (const line of lines) {
-    const m = line.match(/^([A-Z][^:]{1,60}):\s/);
-    if (m) {
-      const name = m[1];
-      candidates.set(name, (candidates.get(name) || 0) + 1);
-    }
-  }
-  return [...candidates.keys()];
-}
-
-/**
- * Parse proofread markdown into turns with full text.
- */
-function parseProofreadTurns(text, speakers) {
-  const lines = text.split('\n');
-  const turns = [];
-  let currentTurn = null;
-
-  const escapedNames = speakers.map(s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-  const speakerRegex = new RegExp(`^(${escapedNames.join('|')}):\\s`);
-
-  for (let i = 0; i < lines.length; i++) {
-    const match = lines[i].match(speakerRegex);
-    if (match) {
-      if (currentTurn) {
-        currentTurn.endLine = i - 1;
-        turns.push(currentTurn);
-      }
-      // Extract text after "Speaker: "
-      const textStart = lines[i].slice(match[0].length);
-      currentTurn = {
-        speaker: match[1],
-        lineIdx: i,
-        textLines: [textStart],
-      };
-    } else if (currentTurn && lines[i].trim()) {
-      currentTurn.textLines.push(lines[i].trim());
-    }
-  }
-  if (currentTurn) {
-    currentTurn.endLine = lines.length - 1;
-    turns.push(currentTurn);
-  }
-
-  // Compute full text for each turn
-  for (const turn of turns) {
-    turn.text = turn.textLines.join(' ');
-    turn.words = extractWords(turn.text);
-  }
-
-  return turns;
-}
-
-/**
- * Text-based timestamp alignment.
- * For each proofread turn, finds the best-matching labeled utterance(s) by text similarity.
- * Also tries matching against consecutive utterance pairs (for merged turns).
- * Enforces monotonic timestamp ordering.
- */
-function alignByText(proofreadTurns, rawUtterances) {
-  // Build word arrays for all raw utterances
-  const uttWords = rawUtterances.map(u => ({
-    ...u,
-    words: extractWords(u.text),
-  }));
-
-  // Pre-build merged pairs (consecutive utterances combined) for handling proofread merges
-  const mergedPairs = [];
-  for (let i = 0; i < uttWords.length - 1; i++) {
-    mergedPairs.push({
-      start: uttWords[i].start,
-      words: [...uttWords[i].words, ...uttWords[i + 1].words],
-      firstIdx: i,
+function parseProofreadParagraphs(text) {
+  // Blank-line separated blocks. The first block of a speaker turn is
+  // prefixed with "Name: "; continuation paragraphs are not. We keep the
+  // raw block (for emission) plus tokens for alignment.
+  const blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+  const paragraphs = [];
+  for (const block of blocks) {
+    const m = block.match(speakerRegex);
+    const textForTokens = m ? block.slice(m[0].length) : block;
+    const allTokens = tokens(textForTokens);
+    paragraphs.push({
+      raw: block,
+      headTokens: allTokens.slice(0, HEAD_WORDS),
+      totalTokens: allTokens.length,
     });
   }
-  // Also triples for heavy merges
-  const mergedTriples = [];
-  for (let i = 0; i < uttWords.length - 2; i++) {
-    mergedTriples.push({
-      start: uttWords[i].start,
-      words: [...uttWords[i].words, ...uttWords[i + 1].words, ...uttWords[i + 2].words],
-      firstIdx: i,
-    });
+  return paragraphs;
+}
+
+// ── Step 3: Alignment ───────────────────────────────────────────────────
+
+function sequentialOverlap(head, window) {
+  if (head.length === 0) return 0;
+  let qi = 0, matches = 0;
+  for (let i = 0; i < window.length && qi < head.length; i++) {
+    if (window[i].text === head[qi]) { matches++; qi++; }
   }
+  return matches / head.length;
+}
 
-  const matches = [];
-  let searchStart = 0;
-  const THRESHOLD = 0.15;
+function findBestAlignment(head, cursor, rawWords) {
+  const from = Math.max(0, cursor - 5);
+  const to = Math.min(rawWords.length, cursor + MAX_LOOKAHEAD);
+  let bestScore = 0, bestIdx = -1;
 
-  for (const turn of proofreadTurns) {
-    if (turn.words.length < 2) {
-      matches.push({ turn, matched: false, score: 0 });
-      continue;
-    }
-
-    let bestScore = 0;
-    let bestTimestamp = 0;
-    let bestIdx = -1;
-
-    // Search forward from last match, with backtrack allowance
-    const from = Math.max(0, searchStart - 3);
-    const to = uttWords.length;
-
-    // 1. Try individual utterances
+  // Try anchoring on each of the first 3 head words. If the proofreader
+  // rephrased the opening, head[0] might not appear at the actual start —
+  // but head[1] or head[2] usually do. We back the candidate idx up by
+  // the anchor position so the timestamp still targets paragraph start.
+  for (let anchorPos = 0; anchorPos < Math.min(3, head.length); anchorPos++) {
+    const anchor = head[anchorPos];
     for (let i = from; i < to; i++) {
-      const score = similarityScore(turn.words, uttWords[i].words);
+      if (rawWords[i].text !== anchor) continue;
+      const candidateIdx = Math.max(from, i - anchorPos);
+      const window = rawWords.slice(candidateIdx, candidateIdx + head.length * 3);
+      const score = sequentialOverlap(head, window);
       if (score > bestScore) {
         bestScore = score;
-        bestTimestamp = uttWords[i].start;
-        bestIdx = i;
-      }
-      if (bestScore > 0.7 && i > bestIdx + 15) break;
-    }
-
-    // 2. Try merged pairs (for when proofreader merged 2 utterances)
-    if (bestScore < 0.5) {
-      for (let i = Math.max(0, from - 1); i < mergedPairs.length; i++) {
-        if (mergedPairs[i].firstIdx < from - 3) continue;
-        const score = similarityScore(turn.words, mergedPairs[i].words);
-        if (score > bestScore) {
-          bestScore = score;
-          bestTimestamp = mergedPairs[i].start;
-          bestIdx = mergedPairs[i].firstIdx;
-        }
-        if (bestScore > 0.6 && mergedPairs[i].firstIdx > bestIdx + 10) break;
+        bestIdx = candidateIdx;
+        if (score >= 0.95) return { score: bestScore, idx: bestIdx };
       }
     }
-
-    // 3. Try merged triples (for heavy merges)
-    if (bestScore < 0.4 && turn.words.length > 30) {
-      for (let i = Math.max(0, from - 2); i < mergedTriples.length; i++) {
-        if (mergedTriples[i].firstIdx < from - 3) continue;
-        const score = similarityScore(turn.words, mergedTriples[i].words);
-        if (score > bestScore) {
-          bestScore = score;
-          bestTimestamp = mergedTriples[i].start;
-          bestIdx = mergedTriples[i].firstIdx;
-        }
-        if (bestScore > 0.5 && mergedTriples[i].firstIdx > bestIdx + 10) break;
-      }
-    }
-
-    if (bestScore >= THRESHOLD && bestIdx >= 0) {
-      matches.push({
-        turn,
-        matched: true,
-        score: bestScore,
-        utteranceIdx: bestIdx,
-        timestamp: bestTimestamp,
-      });
-      if (bestIdx >= searchStart) {
-        searchStart = bestIdx;
-      }
-    } else {
-      matches.push({ turn, matched: false, score: bestScore });
-    }
+    if (bestScore >= ADVANCE_SCORE) break;
   }
 
-  return matches;
+  return { score: bestScore, idx: bestIdx };
 }
 
-/**
- * Apply timestamps to proofread text based on alignment results.
- */
-function applyTimestamps(proofreadText, alignmentResults) {
-  const lines = proofreadText.split('\n');
-  let matched = 0;
-  let unmatched = 0;
-  const mismatches = [];
-
-  for (const result of alignmentResults) {
-    if (result.matched) {
-      const ts = formatTimestamp(result.timestamp);
-      lines[result.turn.lineIdx] = `${ts} ${lines[result.turn.lineIdx]}`;
-      matched++;
-    } else {
-      unmatched++;
-      if (result.turn.words.length >= 3) {
-        mismatches.push(`Line ${result.turn.lineIdx + 1}: ${result.turn.speaker} (score: ${result.score.toFixed(2)}, ${result.turn.words.length} words)`);
+function alignParagraphs(paragraphs, rawWords) {
+  let cursor = 0;
+  const results = [];
+  for (const para of paragraphs) {
+    const head = para.headTokens;
+    if (head.length < 2) {
+      results.push({ ...para, timestamp: null, score: 0, skip: true });
+      continue;
+    }
+    const { score, idx } = findBestAlignment(head, cursor, rawWords);
+    if (score >= MIN_SCORE && idx >= 0) {
+      results.push({ ...para, timestamp: rawWords[idx].start, score, idx });
+      if (score >= ADVANCE_SCORE) {
+        cursor = idx + Math.max(1, Math.floor(para.totalTokens * 0.6));
       }
+    } else {
+      results.push({ ...para, timestamp: null, score });
     }
   }
-
-  return {
-    text: lines.join('\n'),
-    matched,
-    total: alignmentResults.length,
-    mismatches,
-  };
+  return results;
 }
+
+// ── Step 4: Render ──────────────────────────────────────────────────────
+
+function renderTimestamped(aligned) {
+  const lines = [];
+  for (const a of aligned) {
+    if (a.timestamp === null) {
+      lines.push(a.raw); // no bracket — readers infer from neighbours
+    } else {
+      lines.push(`${formatTimestamp(a.timestamp)} ${a.raw}`);
+    }
+  }
+  return lines.join('\n\n') + '\n';
+}
+
+// ── Main ────────────────────────────────────────────────────────────────
 
 function main() {
   let labeledFiles = readdirSync(LABELED_DIR).filter(f => f.endsWith('.json'));
@@ -438,13 +205,6 @@ function main() {
   if (singleEpisode) {
     const padded = String(singleEpisode).padStart(3, '0');
     labeledFiles = labeledFiles.filter(f => f === `${padded}.json` || f === `${singleEpisode}.json`);
-  }
-
-  if (mismatchesOnly) {
-    labeledFiles = labeledFiles.filter(f => {
-      const slug = f.replace('.json', '');
-      return MISMATCH_EPISODES.has(slug);
-    });
   }
 
   mkdirSync(TIMESTAMPED_DIR, { recursive: true });
@@ -456,6 +216,7 @@ function main() {
   let skipped = 0;
   let perfect = 0;
   let warnings = 0;
+  let missingWords = 0;
 
   for (const file of labeledFiles) {
     const slug = file.replace('.json', '');
@@ -469,72 +230,66 @@ function main() {
     const labeled = JSON.parse(readFileSync(join(LABELED_DIR, file), 'utf-8'));
     const proofreadText = readFileSync(proofreadPath, 'utf-8');
 
-    // Skip if already has timestamps
-    if (/^\[\d+:\d+/.test(proofreadText)) {
+    // Already timestamped? Skip.
+    if (/^\[\d+:\d+/.test(proofreadText.trimStart())) {
       if (verify) console.log(`SKIP ${slug}: already has timestamps`);
       skipped++;
       continue;
     }
 
-    // Detect speakers and parse turns
-    const speakers = detectSpeakers(proofreadText);
-    if (speakers.length === 0) {
-      if (verify) console.log(`SKIP ${slug}: no speakers detected`);
+    const rawWords = flattenWords(labeled);
+    if (rawWords.length === 0) {
+      console.log(`⚠ ${slug}: no word-level data in labeled JSON — re-run label-speakers.mjs`);
+      missingWords++;
       skipped++;
       continue;
     }
 
-    const proofreadTurns = parseProofreadTurns(proofreadText, speakers);
+    const paragraphs = parseProofreadParagraphs(proofreadText);
+    const aligned = alignParagraphs(paragraphs, rawWords);
 
-    // Extract raw utterances (unmerged) for finer text matching
-    const rawUtterances = extractRawUtterances(labeled);
+    const significant = aligned.filter(a => !a.skip && a.totalTokens >= SHORT_PARA_TOKENS);
+    const matched = significant.filter(a => a.timestamp !== null).length;
+    const unstamped = significant.length - matched;
+    const pct = significant.length ? Math.round(100 * matched / significant.length) : 100;
 
-    if (rawUtterances.length === 0) {
-      if (verify) console.log(`SKIP ${slug}: no utterances in labeled JSON`);
-      skipped++;
-      continue;
-    }
+    const output = renderTimestamped(aligned);
+    writeFileSync(join(TIMESTAMPED_DIR, `${slug}.md`), output);
 
-    // Align by text similarity
-    const alignment = alignByText(proofreadTurns, rawUtterances);
-    const result = applyTimestamps(proofreadText, alignment);
-
-    // Save to timestamped/ output folder
-    writeFileSync(join(TIMESTAMPED_DIR, `${slug}.md`), result.text);
-
-    if (result.mismatches.length > 0) {
-      const pct = Math.round((result.matched / result.total) * 100);
-      if (pct < 90) {
-        warnings++;
-        console.log(`⚠ ${slug}: ${result.matched}/${result.total} (${pct}%) turns timestamped`);
-      } else {
-        console.log(`~ ${slug}: ${result.matched}/${result.total} (${pct}%) turns timestamped`);
-      }
-      if (verify) {
-        for (const m of result.mismatches.slice(0, 5)) {
-          console.log(`    ${m}`);
-        }
-        if (result.mismatches.length > 5) {
-          console.log(`    ... and ${result.mismatches.length - 5} more`);
-        }
-      }
-    } else {
+    if (unstamped === 0) {
       perfect++;
-      console.log(`✓ ${slug}: ${result.matched}/${result.total} turns timestamped`);
+      console.log(`✓ ${slug}: ${matched}/${significant.length} paragraphs timestamped`);
+    } else if (pct < 85) {
+      warnings++;
+      console.log(`⚠ ${slug}: ${matched}/${significant.length} (${pct}%) — ${unstamped} un-stamped`);
+    } else {
+      console.log(`~ ${slug}: ${matched}/${significant.length} (${pct}%) — ${unstamped} un-stamped`);
+    }
+
+    if (verify && unstamped > 0) {
+      const misses = aligned.filter(a => a.timestamp === null && !a.skip && a.totalTokens >= SHORT_PARA_TOKENS);
+      for (const m of misses.slice(0, 5)) {
+        const preview = m.raw.slice(0, 90).replace(/\n/g, ' ');
+        console.log(`    score=${m.score.toFixed(2)} tokens=${m.totalTokens}  ${preview}…`);
+      }
+      if (misses.length > 5) console.log(`    ... and ${misses.length - 5} more`);
     }
 
     processed++;
 
     if (writeToEpisodes) {
+      if (pct < MIN_COVERAGE_PCT && !force) {
+        console.log(`  SKIP write: coverage ${pct}% below threshold ${MIN_COVERAGE_PCT}% (use --force to override)`);
+        continue;
+      }
       const episodePath = join(EPISODES_DIR, `${slug}.md`);
       if (!existsSync(episodePath)) {
         console.log(`  SKIP write: ${slug}.md not found in episodes/`);
         continue;
       }
-
       const raw = readFileSync(episodePath, 'utf-8');
       const { data } = matter(raw);
-      writeFileSync(episodePath, matter.stringify(result.text, data));
+      writeFileSync(episodePath, matter.stringify(output, data));
       written++;
     }
   }
@@ -542,13 +297,16 @@ function main() {
   console.log(`\nOutput: ${TIMESTAMPED_DIR}`);
   console.log(`\n=== Summary ===`);
   console.log(`Processed: ${processed}`);
-  console.log(`Perfect (100%): ${perfect}`);
-  console.log(`Warnings (<90%): ${warnings}`);
+  console.log(`100% stamped: ${perfect}`);
+  console.log(`Warnings (<85%): ${warnings}`);
   console.log(`Skipped: ${skipped}`);
+  if (missingWords > 0) {
+    console.log(`⚠ Missing word-level data: ${missingWords} — re-run label-speakers.mjs`);
+  }
   if (writeToEpisodes) {
     console.log(`Written to episodes: ${written}`);
   } else {
-    console.log(`Preview mode: use --write to also update episode files`);
+    console.log(`Preview mode: use --write to update episode files`);
   }
 }
 

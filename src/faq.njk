@@ -19,65 +19,12 @@ pageType: "faq"
 <!-- FAQ Section Navigation -->
 <div class="faq-section-nav">
   <div class="container">
-    <a href="#who" class="faq-nav-link active" onclick="scrollToSection(event, 'who')">Who Are These Services For?</a>
     {%- for cat in faqCategories %}
-    <a href="#{{ cat.id }}" class="faq-nav-link" onclick="scrollToSection(event, '{{ cat.id }}')">{{ cat.title }}</a>
+    <a href="#{{ cat.id }}" class="faq-nav-link{% if loop.first %} active{% endif %}" onclick="scrollToSection(event, '{{ cat.id }}')">{{ cat.title }}</a>
     {%- endfor %}
     <a href="#hypermobility" class="faq-nav-link" onclick="scrollToSection(event, 'hypermobility')">Questions about Hypermobility Disorders</a>
   </div>
 </div>
-
-<!-- Who This is For -->
-<section class="section" id="who">
-  <div class="container faq-container">
-    <h2 class="faq-section-title">Who Are These Services For?</h2>
-    <p style="color: var(--text-muted); margin-bottom: 32px;">Whether you&rsquo;re a patient seeking answers, a parent supporting a child, or a clinician expanding your knowledge &mdash; we&rsquo;re here to help.</p>
-
-    <div class="who-cards">
-      <a href="/services/#coaching" class="who-card" style="text-decoration: none; color: inherit;">
-        <div class="who-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
-          </svg>
-        </div>
-        <h3>Patients &amp; Individuals</h3>
-        <ul>
-          <li>You&rsquo;ve been dismissed by doctors and need someone who understands complex pain</li>
-          <li>You suspect EDS or HSD but don&rsquo;t know where to start</li>
-          <li>You&rsquo;re looking for an integrative approach that goes beyond symptom management</li>
-        </ul>
-      </a>
-
-      <a href="/services/#mentorship" class="who-card" style="text-decoration: none; color: inherit;">
-        <div class="who-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v4"/><path d="M14 14h-4"/><path d="M14 18h-4"/><path d="M14 8h-4"/><path d="M18 12h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2"/><path d="M18 22V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v18"/></svg>
-        </div>
-        <h3>Healthcare Practitioners</h3>
-        <ul>
-          <li>You&rsquo;re a clinician wanting guidance on treating EDS patients</li>
-          <li>You want to build or grow a practice focused on complex conditions</li>
-          <li>You need support interpreting symptoms, labs, or treatment planning</li>
-        </ul>
-      </a>
-
-      <a href="/services/#medico-legal" class="who-card" style="text-decoration: none; color: inherit;">
-        <div class="who-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg>
-        </div>
-        <h3>Legal Professionals</h3>
-        <ul>
-          <li>You need an independent medical expert for hypermobility or connective tissue disorders</li>
-          <li>You require medico-legal consultation for a case involving EDS or related conditions</li>
-        </ul>
-      </a>
-    </div>
-
-    <div style="text-align: center; margin-top: 32px;">
-      <a href="/services/" class="btn btn-primary">Find the Right Support for You</a>
-    </div>
-  </div>
-</section>
 
 {# --- Q&A vertical accordion, driven by CMS-editable markdown files in
        src/faq-items/. All categories live in a single continuous section
@@ -86,32 +33,38 @@ pageType: "faq"
   <div class="container faq-container">
     {%- for cat in faqCategories %}
     <div class="faq-category-block{% if not loop.first %} faq-category-block-divider{% endif %}" id="{{ cat.id }}">
-      <h2 class="faq-section-title faq-section-title-inline">
-        {%- if cat.id == 'general' -%}
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></svg>
-        {%- elif cat.id == 'medical' -%}
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
-        {%- elif cat.id == 'coaching' -%}
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        {%- elif cat.id == 'mentorship' -%}
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
-        {%- elif cat.id == 'medico-legal' -%}
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg>
-        {%- endif -%}
-        {{ cat.title }}
-      </h2>
+      <button class="faq-category-header" onclick="toggleCategory(this)" aria-expanded="false">
+        <span class="faq-section-title faq-section-title-inline">
+          {%- if cat.id == 'general' -%}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></svg>
+          {%- elif cat.id == 'medical' -%}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+          {%- elif cat.id == 'coaching' -%}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          {%- elif cat.id == 'mentorship' -%}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
+          {%- elif cat.id == 'medico-legal' -%}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg>
+          {%- endif -%}
+          {{ cat.title }}
+        </span>
+        <span class="faq-category-count">{{ collections.faqByCategory[cat.id] | length }}</span>
+        <svg class="faq-chevron faq-category-chevron" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
 
-      {%- for item in collections.faqByCategory[cat.id] %}
-      <div class="faq-item" id="faq-{{ item.fileSlug }}">
-        <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
-          <span>{{ item.data.question }}</span>
-          <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="faq-answer">
-          {{ item.templateContent | safe }}
+      <div class="faq-category-body">
+        {%- for item in collections.faqByCategory[cat.id] %}
+        <div class="faq-item" id="faq-{{ item.fileSlug }}">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            <span>{{ item.data.question }}</span>
+            <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            {{ item.templateContent | safe }}
+          </div>
         </div>
+        {%- endfor %}
       </div>
-      {%- endfor %}
     </div>
     {%- endfor %}
   </div>
@@ -150,13 +103,15 @@ function toggleFaq(btn) {
   const item = btn.parentElement;
   const wasOpen = item.classList.contains('open');
 
-  // Close all items in the same section
-  const section = item.closest('.faq-container');
-  section.querySelectorAll('.faq-item.open').forEach(el => {
-    el.classList.remove('open');
-    const q = el.querySelector('.faq-question');
-    if (q) q.setAttribute('aria-expanded', 'false');
-  });
+  // Close all items in the same category
+  const block = item.closest('.faq-category-block');
+  if (block) {
+    block.querySelectorAll('.faq-item.open').forEach(el => {
+      el.classList.remove('open');
+      const q = el.querySelector('.faq-question');
+      if (q) q.setAttribute('aria-expanded', 'false');
+    });
+  }
 
   // Toggle clicked item
   if (!wasOpen) {
@@ -165,10 +120,28 @@ function toggleFaq(btn) {
   }
 }
 
+function toggleCategory(btn) {
+  const block = btn.closest('.faq-category-block');
+  if (!block) return;
+  const isOpen = block.classList.toggle('open');
+  btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+
+function openCategoryFor(block) {
+  if (!block) return;
+  block.classList.add('open');
+  const header = block.querySelector('.faq-category-header');
+  if (header) header.setAttribute('aria-expanded', 'true');
+}
+
 function scrollToSection(e, id) {
   e.preventDefault();
   const el = document.getElementById(id);
   if (!el) return;
+  // Auto-open the category if the nav link points at a collapsed one
+  if (el.classList && el.classList.contains('faq-category-block')) {
+    openCategoryFor(el);
+  }
   const offset = 100;
   const y = el.getBoundingClientRect().top + window.pageYOffset - offset;
   window.scrollTo({ top: y, behavior: 'smooth' });
@@ -188,6 +161,7 @@ function openFaqFromHash() {
   if (hash.startsWith('faq-')) {
     const item = document.getElementById(hash);
     if (!item) return;
+    openCategoryFor(item.closest('.faq-category-block'));
     item.classList.add('open');
     const btn = item.querySelector('.faq-question');
     if (btn) btn.setAttribute('aria-expanded', 'true');
@@ -198,7 +172,11 @@ function openFaqFromHash() {
       window.scrollTo({ top: y, behavior: 'smooth' });
     });
   } else {
-    // Plain section anchor — update active nav link
+    // Plain section anchor — open the targeted category and update active nav link
+    const block = document.getElementById(hash);
+    if (block && block.classList.contains('faq-category-block')) {
+      openCategoryFor(block);
+    }
     document.querySelectorAll('.faq-nav-link').forEach(l => {
       l.classList.toggle('active', l.getAttribute('href') === '#' + hash);
     });
@@ -209,7 +187,7 @@ window.addEventListener('DOMContentLoaded', openFaqFromHash);
 window.addEventListener('hashchange', openFaqFromHash);
 
 // Highlight active section on scroll
-const FAQ_SECTION_IDS = ['who', {% for cat in faqCategories %}'{{ cat.id }}', {% endfor %}'hypermobility'];
+const FAQ_SECTION_IDS = [{% for cat in faqCategories %}'{{ cat.id }}', {% endfor %}'hypermobility'];
 window.addEventListener('scroll', () => {
   let current = FAQ_SECTION_IDS[0];
   for (const id of FAQ_SECTION_IDS) {

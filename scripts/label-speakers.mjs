@@ -92,6 +92,14 @@ function main() {
           text: u.text,
           start: u.start,
           end: u.end,
+          // Word-level timing lets add-timestamps.mjs place timestamps at
+          // every paragraph boundary inside long monologues, not just at
+          // speaker-turn starts.
+          words: (u.words || []).map(w => ({
+            text: w.text,
+            start: w.start,
+            end: w.end,
+          })),
         })),
     };
 
