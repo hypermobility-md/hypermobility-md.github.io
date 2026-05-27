@@ -36,6 +36,7 @@ guests:
   - Kristin Flanary
 guestImages: []
 bonus: true
+guestImage: /Guests/will-flanary.png
 ---
 [01:34] Will Flannery: Hello everybody. Welcome to Knock Knock High with The Glockenfleckens. I am your host, Will Flannery, also known as Dr. Glockenflecken. 
 
