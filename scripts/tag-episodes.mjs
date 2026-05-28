@@ -108,7 +108,7 @@ async function retag() {
   console.log(`Re-tagging ${targets.length} episode(s)${dryRun ? ' (dry run)' : ''}...\n`);
 
   for (const ep of targets) {
-    const transcript = (ep.existingTranscript || '').split(/\s+/).slice(0, 4000).join(' ');
+    const transcript = ep.existingTranscript || ''; // lib clamps to MAX_TRANSCRIPT_WORDS
     let resolved;
     try {
       const msg = await client.messages.create(buildTagRequest(ep, transcript, taxonomy, MODEL));
@@ -147,7 +147,7 @@ async function submitBatch() {
   console.log(`Submitting ${remaining.length} episodes (${taxonomy.tags.length} canonical tags)...\n`);
 
   const requests = remaining.map(ep => {
-    const transcript = (ep.existingTranscript || '').split(/\s+/).slice(0, 500).join(' ');
+    const transcript = ep.existingTranscript || ''; // lib clamps to MAX_TRANSCRIPT_WORDS
     return {
       custom_id: ep.slug,
       params: {

@@ -11,12 +11,10 @@
  *   node scripts/sync-rss.mjs --dry-run        # Preview without writing files
  *   node scripts/sync-rss.mjs --rss-only       # Skip YouTube backfill
  *   node scripts/sync-rss.mjs --yt-only        # Skip RSS, only backfill YouTube
- *   node scripts/sync-rss.mjs --no-captions    # (deprecated — captions now handled by transcribe workflow)
  */
 
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
 import { join } from 'path';
-import { execSync } from 'child_process';
 import matter from 'gray-matter';
 import Anthropic from '@anthropic-ai/sdk';
 
@@ -36,7 +34,6 @@ const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const RSS_ONLY = args.includes('--rss-only');
 const YT_ONLY = args.includes('--yt-only');
-const NO_CAPTIONS = args.includes('--no-captions');
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -339,61 +336,6 @@ async function fetchYouTubePlaylist(n = YT_TOP_N) {
     console.error('  ⚠  Failed to fetch YouTube playlist feed:', e.message);
     return [];
   }
-}
-
-/** Pull YouTube auto-captions for a video ID using yt-dlp. Returns transcript text or null. */
-function fetchYouTubeCaptions(videoId) {
-  if (NO_CAPTIONS) return null;
-  try {
-    // Download auto-generated English subtitles
-    const tmpDir = join(ROOT, 'scripts', 'output', 'yt-captions');
-    execSync(`mkdir -p "${tmpDir}"`, { stdio: 'pipe' });
-
-    execSync(
-      `yt-dlp --write-auto-sub --sub-lang "en-US,en" --skip-download --convert-subs vtt -o "${tmpDir}/${videoId}" "https://www.youtube.com/watch?v=${videoId}"`,
-      { encoding: 'utf-8', timeout: 60_000, stdio: ['pipe', 'pipe', 'pipe'] }
-    );
-
-    // Read the VTT file — language code may be "en-US" or "en"
-    let vttPath = join(tmpDir, `${videoId}.en-US.vtt`);
-    if (!existsSync(vttPath)) vttPath = join(tmpDir, `${videoId}.en.vtt`);
-    if (!existsSync(vttPath)) return null;
-
-    const vtt = readFileSync(vttPath, 'utf-8');
-    const transcript = vttToPlainText(vtt);
-
-    // Clean up
-    execSync(`rm -f "${tmpDir}/${videoId}".*.vtt`, { stdio: 'pipe' });
-
-    return transcript || null;
-  } catch (e) {
-    console.error(`  ⚠  Failed to fetch captions for ${videoId}:`, e.message);
-    return null;
-  }
-}
-
-/** Convert VTT subtitle content to readable plain text. */
-function vttToPlainText(vtt) {
-  const lines = vtt.split('\n');
-  const textLines = [];
-  let prevLine = '';
-
-  for (const line of lines) {
-    // Skip headers, timestamps, and empty lines
-    if (line.startsWith('WEBVTT') || line.startsWith('Kind:') || line.startsWith('Language:')) continue;
-    if (/^\d{2}:\d{2}/.test(line)) continue; // timestamp lines
-    if (/^\s*$/.test(line)) continue;
-    if (/^\d+$/.test(line.trim())) continue; // cue numbers
-
-    // Strip VTT tags like <c> </c> and duplicate lines
-    const clean = line.replace(/<[^>]+>/g, '').trim();
-    if (clean && clean !== prevLine) {
-      textLines.push(clean);
-      prevLine = clean;
-    }
-  }
-
-  return textLines.join('\n');
 }
 
 /** Build the YAML frontmatter + transcript content for an episode. */
@@ -712,7 +654,6 @@ async function main() {
   console.log('\n── Summary ─────────────────────────────────────');
   console.log(`New episodes from RSS: ${newEpisodes.length}`);
   console.log(`Episodes with video matched: ${videosMatched}`);
-  console.log(`Episodes with captions: ${newEpisodes.filter(e => e.transcript).length}`);
   if (DRY_RUN) console.log('\n(Dry run — nothing was written)');
   console.log('');
 }

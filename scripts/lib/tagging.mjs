@@ -16,6 +16,11 @@ import { join } from 'path';
 export const TAG_MIN = 3;
 export const TAG_MAX = 8;
 
+// Hard cap on transcript words sent to the model. ~15k words ≈ a 100-minute
+// episode, so in practice this is the whole conversation for this podcast,
+// while guarding against a pathologically long transcript blowing up tokens.
+export const MAX_TRANSCRIPT_WORDS = 15000;
+
 /** Load and parse the canonical taxonomy from a repo root. */
 export function loadTaxonomy(root) {
   const path = join(root, 'src', '_data', 'tagTaxonomy.json');
@@ -44,6 +49,7 @@ ${buildTagList(taxonomy)}
 
 Rules:
 - Select ${TAG_MIN}-${TAG_MAX} tags per episode (most episodes should have 4-6).
+- Base your selection on the entire conversation, not just the introduction.
 - A tag applies only if the episode substantively discusses that topic, not just a passing mention.
 - EDS and hypermobility are the subject of the entire podcast, so they are intentionally NOT in the list — tag what makes THIS episode distinct from the others.
 - Treat alias names as hints: if the content mentions an alias, return the canonical tag name.
@@ -52,10 +58,15 @@ Rules:
 Respond with ONLY a JSON array of tag names, e.g. ["POTS", "Pain", "Physical Therapy"].`;
 }
 
-/** Build the user message content for one episode. */
+/** Build the user message content for one episode. The transcript is clamped to
+ *  MAX_TRANSCRIPT_WORDS so every tagging path (inline, retag, batch) sees
+ *  effectively the whole episode without unbounded token use. */
 export function buildUserContent({ title, description, transcript }) {
+  const clamped = transcript
+    ? transcript.split(/\s+/).slice(0, MAX_TRANSCRIPT_WORDS).join(' ')
+    : '';
   return `Title: ${title}
-Description: ${description || ''}${transcript ? `\n\nTranscript:\n${transcript}` : ''}`;
+Description: ${description || ''}${clamped ? `\n\nTranscript:\n${clamped}` : ''}`;
 }
 
 /** Parse a model response into an array of tag strings.
