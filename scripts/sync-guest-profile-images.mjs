@@ -20,6 +20,7 @@ import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import matter from 'gray-matter';
+import { normalizeKey, normalizeImagePath, findGuestFile } from './lib/guest-keys.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dirname, '..');
@@ -27,30 +28,6 @@ const PROFILES_DIR = join(REPO_ROOT, 'src', 'guest-profiles');
 const GUESTS_DIR = join(REPO_ROOT, 'src', 'Guests');
 const EPISODES_DIR = join(REPO_ROOT, 'src', 'episodes');
 const IMAGES_MAP = join(REPO_ROOT, 'src', '_data', 'guestImages.json');
-
-// Mirrors normalizeKey in src/_data/guestData.js.
-function normalizeKey(name) {
-  if (!name) return '';
-  let n = String(name).replace(/^(Dr\.?|Prof\.?|Professor)\s+/i, '');
-  let prev;
-  do {
-    prev = n;
-    n = n.replace(/[,\s]+(M\.?D\.?|Ph\.?D\.?|D\.?P\.?T\.?|D\.?O\.?|P\.?A\.?-?C?|R\.?D\.?N\.?|O\.?T\.?|P\.?T\.?|J\.?D\.?|LICSW|NCPT|ATC|MS|MA|MPT|DMSC|MRCPsych|DDS|D\.?C\.?|FACP|FACS|FAANS|FAAFP|FAAN|FAMSSM|FACOG|FRCPC|IFMCP|ABIHM|CCSP|CEDS-S|FAED|CHT|CYT|CHC|CMTPT|COMT|NCS|OCS|CES|MHCM)\.?\s*$/i, '');
-  } while (n !== prev);
-  return n.replace(/[,.\s]+$/, '').trim().toLowerCase().replace(/\s+/g, ' ');
-}
-
-function normalizeImagePath(p) {
-  if (!p) return p;
-  let out = String(p).trim();
-  if (!out) return out;
-  if (!out.startsWith('/')) out = '/' + out;
-  if (!out.startsWith('/Guests/')) {
-    const parts = out.split('/');
-    out = '/Guests/' + parts[parts.length - 1];
-  }
-  return out;
-}
 
 function slugifyKey(key) {
   return key.replace(/\s+/g, '-');
@@ -60,23 +37,6 @@ function slugifyKey(key) {
 const guestFiles = existsSync(GUESTS_DIR)
   ? readdirSync(GUESTS_DIR).filter(f => /\.(jpe?g|png|webp|avif)$/i.test(f))
   : [];
-
-function findFileForKey(key) {
-  const words = key.split(/\s+/);
-  const variants = new Set([
-    words.map(w => w[0].toUpperCase() + w.slice(1)).join('_'),
-    words.map(w => w[0].toUpperCase() + w.slice(1)).join('-'),
-    words.map(w => w[0].toUpperCase() + w.slice(1)).join(''),
-    words.join('_'),
-    words.join('-'),
-    words.join(''),
-  ]);
-  for (const f of guestFiles) {
-    const stem = f.replace(/\.[^.]+$/, '');
-    if (variants.has(stem)) return '/Guests/' + f;
-  }
-  return null;
-}
 
 // Static image map. Used to FILL existing profiles, never to create new ones
 // (it contains aliases like "larry afrin" → Lawrence_Afrin.jpg).
@@ -141,7 +101,7 @@ if (existsSync(PROFILES_DIR)) {
       continue;
     }
 
-    let resolved = imagesByKey[key] || findFileForKey(key);
+    let resolved = imagesByKey[key] || findGuestFile(key, guestFiles);
     if (!resolved) continue;
     resolved = normalizeImagePath(resolved);
     profile.image = resolved;

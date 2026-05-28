@@ -28,27 +28,3 @@ export async function submitTranscription(audioUrl, speakersExpected) {
   const transcript = await aai.transcripts.transcribe(params);
   return transcript;
 }
-
-/**
- * Get transcript status/result by ID.
- */
-export async function getTranscript(transcriptId) {
-  const aai = getClient();
-  return aai.transcripts.get(transcriptId);
-}
-
-/**
- * Submit without waiting — just queue the job and return immediately.
- */
-export async function submitOnly(audioUrl, speakersExpected) {
-  const aai = getClient();
-  const params = {
-    audio_url: audioUrl,
-    speech_models: ['universal-3-pro'],
-    speaker_labels: true,
-    speakers_expected: speakersExpected,
-    language_code: 'en',
-  };
-  const transcript = await aai.transcripts.submit(params);
-  return transcript;
-}
