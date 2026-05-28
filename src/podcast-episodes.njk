@@ -64,7 +64,7 @@ permalink: /podcast-episodes/
     </div>
     <div class="tag-dropdown" id="tagDropdown" style="display:none;">
       <button class="filter-tag active" data-tag="all">All</button>
-      {%- for tag in tagTaxonomy.tags %}
+      {%- for tag in tagStats.byFrequency %}
       <button class="filter-tag" data-tag="{{ tag.name }}">{{ tag.name }}</button>
       {%- endfor %}
     </div>

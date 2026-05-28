@@ -1,41 +1,55 @@
 #!/usr/bin/env node
 
 /**
- * Phase 3: Tag Application — apply canonical taxonomy tags to all episodes.
+ * Apply canonical taxonomy tags to episodes.
  *
- * Uses Anthropic's Message Batches API (50% cheaper). Requires a curated
- * taxonomy file at src/_data/tagTaxonomy.json.
+ * Tagging logic (prompt, alias resolution, 3-8 cap) lives in lib/tagging.mjs
+ * and is shared with the inline tagger in transcribe-new.mjs.
  *
- * Usage:
- *   node scripts/tag-episodes.mjs submit              # Submit batch
- *   node scripts/tag-episodes.mjs status              # Check batch status
- *   node scripts/tag-episodes.mjs results             # Download results and update episodes
- *   node scripts/tag-episodes.mjs results --dry-run   # Download but don't write to episodes
+ * Two modes:
+ *
+ *   Batch (cheap, async — for the whole catalog):
+ *     node scripts/tag-episodes.mjs submit              # Submit batch
+ *     node scripts/tag-episodes.mjs status              # Check batch status
+ *     node scripts/tag-episodes.mjs results             # Download results, write episodes
+ *     node scripts/tag-episodes.mjs results --dry-run   # Download but don't write
+ *
+ *   Direct (immediate — for a small set):
+ *     node scripts/tag-episodes.mjs retag --outliers    # Re-tag episodes with <3 or >8 tags
+ *     node scripts/tag-episodes.mjs retag 193 197 013   # Re-tag specific episodes by slug
+ *     node scripts/tag-episodes.mjs retag --outliers --dry-run
  */
 
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { parseAllEpisodes } from './lib/parse-episode.mjs';
+import {
+  loadTaxonomy,
+  buildSystemPrompt,
+  buildUserContent,
+  buildTagRequest,
+  parseTagJson,
+  resolveTags,
+  TAG_MIN,
+  TAG_MAX,
+} from './lib/tagging.mjs';
 import matter from 'gray-matter';
 import Anthropic from '@anthropic-ai/sdk';
 
-// Load .env
-const envPath = join(import.meta.dirname, '..', '.env');
+const ROOT = join(import.meta.dirname, '..');
+
+// Load .env (without overriding already-set vars)
+const envPath = join(ROOT, '.env');
 if (existsSync(envPath)) {
-  const envContent = readFileSync(envPath, 'utf-8');
-  for (const line of envContent.split('\n')) {
+  for (const line of readFileSync(envPath, 'utf-8').split('\n')) {
     const match = line.match(/^\s*([^#=]+?)\s*=\s*(.*?)\s*$/);
-    if (match && !process.env[match[1]]) {
-      process.env[match[1]] = match[2];
-    }
+    if (match && !process.env[match[1]]) process.env[match[1]] = match[2];
   }
 }
 
-const TAXONOMY_FILE = join(import.meta.dirname, '..', 'src', '_data', 'tagTaxonomy.json');
-const OUTPUT_DIR = join(import.meta.dirname, 'output', 'tags');
+const OUTPUT_DIR = join(ROOT, 'scripts', 'output', 'tags');
 const TAG_RESULTS_DIR = join(OUTPUT_DIR, 'applied');
 const BATCH_STATE_FILE = join(OUTPUT_DIR, 'apply-batch-state.json');
-
 mkdirSync(TAG_RESULTS_DIR, { recursive: true });
 
 const args = process.argv.slice(2);
@@ -45,58 +59,80 @@ const batchIdIdx = args.indexOf('--batch');
 const explicitBatchId = batchIdIdx !== -1 ? args[batchIdIdx + 1] : null;
 
 const client = new Anthropic();
+const MODEL = 'claude-haiku-4-5-20251001';
 
-function loadTaxonomy() {
-  if (!existsSync(TAXONOMY_FILE)) {
-    console.error(`Taxonomy file not found: ${TAXONOMY_FILE}`);
-    console.error('Run generate-taxonomy.mjs first, then curate the results into tagTaxonomy.json.');
-    process.exit(1);
-  }
-  return JSON.parse(readFileSync(TAXONOMY_FILE, 'utf-8'));
-}
-
-function buildSystemPrompt(taxonomy) {
-  const tagList = taxonomy.tags.map(t => {
-    const aliases = t.aliases?.length ? ` (also: ${t.aliases.join(', ')})` : '';
-    return `- ${t.name}${aliases}`;
-  }).join('\n');
-
-  return `You are tagging podcast episodes for a medical podcast about hypermobility and Ehlers-Danlos syndromes.
-
-Given an episode's title, description, and transcript excerpt, select ALL tags that apply from the canonical list below. Only use tags from this list — do not invent new ones.
-
-Canonical tags:
-${tagList}
-
-Rules:
-- Select 3-8 tags per episode (most episodes should have 4-6)
-- A tag applies if the episode substantively discusses that topic (not just a passing mention)
-- Use alias names as hints — if the content mentions an alias, use the canonical tag name
-- When in doubt, include the tag — it's better to over-tag slightly than to miss relevant content
-
-Respond with ONLY a JSON array of tag names. Example:
-["EDS", "Pain", "Physical Therapy"]`;
+/** Write a resolved tag list back into an episode markdown file. */
+function writeTags(filePath, tags) {
+  const raw = readFileSync(filePath, 'utf-8');
+  const { data, content } = matter(raw);
+  data.tags = tags;
+  writeFileSync(filePath, matter.stringify(content, data));
 }
 
 function loadBatchState() {
   if (existsSync(BATCH_STATE_FILE)) return JSON.parse(readFileSync(BATCH_STATE_FILE, 'utf-8'));
   return { batches: [] };
 }
-
 function saveBatchState(state) {
   writeFileSync(BATCH_STATE_FILE, JSON.stringify(state, null, 2));
 }
 
-async function submitBatch() {
-  const taxonomy = loadTaxonomy();
-  const episodes = parseAllEpisodes();
-  const systemPrompt = buildSystemPrompt(taxonomy);
+// ── Direct mode: re-tag a small, targeted set immediately ────────────────────
 
-  // Skip already-applied episodes
+async function retag() {
+  const taxonomy = loadTaxonomy(ROOT);
+  const episodes = parseAllEpisodes();
+
+  const explicitSlugs = args.slice(1).filter(a => !a.startsWith('--'));
+  let targets;
+  if (explicitSlugs.length) {
+    const bySlug = new Map(episodes.map(ep => [ep.slug, ep]));
+    targets = explicitSlugs.map(s => bySlug.get(s)).filter(Boolean);
+    const missing = explicitSlugs.filter(s => !bySlug.has(s));
+    if (missing.length) console.log(`⚠  Unknown slugs ignored: ${missing.join(', ')}`);
+  } else if (args.includes('--outliers')) {
+    targets = episodes.filter(ep => {
+      const n = (ep.tags || []).length;
+      return n < TAG_MIN || n > TAG_MAX;
+    });
+  } else {
+    console.log('Specify episodes: `retag --outliers` or `retag <slug> [<slug>...]`');
+    return;
+  }
+
+  if (targets.length === 0) {
+    console.log('No matching episodes to re-tag.');
+    return;
+  }
+
+  console.log(`Re-tagging ${targets.length} episode(s)${dryRun ? ' (dry run)' : ''}...\n`);
+
+  for (const ep of targets) {
+    const transcript = (ep.existingTranscript || '').split(/\s+/).slice(0, 4000).join(' ');
+    let resolved;
+    try {
+      const msg = await client.messages.create(buildTagRequest(ep, transcript, taxonomy, MODEL));
+      resolved = resolveTags(parseTagJson(msg.content[0].text), taxonomy);
+    } catch (e) {
+      console.log(`✗ ${ep.slug}: ${e.message}`);
+      continue;
+    }
+    const before = (ep.tags || []).join(', ') || '(none)';
+    const note = resolved.dropped.length ? ` (dropped: ${resolved.dropped.join(', ')})` : '';
+    console.log(`${dryRun ? '~' : '✓'} ${ep.slug}: [${before}] → [${resolved.tags.join(', ')}]${note}`);
+    if (!dryRun) writeTags(ep.filePath, resolved.tags);
+  }
+}
+
+// ── Batch mode: tag the whole catalog cheaply (async) ────────────────────────
+
+async function submitBatch() {
+  const taxonomy = loadTaxonomy(ROOT);
+  const episodes = parseAllEpisodes();
+  const system = buildSystemPrompt(taxonomy);
+
   const done = new Set(
-    existsSync(TAG_RESULTS_DIR)
-      ? readdirSync(TAG_RESULTS_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', ''))
-      : []
+    readdirSync(TAG_RESULTS_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', ''))
   );
 
   const remaining = episodes.filter(ep => {
@@ -105,48 +141,29 @@ async function submitBatch() {
     return true;
   });
 
-  if (remaining.length === 0) {
-    console.log('All episodes already tagged!');
-    return;
-  }
-
-  if (dryRun) {
-    console.log(`Would tag ${remaining.length} episodes with ${taxonomy.tags.length} canonical tags.`);
-    return;
-  }
+  if (remaining.length === 0) return console.log('All episodes already tagged!');
+  if (dryRun) return console.log(`Would tag ${remaining.length} episodes with ${taxonomy.tags.length} canonical tags.`);
 
   console.log(`Submitting ${remaining.length} episodes (${taxonomy.tags.length} canonical tags)...\n`);
 
-  const requests = [];
-  for (const ep of remaining) {
-    const transcript = ep.existingTranscript || '';
-    const excerpt = transcript.split(/\s+/).slice(0, 500).join(' ');
-
-    const content = `Title: ${ep.title}
-Description: ${ep.description}
-${excerpt ? `\nTranscript excerpt:\n${excerpt}` : ''}`;
-
-    requests.push({
+  const requests = remaining.map(ep => {
+    const transcript = (ep.existingTranscript || '').split(/\s+/).slice(0, 500).join(' ');
+    return {
       custom_id: ep.slug,
       params: {
-        model: 'claude-haiku-4-5-20251001',
+        model: MODEL,
         max_tokens: 256,
-        system: [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
-        messages: [{ role: 'user', content }],
+        system: [{ type: 'text', text: system, cache_control: { type: 'ephemeral' } }],
+        messages: [{ role: 'user', content: buildUserContent({ ...ep, transcript }) }],
       },
-    });
-  }
+    };
+  });
 
   const batch = await client.messages.batches.create({ requests });
-  console.log(`Batch created: ${batch.id}`);
-  console.log(`Requests: ${requests.length}`);
+  console.log(`Batch created: ${batch.id}\nRequests: ${requests.length}`);
 
   const state = loadBatchState();
-  state.batches.push({
-    id: batch.id,
-    count: requests.length,
-    created_at: new Date().toISOString(),
-  });
+  state.batches.push({ id: batch.id, count: requests.length, created_at: new Date().toISOString() });
   saveBatchState(state);
 
   console.log(`\nCheck status: node scripts/tag-episodes.mjs status`);
@@ -155,10 +172,7 @@ ${excerpt ? `\nTranscript excerpt:\n${excerpt}` : ''}`;
 
 async function checkStatus() {
   const state = loadBatchState();
-  if (state.batches.length === 0) {
-    console.log('No batches submitted yet.');
-    return;
-  }
+  if (state.batches.length === 0) return console.log('No batches submitted yet.');
   for (const info of state.batches) {
     const batch = await client.messages.batches.retrieve(info.id);
     console.log(`Batch: ${batch.id}`);
@@ -170,71 +184,37 @@ async function checkStatus() {
 }
 
 async function downloadResults() {
-  const taxonomy = loadTaxonomy();
-  const validTags = new Set(taxonomy.tags.map(t => t.name));
-
+  const taxonomy = loadTaxonomy(ROOT);
   const state = loadBatchState();
   const batchId = explicitBatchId || state.batches[state.batches.length - 1]?.id;
-  if (!batchId) {
-    console.log('No batch ID found. Submit a batch first.');
-    return;
-  }
+  if (!batchId) return console.log('No batch ID found. Submit a batch first.');
 
   const batch = await client.messages.batches.retrieve(batchId);
   console.log(`Batch ${batchId}: ${batch.processing_status}`);
-  if (batch.processing_status !== 'ended') {
-    console.log('Batch still processing. Try again later.');
-    return;
-  }
+  if (batch.processing_status !== 'ended') return console.log('Batch still processing. Try again later.');
 
   console.log('Downloading results...\n');
 
   const episodes = parseAllEpisodes();
   const episodeMap = new Map(episodes.map(ep => [ep.slug, ep]));
 
-  let succeeded = 0;
-  let errored = 0;
-  let written = 0;
+  let succeeded = 0, errored = 0, written = 0;
 
   for await (const result of await client.messages.batches.results(batchId)) {
     const slug = result.custom_id;
-
     if (result.result.type !== 'succeeded') {
       console.log(`✗ ${slug}: ${result.result.type}`);
       errored++;
       continue;
     }
-
     try {
-      let text = result.result.message.content[0].text.trim();
-      text = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
-      const tags = JSON.parse(text);
-
-      if (!Array.isArray(tags)) throw new Error('not an array');
-
-      // Filter to only valid taxonomy tags
-      const validatedTags = tags.filter(t => validTags.has(t));
-      const invalid = tags.filter(t => !validTags.has(t));
-
-      writeFileSync(join(TAG_RESULTS_DIR, `${slug}.json`), JSON.stringify({ slug, tags: validatedTags, invalid }, null, 2));
-
-      if (invalid.length > 0) {
-        console.log(`~ ${slug}: ${validatedTags.join(', ')} (dropped: ${invalid.join(', ')})`);
-      } else {
-        console.log(`✓ ${slug}: ${validatedTags.join(', ')}`);
-      }
+      const { tags, dropped } = resolveTags(parseTagJson(result.result.message.content[0].text), taxonomy);
+      writeFileSync(join(TAG_RESULTS_DIR, `${slug}.json`), JSON.stringify({ slug, tags, dropped }, null, 2));
+      console.log(dropped.length ? `~ ${slug}: ${tags.join(', ')} (dropped: ${dropped.join(', ')})` : `✓ ${slug}: ${tags.join(', ')}`);
       succeeded++;
-
-      // Write to episode file
       if (!dryRun) {
         const ep = episodeMap.get(slug);
-        if (ep) {
-          const raw = readFileSync(ep.filePath, 'utf-8');
-          const { data, content } = matter(raw);
-          data.tags = validatedTags;
-          writeFileSync(ep.filePath, matter.stringify(content, data));
-          written++;
-        }
+        if (ep) { writeTags(ep.filePath, tags); written++; }
       }
     } catch (e) {
       console.log(`✗ ${slug}: ${e.message}`);
@@ -245,34 +225,30 @@ async function downloadResults() {
   // Tag distribution summary
   const tagCounts = {};
   for (const f of readdirSync(TAG_RESULTS_DIR).filter(f => f.endsWith('.json'))) {
-    const data = JSON.parse(readFileSync(join(TAG_RESULTS_DIR, f), 'utf-8'));
-    for (const tag of data.tags || []) {
+    for (const tag of JSON.parse(readFileSync(join(TAG_RESULTS_DIR, f), 'utf-8')).tags || []) {
       tagCounts[tag] = (tagCounts[tag] || 0) + 1;
     }
   }
 
   console.log(`\n=== Summary ===`);
   console.log(`Succeeded: ${succeeded}, Errored: ${errored}`);
-  if (!dryRun) console.log(`Episodes updated: ${written}`);
-  else console.log('(dry run — no episodes updated)');
-
+  console.log(dryRun ? '(dry run — no episodes updated)' : `Episodes updated: ${written}`);
   console.log(`\nTag distribution:`);
-  const sorted = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
-  for (const [tag, count] of sorted) {
+  for (const [tag, count] of Object.entries(tagCounts).sort((a, b) => b[1] - a[1])) {
     console.log(`  ${tag}: ${count}`);
   }
 }
 
 switch (command) {
+  case 'retag': await retag(); break;
   case 'submit': await submitBatch(); break;
   case 'status': await checkStatus(); break;
   case 'results': await downloadResults(); break;
   default:
     if (dryRun) { await submitBatch(); break; }
     console.log('Usage:');
-    console.log('  node scripts/tag-episodes.mjs submit             # Submit batch');
-    console.log('  node scripts/tag-episodes.mjs status             # Check status');
-    console.log('  node scripts/tag-episodes.mjs results            # Download & update episodes');
-    console.log('  node scripts/tag-episodes.mjs results --dry-run  # Download without updating');
+    console.log('  Direct:  node scripts/tag-episodes.mjs retag --outliers');
+    console.log('           node scripts/tag-episodes.mjs retag <slug> [<slug>...]');
+    console.log('  Batch:   node scripts/tag-episodes.mjs submit | status | results');
     break;
 }

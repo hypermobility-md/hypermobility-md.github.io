@@ -1,7 +1,6 @@
 {
+  "_comment": "EDS and Hypermobility are intentionally excluded — they apply to ~70% of episodes (the whole podcast's subject), so they're useless as filters/tags. See scripts/lib/tagging.mjs.",
   "tags": [
-    { "name": "EDS", "aliases": ["hEDS", "Connective Tissue Disorders", "Ehlers-Danlos", "Ehlers-Danlos Syndrome"] },
-    { "name": "Hypermobility", "aliases": ["Joint Hypermobility", "HSD", "Hypermobility Spectrum Disorder", "Hypermobility Spectrum Disorders"] },
     { "name": "POTS", "aliases": ["Postural Orthostatic Tachycardia"] },
     { "name": "Dysautonomia", "aliases": ["Autonomic Dysfunction", "Autonomic Nervous System"] },
     { "name": "MCAS", "aliases": ["Mast Cell Activation", "Mast Cell Disorders", "Histamine Intolerance"] },

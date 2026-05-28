@@ -7,7 +7,6 @@
     "build": "eleventy",
     "start": "eleventy --serve",
     "debug": "DEBUG=Eleventy* eleventy",
-    "transcribe": "node --env-file=.env scripts/transcribe.mjs",
     "label-speakers": "node scripts/label-speakers.mjs",
     "format-transcripts": "node scripts/format-transcripts.mjs",
     "sync-rss": "node --env-file=.env scripts/sync-rss.mjs",

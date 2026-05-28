@@ -213,6 +213,18 @@ module.exports = function(eleventyConfig) {
   // JSON stringify filter
   eleventyConfig.addFilter("jsonify", (obj) => JSON.stringify(obj));
 
+  // Sort a tag array by global frequency. Default ascending (least → most
+  // common) so per-episode displays lead with distinctive tags; pass "desc"
+  // for pickers. `counts` is the tagStats.counts map.
+  eleventyConfig.addFilter("sortTagsByFreq", (tags, counts, dir) => {
+    if (!Array.isArray(tags)) return tags;
+    const c = counts || {};
+    const sign = dir === "desc" ? -1 : 1;
+    return [...tags].sort(
+      (a, b) => sign * ((c[a] || 0) - (c[b] || 0)) || a.localeCompare(b)
+    );
+  });
+
   // Markdown-it for transcript rendering
   eleventyConfig.addFilter("markdownify", (str) => {
     if (!str) return '';

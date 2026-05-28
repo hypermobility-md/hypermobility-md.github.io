@@ -14,8 +14,6 @@ description: >-
   Connect with YOUR Bendy Specialist, Dr. Linda Bluestein, MD at
   https://www.hypermobilitymd.com/.
 tags:
-  - Hypermobility
-  - EDS
   - Dance & Performing Arts
   - Patient Advocacy
   - Research

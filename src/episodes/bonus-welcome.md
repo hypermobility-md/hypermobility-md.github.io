@@ -8,9 +8,8 @@ description: >-
   demystify the wide world of symptomatic joint hypermobility. Get ready to
   better understand your own bendy body in our newest season – available now!
 tags:
-  - Hypermobility
   - Patient Advocacy
-  - Pain
+  - Research
 audioUrl: >-
   https://p.podderapp.com/9752035609/traffic.megaphone.fm/TCAHH7535381807.mp3?updated=1725126917
 videoUrl: ''

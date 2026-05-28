@@ -33,7 +33,7 @@ layout: base.njk
           </div>
           {% if tags and tags.length %}
           <div class="episode-detail-header-tags">
-            {% for tag in tags %}
+            {% for tag in tags | sortTagsByFreq(tagStats.counts) %}
             <a href="/podcast-episodes/?tag={{ tag | urlencode }}" class="tag-chip tag-chip-header">{{ tag }}</a>
             {% endfor %}
           </div>

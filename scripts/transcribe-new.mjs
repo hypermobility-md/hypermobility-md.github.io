@@ -23,6 +23,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { parseAllEpisodes } from './lib/parse-episode.mjs';
+import { buildTagRequest, parseTagJson, resolveTags } from './lib/tagging.mjs';
 import { submitTranscription } from './lib/assemblyai-helpers.mjs';
 import { mapSpeakers } from './lib/speaker-map.mjs';
 import matter from 'gray-matter';
@@ -445,49 +446,13 @@ function alignWordTimestamps(proofreadText, rawWords, minTurnWords = 4) {
 
 /**
  * Tag a single episode using the canonical taxonomy.
- * Used for new episodes in the pipeline (not batch).
+ * Used for new episodes in the pipeline (not batch). Shares prompt/resolution
+ * logic with the batch tagger via scripts/lib/tagging.mjs.
  */
 async function tagEpisode(ep, transcript, taxonomy) {
-  const tagList = taxonomy.tags.map(t => {
-    const aliases = t.aliases?.length ? ` (also: ${t.aliases.join(', ')})` : '';
-    return `- ${t.name}${aliases}`;
-  }).join('\n');
-
-  const message = await anthropic.messages.create({
-    model: 'claude-haiku-4-5-20251001',
-    max_tokens: 256,
-    messages: [{
-      role: 'user',
-      content: `Tag this podcast episode using ONLY tags from this list:
-${tagList}
-
-Title: ${ep.title}
-Description: ${ep.description}
-
-Full transcript:
-${transcript}
-
-Select 3-8 tags that apply based on the full conversation, not just the intro. Respond with ONLY a JSON array.`,
-    }],
-  });
-
-  let text = message.content[0].text.trim()
-    .replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
-  const tags = JSON.parse(text);
-  const validNames = new Set(taxonomy.tags.map(t => t.name));
-  // Also match by alias → canonical name
-  const aliasMap = new Map();
-  for (const t of taxonomy.tags) {
-    aliasMap.set(t.name.toLowerCase(), t.name);
-    for (const a of (t.aliases || [])) {
-      aliasMap.set(a.toLowerCase(), t.name);
-    }
-  }
-  if (!Array.isArray(tags)) return [];
-  const resolved = tags
-    .map(t => validNames.has(t) ? t : aliasMap.get(t.toLowerCase()) || null)
-    .filter(Boolean);
-  return [...new Set(resolved)];
+  const message = await anthropic.messages.create(buildTagRequest(ep, transcript, taxonomy));
+  const { tags } = resolveTags(parseTagJson(message.content[0].text), taxonomy);
+  return tags;
 }
 
 // ── Guest profile auto-creation ───────────────────────────────────────

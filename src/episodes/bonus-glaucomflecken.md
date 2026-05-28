@@ -22,7 +22,6 @@ description: >-
   Bendy Bodies, alongside Knock Knock Hi with the Glaucomfleckens, is a proud
   part of the Human Content Podcast Network
 tags:
-  - Hypermobility
   - Anesthesia
   - Pain
   - Dance & Performing Arts

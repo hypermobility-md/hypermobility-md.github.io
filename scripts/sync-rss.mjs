@@ -4,7 +4,7 @@
  * Sync podcast episodes from the Megaphone RSS feed.
  *
  * Pass 1 — New episodes:  fetch RSS → parse → match guest via Haiku → write skeleton .md
- * Pass 2 — YouTube backfill: episodes missing videoUrl → search top of YT playlist → add URL + auto-captions
+ * Pass 2 — YouTube backfill: episodes missing videoUrl → match against the YT playlist RSS feed by publish date → add URL
  *
  * Usage:
  *   node scripts/sync-rss.mjs                  # Full sync (RSS + YouTube backfill)
@@ -29,7 +29,7 @@ const GUEST_IMAGES = join(ROOT, 'src', '_data', 'guestImages.json');
 // ── Config ───────────────────────────────────────────────────────────────────
 const RSS_URL = 'https://feeds.megaphone.fm/bendybodies';
 const YT_PLAYLIST = 'https://www.youtube.com/playlist?list=PLX9StmpQKW33Iak1WJjAnOXPIxq0M_w_L';
-const YT_TOP_N = 5; // only check the top N playlist entries for backfill
+const YT_TOP_N = 15; // check the most recent N feed entries for backfill (feed returns ~15)
 
 // ── CLI flags ────────────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
@@ -174,9 +174,15 @@ function toYMD(value) {
   return Number.isNaN(parsed.getTime()) ? '' : parsed.toISOString().split('T')[0];
 }
 
-/** Convert yt-dlp's compact YYYYMMDD upload date to YYYY-MM-DD. */
-function ymdFromCompact(s) {
-  return /^\d{8}$/.test(s) ? `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6, 8)}` : '';
+/** Decode the basic XML entities that appear in feed titles. */
+function decodeXmlEntities(s) {
+  return s
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#0?39;/g, "'")
+    .replace(/&#x27;/gi, "'");
 }
 
 /** Normalize a guest name for matching (strip titles, credentials, lowercase). */
@@ -297,40 +303,40 @@ If no match is found, respond with exactly: NO_MATCH`,
   return { matched: false, canonical: rssGuestName };
 }
 
-/** Fetch a single video's upload date (YYYY-MM-DD) via yt-dlp. */
-function fetchYouTubeUploadDate(videoId) {
-  try {
-    const out = execSync(
-      `yt-dlp --no-warnings --print "%(upload_date)s" "https://www.youtube.com/watch?v=${videoId}"`,
-      { encoding: 'utf-8', timeout: 30_000, stdio: ['pipe', 'pipe', 'pipe'] }
-    ).trim();
-    return ymdFromCompact(out);
-  } catch (e) {
-    console.error(`  ⚠  Failed to fetch upload date for ${videoId}: ${e.message}`);
-    return '';
+/** Fetch recent videos from the channel's playlist RSS feed.
+ *  We use the feed instead of yt-dlp because YouTube bot-blocks yt-dlp on CI
+ *  runners ("Sign in to confirm you're not a bot"), which silently zeroed out
+ *  every date match. The feed needs no auth, returns the latest ~15 videos with
+ *  id/title/publish-date in one request, and omits private videos entirely.
+ *  Episodes are matched to videos by publish date — the podcast pubDate and the
+ *  YouTube publish date are a clean 1:1 weekly match (verified zero offset). */
+async function fetchYouTubePlaylist(n = YT_TOP_N) {
+  const playlistId = (YT_PLAYLIST.match(/[?&]list=([^&]+)/) || [])[1];
+  if (!playlistId) {
+    console.error('  ⚠  Could not parse playlist ID from YT_PLAYLIST');
+    return [];
   }
-}
-
-/** Fetch top N videos from YouTube playlist using yt-dlp.
- *  --flat-playlist gives a fast, private-video-tolerant listing; upload dates
- *  (needed for date matching) are then fetched per-video. */
-function fetchYouTubePlaylist(n = YT_TOP_N) {
+  const feedUrl = `https://www.youtube.com/feeds/videos.xml?playlist_id=${playlistId}`;
   try {
-    const output = execSync(
-      `yt-dlp --flat-playlist --playlist-items 1:${n} --print "%(id)s\t%(title)s" "${YT_PLAYLIST}"`,
-      { encoding: 'utf-8', timeout: 30_000, stdio: ['pipe', 'pipe', 'pipe'] }
-    ).trim();
+    const res = await fetch(feedUrl);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const xml = await res.text();
 
-    return output.split('\n').filter(Boolean).map(line => {
-      const [id, ...titleParts] = line.split('\t');
-      const title = titleParts.join('\t');
-      const epNum = parseEpNumber(title);
-      // Private/unavailable videos can't be matched — skip the date lookup.
-      const uploadDate = title === '[Private video]' ? '' : fetchYouTubeUploadDate(id);
-      return { id, title, epNum, uploadDate };
-    });
+    const videos = [];
+    const entryRegex = /<entry>([\s\S]*?)<\/entry>/g;
+    let m;
+    while ((m = entryRegex.exec(xml)) !== null) {
+      const block = m[1];
+      const id = (block.match(/<yt:videoId>([^<]+)<\/yt:videoId>/) || [])[1];
+      if (!id) continue;
+      const rawTitle = (block.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || '';
+      const published = (block.match(/<published>([^<]+)<\/published>/) || [])[1] || '';
+      const title = decodeXmlEntities(rawTitle).trim();
+      videos.push({ id, title, epNum: parseEpNumber(title), uploadDate: toYMD(published) });
+    }
+    return videos.slice(0, n);
   } catch (e) {
-    console.error('  ⚠  Failed to fetch YouTube playlist:', e.message);
+    console.error('  ⚠  Failed to fetch YouTube playlist feed:', e.message);
     return [];
   }
 }
@@ -616,6 +622,7 @@ async function main() {
 
   // ── Pass 2: YouTube Backfill ────────────────────────────────────────────
 
+  let videosMatched = 0;
   if (!RSS_ONLY) {
     // Combine new episodes (no video yet) with existing episodes needing video
     const needsVideo = [
@@ -625,30 +632,30 @@ async function main() {
 
     if (needsVideo.length > 0) {
       console.log(`🎬 Checking YouTube playlist (top ${YT_TOP_N}) for ${needsVideo.length} episodes needing video...`);
-      const ytVideos = fetchYouTubePlaylist(YT_TOP_N);
+      const ytVideos = await fetchYouTubePlaylist(YT_TOP_N);
 
       if (ytVideos.length > 0) {
         console.log(`   Found ${ytVideos.length} videos in playlist\n`);
 
         for (const ep of needsVideo) {
           const epDate = toYMD(ep.date);
-          const isReal = v => v.title !== '[Private video]';
 
-          // Date-primary match: the podcast pubDate and the YouTube upload date
+          // Date-primary match: the podcast pubDate and the YouTube publish date
           // are 1:1 in practice. Episode number is only a fallback for older
           // numbered uploads — many recent video titles have no number.
           let ytMatch = epDate
-            ? ytVideos.find(v => v.uploadDate && v.uploadDate === epDate && isReal(v))
+            ? ytVideos.find(v => v.uploadDate && v.uploadDate === epDate)
             : null;
           let matchedBy = 'date';
           if (!ytMatch && ep.num != null) {
-            ytMatch = ytVideos.find(v => v.epNum === ep.num && isReal(v));
+            ytMatch = ytVideos.find(v => v.epNum === ep.num);
             matchedBy = 'number';
           }
           if (!ytMatch) continue;
 
           const videoUrl = `https://youtu.be/${ytMatch.id}`;
           console.log(`   🔗 YouTube match (by ${matchedBy}): Ep ${ep.num} → ${videoUrl}`);
+          videosMatched++;
 
           // Is this a new episode from Pass 1?
           const newEp = newEpisodes.find(e => e.num === ep.num);
@@ -704,7 +711,7 @@ async function main() {
 
   console.log('\n── Summary ─────────────────────────────────────');
   console.log(`New episodes from RSS: ${newEpisodes.length}`);
-  console.log(`Episodes with video matched: ${newEpisodes.filter(e => e.videoUrl).length}`);
+  console.log(`Episodes with video matched: ${videosMatched}`);
   console.log(`Episodes with captions: ${newEpisodes.filter(e => e.transcript).length}`);
   if (DRY_RUN) console.log('\n(Dry run — nothing was written)');
   console.log('');

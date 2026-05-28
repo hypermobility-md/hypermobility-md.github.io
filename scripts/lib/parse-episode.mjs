@@ -148,6 +148,7 @@ export function parseEpisode(filePath) {
     num: data.num ?? null,
     title,
     description,
+    tags: data.tags || [],
     guests,
     cohosts,
     guestSpeakers,
