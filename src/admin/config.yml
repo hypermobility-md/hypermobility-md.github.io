@@ -31,8 +31,8 @@ collections:
         field: date
         pattern: \d{4}
     fields:
-      - { label: "Bonus / Unnumbered Episode", name: "bonus", widget: "boolean", default: false, required: false, hint: "Toggle on for bonus or special episodes. Skips episode-number auto-assignment and uses the title as the URL slug." }
-      - { label: "Episode Number", name: "num", widget: "number", value_type: "int", required: false, hint: "Leave blank to auto-assign the next number. Ignored when Bonus is on." }
+      - { label: "Bonus / Unnumbered Episode", name: "bonus", widget: "boolean", default: false, required: false, hint: "Toggle on for bonus or special episodes. This skips the automatic episode numbering and uses the title as the URL." }
+      - { label: "Episode Number", name: "num", widget: "number", value_type: "int", required: false, hint: "Leave blank to auto-assign the next number. Ignored for bonus episodes." }
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
       - { label: "Duration", name: "duration", widget: "string", required: false, hint: "e.g. 1h 7m" }
@@ -78,18 +78,18 @@ collections:
           - "TMJ/TMD"
           - "MALS"
           - "Fibromyalgia"
-      - { label: "Audio URL", name: "audioUrl", widget: "string", required: false, hint: "Direct MP3 link for the embedded player (e.g. https://traffic.libsyn.com/...mp3)" }
+      - { label: "Audio URL", name: "audioUrl", widget: "string", required: false, hint: "Direct MP3 link for the embedded player (e.g. https://p.podderapp.com/...mp3)" }
       - { label: "Video URL", name: "videoUrl", widget: "string", required: false, hint: "Full YouTube URL of the episode (e.g. https://www.youtube.com/watch?v=...)" }
       - label: "YouTube Snippets/Shorts"
         name: "snippets"
         widget: "list"
         required: false
-        hint: "Optional. Paste one short/snippet YouTube URL per item — they appear under the episode."
+        hint: "Optional. Paste one YouTube short URL per line. They appear under the embedded video."
       - label: "Guests"
         name: "guests"
         widget: "list"
         required: false
-        hint: "Full names, one per item. Used to look up guest photos and link to guest profiles."
+        hint: "Full guest names, one per item. Used to look up guest photos and link to guest profiles. Don't include honorifics (Dr., ...)."
       - label: "Co-hosts"
         name: "cohosts"
         widget: "list"
@@ -102,25 +102,25 @@ collections:
         media_folder: "/src/Guests"
         public_folder: "/Guests"
         choose_url: true
-        hint: "Pick from the Guests library or upload a new photo. Name the file to match the guest — e.g. Jane-Doe.jpg for 'Jane Doe' — so it auto-attaches to the right guest. If the filename doesn't match anyone in Guests above, it falls back to the first guest. The photo also propagates to any future episode featuring that guest. (Doesn't auto-create a Guest Profile — add one separately in 'Guest Profiles' for the full bio/social card.)"
+        hint: "Pick from the Guests library or upload a new photo. Name the file to match the guest  e.g. Jane-Doe.jpg for 'Jane Doe'. The photo also propagates to any future episode featuring that guest."
       - label: "Guest Photo Paths"
         name: "guestImages"
         widget: "list"
         required: false
-        hint: "Auto-filled on save from the Guests list — you don't need to edit this manually."
-      - { label: "Transcript", name: "body", widget: "markdown", required: false, hint: "Full episode transcript — paste the text here" }
+        hint: "Auto-filled on save from the Guests list. You don't need to edit this manually"
       - label: "Advanced Settings"
         name: "seoOverrides"
         widget: "object"
-        collapsed: true
+        collapsed: false
         required: false
-        hint: "Optional SEO / social / URL overrides. Leave each field blank to use the default derived from the episode's main fields."
+        hint: "Optional SEO and URL overrides. The metadata and URL are automatically generated from the other information, but you can override these fields."
         fields:
-          - { label: "SEO Title", name: "ogTitle", widget: "string", required: false, hint: "Overrides BOTH the browser-tab title and the social-share (og:title). Defaults to: the Title field above." }
+          - { label: "SEO Title", name: "ogTitle", widget: "string", required: false, hint: "Overrides both the browser-tab title and the social-share (og:title). The defaults is the Title field above." }
           - { label: "SEO Description", name: "ogDescription", widget: "text", required: false, hint: "Overrides BOTH the meta description and the social-share description. Defaults to: the Description field above (first ~200 chars)." }
-          - { label: "Social Image", name: "ogImage", widget: "image", required: false, hint: "Custom social sharing image, 1200x630px recommended. Defaults to: the YouTube thumbnail if videoUrl is set, otherwise the first guest photo, otherwise the site default OG image." }
-          - { label: "URL slug (advanced)", name: "slug", widget: "string", required: false, hint: "Overrides the path after /episodes/. Defaults to: '{episode-number}-{title-slug}', e.g. '196-too-flexible-to-fix-orthopedic-surgery'. ⚠ Changing this on a published episode auto-generates a redirect from the original URL, but external links and SEO rank with the original URL — only change if you have a good reason." }
+          - { label: "Social Image", name: "ogImage", widget: "image", required: false, hint: "Custom social sharing image, 1200x630px recommended." }
+          - { label: "URL slug (advanced)", name: "slug", widget: "string", required: false, hint: "Overrides the path after /episodes/. Defaults to: '{episode-number}-{title-slug}', e.g. '196-too-flexible-to-fix-orthopedic-surgery'. Note: Changing this on a published episode auto-generates a redirect from the original URL, but external links and SEO rank with the original URL" }
           - { label: "Speakers Expected (override)", name: "speakersExpected", widget: "number", value_type: "int", required: false, hint: "Optional. Override the auto-computed speaker count for unusual episodes (e.g. uncredited panelist). Leave empty for default: 1 host + cohosts + guests." }
+      - { label: "Transcript", name: "body", widget: "markdown", required: false, hint: "Full episode transcript" }
 
   - name: "guest-profiles"
     label: "Guest Profiles"
@@ -130,16 +130,19 @@ collections:
     format: "json"
     slug: "{{fields.key}}"
     identifier_field: "key"
-    summary: "{{name | default(key)}}"
-    sortable_fields: ["name", "key", "affiliation"]
+    summary: "{{fields.name | default('{{fields.key}}')}}"
+    sortable_fields:
+      fields: ["lastEpisode", "name", "key", "affiliation"]
+      default: { field: "lastEpisode", direction: "descending" }
     search_fields: ["name", "key", "bio", "credentials", "affiliation"]
     view_filters:
-      - { label: "Missing photo", field: "image", pattern: "^$" }
       - { label: "Missing bio", field: "bio", pattern: "^$" }
+      - { label: "Missing photo", field: "image", pattern: "^$" }
       - { label: "Missing affiliation", field: "affiliation", pattern: "^$" }
       - { label: "Missing display name", field: "name", pattern: "^$" }
     fields:
-      - { label: "Guest Key", name: "key", widget: "string", hint: "Lookup key — the name with no titles or credentials, e.g. 'alexis cutchins'. Case and spacing don't matter; this is only used internally to match the guest across episodes." }
+      - { label: "Guest Key", name: "key", widget: "string", hint: "Name with no titles or credentials, e.g. 'alexis cutchins'. Case and spacing don't matter; this is only used internally to match the guest across episodes." }
+      - { label: "Last Episode Date", name: "lastEpisode", widget: "hidden", required: false }
       - { label: "Preferred Display Name", name: "name", widget: "string", required: false, hint: "How the guest's name appears on their profile page and episode cards, e.g. 'Dr. Alexis Cutchins'. Leave blank to fall back to whatever name was entered in an episode's Guests list." }
       - { label: "Bio", name: "bio", widget: "text", required: false }
       - { label: "Credentials", name: "credentials", widget: "string", required: false, hint: "e.g. MD, PhD, DPT" }
@@ -170,7 +173,7 @@ collections:
     slug: "{{fields.showName | slugify}}"
     identifier_field: "showName"
     summary: "{{fields.showName}} — {{fields.episodeTitle}}"
-    sortable_fields: ["date", "showName"]
+    sortable_fields: ["date", "showName", "featuredOrder"]
     search_fields: ["showName", "episodeTitle", "description"]
     view_filters:
       - { label: "Featured", field: "featured", pattern: true }
@@ -181,7 +184,7 @@ collections:
         field: date
         pattern: \d{4}
     fields:
-      - { label: "Show Name", name: "showName", widget: "string", hint: "Name of the podcast or show" }
+      - { label: "Show Name", name: "showName", widget: "string", hint: "Name of the podcast" }
       - { label: "Episode Title", name: "episodeTitle", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false, hint: "Appearance date (for sorting)" }
       - { label: "Description", name: "description", widget: "text", required: false }
@@ -194,28 +197,29 @@ collections:
         media_folder: "/src/assets/appearances"
         public_folder: "/assets/appearances"
         choose_url: true
-        hint: "Show logo or cover art. Click to browse uploaded images (searchable) or upload a new one. Saved to /assets/appearances/."
+        hint: "Show logo or cover art. Click to browse uploaded images or upload a new one. Saved to /assets/appearances/."
       - label: "Type"
         name: "type"
         widget: "select"
         default: "listen"
-        hint: "Controls the card button label — 'Listen' for audio podcasts, 'Watch' for video-first shows."
+        hint: "Controls the card button label. 'Listen' for audio podcasts or 'Watch' for video-first shows."
         options:
           - { label: "Listen", value: "listen" }
           - { label: "Watch", value: "watch" }
       - { label: "Featured", name: "featured", widget: "boolean", default: false, hint: "Toggle on to pin this appearance to the Featured row at the top of the Guest Appearances page." }
+      - { label: "Featured Order", name: "featuredOrder", widget: "number", value_type: "int", required: false, hint: "Only used when Featured is on. Lower numbers appear first in the Featured row (1, 2, 3, …). Ties or blank entries fall back to most-recent date." }
       - { label: "Audio URL", name: "audioUrl", widget: "string", required: false, hint: "Direct MP3 link. If present, the appearance detail page shows an embedded audio player." }
-      - { label: "Video URL", name: "videoUrl", widget: "string", required: false, hint: "YouTube URL to embed on the appearance detail page." }
+      - { label: "Video URL", name: "videoUrl", widget: "string", required: false, hint: "YouTube URL to embed on page" }
       - { label: "YouTube URL", name: "youtubeUrl", widget: "string", required: false, hint: "Public YouTube link for the 'Watch on YouTube' button. Only needed if it differs from Video URL." }
       - label: "Advanced Settings"
         name: "seoOverrides"
         widget: "object"
         collapsed: true
         required: false
-        hint: "Optional SEO / social overrides. Leave each field blank to use the default derived from the appearance's main fields."
+        hint: "Optional SEO overrides. Leave each field blank to use the default derived from the main fields."
         fields:
-          - { label: "SEO Title", name: "ogTitle", widget: "string", required: false, hint: "Overrides BOTH the browser-tab title and the social-share (og:title). Defaults to: '{Show Name} — {Episode Title}'." }
-          - { label: "SEO Description", name: "ogDescription", widget: "text", required: false, hint: "Overrides BOTH the meta description and the social-share description. Defaults to: the Description field above." }
+          - { label: "SEO Title", name: "ogTitle", widget: "string", required: false, hint: "Overrides BOTH the browser-tab title and the social-share (og:title). Defaults to: 'Show Name — Episode Title'." }
+          - { label: "SEO Description", name: "ogDescription", widget: "text", required: false, hint: "Overrides BOTH the meta description and the social-share description. Defaults to the Description field above." }
           - { label: "Social Image", name: "ogImage", widget: "image", required: false, hint: "Custom 1200x630 social share image. Defaults to: the Show Image above." }
 
   - name: "faq-items"
@@ -231,18 +235,18 @@ collections:
       - label: Category
         field: category
     fields:
-      - { label: "Question", name: "question", widget: "string", hint: "The question as shown on the accordion (e.g. \"What is EduCoaching?\")." }
+      - { label: "Question", name: "question", widget: "string", hint: "The question as shown on the accordion (\"What is EduCoaching?\")." }
       - label: "Category"
         name: "category"
         widget: "select"
         hint: "Which section of the FAQ page this question appears in. Items group by category in the CMS list."
         options:
-          - { label: "Medical & Coaching Services (general)", value: "general" }
+          - { label: "Medical & Coaching Services", value: "general" }
           - { label: "Medical Services", value: "medical" }
           - { label: "Coaching Services", value: "coaching" }
           - { label: "Professional Mentorship", value: "mentorship" }
           - { label: "Medico-Legal Services", value: "medico-legal" }
-      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 99, hint: "Lower numbers appear higher in the section. Use 1, 2, 3, … to control position; ties fall back to alphabetical." }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 99, hint: "Lower numbers appear higher in the section. Use 1, 2, 3, … to control position. Ties fall back to alphabetical." }
       - { label: "Answer", name: "body", widget: "markdown", hint: "The answer body. Supports markdown: **bold**, *italic*, bullet lists, [links](url), etc." }
 
   - name: "hypermobility-questions"
@@ -255,30 +259,39 @@ collections:
     sortable_fields: ["order", "title"]
     search_fields: ["title", "description", "body"]
     fields:
-      - { label: "Title", name: "title", widget: "string", hint: "Question / article title — shown on the FAQ page and as the page heading." }
-      - { label: "Short description (SEO)", name: "description", widget: "text", required: false, hint: "1–2 sentence summary. Used for the meta description and social shares." }
+      - { label: "Title", name: "title", widget: "string", hint: "Question (\"IS EDS Really 'Benign'?\"). Shown on the FAQ page and as the page heading." }
+      - { label: "Short description (SEO)", name: "description", widget: "text", required: false, hint: "1-2 sentence summary. Used for the meta description for SEO." }
       - { label: "Order", name: "order", widget: "number", value_type: "int", default: 99, hint: "Lower numbers appear higher in the Questions about Hypermobility list. Ties fall back to title." }
-      - { label: "Original Blog Post URL", name: "blogPostUrl", widget: "string", required: false, hint: "Optional. If set, a 'Read Original Blog Post' button is shown at the bottom of the article." }
+      - { label: "Body", name: "body", widget: "markdown", hint: "Full article body. Supports markdown: headings, **bold**, *italic*, lists, [links](url), etc." }
       - label: "Top-of-page embed"
         name: "embed"
         widget: "object"
         collapsed: true
         required: false
-        hint: "Optional. Pick one media type to display above the article. Leave Type as 'None' to omit entirely — no placeholder is rendered."
+        hint: "Optional. Pick a media type to show above the article — only that type's fields appear. Leave as 'None' to omit. Use 'External link' to link out (e.g. an original blog post)."
+        types:
+          - { name: "none", label: "None" }
+          - name: "image"
+            label: "Image"
+            fields:
+              - { label: "Image", name: "image", widget: "image", required: false, media_folder: "/src/assets/hypermobility-questions", public_folder: "/assets/hypermobility-questions", choose_url: true }
+              - { label: "Image alt text", name: "imageAlt", widget: "string", required: false, hint: "Brief description for screen readers." }
+              - { label: "Image caption", name: "imageCaption", widget: "string", required: false, hint: "Optional caption shown below the image." }
+          - name: "video"
+            label: "YouTube video"
+            fields:
+              - { label: "YouTube URL", name: "videoUrl", widget: "string", required: false, hint: "Paste the full YouTube URL." }
+          - name: "link"
+            label: "External link"
+            fields:
+              - { label: "Link URL", name: "linkUrl", widget: "string", required: false }
+              - { label: "Link label", name: "linkLabel", widget: "string", required: false, hint: "Text shown on the link button (defaults to the URL)." }
+      - label: "Advanced Settings"
+        name: "seoOverrides"
+        widget: "object"
+        collapsed: true
+        required: false
+        hint: "Optional SEO overrides. Leave each field blank to use the default derived from the article's main fields."
         fields:
-          - label: "Type"
-            name: "type"
-            widget: "select"
-            default: "none"
-            options:
-              - { label: "None", value: "none" }
-              - { label: "Image", value: "image" }
-              - { label: "YouTube video", value: "video" }
-              - { label: "External link", value: "link" }
-          - { label: "Image", name: "image", widget: "image", required: false, media_folder: "/src/assets/hypermobility-questions", public_folder: "/assets/hypermobility-questions", choose_url: true, hint: "Used when Type = Image." }
-          - { label: "Image alt text", name: "imageAlt", widget: "string", required: false, hint: "Used when Type = Image. Brief description for screen readers." }
-          - { label: "Image caption", name: "imageCaption", widget: "string", required: false, hint: "Optional caption shown below the image." }
-          - { label: "YouTube URL", name: "videoUrl", widget: "string", required: false, hint: "Used when Type = YouTube video. Paste the full YouTube watch / share URL." }
-          - { label: "Link URL", name: "linkUrl", widget: "string", required: false, hint: "Used when Type = External link." }
-          - { label: "Link label", name: "linkLabel", widget: "string", required: false, hint: "Used when Type = External link. Text shown on the link button (defaults to the URL)." }
-      - { label: "Body", name: "body", widget: "markdown", hint: "Full article body. Supports markdown: headings, **bold**, *italic*, lists, [links](url), etc." }
+          - { label: "SEO Title", name: "ogTitle", widget: "string", required: false, hint: "Overrides BOTH the browser-tab title and the social-share (og:title). Defaults to the Title field above." }
+          - { label: "Social Image", name: "ogImage", widget: "image", required: false, media_folder: "/src/assets/hypermobility-questions", public_folder: "/assets/hypermobility-questions", choose_url: true, hint: "Custom 1200x630 social-share image. Defaults to the site's default share image." }

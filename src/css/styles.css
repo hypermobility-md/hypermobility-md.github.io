@@ -2129,6 +2129,31 @@ form.submitted .form-check input:invalid {
   color: var(--text-light);
 }
 
+/* ---- Transcript ---- */
+.transcript-content {
+  max-width: 70ch;
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--text);
+}
+/* Each <p> is one speaker turn. Same-speaker paragraphs are joined with
+   hard breaks (<br>) inside the turn, so the gap between <p>s reads as a
+   speaker change. */
+.transcript-content p {
+  margin: 0 0 1.6rem;
+}
+.transcript-content p br {
+  /* a little breathing room between a speaker's own paragraphs */
+  content: "";
+  display: block;
+  margin-bottom: 0.7rem;
+}
+/* Bold speaker name at the start of a turn */
+.transcript-content strong {
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
 /* Hide reCAPTCHA badge — allowed per Google's FAQ when inline text is shown */
 .grecaptcha-badge { visibility: hidden !important; }
 

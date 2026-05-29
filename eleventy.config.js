@@ -124,6 +124,30 @@ module.exports = function(eleventyConfig) {
       });
   });
 
+  // Featured guest appearances — ordered by `featuredOrder` (ascending),
+  // then by the date-descending order inherited from the appearances
+  // collection. Drives the "Featured" row on /podcast-appearances/.
+  eleventyConfig.addCollection("featuredAppearances", function(collectionApi) {
+    const toMs = (d) => {
+      if (!d) return null;
+      const t = new Date(d).getTime();
+      return Number.isNaN(t) ? null : t;
+    };
+    return collectionApi.getFilteredByGlob("src/appearances/*.md")
+      .filter((a) => a.data.featured)
+      .sort((a, b) => {
+        const oa = Number.isFinite(a.data.featuredOrder) ? a.data.featuredOrder : Infinity;
+        const ob = Number.isFinite(b.data.featuredOrder) ? b.data.featuredOrder : Infinity;
+        if (oa !== ob) return oa - ob;
+        const ta = toMs(a.data.date);
+        const tb = toMs(b.data.date);
+        if (ta !== null && tb !== null) return tb - ta;
+        if (ta !== null) return -1;
+        if (tb !== null) return 1;
+        return 0;
+      });
+  });
+
   // FAQ items grouped by category, each group sorted by `order`.
   // Categories are defined in src/_data/faqCategories.js; items live in
   // src/faq-items/*.md with frontmatter { question, category, order }.

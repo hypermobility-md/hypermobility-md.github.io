@@ -39,8 +39,7 @@ permalink: /podcast-appearances/
   <div class="container">
     <h2 class="appearances-section-heading">Featured</h2>
     <div class="appearances-grid">
-      {% for appearance in collections.appearances %}
-        {% if appearance.data.featured %}
+      {% for appearance in collections.featuredAppearances %}
         {% set externalListenHref = appearance.data.applePodcastsUrl or appearance.data.url %}
         <article class="appearance-card" onclick="window.location='{{ appearance.url }}'">
           {% if appearance.data.imageUrl %}
@@ -64,7 +63,6 @@ permalink: /podcast-appearances/
             </div>
           </div>
         </article>
-        {% endif %}
       {% endfor %}
     </div>
   </div>

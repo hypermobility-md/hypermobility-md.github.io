@@ -4,6 +4,41 @@ import matter from 'gray-matter';
 
 const EPISODES_DIR = join(import.meta.dirname, '..', '..', 'src', 'episodes');
 
+// Known recurring non-guest voices. Each entry has a canonical name, any name
+// variants (alt spellings or with/without title), and a "role" hint:
+//   - "always": always classify as cohost when their name appears anywhere
+//     (e.g. Aron/Tessa/Shanti, Human Content producers — never guests).
+//   - "contextual": cohost when they appear *alongside* another guest, OR when
+//     they're mentioned in title/description but NOT in the guests array.
+//     Treated as the featured guest when they're the only guest in the guests
+//     array (e.g. Dr. Dacre Knight is a recurring cohost, but ep 184
+//     ["…with Dr. Dacre Knight"] features him as guest).
+//   - "keyword" (default): conservative — only a cohost if the title/description
+//     explicitly says "co-host" / "cohost" near their name.
+// Variants are matched against title/description and guest lists, but the
+// canonical name is what gets stored in `cohosts` so the speaker count stays
+// correct (no double-counting of the same person).
+export const KNOWN_COHOSTS = [
+  // Recurring co-host of the "Hypermobility Hour" interview episodes. She is
+  // almost never a *featured guest*, so treat her as a cohost whenever she
+  // appears alongside another guest or the metadata flags a co-host. (Was
+  // 'keyword', which silently dropped her — and merged her turns into the
+  // host — on episodes whose description didn't literally say "co-host".)
+  // 'jennifer-milner' matches her website slug (jennifer-milner.com), which
+  // appears in the "follow guest co-host Jennifer at the links below" block of
+  // the Hypermobility Hour episodes — often the only full-name signal in the
+  // metadata (the prose says just "co-host Jennifer").
+  { canonical: 'Jennifer Milner', aliases: ['jennifer-milner'], role: 'contextual' },
+  { canonical: 'Pradeep Chopra', aliases: [], role: 'keyword' },
+  { canonical: 'Dacre Knight', aliases: [], role: 'contextual' },
+  // Human Content producers — never guests of the show. Tessa and Shanti read
+  // listener questions on the "Office Hours" episodes; folding their turns into
+  // the host made Dr. Bluestein appear to interview herself.
+  { canonical: 'Aron', aliases: ['Aaron'], role: 'always' },
+  { canonical: 'Tessa', aliases: [], role: 'always' },
+  { canonical: 'Shanti', aliases: [], role: 'always' },
+];
+
 /**
  * Parse a single episode markdown file.
  * Returns { slug, num, title, description, guests, audioUrl, videoUrl, duration, cohosts, guestSpeakers, speakersExpected, filePath }
@@ -22,27 +57,7 @@ export function parseEpisode(filePath) {
   const cohostPattern = /co-?host/i;
   const hasCohostMention = cohostPattern.test(titleAndDesc);
 
-  // Known co-hosts. Each entry has a canonical name, any name variants
-  // (alt spellings or with/without title), and a "role" hint:
-  //   - "always": always classify as cohost when their name appears anywhere
-  //     (e.g. Aron, the producer — never a guest of the show)
-  //   - "contextual": cohost when they appear *alongside* another guest, OR
-  //     when they're mentioned in title/description but NOT in the guests
-  //     array. Treated as the featured guest when they're the only guest in
-  //     the guests array (e.g. Dr. Dacre Knight is a recurring cohost, but
-  //     ep 184 ["…with Dr. Dacre Knight"] features him as guest).
-  //   - "keyword" (default): the original conservative behavior — only
-  //     classified as cohost if the title/description explicitly says
-  //     "co-host" / "cohost" near their name.
-  // Variants are matched against title/description and guest lists, but the
-  // canonical name is what gets stored in `cohosts` so the speaker count
-  // stays correct (no double-counting of the same person).
-  const knownCohosts = [
-    { canonical: 'Jennifer Milner', aliases: [], role: 'keyword' },
-    { canonical: 'Pradeep Chopra', aliases: [], role: 'keyword' },
-    { canonical: 'Dacre Knight', aliases: [], role: 'contextual' },
-    { canonical: 'Aron', aliases: ['Aaron'], role: 'always' }, // Human Content producer
-  ];
+  const knownCohosts = KNOWN_COHOSTS;
 
   // Word-boundary match — prevents 'Aron' from matching 'macaron' or 'Aaron'.
   // Uses \b which treats apostrophes and hyphens as boundaries (so "Smith's"
@@ -128,6 +143,32 @@ export function parseEpisode(filePath) {
     const name = matched ? matched.canonical : c.trim();
     if (!cohosts.some(x => x.toLowerCase() === name.toLowerCase())) {
       cohosts.push(name);
+    }
+  }
+
+  // Transcript body-scan: a recurring co-host/producer who *self-identifies* in
+  // the transcript ("This is co-host Jennifer Milner here…", "I'm Jennifer
+  // Milner", "producers Tessa and Shanti") is unambiguously a participant, even
+  // when the title/description never names them. This is the robust signal for
+  // the Hypermobility Hour / Office Hours formats, where the co-host/producers
+  // appear only in the audio — and it survives frontmatter reformatting. Only
+  // adds a *known* recurring voice on an explicit self-ID/intro cue, and never
+  // double-counts someone already classified as a cohost or guest.
+  if (content) {
+    const alreadyKnown = (name) =>
+      cohosts.some(c => c.toLowerCase() === name.toLowerCase()) ||
+      guestSpeakers.some(g => g.toLowerCase().includes(name.toLowerCase()));
+    for (const kc of knownCohosts) {
+      if (alreadyKnown(kc.canonical)) continue;
+      const esc = (s) => s.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const names = [kc.canonical, ...kc.aliases].map(esc).join('|');
+      // cue immediately before the name, e.g. "co-host Jennifer Milner",
+      // "this is Jennifer Milner", "I'm Jennifer Milner", "producer(s) … Tessa"
+      const cue = new RegExp(
+        `\\b(?:co-?hosts?|producers?|i'?m|i am|this is)\\b[^.\\n]{0,20}\\b(?:${names})\\b`,
+        'i'
+      );
+      if (cue.test(content)) cohosts.push(kc.canonical);
     }
   }
 
