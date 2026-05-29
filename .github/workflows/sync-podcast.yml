@@ -38,6 +38,9 @@ jobs:
       - name: Backfill episode display fields (guestImage, etc.)
         run: node scripts/backfill-episode-display-fields.mjs
 
+      - name: Backfill guest lastEpisode (CMS recency sort)
+        run: node scripts/backfill-guest-last-episode.mjs
+
       - name: Generate OG images for new guests
         run: node scripts/generate-og-images.mjs
 
@@ -46,7 +49,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/episodes/ src/assets/og-guests/
+          git add src/episodes/ src/guest-profiles/ src/assets/og-guests/
           if git diff --cached --quiet; then
             echo "No changes to commit"
             echo "changed=false" >> $GITHUB_OUTPUT
