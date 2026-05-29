@@ -118,3 +118,33 @@ field), not a baseline restore:
 - **058 / 170 / 174 / 177** (this pass) and **093** were restored from
   pre-filler-removal baselines, so they reintroduce "um/uh" fillers.
   Optionally re-clean.
+
+## Re-transcription rollout (2026-05-29, follow-up)
+
+The pure baseline-restore couldn't recover co-host Jennifer Milner on the
+Hypermobility Hour episodes, because the **cached raws predate
+`speakers_expected`** — 3-speaker episodes had diarized into only 2 clusters,
+so there was no third voice for the proofread to label. Root fix: re-transcribe
+from audio with `speakers_expected=3`.
+
+Enablers added to the pipeline:
+- `parse-episode.mjs` **transcript body-scan** — a recurring co-host/producer
+  who self-identifies in the transcript is added to the cast (frontmatter-
+  independent), which sets `speakers_expected` correctly.
+- `proofread.mjs` cast block no longer says "use ONLY these names".
+- `audit-speaker-swaps.mjs` **Pass 2** (named-but-unlabeled) and **Pass 3**
+  (self-ID vs. label swap).
+
+Rollout (25 worklist episodes):
+- **23 fixed** — re-transcribed (`speakers_expected=3`) + proofread. 010/027/062
+  real-time (pilot); 014 real-time; the other 21 via the **Anthropic Batch API**
+  (50% off, ~$2.38). 062 had a Linda/Jennifer transposition caught by Pass 3 and
+  fixed with a deterministic label swap.
+- **080** — false positive (guest mentions his PA "working here with Shilpa
+  Gajrawala"); Pass-2 cue tightened, no action.
+- **074, 083 — residual.** Even with `speakers_expected=3`, AssemblyAI put a
+  lone utterance in the 3rd cluster (couldn't separate the two similar female
+  co-host voices), so Jennifer stays merged into Linda. Same class as 033/068;
+  guest is correct. Not fixable without manual diarization.
+
+Post-rollout detector: Pass-2 = 2 (074, 083), Pass-3 = 0.
