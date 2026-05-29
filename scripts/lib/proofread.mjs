@@ -212,7 +212,7 @@ export function buildProofreadUserContent(slug, text, episode) {
     ? `\n\nFor reference, here is the episode title and description (use this for correct spellings of names, terms, and topics):\n${episodeContext}\n`
     : '';
   const cast = buildCast(episode);
-  const castBlock = `\n\nThe exact cast for this episode (use ONLY these names on speaker labels — see Task 2):\n${cast.map((n) => `- ${n}`).join('\n')}\n`;
+  const castBlock = `\n\nThe known cast for this episode (label turns with these names — but see Task 2: if someone clearly self-identifies with a name not listed here, such as a co-host or producer reading questions, use their self-stated name; never fold a distinct voice into the host):\n${cast.map((n) => `- ${n}`).join('\n')}\n`;
 
   return `Here is the full transcript for episode ${slug} of the Bendy Bodies Podcast. Please clean, format, and proofread the entire thing in one pass.${contextBlock}${castBlock}\n\n<transcript>\n${text}\n</transcript>`;
 }

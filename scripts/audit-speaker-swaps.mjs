@@ -18,7 +18,7 @@
 
 import { readFileSync } from 'fs';
 import matter from 'gray-matter';
-import { parseAllEpisodes } from './lib/parse-episode.mjs';
+import { parseAllEpisodes, KNOWN_COHOSTS } from './lib/parse-episode.mjs';
 
 const args = process.argv.slice(2);
 const minIdx = args.indexOf('--min');
@@ -72,9 +72,14 @@ const episodes = parseAllEpisodes()
 
 const results = [];
 
+// Producers (role 'always') read questions but are low-stakes to tell apart
+// and diarize poorly, so a Tessa↔Shanti "swap" is permanent noise here. Pass 2
+// already covers the producer issue that matters (merged into the host).
+const PRODUCERS = new Set(KNOWN_COHOSTS.filter((c) => c.role === 'always').map((c) => c.canonical));
+
 for (const ep of episodes) {
   const guestSpeakers = ep.guestSpeakers || [];
-  const cohosts = (ep.cohosts || []).filter((c) => c !== HOST);
+  const cohosts = (ep.cohosts || []).filter((c) => c !== HOST && !PRODUCERS.has(c));
   const cast = [...cohosts, ...guestSpeakers];
   if (cast.length < 2) continue; // swaps need ≥2 non-host speakers
 
@@ -132,3 +137,80 @@ for (const r of results) {
   for (const ex of r.examples) console.log(`        • ${ex}`);
 }
 console.log(`\n${results.length} flagged. Heuristic — review before re-processing.`);
+
+// ── Pass 2: merged co-hosts / producers ──────────────────────────────────────
+//
+// The re-proof's cast list comes from each episode's metadata, which omits
+// recurring non-guest voices (co-host Jennifer Milner, Office Hours producers
+// Tessa/Shanti). When one of them isn't in the cast, the LLM tended to FOLD
+// their turns into the host — collapsing a Q&A into one monologue, sometimes
+// with no speaker-id flag (e.g. ep 177). This pass catches that: a recurring
+// voice (or an explicitly self-identified name) is named in the transcript as
+// a participant, but never appears as a speaker label.
+
+// Strong "someone is actively participating" cues that capture a name. These
+// are intro/self-ID phrasings, not bare mentions — "co-host Jennifer Milner"
+// and "producers Tessa and Shanti" mean a voice in the room, whereas a name in
+// the outro credits or referenced as a topic does not.
+const CUES = [
+  /\bthis is (?:co-?hosts?\s+)?([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\s+here\b/g,
+  /\bco-?hosts?,?\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\b/g,
+  /\b(?:joined|here|along)\s+(?:today\s+)?(?:by|with)\s+(?:co-?hosts?\s+)?([A-Z][a-z]+\s+[A-Z][a-z]+)\b/g,
+  /\bproducers?\s+([A-Z][a-z]+)(?:\s+and\s+([A-Z][a-z]+))?\b/g,
+];
+// "I'm X" is too loose on its own (matches "I'm Bendy Bodies"), so only trust it
+// for a name we already know is a recurring non-guest voice.
+const KNOWN_NAMES = new Set(KNOWN_COHOSTS.flatMap((c) => [c.canonical, ...c.aliases]));
+const I_AM = /\b(?:I'?m|I am)\s+([A-Z][a-z]+\s+[A-Z][a-z]+)\b/g;
+
+const HOST_TOKENS = new Set(['linda', 'bluestein', 'dr']);
+
+function labelMatchesName(label, name) {
+  // Lenient: do the label and the candidate share a distinctive (non-host) token?
+  const norm = (s) => s.toLowerCase().replace(/[^a-z\s]/g, ' ').split(/\s+/).filter(Boolean);
+  const lt = new Set(norm(label));
+  return norm(name).some((tok) => tok.length > 2 && !HOST_TOKENS.has(tok) && lt.has(tok));
+}
+
+const mergedResults = [];
+
+for (const ep of episodes) {
+  const body = matter(readFileSync(ep.filePath, 'utf-8')).content;
+  const turns = parseTurns(body);
+  const labels = [...new Set(turns.map((t) => t.speaker.replace(/\*/g, '').trim()))];
+  const isLabeled = (name) => labels.some((l) => labelMatchesName(l, name));
+  const isHost = (name) => name.toLowerCase().split(/\s+/).every((t) => HOST_TOKENS.has(t));
+
+  const candidates = new Map(); // name → cue snippet
+  const consider = (name, snippet) => {
+    if (!name || isHost(name) || isLabeled(name)) return;
+    candidates.set(name, snippet);
+  };
+
+  for (const cue of CUES) {
+    for (const m of body.matchAll(cue)) {
+      consider(m[1], `"${m[0].trim()}"`);
+      consider(m[2], `"${m[0].trim()}"`);
+    }
+  }
+  for (const m of body.matchAll(I_AM)) {
+    if (KNOWN_NAMES.has(m[1])) consider(m[1], `"${m[0].trim()}"`);
+  }
+
+  if (candidates.size) {
+    mergedResults.push({ num: ep.num, slug: ep.slug, candidates: [...candidates.entries()] });
+  }
+}
+
+mergedResults.sort((a, b) => (a.num ?? 1e9) - (b.num ?? 1e9));
+
+console.log(`\n\nPossible merged co-hosts / producers (${mergedResults.length} episodes):`);
+console.log('named as a participant in the transcript but never used as a speaker label\n');
+console.log('ep     missing label (cue)');
+console.log('--------------------------------------------------');
+for (const r of mergedResults) {
+  for (const [name, cue] of r.candidates) {
+    console.log(`${String(r.num ?? r.slug).padEnd(6)} ${name} — ${cue}`);
+  }
+}
+console.log(`\n${mergedResults.length} flagged. Heuristic — confirm against the audio/description before fixing.`);
