@@ -155,7 +155,10 @@ console.log(`\n${results.length} flagged. Heuristic — review before re-process
 const CUES = [
   /\bthis is (?:co-?hosts?\s+)?([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\s+here\b/g,
   /\bco-?hosts?,?\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\b/g,
-  /\b(?:joined|here|along)\s+(?:today\s+)?(?:by|with)\s+(?:co-?hosts?\s+)?([A-Z][a-z]+\s+[A-Z][a-z]+)\b/g,
+  // "joined (today) by/with X" / "along with X" — intro phrasing. Deliberately
+  // NOT bare "here with X", which also matches a guest describing a colleague
+  // ("working here with Shilpa Gajrawala, who is a PA…", ep 080).
+  /\b(?:joined|along)\s+(?:today\s+)?(?:by|with)\s+(?:co-?hosts?\s+)?([A-Z][a-z]+\s+[A-Z][a-z]+)\b/g,
   /\bproducers?\s+([A-Z][a-z]+)(?:\s+and\s+([A-Z][a-z]+))?\b/g,
 ];
 // "I'm X" is too loose on its own (matches "I'm Bendy Bodies"), so only trust it
