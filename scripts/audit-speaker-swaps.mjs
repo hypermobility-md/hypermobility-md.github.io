@@ -214,3 +214,42 @@ for (const r of mergedResults) {
   }
 }
 console.log(`\n${mergedResults.length} flagged. Heuristic — confirm against the audio/description before fixing.`);
+
+// ── Pass 3: self-ID vs. label mismatch ───────────────────────────────────────
+//
+// Re-transcribing with speakers_expected recovers a merged voice, but the
+// proofread then has to tell two similar co-host voices apart (Linda vs
+// Jennifer Milner) — and sometimes transposes them. That swap is invisible to
+// Pass 1 (both names appear) and Pass 2 (both are labeled). The tell is a turn
+// whose own text self-identifies as someone else: "**Dr. Linda Bluestein:** I'm
+// Jennifer Milner, a former professional ballet dancer…". Flag when a turn
+// opens with a self-ID naming a *different* cast member than its label.
+const SELF_ID_OPEN = /^(?:I'?m|I am|this is)\s+(?:co-?host\s+)?((?:Dr\.\s+)?[A-Z][a-z]+\s+[A-Z][a-z]+)\b/;
+
+const selfIdResults = [];
+for (const ep of episodes) {
+  const body = matter(readFileSync(ep.filePath, 'utf-8')).content;
+  const turns = parseTurns(body);
+  const castNames = [HOST, ...(ep.cohosts || []), ...(ep.guestSpeakers || [])];
+  const hits = [];
+  for (const t of turns) {
+    const m = t.text.trim().match(SELF_ID_OPEN);
+    if (!m) continue;
+    const claimed = m[1];
+    // Only trust it when the claimed name is a known cast member for this ep.
+    const claimedCast = castNames.find((n) => labelMatchesName(n, claimed));
+    if (!claimedCast) continue;
+    const label = t.speaker.replace(/\*/g, '').trim();
+    if (!labelMatchesName(label, claimed)) {
+      hits.push(`labeled "${label}" but says "${m[0].trim()}"`);
+    }
+  }
+  if (hits.length) selfIdResults.push({ num: ep.num, slug: ep.slug, hits });
+}
+selfIdResults.sort((a, b) => (a.num ?? 1e9) - (b.num ?? 1e9));
+console.log(`\n\nSelf-ID vs. label mismatches (${selfIdResults.length} episodes):`);
+console.log('a turn whose text self-identifies as a different cast member than its label\n');
+for (const r of selfIdResults) {
+  for (const h of r.hits) console.log(`${String(r.num ?? r.slug).padEnd(6)} ${h}`);
+}
+console.log(`\n${selfIdResults.length} flagged. Likely a two-co-host (Linda/Jennifer) transposition.`);

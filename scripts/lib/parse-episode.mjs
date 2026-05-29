@@ -146,6 +146,32 @@ export function parseEpisode(filePath) {
     }
   }
 
+  // Transcript body-scan: a recurring co-host/producer who *self-identifies* in
+  // the transcript ("This is co-host Jennifer Milner here…", "I'm Jennifer
+  // Milner", "producers Tessa and Shanti") is unambiguously a participant, even
+  // when the title/description never names them. This is the robust signal for
+  // the Hypermobility Hour / Office Hours formats, where the co-host/producers
+  // appear only in the audio — and it survives frontmatter reformatting. Only
+  // adds a *known* recurring voice on an explicit self-ID/intro cue, and never
+  // double-counts someone already classified as a cohost or guest.
+  if (content) {
+    const alreadyKnown = (name) =>
+      cohosts.some(c => c.toLowerCase() === name.toLowerCase()) ||
+      guestSpeakers.some(g => g.toLowerCase().includes(name.toLowerCase()));
+    for (const kc of knownCohosts) {
+      if (alreadyKnown(kc.canonical)) continue;
+      const esc = (s) => s.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const names = [kc.canonical, ...kc.aliases].map(esc).join('|');
+      // cue immediately before the name, e.g. "co-host Jennifer Milner",
+      // "this is Jennifer Milner", "I'm Jennifer Milner", "producer(s) … Tessa"
+      const cue = new RegExp(
+        `\\b(?:co-?hosts?|producers?|i'?m|i am|this is)\\b[^.\\n]{0,20}\\b(?:${names})\\b`,
+        'i'
+      );
+      if (cue.test(content)) cohosts.push(kc.canonical);
+    }
+  }
+
   // speakers_expected = 1 (host) + co-hosts + guest speakers
   // Frontmatter may override via `speakersExpected:` for unusual episodes
   // (e.g. an unnamed panelist, a producer who joins mid-show, audio with
