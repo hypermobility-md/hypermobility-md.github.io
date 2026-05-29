@@ -69,3 +69,52 @@ ground truth for attribution where it was verified.
 - Render 3–4 episodes in the browser (`npm start`) to confirm bold names,
   same-speaker grouping, and `[mm:ss]` timestamps display correctly.
 - Sanity-check the new tag sets on a handful of episodes.
+
+## Results of the 2026-05-29 QA pass
+
+**Method.** Re-ran the detector (unchanged: 141 1/13, 28 1/3, 5 1/1 — all
+benign cross-talk, confirmed). Diffed all 136 `speaker-id`-flagged episodes
+against `ef0cf7d^`, focusing on the 51 multi-guest ones. Word-share is a weak
+proxy, so the decisive test was whether self-intro / direct-address cues land
+on the right person (cross-checked against `speaker-corrections/*.json`).
+
+**Manual-correction set is intact.** Every verified swap (028, 059, 069, 093,
+094, 141) and every verified-correct episode (077, 087, 096, 108, 122, 130,
+182) still lands its address cues on the correct speaker. No 2-guest flips
+found.
+
+**New failure mode found & fixed — unlisted co-host/producer merged into the
+host.** The re-proof's cast list comes from each episode's `guests:`
+frontmatter, which omits co-host Jennifer Milner and the Office Hours
+producers (Tessa, Shanti). Where those speakers weren't in the cast list,
+their turns were folded into Dr. Linda Bluestein. Fixed via the 093 pattern
+(restore baseline body → `reformatExisting` → current frontmatter):
+  - **058** — Linda is the *interviewee*; Jennifer Milner interviews. Raw was
+    one block; baseline had the clean two-voice split. Restored.
+  - **170, 174, 177** — Office Hours; producers Tessa/Shanti read listener
+    questions. Restored. (177 was merged **silently** — no `speaker-id` flag.)
+
+**Same root cause, NOT safe to baseline-restore (report only).** On these the
+re-proof *also fixed* significant guest/host scrambles, so restoring baseline
+would trade a few co-host turns for large guest-attribution errors. The clean
+fix is a targeted re-proof with Jennifer Milner added to the cast (a `cohosts`
+field), not a baseline restore:
+  - **010** (guest Bonnie Robson) — baseline had Linda/Bonnie swapped mid-show.
+  - **062** (guest Rudrani Banik) — baseline guest/host "significantly scrambled".
+  - **013** (guest Ilene Ruhoy), **027** (guest Jeanice Mitchell) — Jennifer is
+    a few brief interjections; baseline intro was mislabeled (027 named the
+    guest as the intro speaker). Current is better overall; low impact.
+
+**Residuals (unchanged, not fixable by re-proof).**
+- Diarization merges **033**, **068** — need a fresh AssemblyAI run.
+- Diarization single-block failures **044**, **051** — both baseline and
+  current are guesses; need re-transcription.
+- **085** (6-speaker triple-crossover) — Jill Brook's host-intro lines
+  ("Hello, fellow Triad patients", "Our guests today are…") are misattributed
+  to Dr. Leonard Weinstock in **both** baseline and current, so it's a
+  pre-existing diarization error, not a re-proof regression. Worth a targeted
+  manual fix (reassign those two intro turns to Jill Brook) but out of scope
+  for the baseline-restore pattern.
+- **058 / 170 / 174 / 177** (this pass) and **093** were restored from
+  pre-filler-removal baselines, so they reintroduce "um/uh" fillers.
+  Optionally re-clean.
