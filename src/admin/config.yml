@@ -130,7 +130,7 @@ collections:
     format: "json"
     slug: "{{fields.key}}"
     identifier_field: "key"
-    summary: "{{fields.name | default('{{fields.key}}')}}"
+    summary: "{{fields.name}}"
     sortable_fields:
       fields: ["lastEpisode", "name", "key", "affiliation"]
       default: { field: "lastEpisode", direction: "descending" }
@@ -259,10 +259,8 @@ collections:
     sortable_fields: ["order", "title"]
     search_fields: ["title", "description", "body"]
     fields:
-      - { label: "Title", name: "title", widget: "string", hint: "Question (\"IS EDS Really 'Benign'?\"). Shown on the FAQ page and as the page heading." }
-      - { label: "Short description (SEO)", name: "description", widget: "text", required: false, hint: "1-2 sentence summary. Used for the meta description for SEO." }
-      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 99, hint: "Lower numbers appear higher in the Questions about Hypermobility list. Ties fall back to title." }
-      - { label: "Body", name: "body", widget: "markdown", hint: "Full article body. Supports markdown: headings, **bold**, *italic*, lists, [links](url), etc." }
+      - { label: "Question", name: "title", widget: "string", hint: "The question, e.g. \"Is EDS Really 'Benign'?\". Shown on the FAQ page and as the page heading." }
+      - { label: "Answer", name: "body", widget: "markdown", hint: "Full answer / article body. Supports markdown: headings, **bold**, *italic*, lists, [links](url), etc." }
       - label: "Top-of-page embed"
         name: "embed"
         widget: "object"
@@ -286,6 +284,8 @@ collections:
             fields:
               - { label: "Link URL", name: "linkUrl", widget: "string", required: false }
               - { label: "Link label", name: "linkLabel", widget: "string", required: false, hint: "Text shown on the link button (defaults to the URL)." }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 99, hint: "Lower numbers appear higher in the Questions about Hypermobility list. Ties fall back to title." }
+      - { label: "Short description (SEO)", name: "description", widget: "text", required: false, hint: "1-2 sentence summary. Used for the meta description for SEO." }
       - label: "Advanced Settings"
         name: "seoOverrides"
         widget: "object"
