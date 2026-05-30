@@ -1,7 +1,7 @@
 {
   "key": "jane doe",
   "name": "",
-  "bio": "",
+  "bio": "test",
   "credentials": "",
   "affiliation": "",
   "website": "",
@@ -14,6 +14,6 @@
   "youtube": "",
   "tiktok": "",
   "wikipedia": "",
-  "image": "/Guests/test-image.png",
+  "image": "",
   "lastEpisode": ""
 }
