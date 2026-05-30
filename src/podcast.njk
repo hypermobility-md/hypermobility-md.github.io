@@ -177,10 +177,10 @@ permalink: /podcast/
         </div>
 
         <div class="awards-row" aria-label="Awards">
-          <a class="award-badge" href="https://www.womenpodcasters.com/awards-ceremony-2026" target="_blank" rel="noopener" aria-label="2026 Women Podcasters – Best Wellness Award (opens in new tab)">
+          <a class="award-badge" href="https://www.womenpodcasters.com/awards-ceremony-2026" target="_blank" rel="noopener" aria-label="2026 Women Podcasters – Best Wellness Podcast Award (opens in new tab)">
             <img class="award-logo" src="/assets/awards/women-podcasters-2026.png" alt="Women Podcasters Awards" width="120" height="41" loading="lazy">
             <div class="award-text">
-              <span class="award-title">Best Wellness Award</span>
+              <span class="award-title">Best Wellness Podcast Award</span>
               <span class="award-meta">2026</span>
             </div>
           </a>
@@ -371,24 +371,31 @@ function formatDate(d) {
 }
 
 const ABBREVS = /(?:Dr|Mr|Mrs|Ms|Prof|Sr|Jr|St|vs|etc|e\.g|i\.e|Vol|Ep|Inc|Ltd|M\.?D|Ph\.?D|D\.?P\.?T|P\.?A|R\.?D\.?N|O\.?T|P\.?T|J\.?D)\s*$/i;
-function truncateAtSentence(text, maxChars) {
-  if (!text || text.length <= maxChars) return text;
-  const firstPara = text.split('\n\n')[0];
-  if (firstPara.length <= maxChars) return firstPara;
+function truncateAtSentence(text, maxChars, minChars = 0) {
+  if (!text) return text;
+  // Start with the first paragraph, but if it's shorter than minChars keep
+  // pulling in following paragraphs so a short opening line isn't clipped at
+  // the first blank line. Then cap the result at maxChars on a sentence break.
+  const paras = text.split('\n\n');
+  let chunk = paras[0] || '';
+  for (let p = 1; p < paras.length && chunk.length < minChars; p++) {
+    chunk += ' ' + paras[p];
+  }
+  if (chunk.length <= maxChars) return chunk;
   let lastGoodEnd = -1;
-  for (let i = maxChars * 0.5; i < Math.min(firstPara.length, maxChars * 1.5); i++) {
-    const ch = firstPara[i];
-    if ((ch === '.' || ch === '!' || ch === '?') && (i + 1 >= firstPara.length || firstPara[i + 1] === ' ' || firstPara[i + 1] === '\n')) {
-      const before = firstPara.substring(Math.max(0, i - 15), i + 1);
+  for (let i = maxChars * 0.5; i < Math.min(chunk.length, maxChars * 1.5); i++) {
+    const ch = chunk[i];
+    if ((ch === '.' || ch === '!' || ch === '?') && (i + 1 >= chunk.length || chunk[i + 1] === ' ' || chunk[i + 1] === '\n')) {
+      const before = chunk.substring(Math.max(0, i - 15), i + 1);
       if (!ABBREVS.test(before)) {
         lastGoodEnd = i + 1;
         if (i >= maxChars * 0.8) break;
       }
     }
   }
-  if (lastGoodEnd > 0) return firstPara.substring(0, lastGoodEnd).trim();
-  const cut = firstPara.substring(0, maxChars).lastIndexOf(' ');
-  return firstPara.substring(0, cut > 0 ? cut : maxChars).trim() + '...';
+  if (lastGoodEnd > 0) return chunk.substring(0, lastGoodEnd).trim();
+  const cut = chunk.substring(0, maxChars).lastIndexOf(' ');
+  return chunk.substring(0, cut > 0 ? cut : maxChars).trim() + '...';
 }
 
 function resolveGuestImage(name) {
@@ -422,22 +429,45 @@ function cleanTitle(t) {
   return t.replace(/\s*\((?:Ep|EP|BEN)\s*\d+\)\s*$/, '').replace(/^\d+\.\s+/, '').trim();
 }
 
+// Tag → accent color, shared by the latest-episode chips and the detail modal.
+const TAG_COLORS = {
+  'EDS': '#4a2d7a', 'POTS': '#236a8a', 'MCAS': '#9d2a6b',
+  'Pain': '#9d4a2a', 'Nutrition': '#2a7a4a', 'Mental Health': '#6b4a9d',
+  'Exercise': '#2a5c9d', 'Diagnosis': '#7a5c2a', 'Treatment': '#2a9d8f',
+  'Neurology': '#4a4a9d', 'Surgery': '#7a2a2a', 'Genetics': '#5c7a2a',
+  'Hypermobility': '#4a2d7a', 'Research': '#2a4a7a',
+};
+
+function buildTagChips(tags) {
+  return (tags || []).map(t => {
+    const color = TAG_COLORS[t] || '#4a2d7a';
+    return `<span class="tag-chip" style="background:${color}18; color:${color}; border-color:${color}30;">${t}</span>`;
+  }).join('');
+}
+
 // ---- Latest Episode ----
 function buildLatest(ep, idx) {
   const guestStr = ep.guests && ep.guests.length ? ep.guests.join(', ') : '';
   const guestLabel = guestStr ? `<span class="featured-guest-inline">${guestStr}</span>` : '';
+  const metaStr = [formatDate(ep.date), ep.duration].filter(Boolean).join(' · ');
+  const metaRow = metaStr ? `<div class="featured-meta-row"><span class="featured-meta">${metaStr}</span></div>` : '';
+  const topTagList = (ep.tags || []).slice(0, 3);
+  const topTags = topTagList.length
+    ? `<div class="featured-top-tags">${topTagList.map(t => `<span class="featured-top-tag">${t}</span>`).join('')}</div>`
+    : '';
 
   return `
   <div class="featured-top-bar">
     ${ep.num ? `<div class="featured-latest-num">${ep.num}</div>` : ''}
-    ${buildAvatarHtml(ep, false)}
-    ${guestLabel}
+    ${topTags}
+    <div class="featured-top-guest">${buildAvatarHtml(ep, false)}${guestLabel}</div>
   </div>
   <div class="featured-bottom">
     <div>
       <h2 style="margin:0;"><a href="#" onclick="openLatestModal(${idx});return false;" style="color:inherit;text-decoration:none;">${cleanTitle(ep.title)}</a></h2>
     </div>
-    <p class="featured-description">${truncateAtSentence(ep.shortDescription || '', 350)}</p>
+    ${metaRow}
+    <p class="featured-description">${truncateAtSentence(ep.shortDescription || '', 360, 200)}</p>
     ${ep.audioUrl ? `<div style="margin-bottom: 20px;"><audio controls preload="none" style="width:100%; border-radius:28px;"><source src="${ep.audioUrl}" type="audio/mpeg">Your browser does not support audio.</audio></div>` : ''}
     <div class="featured-actions">
       <a href="#" onclick="openLatestModal(${idx});return false;" class="btn btn-primary">Full Episode Details</a>
@@ -499,14 +529,6 @@ document.getElementById('viewAllBtn').textContent = `View All ${epCount} Episode
 document.getElementById('epCountCta').textContent = epCount;
 
 // ---- Episode Detail Modal ----
-const TAG_COLORS = {
-  'EDS': '#4a2d7a', 'POTS': '#236a8a', 'MCAS': '#9d2a6b',
-  'Pain': '#9d4a2a', 'Nutrition': '#2a7a4a', 'Mental Health': '#6b4a9d',
-  'Exercise': '#2a5c9d', 'Diagnosis': '#7a5c2a', 'Treatment': '#2a9d8f',
-  'Neurology': '#4a4a9d', 'Surgery': '#7a2a2a', 'Genetics': '#5c7a2a',
-  'Hypermobility': '#4a2d7a', 'Research': '#2a4a7a',
-};
-
 function getSocialIcon(url, size) {
   if (!url) return '';
   const s = size || 16;
@@ -645,10 +667,7 @@ function openLatestModal(idx) {
   } else { guestCardsSection.style.display = 'none'; }
 
   // Tags
-  document.getElementById('modalTags').innerHTML = ep.tags.map(t => {
-    const color = TAG_COLORS[t] || '#4a2d7a';
-    return `<span class="tag-chip" style="background:${color}18; color:${color}; border-color:${color}30;">${t}</span>`;
-  }).join('');
+  document.getElementById('modalTags').innerHTML = buildTagChips(ep.tags);
 
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';

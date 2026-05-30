@@ -974,6 +974,27 @@ a.award-badge:focus-visible {
 .service-detail p { color: var(--text-muted); }
 .service-detail .btn { margin-top: 12px; }
 
+/* Service CTA buttons: two-up grid so the long labels line up tidily
+   instead of wrapping unevenly in a flex row. */
+.service-actions {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 16px;
+  max-width: 560px;
+}
+.service-actions .btn {
+  margin-top: 0;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+@media (max-width: 560px) {
+  .service-actions { grid-template-columns: 1fr; }
+}
+
 .conditions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -1065,8 +1086,8 @@ a.award-badge:focus-visible {
 }
 .faq-section-nav .container {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
@@ -1337,6 +1358,7 @@ a.award-badge:focus-visible {
 }
 .faq-section-title-inline {
   margin-bottom: 0;
+  font-family: var(--heading-font);
   font-size: 1.35rem;
   display: inline-flex;
   align-items: center;

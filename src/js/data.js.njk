@@ -20,7 +20,7 @@ const EPISODES = [
     "title": {{ ep.data.title | jsonify | safe }},
     "date": "{{ ep.data.date }}",
     "duration": "{{ ep.data.duration }}",
-    "shortDescription": {{ ep.data.description | truncateSentence(400) | jsonify | safe }},
+    "shortDescription": {{ ep.data.description | truncateSentence(400, 220) | jsonify | safe }},
     "tags": {{ ep.data.tags | sortTagsByFreq(tagStats.counts) | jsonify | safe }},
     "audioUrl": "{{ ep.data.audioUrl }}",
     "videoUrl": "{{ ep.data.videoUrl }}",

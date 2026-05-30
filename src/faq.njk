@@ -67,23 +67,31 @@ pageType: "faq"
       </div>
     </div>
     {%- endfor %}
-  </div>
-</section>
 
-<!-- Questions about Hypermobility Disorders -->
-<section class="section section-alt" id="hypermobility">
-  <div class="container faq-container">
-    <h2 class="faq-section-title"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>Questions about Hypermobility Disorders</h2>
-    <p style="color: var(--text-muted); margin-bottom: 24px;">Explore in-depth articles on common questions about EDS, hypermobility, and related conditions.</p>
+    {# Long-form hypermobility articles, presented as another collapsible
+       accordion category (links out to /faq/<slug>/ article pages). #}
+    <div class="faq-category-block faq-category-block-divider" id="hypermobility">
+      <button class="faq-category-header" onclick="toggleCategory(this)" aria-expanded="false">
+        <span class="faq-section-title faq-section-title-inline">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-title-icon"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+          Questions about Hypermobility Disorders
+        </span>
+        <span class="faq-category-count">{{ collections.hypermobilityQuestions | length }}</span>
+        <svg class="faq-chevron faq-category-chevron" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
 
-    <div class="faq-article-list">
-      {%- set hypItems = collections.hypermobilityQuestions | sort(false, false, 'data.order') %}
-      {%- for item in hypItems %}
-      <a href="{{ item.url }}" class="faq-article-link">
-        <span>{{ item.data.title | safe }}</span>
-        <span class="faq-article-cta">Read more &rarr;</span>
-      </a>
-      {%- endfor %}
+      <div class="faq-category-body">
+        <p style="color: var(--text-muted); margin-bottom: 16px;">Explore in-depth articles on common questions about EDS, hypermobility, and related conditions.</p>
+        <div class="faq-article-list">
+          {%- set hypItems = collections.hypermobilityQuestions | sort(false, false, 'data.order') %}
+          {%- for item in hypItems %}
+          <a href="{{ item.url }}" class="faq-article-link">
+            <span>{{ item.data.title | safe }}</span>
+            <span class="faq-article-cta">Read more &rarr;</span>
+          </a>
+          {%- endfor %}
+        </div>
+      </div>
     </div>
   </div>
 </section>
