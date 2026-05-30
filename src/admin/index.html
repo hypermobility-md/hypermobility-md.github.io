@@ -160,12 +160,15 @@
 
     let guestLookup = {};
     let episodeNums = [];
+    let guestLastEpisode = {};
     Promise.all([
       fetch('/cms-data/guest-lookup.json').then(r => r.ok ? r.json() : {}).catch(() => ({})),
-      fetch('/cms-data/episode-nums.json').then(r => r.ok ? r.json() : []).catch(() => [])
-    ]).then(([guests, nums]) => {
+      fetch('/cms-data/episode-nums.json').then(r => r.ok ? r.json() : []).catch(() => []),
+      fetch('/cms-data/guest-last-episode.json').then(r => r.ok ? r.json() : {}).catch(() => ({}))
+    ]).then(([guests, nums, lastEp]) => {
       guestLookup = guests;
       episodeNums = nums.filter(n => n !== null);
+      guestLastEpisode = lastEp;
     });
 
     function getNextEpisodeNum() {
@@ -467,6 +470,13 @@
                   imagePath = '/Guests/' + parts[parts.length - 1];
                 }
                 setData('image', imagePath);
+              }
+              // Stamp lastEpisode from the build-time guest→episode-date map so
+              // a newly-added guest sorts by recency immediately, without
+              // waiting for the 6-hourly sync backfill.
+              if (key) {
+                const last = guestLastEpisode[normalizeGuestKey(String(key))];
+                if (last) setData('lastEpisode', last);
               }
               return entry;
             }

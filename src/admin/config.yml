@@ -132,7 +132,7 @@ collections:
     identifier_field: "key"
     summary: "{{fields.key}}"
     sortable_fields:
-      fields: ["lastEpisode", "key", "name", "affiliation"]
+      fields: ["lastEpisode"]
       default: { field: "lastEpisode", direction: "descending" }
     search_fields: ["name", "key", "bio", "credentials", "affiliation"]
     view_filters:
@@ -164,7 +164,7 @@ collections:
         public_folder: "/Guests"
         choose_url: true
         hint: "Pick from the Guests library or upload a new photo. Saved to /Guests/."
-      - { label: "Last Episode Date", name: "lastEpisode", widget: "string", required: false, hint: "Auto-filled from the guest's most recent episode (YYYY-MM-DD). Used to sort this list by recency — you don't normally edit this." }
+      - { label: "Most Recent Episode", name: "lastEpisode", widget: "string", required: false, hint: "Auto-filled from the guest's most recent episode (YYYY-MM-DD) — stamped when you save, and refreshed by the 6-hourly sync. Used to sort this list by recency; you don't normally edit it." }
 
   - name: "appearances"
     label: "Guest Appearances"

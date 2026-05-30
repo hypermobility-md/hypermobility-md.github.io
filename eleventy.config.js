@@ -193,6 +193,28 @@ module.exports = function(eleventyConfig) {
     return map;
   });
 
+  // Guest → most recent episode date (normalized key → 'YYYY-MM-DD').
+  // Exposed to the CMS via /cms-data/guest-last-episode.json so saving a guest
+  // profile can stamp `lastEpisode` immediately, instead of waiting for the
+  // 6-hourly sync backfill (which remains the catch-all for existing guests
+  // when new episodes publish).
+  eleventyConfig.addCollection("guestLastEpisode", function(collectionApi) {
+    const map = {};
+    collectionApi.getFilteredByGlob("src/episodes/*.md").forEach(ep => {
+      const date = ep.data.date;
+      if (!date || !Array.isArray(ep.data.guests)) return;
+      const d = new Date(date);
+      if (Number.isNaN(d.getTime())) return;
+      const iso = d.toISOString().slice(0, 10);
+      ep.data.guests.forEach(g => {
+        const key = normalizeGuestKey(g);
+        if (!key) return;
+        if (!map[key] || iso > map[key]) map[key] = iso;
+      });
+    });
+    return map;
+  });
+
   // ---- Filters ----
 
   // Date formatting filter
@@ -220,25 +242,32 @@ module.exports = function(eleventyConfig) {
   });
 
   // Truncate text at a sentence boundary near maxChars
-  eleventyConfig.addFilter("truncateSentence", (text, maxChars) => {
-    if (!text || text.length <= maxChars) return text;
-    const firstPara = text.split('\n\n')[0];
-    if (firstPara.length <= maxChars) return firstPara;
+  eleventyConfig.addFilter("truncateSentence", (text, maxChars, minChars = 0) => {
+    if (!text) return text;
+    // Start with the first paragraph, but if it's shorter than minChars keep
+    // pulling in following paragraphs so a short opening line isn't clipped at
+    // the first blank line. Then cap the result at maxChars on a sentence break.
+    const paras = text.split('\n\n');
+    let chunk = paras[0] || '';
+    for (let p = 1; p < paras.length && chunk.length < minChars; p++) {
+      chunk += ' ' + paras[p];
+    }
+    if (chunk.length <= maxChars) return chunk;
     // Look for sentence end (.!?) between 50% and 150% of maxChars
     const abbrevs = /(?:Dr|Mr|Mrs|Ms|Prof|Sr|Jr|St|vs|etc|e\.g|i\.e|Vol|Ep|Inc|Ltd|M\.?D|Ph\.?D|D\.?P\.?T|P\.?A|R\.?D\.?N|O\.?T|P\.?T|J\.?D)\s*$/i;
     let lastGoodEnd = -1;
-    for (let i = Math.floor(maxChars * 0.5); i < Math.min(firstPara.length, Math.floor(maxChars * 1.5)); i++) {
-      const ch = firstPara[i];
-      if ((ch === '.' || ch === '!' || ch === '?') && (i + 1 >= firstPara.length || firstPara[i + 1] === ' ' || firstPara[i + 1] === '\n')) {
-        const before = firstPara.substring(Math.max(0, i - 15), i + 1);
+    for (let i = Math.floor(maxChars * 0.5); i < Math.min(chunk.length, Math.floor(maxChars * 1.5)); i++) {
+      const ch = chunk[i];
+      if ((ch === '.' || ch === '!' || ch === '?') && (i + 1 >= chunk.length || chunk[i + 1] === ' ' || chunk[i + 1] === '\n')) {
+        const before = chunk.substring(Math.max(0, i - 15), i + 1);
         if (!abbrevs.test(before)) {
           lastGoodEnd = i + 1;
           if (i >= maxChars * 0.8) break;
         }
       }
     }
-    if (lastGoodEnd > 0) return firstPara.substring(0, lastGoodEnd).trim();
-    return firstPara.substring(0, maxChars).trim();
+    if (lastGoodEnd > 0) return chunk.substring(0, lastGoodEnd).trim();
+    return chunk.substring(0, maxChars).trim();
   });
 
   // JSON stringify filter
