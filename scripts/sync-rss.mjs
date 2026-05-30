@@ -531,6 +531,12 @@ async function main() {
               const img = guestImagesMap[matchedKey] || '';
               matchedImages.push(img);
               console.log(`   ✓ Matched: "${rssGuest}" → "${result.canonical}"`);
+              // This was a fuzzy (AI) match, not a direct/alias one. Suggest
+              // promoting recurring variants to a deterministic alias so the
+              // matcher doesn't have to guess next time.
+              if (normalizeKey(rssGuest) !== matchedKey) {
+                console.log(`     ↳ Tip: add "${rssGuest}" as an alias on the "${matchedKey}" guest profile to make this match permanent.`);
+              }
             } else {
               matchedGuests.push(rssGuest);
               matchedImages.push('');
