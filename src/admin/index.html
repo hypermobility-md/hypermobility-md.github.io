@@ -158,15 +158,12 @@
     //  - preSave hook for auto-increment, validation, guestImages
     // =========================================================
 
-    let guestLookup = {};
     let episodeNums = [];
     let guestLastEpisode = {};
     Promise.all([
-      fetch('/cms-data/guest-lookup.json').then(r => r.ok ? r.json() : {}).catch(() => ({})),
       fetch('/cms-data/episode-nums.json').then(r => r.ok ? r.json() : []).catch(() => []),
       fetch('/cms-data/guest-last-episode.json').then(r => r.ok ? r.json() : {}).catch(() => ({}))
-    ]).then(([guests, nums, lastEp]) => {
-      guestLookup = guests;
+    ]).then(([nums, lastEp]) => {
       episodeNums = nums.filter(n => n !== null);
       guestLastEpisode = lastEp;
     });
@@ -223,7 +220,9 @@
     }
 
     // ---- Pre-save dialog ----
-    // Shows detailed info about what will be saved, with guest photo status
+    // Confirms the auto-assigned episode number and date before saving. Guest
+    // photos are managed on the Guest Profile, not here, so they're no longer
+    // part of this review.
     function showPreSaveDialog(info) {
       return new Promise((resolve) => {
         const overlay = document.createElement('div');
@@ -256,65 +255,19 @@
         }
         html += '</span></div>';
 
-        // Guest photos
+        // Reminder: guests are listed by name; photos/bios come from profiles.
         if (info.guests && info.guests.length > 0) {
-          html += '<div class="hmd-section-label">Guest Photos</div>';
-          // The uploaded photo points at a path that hasn't been committed yet,
-          // so its <img> 404s in the dialog. We swap to a "pending" badge on
-          // error so the broken-image icon never shows.
-          const pendingPath = info.uploadedImage ? normalizeImagePath(info.uploadedImage) : null;
-          for (const g of info.guestResults) {
-            if (g.photo) {
-              const isPending = pendingPath && g.photo === pendingPath;
-              const fileLabel = (g.photo.split('/').pop() || '').replace(/\.[^.]+$/, '');
-              const statusText = isPending ? 'Photo uploaded — will save as ' + g.photo : 'Photo found';
-              const onerr = "this.outerHTML='<span class=\"hmd-pending\" title=\"Pending upload\">✓</span>'";
-              html += '<div class="hmd-info-row found">';
-              if (isPending) {
-                html += '<span class="hmd-pending" title="Pending upload">✓</span>';
-              } else {
-                html += '<img src="' + g.photo + '" alt="" onerror="' + onerr + '">';
-              }
-              html += '<span><strong>' + g.name + '</strong><br><span class="status ok">' + statusText + '</span></span>';
-              html += '</div>';
-            } else {
-              html += '<div class="hmd-info-row missing">';
-              html += '<span class="hmd-no-photo">✕</span>';
-              html += '<span><strong>' + g.name + '</strong><br><span class="status warn">No photo on file</span></span>';
-              html += '</div>';
-            }
-          }
-
-          // Guest image paths that will be auto-filled
-          if (info.guestImagePaths.length > 0) {
-            html += '<div class="hmd-section-label">Guest Photo Paths (auto-filled)</div>';
-            for (const p of info.guestImagePaths) {
-              html += '<div class="hmd-path-item">' + p + '</div>';
-            }
-          }
-        }
-
-        // Warning if an uploaded photo's filename didn't match any guest in
-        // the list — it was placed by position instead of by name.
-        if (info.uploadedImage && !info.uploadMatchedByName && info.guests && info.guests.length > 0) {
-          const file = (info.uploadedImage.split('/').pop() || '').replace(/\.[^.]+$/, '');
-          html += '<div class="hmd-warning">⚠ The uploaded photo <strong>' + file +
-            '</strong> didn\'t match any guest by filename. It was attached to the first guest. ' +
-            'For automatic name matching, rename the file to the guest\'s name (e.g. <code>Jane-Doe.jpg</code> for Jane Doe).</div>';
-        }
-
-        // Warning about missing photos
-        if (info.missingPhotos.length > 0) {
-          html += '<div class="hmd-warning">⚠ No photo found for: <strong>' +
-            info.missingPhotos.join(', ') + '</strong>. The episode will save without images for these guests.</div>';
+          html += '<div class="hmd-section-label">Guests</div>';
+          html += '<div class="hmd-info-row"><span>' + info.guests.join(', ') + '</span></div>';
+          html += '<div class="hmd-warning" style="background:#6b5ce718;border-color:#6b5ce740;color:#b9b0f5;">' +
+            'Photos &amp; bios are managed on each <strong>Guest Profile</strong>. New guests get a profile automatically; ' +
+            'open it to add a photo, bio, and links.</div>';
         }
 
         // Action buttons
-        const hasWarnings = info.missingPhotos.length > 0;
         html += '<div class="hmd-dialog-actions">';
         html += '<button class="hmd-btn hmd-btn-cancel" id="hmdCancel">Cancel</button>';
-        html += '<button class="hmd-btn hmd-btn-save' + (hasWarnings ? ' has-warnings' : '') +
-          '" id="hmdSave">' + (hasWarnings ? 'Save Anyway' : 'Save') + '</button>';
+        html += '<button class="hmd-btn hmd-btn-save" id="hmdSave">Save</button>';
         html += '</div>';
 
         dialog.innerHTML = html;
@@ -504,70 +457,19 @@
               dateAutoFilled = true;
             }
 
+            // Guests are listed by name only. Photos and bios live on each
+            // Guest Profile (the site renders a guest's photo from their
+            // profile), so the episode no longer matches or stores images.
             const guests = getData('guests') || [];
-            const guestResults = [];
-            const guestImagePaths = [];
-            const missingPhotos = [];
 
-            for (const guest of guests) {
-              const key = normalizeGuestKey(guest);
-              const photo = guestLookup[key];
-              guestResults.push({ name: guest, photo: photo || null });
-              if (photo) {
-                guestImagePaths.push(normalizeImagePath(photo));
-              } else {
-                guestImagePaths.push(null); // placeholder, may be filled by uploadedImage
-                missingPhotos.push(guest);
-              }
-            }
-
-            // If a guestImage was uploaded directly on this episode, decide
-            // which guest it belongs to.
-            //   1. Match by filename (Jane-Doe.jpg → "jane doe") against the
-            //      guests list — this is the intended workflow.
-            //   2. Otherwise fall back to the first guest still missing a
-            //      photo, then to the first guest.
-            const uploadedImage = getData('guestImage');
-            let uploadMatchedByName = false;
-            if (uploadedImage) {
-              const imgPath = normalizeImagePath(uploadedImage);
-              const fileKey = keyFromFilename(uploadedImage);
-              let targetIdx = -1;
-              if (fileKey) {
-                targetIdx = guests.findIndex(g => normalizeGuestKey(g) === fileKey);
-              }
-              if (targetIdx !== -1) {
-                uploadMatchedByName = true;
-              } else {
-                targetIdx = guestImagePaths.indexOf(null);
-                if (targetIdx === -1) targetIdx = 0;
-              }
-              if (guests.length > 0) {
-                guestImagePaths[targetIdx] = imgPath;
-                const targetName = guests[targetIdx];
-                const gr = guestResults.find(g => g.name === targetName);
-                if (gr) gr.photo = imgPath;
-                const missingIdx = missingPhotos.indexOf(targetName);
-                if (missingIdx !== -1) missingPhotos.splice(missingIdx, 1);
-              }
-            }
-
-            // Drop any remaining nulls so we don't write empty entries
-            const finalGuestImagePaths = guestImagePaths.filter(Boolean);
-
-            // Show the pre-save dialog
+            // Show the pre-save dialog — confirms number + date.
             const proceed = await showPreSaveDialog({
               num,
               numAutoFilled,
               isBonus,
               date,
               dateAutoFilled,
-              guests,
-              guestResults,
-              guestImagePaths: finalGuestImagePaths,
-              missingPhotos,
-              uploadedImage,
-              uploadMatchedByName
+              guests
             });
 
             // Throw to actually abort the save — returning false isn't honored
@@ -586,10 +488,6 @@
 
             if (dateAutoFilled) {
               setData('date', date);
-            }
-
-            if (finalGuestImagePaths.length > 0) {
-              setData('guestImages', finalGuestImagePaths);
             }
 
             return entry;

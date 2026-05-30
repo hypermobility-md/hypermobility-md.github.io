@@ -1,21 +1,5 @@
-// Shared guest-key normalization (mirrors client-side logic)
-function normalizeGuestKey(name) {
-  if (!name) return '';
-  let n = name.replace(/^(Dr\.?|Prof\.?|Professor)\s+/i, '');
-  let prev;
-  do {
-    prev = n;
-    n = n.replace(/[,\s]+(M\.?D\.?|Ph\.?D\.?|D\.?P\.?T\.?|D\.?O\.?|P\.?A\.?-?C?|R\.?D\.?N\.?|O\.?T\.?|P\.?T\.?|J\.?D\.?|LICSW|NCPT|ATC|MS|MA|MPT|DMSC|MRCPsych|DDS|D\.?C\.?|FACP|FACS|FAANS|FAAFP|FAAN|FAMSSM|FACOG|FRCPC|IFMCP|ABIHM|CCSP|CEDS-S|FAED|CHT|CYT|CHC|CMTPT|COMT|NCS|OCS|CES|MHCM)\.?\s*$/i, '');
-  } while (n !== prev);
-  n = n.replace(/[,.\s]+$/, '').trim();
-  // Drop a single-letter middle initial so e.g. "Brayden P. Yellman" matches a
-  // "brayden yellman" profile key. First and last name tokens are kept.
-  const parts = n.split(/\s+/);
-  if (parts.length > 2) {
-    n = parts.filter((p, i) => i === 0 || i === parts.length - 1 || !/^[A-Za-z]\.?$/.test(p)).join(' ');
-  }
-  return n.toLowerCase().replace(/\s+/g, ' ');
-}
+// Shared guest-key normalization — single source of truth in scripts/lib.
+const { normalizeKey: normalizeGuestKey } = require("./scripts/lib/guest-keys.cjs");
 
 const CleanCSS = require("clean-css");
 const fs = require("fs");

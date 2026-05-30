@@ -1,21 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
-
-// Normalize a guest image path to an absolute /Guests/Filename.ext path.
-// CMS uploads sometimes save without a leading slash, which breaks <img src=>
-// rendering on episode pages. This guarantees an absolute, /Guests/-rooted path.
-function normalizeImagePath(p) {
-  if (!p || typeof p !== 'string') return p;
-  let out = p.trim();
-  if (!out) return out;
-  if (!out.startsWith('/')) out = '/' + out;
-  if (!out.startsWith('/Guests/')) {
-    const parts = out.split('/');
-    out = '/Guests/' + parts[parts.length - 1];
-  }
-  return out;
-}
+const { normalizeKey, normalizeImagePath } = require('../../scripts/lib/guest-keys.cjs');
 
 module.exports = function () {
   // Read guest images map
@@ -29,7 +15,12 @@ module.exports = function () {
 
   // Read individual guest profile files
   const profilesDir = path.join(__dirname, '..', 'guest-profiles');
+  // `profiles` is the lookup map (includes alias keys, so an episode credited
+  // under an alternative name still resolves). `profilePages` is canonical-only
+  // — used to generate one guest page per real profile, so aliases never create
+  // duplicate-content pages.
   const profiles = {};
+  const profilePages = {};
 
   if (fs.existsSync(profilesDir)) {
     fs.readdirSync(profilesDir)
@@ -71,10 +62,22 @@ module.exports = function () {
           }
 
           profiles[key] = rest;
+          profilePages[key] = rest; // canonical only — one page per real profile
           // If profile has a photo, add it to the images map too
           if (image) {
             images[key] = image;
           }
+
+          // Register the profile under each alias too, so an episode that
+          // credits the guest by an alternative name (e.g. "Larry Afrin")
+          // resolves to this same profile + photo. The canonical key wins;
+          // aliases only fill keys not already taken by a real profile.
+          (Array.isArray(rest.aliases) ? rest.aliases : []).forEach(alias => {
+            const aliasKey = normalizeKey(alias);
+            if (!aliasKey || aliasKey === key) return;
+            if (!profiles[aliasKey]) profiles[aliasKey] = rest;
+            if (image && !images[aliasKey]) images[aliasKey] = image;
+          });
         }
       });
   }
@@ -110,24 +113,5 @@ module.exports = function () {
       });
   }
 
-  return { images, profiles };
+  return { images, profiles, profilePages };
 };
-
-/** Normalize a guest name to a lookup key (mirrors normalizeGuestKey in eleventy.config.js). */
-function normalizeKey(name) {
-  if (!name) return '';
-  let n = name.replace(/^(Dr\.?|Prof\.?|Professor)\s+/i, '');
-  let prev;
-  do {
-    prev = n;
-    n = n.replace(/[,\s]+(M\.?D\.?|Ph\.?D\.?|D\.?P\.?T\.?|D\.?O\.?|P\.?A\.?-?C?|R\.?D\.?N\.?|O\.?T\.?|P\.?T\.?|J\.?D\.?|LICSW|NCPT|ATC|MS|MA|MPT|DMSC|MRCPsych|DDS|D\.?C\.?|FACP|FACS|FAANS|FAAFP|FAAN|FAMSSM|FACOG|FRCPC|IFMCP|ABIHM|CCSP|CEDS-S|FAED|CHT|CYT|CHC|CMTPT|COMT|NCS|OCS|CES|MHCM)\.?\s*$/i, '');
-  } while (n !== prev);
-  n = n.replace(/[,.\s]+$/, '').trim();
-  // Drop a single-letter middle initial so e.g. "Brayden P. Yellman" matches a
-  // "brayden yellman" profile key. First and last name tokens are kept.
-  const parts = n.split(/\s+/);
-  if (parts.length > 2) {
-    n = parts.filter((p, i) => i === 0 || i === parts.length - 1 || !/^[A-Za-z]\.?$/.test(p)).join(' ');
-  }
-  return n.toLowerCase().replace(/\s+/g, ' ');
-}

@@ -20,7 +20,9 @@ collections:
     folder: "src/episodes"
     create: true
     slug: "{{fields.num | default(fields.title | slug)}}"
-    sortable_fields: ["num", "date", "title"]
+    sortable_fields:
+      fields: ["num", "date", "title"]
+      default: { field: "num", direction: "descending" }
     search_fields: ["title", "description", "guests"]
     view_filters:
       - { label: "Bonus / Unnumbered", field: "bonus", pattern: true }
@@ -95,19 +97,15 @@ collections:
         widget: "list"
         required: false
         hint: "Recurring co-hosts on this episode (e.g. Aron, Dacre Knight). Counts toward speaker detection but isn't displayed as a guest."
-      - label: "Guest Photo"
+      - label: "Guest Photo (thumbnail — auto-managed)"
         name: "guestImage"
         widget: "image"
         required: false
         media_folder: "/src/Guests"
         public_folder: "/Guests"
         choose_url: true
-        hint: "Pick from the Guests library or upload a new photo. Name the file to match the guest  e.g. Jane-Doe.jpg for 'Jane Doe'. The photo also propagates to any future episode featuring that guest."
-      - label: "Guest Photo Paths"
-        name: "guestImages"
-        widget: "list"
-        required: false
-        hint: "Auto-filled on save from the Guests list. You don't need to edit this manually"
+        hint: "You don't need to set this. Guest photos now live on the Guest Profile — add or change a photo there. This field only provides the episode-list thumbnail and is filled automatically from the guest's profile."
+      - { label: "Guest Photo Paths", name: "guestImages", widget: "hidden" }
       - label: "Advanced Settings"
         name: "seoOverrides"
         widget: "object"
@@ -143,6 +141,11 @@ collections:
     fields:
       - { label: "Guest Key", name: "key", widget: "string", hint: "Name with no titles or credentials, e.g. 'alexis cutchins'. Case and spacing don't matter; this is used internally to match the guest across episodes, and is what's shown in this list." }
       - { label: "Preferred Display Name", name: "name", widget: "string", required: false, hint: "How the guest's name appears on their profile page and episode cards, e.g. 'Dr. Alexis Cutchins'. Leave blank to fall back to whatever name was entered in an episode's Guests list." }
+      - label: "Also Known As (alternative names)"
+        name: "aliases"
+        widget: "list"
+        required: false
+        hint: "Optional. Other names this guest is credited under, one per item (e.g. 'Larry Afrin' for Lawrence Afrin). An episode that lists any of these names links to THIS profile and uses this photo, so you only maintain the guest in one place."
       - { label: "Bio", name: "bio", widget: "text", required: false }
       - { label: "Credentials", name: "credentials", widget: "string", required: false, hint: "e.g. MD, PhD, DPT" }
       - { label: "Affiliation", name: "affiliation", widget: "string", required: false }
@@ -173,16 +176,21 @@ collections:
     slug: "{{fields.showName | slugify}}"
     identifier_field: "showName"
     summary: "{{fields.showName}} — {{fields.episodeTitle}}"
-    sortable_fields: ["date", "showName", "featuredOrder"]
+    sortable_fields:
+      fields: ["date", "showName", "featuredOrder"]
+      default: { field: "date", direction: "descending" }
     search_fields: ["showName", "episodeTitle", "description"]
     view_filters:
       - { label: "Featured", field: "featured", pattern: true }
       - { label: "Missing image", field: "imageUrl", pattern: "^$" }
       - { label: "Missing description", field: "description", pattern: "^$" }
     view_groups:
-      - label: Year
-        field: date
-        pattern: \d{4}
+      groups:
+        - name: "year"
+          label: Year
+          field: date
+          pattern: \d{4}
+      default: "year"
     fields:
       - { label: "Show Name", name: "showName", widget: "string", hint: "Name of the podcast" }
       - { label: "Episode Title", name: "episodeTitle", widget: "string" }
@@ -229,11 +237,16 @@ collections:
     slug: "{{fields.question | slugify}}"
     identifier_field: "question"
     summary: "{{question}}  ·  {{category}} #{{order}}"
-    sortable_fields: ["category", "order", "question"]
+    sortable_fields:
+      fields: ["category", "order", "question"]
+      default: { field: "order", direction: "ascending" }
     search_fields: ["question", "body"]
     view_groups:
-      - label: Category
-        field: category
+      groups:
+        - name: "category"
+          label: Category
+          field: category
+      default: "category"
     fields:
       - { label: "Question", name: "question", widget: "string", hint: "The question as shown on the accordion (\"What is EduCoaching?\")." }
       - label: "Category"
@@ -256,7 +269,9 @@ collections:
     slug: "{{fields.title | slugify}}"
     identifier_field: "title"
     summary: "{{title}}  ·  #{{order}}"
-    sortable_fields: ["order", "title"]
+    sortable_fields:
+      fields: ["order", "title"]
+      default: { field: "order", direction: "ascending" }
     search_fields: ["title", "description", "body"]
     fields:
       - { label: "Question", name: "title", widget: "string", hint: "The question, e.g. \"Is EDS Really 'Benign'?\". Shown on the FAQ page and as the page heading." }

@@ -17,6 +17,7 @@ import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
 import { join } from 'path';
 import matter from 'gray-matter';
 import Anthropic from '@anthropic-ai/sdk';
+import { normalizeKey } from './lib/guest-keys.mjs';
 
 // ── Paths ────────────────────────────────────────────────────────────────────
 const ROOT = join(import.meta.dirname, '..');
@@ -182,15 +183,6 @@ function decodeXmlEntities(s) {
     .replace(/&#x27;/gi, "'");
 }
 
-/** Normalize a guest name for matching (strip titles, credentials, lowercase). */
-function normalizeGuest(name) {
-  return name
-    .replace(/^(Dr\.|Prof\.|Professor)\s+/i, '')
-    .replace(/,?\s*(MD|DO|PhD|DPT|PT|OT|RN|NP|PA-C|DC|ND|LAc|FACP|FACR|FAAPMR)\b/gi, '')
-    .trim()
-    .toLowerCase();
-}
-
 /**
  * Create a stub guest-profile JSON if one doesn't already exist for `displayName`.
  * Stub is intentionally minimal — name (via key) only. The podcast team can fill
@@ -198,7 +190,7 @@ function normalizeGuest(name) {
  * Returns true if a file was created, false otherwise.
  */
 function ensureGuestProfileStub(displayName, knownKeys) {
-  const key = normalizeGuest(displayName);
+  const key = normalizeKey(displayName);
   if (!key) return false;
   if (knownKeys.has(key)) return false;
   const slug = key.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -386,9 +378,23 @@ async function main() {
     const displayName = key.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
     return p.credentials ? `Dr. ${displayName}` : displayName;
   });
-  // Also collect raw keys for matching
-  const profileKeys = profiles.map(p => p.key);
-  const knownProfileKeys = new Set(profileKeys);
+  // Collect normalized keys for matching, so a profile stored with any
+  // casing/credentials (e.g. "Bonnie Robson, M.D.") still matches the same
+  // normalized key the rest of the pipeline produces.
+  const profileKeys = profiles.map(p => normalizeKey(p.key));
+  // Map each profile alias (e.g. "larry afrin") to its canonical key, so an
+  // episode credited under an alternative name matches the existing profile
+  // instead of spawning a duplicate stub.
+  const aliasToCanonical = {};
+  for (const p of profiles) {
+    const canonical = normalizeKey(p.key);
+    for (const a of (Array.isArray(p.aliases) ? p.aliases : [])) {
+      const ak = normalizeKey(a);
+      if (ak && ak !== canonical && !aliasToCanonical[ak]) aliasToCanonical[ak] = canonical;
+    }
+  }
+  // Known keys = canonical profile keys + all aliases (so aliases don't create stubs).
+  const knownProfileKeys = new Set([...profileKeys, ...Object.keys(aliasToCanonical)]);
 
   // Load guest images for looking up image paths
   let guestImagesMap = {};
@@ -503,12 +509,14 @@ async function main() {
       const matchedImages = [];
 
       for (const rssGuest of rssGuests) {
-        // First try direct key match
-        const normalized = normalizeGuest(rssGuest);
-        const directMatch = profileKeys.find(k => k === normalized);
+        // First try direct key match (resolving aliases to the canonical key).
+        const normalized = normalizeKey(rssGuest);
+        const canonical = aliasToCanonical[normalized] || normalized;
+        const directMatch = profileKeys.find(k => k === canonical);
 
         if (directMatch) {
-          const img = guestImagesMap[directMatch] || '';
+          // Image is keyed by the canonical guest, not the alias.
+          const img = guestImagesMap[directMatch] || guestImagesMap[normalized] || '';
           matchedGuests.push(rssGuest);
           matchedImages.push(img);
           console.log(`   ✓ Guest matched directly: "${rssGuest}" → "${directMatch}"`);
@@ -519,7 +527,7 @@ async function main() {
             const result = await matchGuestWithHaiku(rssGuest, canonicalNames);
             if (result.matched) {
               matchedGuests.push(result.canonical);
-              const matchedKey = normalizeGuest(result.canonical);
+              const matchedKey = normalizeKey(result.canonical);
               const img = guestImagesMap[matchedKey] || '';
               matchedImages.push(img);
               console.log(`   ✓ Matched: "${rssGuest}" → "${result.canonical}"`);
