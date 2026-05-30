@@ -184,7 +184,13 @@
 
     function normalizeGuestKey(name) {
       let n = name.replace(/^(Dr\.?|Prof\.?|Professor)\s+/i, '');
-      n = stripCredentials(n);
+      n = stripCredentials(n).trim();
+      // Drop a single-letter middle initial so e.g. "Brayden P. Yellman"
+      // matches a "brayden yellman" profile key. Keeps first & last tokens.
+      const parts = n.split(/\s+/);
+      if (parts.length > 2) {
+        n = parts.filter((p, i) => i === 0 || i === parts.length - 1 || !/^[A-Za-z]\.?$/.test(p)).join(' ');
+      }
       return n.toLowerCase().replace(/\s+/g, ' ');
     }
 
