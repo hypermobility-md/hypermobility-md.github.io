@@ -1,4 +1,19 @@
 {
   "key": "jane doe",
-  "image": "/Guests/test-image.png"
+  "name": "",
+  "bio": "",
+  "credentials": "",
+  "affiliation": "",
+  "website": "",
+  "website2": "",
+  "linkedin": "",
+  "twitter": "",
+  "substack": "",
+  "instagram": "",
+  "facebook": "",
+  "youtube": "",
+  "tiktok": "",
+  "wikipedia": "",
+  "image": "",
+  "lastEpisode": ""
 }
