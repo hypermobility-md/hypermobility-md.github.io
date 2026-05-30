@@ -13,6 +13,7 @@ guests:
   - jane smith
 cohosts: []
 guestImage: ''
-guestImages: []
+guestImages:
+  - /Guests/jane-smith.png
 seoOverrides: null
 ---
