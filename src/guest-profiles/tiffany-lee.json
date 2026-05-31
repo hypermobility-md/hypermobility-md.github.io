@@ -4,7 +4,9 @@
   "bio": "Tiffany Lee is an adjunct professor of law at Washington and Lee University School of Law, teaching disability law, healthcare law, and bioethics. She lives with hypermobile Ehlers-Danlos Syndrome, POTS, and chronic migraines.",
   "credentials": "JD",
   "affiliation": "Washington and Lee University School of Law",
-  "website": "https://law.wlu.edu/faculty/adjunct-faculty/tiffany-lee",
+  "socials": {
+    "website": "https://law.wlu.edu/faculty/adjunct-faculty/tiffany-lee"
+  },
   "image": "/Guests/Tiffany_Lee.jpg",
   "lastEpisode": "2024-02-01"
 }

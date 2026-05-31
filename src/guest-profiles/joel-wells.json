@@ -4,7 +4,9 @@
   "bio": "Dr. Joel Wells is a fellowship-trained hip surgeon and orthopedic specialist. He specializes in hip preservation, periacetabular osteotomy, and hip dysplasia, with expertise in hip care for hypermobile patients.",
   "credentials": "MD, MPH, FAAOS",
   "affiliation": "Baylor Scott & White Health",
-  "website": "https://www.bswhealth.com/physician/joel-wells",
+  "socials": {
+    "website": "https://www.bswhealth.com/physician/joel-wells"
+  },
   "image": "/Guests/Joel_Wells.jpg",
   "lastEpisode": "2020-03-12"
 }

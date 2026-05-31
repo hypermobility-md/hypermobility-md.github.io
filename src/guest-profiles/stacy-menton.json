@@ -4,8 +4,10 @@
   "bio": "Stacey Menton is a speech-language pathologist and classically trained soprano specializing in voice disorders, with particular expertise in treating patients with EDS and hypermobility spectrum disorders.",
   "credentials": "MS, CCC-SLP",
   "affiliation": "Mayo Clinic Jacksonville",
-  "website": "https://staceymenton.com/",
-  "facebook": "https://www.facebook.com/profile.php?id=100077671590313",
+  "socials": {
+    "website": "https://staceymenton.com/",
+    "facebook": "https://www.facebook.com/profile.php?id=100077671590313"
+  },
   "image": "/Guests/Stacey_Menton.jpg",
   "lastEpisode": "2025-07-03"
 }

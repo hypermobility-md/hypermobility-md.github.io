@@ -4,7 +4,9 @@
   "bio": "Dr. Brayden Yellman is a board-certified internist and rheumatologist at the Bateman Horne Center. He specializes in ME/CFS, fibromyalgia, and orthostatic intolerance syndromes including POTS.",
   "credentials": "MD",
   "affiliation": "Bateman Horne Center",
-  "website": "https://batemanhornecenter.org/about/staff/brayden-yellman-md/",
+  "socials": {
+    "website": "https://batemanhornecenter.org/about/staff/brayden-yellman-md/"
+  },
   "image": "/Guests/Brayden_Yellman.jpg",
   "lastEpisode": "2025-04-10"
 }

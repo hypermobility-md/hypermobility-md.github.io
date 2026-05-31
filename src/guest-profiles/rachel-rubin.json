@@ -4,8 +4,10 @@
   "bio": "Dr. Rachel Rubin is a board-certified urologist with fellowship training in sexual medicine for all genders. She completed her sexual medicine fellowship with Dr. Irwin Goldstein and serves as education chair for ISSWSH.",
   "credentials": "MD",
   "affiliation": "Rachel Rubin MD Urology and Sexual Medicine",
-  "website": "https://www.rachelrubinmd.com/",
-  "youtube": "https://www.youtube.com/c/DrRachelRubin",
+  "socials": {
+    "website": "https://www.rachelrubinmd.com/",
+    "youtube": "https://www.youtube.com/c/DrRachelRubin"
+  },
   "image": "/Guests/Rachel_Rubin.jpg",
   "lastEpisode": "2026-02-12"
 }

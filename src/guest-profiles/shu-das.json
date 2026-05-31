@@ -4,7 +4,9 @@
   "bio": "Dr. Subinoy (Shu) Das is a board-certified otolaryngologist, Fellow of the American College of Surgeons, and CEO of the U.S. Institute for Advanced Sinus Care and Research. He has expertise in how EDS impacts the ears, nose, throat, vocal cords, and hearing.",
   "credentials": "MD, FACS",
   "affiliation": "U.S. Institute for Advanced Sinus Care and Research",
-  "website": "http://www.usasinus.org/meet-dr-das",
+  "socials": {
+    "website": "http://www.usasinus.org/meet-dr-das"
+  },
   "image": "/Guests/Shu_Das.jpg",
   "lastEpisode": "2024-12-12"
 }

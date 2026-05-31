@@ -3,7 +3,9 @@
   "name": "Rachel Neville",
   "bio": "Rachel Neville is an award-winning dance and movement photographer based in New York City with over two decades of experience shooting for companies including Boston Ballet, Atlanta Ballet, and Dance Theatre of Harlem.",
   "affiliation": "Rachel Neville Studios",
-  "website": "https://rachelneville.com/",
+  "socials": {
+    "website": "https://rachelneville.com/"
+  },
   "image": "/Guests/Rachel_Neville.jpg",
   "lastEpisode": "2021-03-11"
 }

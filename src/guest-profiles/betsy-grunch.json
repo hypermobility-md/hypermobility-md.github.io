@@ -4,13 +4,15 @@
   "bio": "Dr. Betsy Grunch is a board-certified neurosurgeon who completed her spine fellowship at Duke University. She specializes in minimally invasive spine surgery and is known for her educational social media presence with over 3 million followers.",
   "credentials": "MD, FAANS, FACS",
   "affiliation": "Southern Neurosurgery",
-  "website": "https://www.drgrunch.com/",
-  "instagram": "https://www.instagram.com/ladyspinedoc",
-  "linkedin": "https://www.linkedin.com/in/drgrunch/",
-  "facebook": "https://www.facebook.com/ladyspinedoc",
-  "twitter": "https://www.x.com/ladyspinedoc",
-  "youtube": "https://www.youtube.com/@ladyspinedoc",
-  "tiktok": "https://www.tiktok.com/@ladyspinedoc",
+  "socials": {
+    "website": "https://www.drgrunch.com/",
+    "linkedin": "https://www.linkedin.com/in/drgrunch/",
+    "twitter": "https://www.x.com/ladyspinedoc",
+    "instagram": "https://www.instagram.com/ladyspinedoc",
+    "facebook": "https://www.facebook.com/ladyspinedoc",
+    "youtube": "https://www.youtube.com/@ladyspinedoc",
+    "tiktok": "https://www.tiktok.com/@ladyspinedoc"
+  },
   "image": "/Guests/Betsy_Grunch.jpg",
   "lastEpisode": "2025-10-16"
 }

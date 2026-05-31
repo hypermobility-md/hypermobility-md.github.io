@@ -4,7 +4,9 @@
   "bio": "Dr. John Pitts is a Physical Medicine & Rehabilitation physician specializing in regenerative medicine and interventional orthopedics at the Centeno-Schultz Clinic. He is the chief editor of the Atlas of Interventional Orthopedics.",
   "credentials": "MD",
   "affiliation": "Centeno-Schultz Clinic",
-  "website": "https://centenoschultz.com/our-staff/john-pitts-md/",
+  "socials": {
+    "website": "https://centenoschultz.com/our-staff/john-pitts-md/"
+  },
   "image": "/Guests/John_Pitts.jpg",
   "lastEpisode": "2024-10-03"
 }

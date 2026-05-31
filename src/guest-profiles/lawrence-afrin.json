@@ -7,8 +7,10 @@
   "bio": "Dr. Lawrence Afrin is a hematologist/oncologist and one of the world's foremost experts on Mast Cell Activation Syndrome (MCAS). He is the author of over 73 peer-reviewed articles and the first book about MCAS, 'Never Bet Against Occam.'",
   "credentials": "MD",
   "affiliation": "AIM Center for Personalized Medicine",
-  "website": "https://drtaniadempsey.com/lawrence-afrin/",
-  "website2": "http://www.aimcenterpm.com",
+  "socials": {
+    "website": "https://drtaniadempsey.com/lawrence-afrin/",
+    "website2": "http://www.aimcenterpm.com"
+  },
   "image": "/Guests/Lawrence_Afrin.jpg",
   "lastEpisode": "2026-01-29"
 }

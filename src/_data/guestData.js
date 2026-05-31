@@ -38,7 +38,9 @@ module.exports = function () {
           const key = normalizeKey(rawKey);
           rest.key = key;
 
-          // Build links array from individual social fields (if not already present)
+          // Build links array from the social fields (now grouped under a
+          // `socials` object in the CMS; older flat top-level fields still work
+          // as a fallback).
           if (!rest.links) {
             const socialFields = [
               { field: 'website', label: 'Website' },
@@ -52,10 +54,12 @@ module.exports = function () {
               { field: 'tiktok', label: 'TikTok' },
               { field: 'wikipedia', label: 'Wikipedia' },
             ];
+            const socials = rest.socials || {};
             const links = [];
             socialFields.forEach(({ field, label }) => {
-              if (rest[field]) {
-                links.push({ url: rest[field], label });
+              const url = socials[field] || rest[field];
+              if (url) {
+                links.push({ url, label });
               }
             });
             if (links.length) rest.links = links;

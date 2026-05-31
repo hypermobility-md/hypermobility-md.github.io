@@ -4,7 +4,9 @@
   "bio": "Dr. Roger Seheult is a quadruple board-certified physician specializing in pulmonary medicine, critical care, internal medicine, and sleep medicine. He co-founded MedCram, a medical education platform with over 1 million YouTube subscribers.",
   "credentials": "MD",
   "affiliation": "MedCram",
-  "website": "https://www.medcram.com",
+  "socials": {
+    "website": "https://www.medcram.com"
+  },
   "image": "/Guests/Roger_Seheult.jpg",
   "lastEpisode": "2024-02-08"
 }

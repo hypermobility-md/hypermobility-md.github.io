@@ -4,8 +4,10 @@
   "bio": "Kate Colbert is the founder, executive director, and board president of EDS Guardians, Inc., the world's first patient-to-patient pay-it-forward organization for EDS patients. Diagnosed with hEDS at age 45, she is also CEO of Silver Tree Communications and a bestselling author.",
   "credentials": "MA, MBA",
   "affiliation": "EDS Guardians Inc., Silver Tree Communications",
-  "website": "https://www.edsguardians.org/",
-  "linkedin": "https://www.linkedin.com/in/katecolbert/",
+  "socials": {
+    "website": "https://www.edsguardians.org/",
+    "linkedin": "https://www.linkedin.com/in/katecolbert/"
+  },
   "image": "/Guests/Kate_Colbert.jpg",
   "lastEpisode": "2025-08-28"
 }

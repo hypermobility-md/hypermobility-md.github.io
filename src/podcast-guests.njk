@@ -81,11 +81,12 @@ const INVALID_GUESTS = [
 function isHost(name) { return HOST_PATTERNS.some(p => p.test(name)); }
 function isInvalidGuest(name) { const lower = name.toLowerCase(); return INVALID_GUESTS.some(inv => lower.startsWith(inv)); }
 
+// NOTE: mirrors scripts/lib/guest-keys.cjs normalizeKey() — keep in sync.
 function stripCredentials(name) {
   let n = name, prev;
   do {
     prev = n;
-    n = n.replace(/[,\s]+(M\.?D\.?|Ph\.?D\.?|D\.?P\.?T\.?|D\.?O\.?|P\.?A\.?-?C?|R\.?D\.?N\.?|O\.?T\.?|P\.?T\.?|J\.?D\.?|LICSW|NCPT|ATC|MS|MA|MPT|DMSC|MRCPsych|DDS)\.?\s*$/i, '');
+    n = n.replace(/[,\s]+(M\.?D\.?|Ph\.?D\.?|D\.?P\.?T\.?|D\.?O\.?|P\.?A\.?-?C?|R\.?D\.?N\.?|O\.?T\.?|P\.?T\.?|J\.?D\.?|LICSW|NCPT|ATC|MS|MA|MPT|DMSC|MRCPsych|DDS|D\.?C\.?|FACP|FACS|FAANS|FAAFP|FAAN|FAMSSM|FACOG|FRCPC|IFMCP|ABIHM|CCSP|CEDS-S|FAED|CHT|CYT|CHC|CMTPT|COMT|NCS|OCS|CES|MHCM)\.?\s*$/i, '');
   } while (n !== prev);
   return n.replace(/[,.\s]+$/, '').trim();
 }
@@ -93,11 +94,21 @@ function stripCredentials(name) {
 function normalizeGuestKey(name) {
   let n = name.replace(/^(Dr\.?|Prof\.?|Professor)\s+/i, '');
   n = stripCredentials(n);
+  // Drop a single-letter middle initial so "Brayden P. Yellman" matches the
+  // "brayden yellman" profile key (and links to the same /guests/ page).
+  const parts = n.split(/\s+/);
+  if (parts.length > 2) {
+    n = parts.filter((p, i) => i === 0 || i === parts.length - 1 || !/^[A-Za-z]\.?$/.test(p)).join(' ');
+  }
   return n.toLowerCase().replace(/\s+/g, ' ');
 }
 
+// Resolve to the guest's CANONICAL page slug, following aliases so an episode
+// credited under an alternative name still links to the real profile page.
 function guestSlug(name) {
-  return normalizeGuestKey(name).replace(/\s+/g, '-');
+  const key = normalizeGuestKey(name);
+  const prof = (typeof GUEST_PROFILES !== 'undefined') ? GUEST_PROFILES[key] : null;
+  return (prof && prof.key ? prof.key : key).replace(/\s+/g, '-');
 }
 
 function hasGuestPage(name) {
@@ -105,9 +116,7 @@ function hasGuestPage(name) {
 }
 
 function getGuestImage(name) {
-  let n = name.replace(/^(Dr\.?|Prof\.?|Professor)\s+/i, '');
-  n = stripCredentials(n).toLowerCase();
-  return GUEST_IMAGES[n] || null;
+  return GUEST_IMAGES[normalizeGuestKey(name)] || null;
 }
 
 function getSortLastName(name) {
@@ -123,7 +132,10 @@ EPISODES.forEach(ep => {
   if (!ep.guests || ep.guests.length === 0) return;
   ep.guests.forEach(g => {
     if (!g || isHost(g) || isInvalidGuest(g) || g.length < 3) return;
-    const key = normalizeGuestKey(g);
+    let key = normalizeGuestKey(g);
+    // Collapse aliases/variants onto the canonical key so one guest = one card.
+    const canonProf = (typeof GUEST_PROFILES !== 'undefined') ? GUEST_PROFILES[key] : null;
+    if (canonProf && canonProf.key) key = canonProf.key;
     if (key.length < 3) return;
     if (!tempMap[key]) {
       tempMap[key] = { displayName: g, episodes: [] };

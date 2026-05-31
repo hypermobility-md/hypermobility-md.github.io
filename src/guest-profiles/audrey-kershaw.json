@@ -4,8 +4,10 @@
   "bio": "Dr. Audrey Kershaw is an oral surgeon who founded Oral Surgery Scotland. She has uncovered hundreds of hidden EDS cases through dental presentations, lecturing widely on connective tissue disorders in dentistry.",
   "credentials": "BDS, FDS RCSEd",
   "affiliation": "Oral Surgery Scotland",
-  "website": "https://www.oralsurgery.scot/",
-  "facebook": "https://www.facebook.com/audrey.kershaw.3",
+  "socials": {
+    "website": "https://www.oralsurgery.scot/",
+    "facebook": "https://www.facebook.com/audrey.kershaw.3"
+  },
   "image": "/Guests/Audrey_Kershaw.jpg",
   "lastEpisode": "2025-09-11"
 }

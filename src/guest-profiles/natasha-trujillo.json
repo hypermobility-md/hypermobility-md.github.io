@@ -4,7 +4,9 @@
   "bio": "Dr. Natasha Trujillo is a licensed counseling and sport psychologist specializing in chronic illness, grief and loss, eating disorders, and performance concerns for athletes. She is on the U.S. Olympic and Paralympic Committee Mental Health Registry.",
   "credentials": "PhD",
   "affiliation": "Natasha P. Trujillo, PhD",
-  "website": "https://npttherapy.com/",
+  "socials": {
+    "website": "https://npttherapy.com/"
+  },
   "image": "/Guests/Natasha_Trujillo.jpg",
   "lastEpisode": "2024-08-22"
 }

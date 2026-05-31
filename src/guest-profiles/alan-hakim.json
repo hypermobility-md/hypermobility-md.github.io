@@ -4,7 +4,9 @@
   "bio": "Dr. Alan Hakim is a UK-based consultant rheumatologist with over 32 years of experience in connective tissue disorders. He serves as Chief Medical Officer and Director of Research for The Ehlers Danlos Society.",
   "credentials": "MA, FRCP",
   "affiliation": "The Ehlers Danlos Society",
-  "website": "https://alanhakim.com/",
+  "socials": {
+    "website": "https://alanhakim.com/"
+  },
   "image": "/Guests/Alan_Hakim.jpg",
   "lastEpisode": "2024-09-12"
 }

@@ -4,7 +4,9 @@
   "bio": "Dr. Bonnie Robson is a retired psychiatrist in Toronto who pioneered performance psychiatry for dancers at the National Ballet of Canada. She received lifetime achievement awards for her contributions to dance medicine.",
   "credentials": "MD",
   "affiliation": "National Ballet of Canada (retired)",
-  "website": "https://www.jorgendance.ca/team/bonnie-e-robson/",
+  "socials": {
+    "website": "https://www.jorgendance.ca/team/bonnie-e-robson/"
+  },
   "image": "/Guests/Bonnie_Robson.jpg",
   "lastEpisode": "2021-04-08"
 }

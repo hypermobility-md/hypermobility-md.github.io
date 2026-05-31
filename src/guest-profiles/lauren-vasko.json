@@ -3,7 +3,9 @@
   "name": "Lauren Vasko",
   "bio": "Lauren Vasko is an EDS patient advocate and the very first patient of Dr. Linda Bluestein. She navigated life in a wheelchair due to cranial-cervical instability and POTS before regaining independence and earning a degree in entrepreneurship and marketing from Marquette University.",
   "affiliation": "West Nairobi School",
-  "website": "https://laurenvasko.substack.com/",
+  "socials": {
+    "website": "https://laurenvasko.substack.com/"
+  },
   "image": "/Guests/Lauren_Vasko.jpg",
   "lastEpisode": "2025-01-02"
 }

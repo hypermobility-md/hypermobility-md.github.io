@@ -3,7 +3,9 @@
   "name": "Victoria Daylor",
   "bio": "Victoria Daylor is a patient scientist with hEDS who graduated from the Boston Conservatory and Columbia University's Postbac Premed Program. She serves as a Clinical Research Coordinator in the Norris Lab at MUSC and co-authored the 'Hope for Hypermobility' CME series.",
   "affiliation": "The Norris Lab",
-  "website": "https://www.thenorrislab.com/meet-the-lab",
+  "socials": {
+    "website": "https://www.thenorrislab.com/meet-the-lab"
+  },
   "image": "/Guests/Victoria_Daylor.jpg",
   "lastEpisode": "2023-05-25"
 }

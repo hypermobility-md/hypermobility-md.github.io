@@ -4,9 +4,11 @@
   "bio": "Professor Tara Renton is an Emeritus Professor of Oral Surgery at King's College London and a leading international authority on trigeminal nerve injuries and chronic orofacial pain. She has published over 250 peer-reviewed articles.",
   "credentials": "BDS, MDSc, PhD",
   "affiliation": "King's College London",
-  "website": "https://tararenton.co.uk/",
-  "linkedin": "https://www.linkedin.com/in/tara-renton-a5999018/",
-  "website2": "https://orofacialpain.org.uk/",
+  "socials": {
+    "website": "https://tararenton.co.uk/",
+    "website2": "https://orofacialpain.org.uk/",
+    "linkedin": "https://www.linkedin.com/in/tara-renton-a5999018/"
+  },
   "image": "/Guests/Tara_Renton.jpg",
   "lastEpisode": "2025-12-04"
 }

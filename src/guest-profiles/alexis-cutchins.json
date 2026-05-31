@@ -4,9 +4,11 @@
   "bio": "Dr. Alexis Cutchins is a board-certified cardiologist and expert in POTS, dysautonomia, and Long COVID. She founded Cutchins Cardiovascular Medicine specializing in the care of patients with POTS, MCAS, and hypermobility disorders.",
   "credentials": "MD",
   "affiliation": "Cutchins Cardiovascular Medicine",
-  "website": "https://cutchinscvm.com/",
-  "instagram": "https://www.instagram.com/drcutchins/",
-  "youtube": "https://youtube.com/@DrCutchins",
+  "socials": {
+    "website": "https://cutchinscvm.com/",
+    "instagram": "https://www.instagram.com/drcutchins/",
+    "youtube": "https://youtube.com/@DrCutchins"
+  },
   "image": "/Guests/Alexis_Cutchins.jpg",
   "lastEpisode": "2025-12-18"
 }

@@ -4,7 +4,9 @@
   "bio": "Lisa Ralston is a physical therapist with over 32 years of experience specializing in orthopedics, sports medicine, and connective tissue disorders. She served as the physical therapist for Team USA figure skating at the 2022 Winter Olympics in Beijing.",
   "credentials": "PT",
   "affiliation": "Ralston Physical Therapy and Wellness, Jackson County Physical Therapy",
-  "website": "https://lisaralstonpt.janeapp.com/",
+  "socials": {
+    "website": "https://lisaralstonpt.janeapp.com/"
+  },
   "image": "/Guests/Lisa_Ralston.jpg",
   "lastEpisode": "2023-12-07"
 }

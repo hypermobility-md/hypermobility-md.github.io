@@ -4,7 +4,9 @@
   "bio": "Dr. Tania Dempsey is a board-certified internal medicine and integrative medicine physician internationally recognized for her expertise in MCAS, EDS, and autoimmune disease. She founded the AIM Center for Personalized Medicine in Purchase, NY.",
   "credentials": "MD",
   "affiliation": "AIM Center for Personalized Medicine",
-  "website": "https://drtaniadempsey.com/tania-dempsey/",
+  "socials": {
+    "website": "https://drtaniadempsey.com/tania-dempsey/"
+  },
   "image": "/Guests/Tania_Dempsey.jpg",
   "lastEpisode": "2024-05-16"
 }

@@ -4,8 +4,10 @@
   "bio": "Dr. Theoharis Theoharides is the world's foremost mast cell researcher with 493 publications. He is Professor and Executive Director of the Institute for Neuro-Immune Medicine at Nova Southeastern University.",
   "credentials": "MD, PhD",
   "affiliation": "Nova Southeastern University",
-  "website": "https://www.mastcellmaster.com",
-  "linkedin": "https://www.linkedin.com/in/theoharis-theoharides-ms-phd-md-faaaai-67123735",
+  "socials": {
+    "website": "https://www.mastcellmaster.com",
+    "linkedin": "https://www.linkedin.com/in/theoharis-theoharides-ms-phd-md-faaaai-67123735"
+  },
   "image": "/Guests/Theoharis_Theoharides.jpg",
   "lastEpisode": "2025-06-26"
 }

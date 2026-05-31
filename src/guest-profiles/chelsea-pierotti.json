@@ -4,7 +4,9 @@
   "bio": "Dr. Chelsea Pierotti is a sport and performance psychologist, Teaching Associate Professor at the University of Colorado Boulder, and former professional dancer. She is a founding member of DanseMedica.",
   "credentials": "PhD",
   "affiliation": "Passionate Coach LLC",
-  "website": "https://www.chelseapierotti.com/",
+  "socials": {
+    "website": "https://www.chelseapierotti.com/"
+  },
   "image": "/Guests/Chelsea_Pierotti.jpg",
   "lastEpisode": "2024-04-25"
 }
