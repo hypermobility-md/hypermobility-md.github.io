@@ -30,6 +30,12 @@ module.exports = function () {
           fs.readFileSync(path.join(profilesDir, f), 'utf8')
         );
         if (data.key) {
+          // Unconfirmed guest-intake submissions stay completely inert — no
+          // lookup entry, no image, no page — until a human flips `confirmed`
+          // on in the CMS. (Absent `confirmed` = treated as confirmed, so the
+          // existing catalog is unaffected.)
+          if (data.confirmed === false) return;
+
           // Normalize the stored key at read time so profile JSONs can use any
           // casing/spacing (e.g. "Jane Doe", "JANE DOE", "jane doe") and still
           // match the lookup keys produced by normalizeKey().

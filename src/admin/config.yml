@@ -146,6 +146,7 @@ collections:
         widget: "list"
         required: false
         hint: "Optional. Other names this guest is credited under, one per item (e.g. 'Larry Afrin' for Lawrence Afrin). An episode that lists any of these names links to THIS profile and uses this photo, so you only maintain the guest in one place."
+      - { label: "Confirmed (show on site)", name: "confirmed", widget: "boolean", default: true, required: false, hint: "Leave ON for normal profiles. Guest-intake-form submissions arrive with this OFF and stay completely hidden from the site until you review the submission and switch it on." }
       - { label: "Bio", name: "bio", widget: "text", required: false }
       - { label: "Credentials", name: "credentials", widget: "string", required: false, hint: "e.g. MD, PhD, DPT" }
       - { label: "Affiliation", name: "affiliation", widget: "string", required: false }
