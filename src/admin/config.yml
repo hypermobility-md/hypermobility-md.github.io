@@ -318,3 +318,28 @@ collections:
         fields:
           - { label: "SEO Title", name: "ogTitle", widget: "string", required: false, hint: "Overrides BOTH the browser-tab title and the social-share (og:title). Defaults to the Title field above." }
           - { label: "Social Image", name: "ogImage", widget: "image", required: false, media_folder: "/src/assets/hypermobility-questions", public_folder: "/assets/hypermobility-questions", choose_url: true, hint: "Custom 1200x630 social-share image. Defaults to the site's default share image." }
+
+  - name: "conditions"
+    label: "Conditions Explorer"
+    description: "The condition bubbles on the Services page (Coaching & Medical) and the homepage. Edit, reorder, add, or remove conditions here."
+    files:
+      - name: "conditions"
+        label: "Conditions list"
+        file: "src/_data/conditions.json"
+        description: "Conditions shown in the interactive explorer."
+        fields:
+          - label: "Conditions"
+            name: "conditions"
+            widget: "list"
+            label_singular: "Condition"
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "Name", name: "name", widget: "string", hint: "Full condition name shown on the bubble and detail card, e.g. 'POTS / Dysautonomia'." }
+              - { label: "Abbreviation", name: "abbr", widget: "string", hint: "Short label shown above the name in the detail card, e.g. 'POTS'." }
+              - { label: "Podcast tag", name: "tag", widget: "string", required: false, hint: "Episode tag for the 'Listen to related episodes' link, e.g. 'POTS'. Leave blank to link to all episodes." }
+              - { label: "Description", name: "description", widget: "text", hint: "1-2 sentence plain-language description. General education, not a diagnosis." }
+              - label: "Common signals"
+                name: "signals"
+                widget: "list"
+                field: { label: "Signal", name: "signal", widget: "string" }
+                hint: "Short bullet points listed under 'Common signals'."

@@ -64,8 +64,13 @@ permalink: /podcast-episodes/
     </div>
     <div class="tag-dropdown" id="tagDropdown" style="display:none;">
       <button class="filter-tag active" data-tag="all">All</button>
+      {# Hide the rarely-used tags (≤6 episodes) from the quick-pick list to
+         reduce clutter. Episodes keep these tags; they're just not surfaced
+         as filter buttons here. Adjust the threshold to show more/fewer. #}
       {%- for tag in tagStats.byFrequency %}
+      {%- if tag.count > 6 %}
       <button class="filter-tag" data-tag="{{ tag.name }}">{{ tag.name }}</button>
+      {%- endif %}
       {%- endfor %}
     </div>
   </div>
@@ -367,15 +372,27 @@ function buildCard(ep) {
   const activeSet = new Set(activeTags);
   const activeInEp = ep.tags.filter(t => activeSet.has(t));
   const rest = ep.tags.filter(t => !activeSet.has(t));
-  const displayTags = [...activeInEp, ...rest].slice(0, Math.max(3, activeInEp.length));
+  const ordered = [...activeInEp, ...rest];
+  const shownCount = Math.max(3, activeInEp.length);
+  const displayTags = ordered.slice(0, shownCount);
   const tagChips = displayTags.map(t => {
     const color = TAG_COLORS[t] || '#4a2d7a';
     const isActive = activeSet.has(t);
     const style = isActive
       ? `background:${color}; color:#fff; border-color:${color};`
       : `background:${color}18; color:${color}; border-color:${color}30;`;
-    return `<span class="tag-chip" style="${style}">${t}</span>`;
+    const safe = t.replace(/'/g, "\\'");
+    return `<span class="tag-chip tag-chip--clickable" style="${style}" onclick="event.stopPropagation();tagClick('${safe}')">${t}</span>`;
   }).join('');
+  // A 4th tag clipped + faded off the edge to hint more topics exist
+  // (the full set shows in the episode modal).
+  let moreChip = '';
+  const remaining = ordered.slice(shownCount);
+  if (remaining.length > 0) {
+    const t = remaining[0];
+    const color = TAG_COLORS[t] || '#4a2d7a';
+    moreChip = `<span class="tag-chip tag-chip--more" style="background:${color}18;color:${color};border-color:${color}30;" aria-hidden="true">${t}</span>`;
+  }
 
   const epNum = ep.num ? `<div class="ep-number">${ep.num}</div>` : '';
   const guestStr = ep.guests && ep.guests.length ? ep.guests.join(', ') : '';
@@ -422,7 +439,7 @@ function buildCard(ep) {
     <div class="card-body">
       <p class="card-description">${descHtml}</p>
       ${snippetsHtml}
-      <div class="card-tags">${tagChips}</div>
+      <div class="card-tags">${tagChips}${moreChip}</div>
     </div>
     <div class="card-footer">
       <span class="card-meta">${meta}</span>
@@ -975,6 +992,13 @@ function openEpisodeVideo(idx) {
 // ---- Initial Render ----
 document.getElementById('episodeCountHero').textContent = `${EPISODES.length} episodes — Search by topic, guest, or keyword`;
 renderEpisodes();
+
+// Click a tag chip on a card: filter to it and scroll up to the results.
+function tagClick(tag) {
+  filterByTag(tag);
+  const fb = document.getElementById('filterBar');
+  if (fb) fb.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
 // ---- Filter by tag (from modal click or URL param) ----
 function filterByTag(tag) {

@@ -1,0 +1,124 @@
+{
+  "conditions": [
+    {
+      "abbr": "EDS",
+      "name": "Ehlers-Danlos Syndromes",
+      "tag": "",
+      "description": "A group of inherited connective-tissue disorders that affect collagen — the protein that gives structure to joints, skin, blood vessels, and organs. Features vary widely between the subtypes.",
+      "signals": [
+        "Joints that hyperextend or partially dislocate (sublux)",
+        "Skin that bruises, stretches, or scars unusually",
+        "Chronic joint and muscle pain",
+        "Often co-occurs with POTS, MCAS, or GI issues"
+      ]
+    },
+    {
+      "abbr": "HSD",
+      "name": "Hypermobility Spectrum Disorders",
+      "tag": "",
+      "description": "Symptomatic joint hypermobility that doesn’t meet the criteria for a specific EDS subtype. Symptoms and management overlap closely with hypermobile EDS.",
+      "signals": [
+        "Joints that move beyond the normal range",
+        "Pain and instability across multiple joints",
+        "Recurrent sprains, strains, or subluxations",
+        "Fatigue and frequent soft-tissue injuries"
+      ]
+    },
+    {
+      "abbr": "POTS",
+      "name": "POTS / Dysautonomia",
+      "tag": "POTS",
+      "description": "Dysfunction of the autonomic nervous system, which controls heart rate, blood pressure, and digestion. In POTS, the heart rate rises sharply on standing.",
+      "signals": [
+        "Lightheadedness or fainting when upright",
+        "Rapid heart rate on standing",
+        "Fatigue, brain fog, and exercise intolerance",
+        "Frequently overlaps with EDS and MCAS"
+      ]
+    },
+    {
+      "abbr": "MCAS",
+      "name": "Mast Cell Disease",
+      "tag": "MCAS",
+      "description": "A condition in which mast cells release chemical mediators (like histamine) inappropriately, producing allergy-like symptoms across multiple body systems.",
+      "signals": [
+        "Flushing, hives, or itching",
+        "Abdominal pain, nausea, or food reactions",
+        "Headaches and fatigue",
+        "Symptoms triggered by foods, stress, or temperature"
+      ]
+    },
+    {
+      "abbr": "PAIN",
+      "name": "Chronic Pain & Fibromyalgia",
+      "tag": "Pain",
+      "description": "Persistent, widespread pain that often involves changes in how the nervous system processes pain signals (central sensitization), as seen in fibromyalgia.",
+      "signals": [
+        "Widespread muscle and joint pain",
+        "Unrefreshing sleep and fatigue",
+        "Heightened sensitivity to touch, light, or sound",
+        "Brain fog and difficulty concentrating"
+      ]
+    },
+    {
+      "abbr": "CRPS",
+      "name": "Complex Regional Pain Syndrome",
+      "tag": "Pain",
+      "description": "Severe, persistent pain — usually in a limb — that is out of proportion to any original injury, often with changes in skin color, temperature, and swelling.",
+      "signals": [
+        "Burning or throbbing pain in a limb",
+        "Skin color or temperature changes",
+        "Swelling and sensitivity to light touch",
+        "Pain disproportionate to the triggering event"
+      ]
+    },
+    {
+      "abbr": "SA",
+      "name": "Spinal Arachnoiditis",
+      "tag": "Pain",
+      "description": "Inflammation of the arachnoid membrane surrounding the spinal cord and nerves, which can cause chronic pain and neurological symptoms.",
+      "signals": [
+        "Burning or stinging back and leg pain",
+        "Numbness, tingling, or weakness",
+        "Symptoms that worsen with activity",
+        "Bladder or bowel changes in some cases"
+      ]
+    },
+    {
+      "abbr": "CCI",
+      "name": "Craniocervical Instability",
+      "tag": "Craniocervical Instability",
+      "description": "Excessive movement between the skull and upper spine, which can occur in connective-tissue disorders and irritate the brainstem and nearby nerves.",
+      "signals": [
+        "Headache at the base of the skull",
+        "A feeling the head is too heavy for the neck",
+        "Dizziness, visual, or swallowing changes",
+        "Symptoms that worsen when upright"
+      ]
+    },
+    {
+      "abbr": "INFL",
+      "name": "Chronic Inflammation",
+      "tag": "Inflammation",
+      "description": "Low-grade, ongoing immune activation that can contribute to pain, fatigue, and other systemic symptoms in connective-tissue conditions.",
+      "signals": [
+        "Persistent fatigue and malaise",
+        "Diffuse aches and stiffness",
+        "Flares triggered by stress or illness",
+        "Often overlaps with MCAS and autoimmune issues"
+      ]
+    },
+    {
+      "abbr": "BACK",
+      "name": "Back Pain",
+      "tag": "Pain",
+      "description": "In hypermobile patients, back pain often stems from joint instability, disc issues, or muscle compensation rather than a single structural cause.",
+      "signals": [
+        "Aching or instability in the low or mid back",
+        "Pain with prolonged sitting or standing",
+        "Muscle spasms and fatigue",
+        "Improvement with targeted stability work"
+      ]
+    }
+  ]
+}

@@ -271,12 +271,34 @@ permalink: /podcast/
   </div>
 </section>
 
-<!-- CTA -->
-<section class="podcast-cta-section" style="text-align: center;">
+<!-- Browse by Topic -->
+{%- set topicDirectory = [
+  { tag: "POTS", color: "#3a9ec4", desc: "Dizziness, racing heart, blood-pressure swings." },
+  { tag: "MCAS", color: "#d05a9b", desc: "Mast cell triggers, testing, and treatment." },
+  { tag: "Physical Therapy", color: "#5a8fd0", desc: "Rehab, joint stability, and paced movement." },
+  { tag: "Mental Health", color: "#a98fd0", desc: "Anxiety, trauma-informed care, mind–body." },
+  { tag: "Nutrition", color: "#7aab4a", desc: "Histamine, supplements, and eating well." },
+  { tag: "Pain", color: "#d07a4a", desc: "Chronic pain, fibromyalgia, sensitization." }
+] -%}
+<section class="section topic-directory">
   <div class="container">
-    <h2 style="color: #fff;">Ready to Listen?</h2>
-    <p style="color: rgba(255,255,255,0.8); max-width: 500px; margin: 12px auto 24px;">Search <span id="epCountCta">{{ collections.episodes.length }}</span> episodes by topic, guest, or keyword. Filter by EDS, POTS, MCAS, Pain, Nutrition, and more.</p>
-    <a href="/podcast-episodes/" class="btn btn-primary" style="background: #fff; color: var(--primary-dark);">Browse All Episodes</a>
+    <div class="section-header">
+      <h2>Browse by Topic</h2>
+      <p>Jump straight to the episodes about what you&rsquo;re dealing with.</p>
+    </div>
+    <div class="topic-grid">
+      {%- for t in topicDirectory %}
+      <a class="topic-tile" href="/podcast-episodes/?tag={{ t.tag | urlencode }}" style="--topic-color: {{ t.color }};">
+        <span class="topic-stripe"></span>
+        <h3>{{ t.tag }}</h3>
+        <div class="topic-count">{{ tagStats.counts[t.tag] }} episodes</div>
+        <p class="topic-desc">{{ t.desc }}</p>
+      </a>
+      {%- endfor %}
+    </div>
+    <div style="text-align: center; margin-top: 36px;">
+      <a href="/podcast-episodes/" class="btn btn-primary topic-browse-all">Browse all {{ collections.episodes.length }} episodes</a>
+    </div>
   </div>
 </section>
 
@@ -451,9 +473,18 @@ function buildLatest(ep, idx) {
   const guestLabel = guestStr ? `<span class="featured-guest-inline">${guestStr}</span>` : '';
   const metaStr = [formatDate(ep.date), ep.duration].filter(Boolean).join(' · ');
   const metaRow = metaStr ? `<div class="featured-meta-row"><span class="featured-meta">${metaStr}</span></div>` : '';
-  const topTagList = (ep.tags || []).slice(0, 3);
-  const topTags = topTagList.length
-    ? `<div class="featured-top-tags">${topTagList.map(t => `<span class="featured-top-tag">${t}</span>`).join('')}</div>`
+  const allTags = ep.tags || [];
+  const topTagList = allTags.slice(0, 3);
+  const tagColor = t => TAG_COLORS[t] || '#4a2d7a';
+  const tagSpans = topTagList.map(t =>
+    `<a class="featured-top-tag" href="/podcast-episodes/?tag=${encodeURIComponent(t)}" style="background:${tagColor(t)};border-color:${tagColor(t)};">${t}</a>`);
+  // Hint that more tags exist with a 4th chip fading off the edge
+  if (allTags.length > 3) {
+    const t = allTags[3];
+    tagSpans.push(`<span class="featured-top-tag featured-top-tag--more" style="background:${tagColor(t)};border-color:${tagColor(t)};" aria-hidden="true">${t}</span>`);
+  }
+  const topTags = tagSpans.length
+    ? `<div class="featured-top-tags">${tagSpans.join('')}</div>`
     : '';
 
   return `
@@ -526,7 +557,6 @@ document.getElementById('featuredGrid').innerHTML = featured.map(buildCard).join
 // Dynamic episode count
 const epCount = EPISODES.length;
 document.getElementById('viewAllBtn').textContent = `View All ${epCount} Episodes`;
-document.getElementById('epCountCta').textContent = epCount;
 
 // ---- Episode Detail Modal ----
 function getSocialIcon(url, size) {

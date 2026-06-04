@@ -29,7 +29,7 @@
   --footer-text: #e8e4dc;
   --zebra-stripe-1: #3d5c4a;
   --zebra-stripe-2: #f7f3ed;
-  --heading-font: 'Playfair Display', Georgia, serif;
+  --heading-font: 'Fraunces', Georgia, serif;
   --body-font: 'Inter', -apple-system, sans-serif;
   --radius: 12px;
   --radius-sm: 8px;
@@ -63,7 +63,7 @@
   --footer-text: #e0d8eb;
   --zebra-stripe-1: #2e1a4a;
   --zebra-stripe-2: #f5f0fa;
-  --heading-font: 'Playfair Display', Georgia, serif;
+  --heading-font: 'Fraunces', Georgia, serif;
   --body-font: 'Inter', -apple-system, sans-serif;
   --radius: 12px;
   --radius-sm: 8px;
@@ -82,6 +82,14 @@ body {
   color: var(--text);
   line-height: 1.65;
   transition: background 0.4s, color 0.4s;
+  /* Pin Fraunces' optical size to a calmer text-grade value so large
+     headings don't switch to its ornate display ampersand and wonky f.
+     `font-optical-sizing: none` stops the browser's automatic opsz (which
+     in Safari otherwise overrides the manual value below). Weight still
+     varies normally via font-weight. (Inherited by all heading-font
+     elements; ignored by Inter, which has no opsz axis.) */
+  font-optical-sizing: none;
+  font-variation-settings: 'opsz' 28;
 }
 
 /* ---- Typography ---- */
@@ -280,11 +288,33 @@ p a:hover, li a:hover, td a:hover, dd a:hover, figcaption a:hover { text-decorat
   gap: 60px;
   align-items: center;
 }
+.hero h1 em { font-style: italic; font-weight: 400; color: var(--primary); }
 .hero-subtitle {
   font-size: 1.15rem;
   color: var(--text-muted);
   margin: 16px 0 28px;
   line-height: 1.7;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 26px;
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.hero-meta b {
+  display: block;
+  font-family: var(--heading-font);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 2px;
+}
+@media (max-width: 768px) {
+  .hero-meta { justify-content: center; gap: 22px; }
 }
 .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
 .hero-cta { text-align: center; flex: 1; min-width: 300px; white-space: nowrap; }
@@ -451,6 +481,7 @@ p a:hover, li a:hover, td a:hover, dd a:hover, figcaption a:hover { text-decorat
   justify-content: center;
 }
 .condition-tag {
+  display: inline-block;
   background: var(--card-bg);
   border: 1px solid var(--border);
   padding: 8px 18px;
@@ -458,11 +489,144 @@ p a:hover, li a:hover, td a:hover, dd a:hover, figcaption a:hover { text-decorat
   font-size: 0.88rem;
   font-weight: 500;
   color: var(--text-muted);
+  text-decoration: none;
+  cursor: pointer;
   transition: all 0.2s;
 }
 .condition-tag:hover {
   border-color: var(--primary);
   color: var(--primary);
+  background: var(--hero-bg);
+  transform: translateY(-1px);
+}
+
+/* ---- Interactive conditions explorer (Services page) ---- */
+.cond-explorer {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 28px;
+  align-items: start;
+  margin-top: 12px;
+}
+.cond-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+}
+.cond-tag {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 9px 15px;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: var(--body-font);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.cond-tag:hover { border-color: var(--primary); color: var(--primary); }
+.cond-tag.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.cond-detail {
+  background: var(--section-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+.cond-abbr {
+  font-family: var(--heading-font);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.05em;
+}
+.cond-detail h3 { font-size: 1.35rem; margin: 4px 0 12px; }
+.cond-detail p { color: var(--text-muted); font-size: 0.92rem; margin-bottom: 14px; }
+.cond-signals {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+.cond-signals b {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.cond-signals ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.cond-signals li { font-size: 0.85rem; color: var(--text); padding-left: 16px; position: relative; }
+.cond-signals li::before { content: ''; position: absolute; left: 0; top: 9px; width: 7px; height: 2px; background: var(--primary); }
+.cond-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+@media (max-width: 700px) {
+  .cond-explorer { grid-template-columns: 1fr; }
+}
+
+/* ---- Why Trust Her — credibility strip ---- */
+.cred-section { padding: 52px 0; }
+.cred-strip {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 40px;
+  align-items: center;
+}
+.cred-intro h2 {
+  font-size: 1.65rem;
+  line-height: 1.18;
+  margin-bottom: 10px;
+}
+.cred-intro p {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin-bottom: 14px;
+}
+.cred-readmore {
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+}
+.cred-readmore:hover { text-decoration: underline; }
+.cred-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.cred-item {
+  background: var(--section-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+}
+.cred-k {
+  font-family: var(--heading-font);
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.cred-k-icon { color: var(--primary); }
+.cred-k-icon svg { width: 30px; height: 30px; display: block; }
+.cred-l {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.cred-l b {
+  display: block;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.92rem;
+  margin-bottom: 2px;
+}
+@media (max-width: 768px) {
+  .cred-strip { grid-template-columns: 1fr; gap: 28px; }
+  .cred-intro h2 { font-size: 1.55rem; }
 }
 
 /* ---- Footer ---- */
@@ -1087,6 +1251,7 @@ a.award-badge:focus-visible {
 .faq-section-nav .container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
@@ -1360,6 +1525,7 @@ a.award-badge:focus-visible {
   margin-bottom: 0;
   font-family: var(--heading-font);
   font-size: 1.35rem;
+  color: var(--primary);
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -1378,7 +1544,7 @@ a.award-badge:focus-visible {
   color: inherit;
   font: inherit;
 }
-.faq-category-header:hover .faq-section-title-inline { color: var(--primary); }
+.faq-category-header:hover .faq-section-title-inline { color: var(--primary-dark); }
 .faq-category-count {
   margin-left: auto;
   font-family: var(--body-font);

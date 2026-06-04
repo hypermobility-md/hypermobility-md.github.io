@@ -1,0 +1,13 @@
+{# Interactive conditions explorer. Set `condInstance` before including to
+   label the instance (e.g. "coaching" / "medical"); the detail card stays
+   hidden until a bubble is selected. Data comes from src/_data/conditions.json
+   (CMS-editable). Bubbles are server-rendered for SEO; the detail card is built
+   by the shared script in services.njk. #}
+<div class="cond-explorer" data-cond-instance="{{ condInstance | default('default') }}">
+  <div class="cond-list">
+    {%- for c in conditions.conditions %}
+    <button class="cond-tag" data-i="{{ loop.index0 }}" data-key="{{ c.name | slugify }}">{{ c.name }}</button>
+    {%- endfor %}
+  </div>
+  <div class="cond-detail" hidden></div>
+</div>

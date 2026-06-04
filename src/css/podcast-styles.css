@@ -302,6 +302,7 @@
 .card-tags {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 6px;
   margin-top: 12px;
 }
@@ -313,9 +314,20 @@
   font-family: var(--body-font);
   font-weight: 600;
   letter-spacing: 0.02em;
+  white-space: nowrap;
   background: var(--section-alt);
   color: var(--primary);
   border: 1px solid var(--border);
+}
+.tag-chip--clickable { cursor: pointer; transition: filter 0.15s, transform 0.15s; }
+.tag-chip--clickable:hover { filter: brightness(0.92); transform: translateY(-1px); }
+/* A trailing chip clipped + faded off the edge, hinting more tags exist
+   (the full set shows in the episode modal). Single line so it never grows
+   the row height. */
+.tag-chip--more {
+  max-width: 46px; overflow: hidden; white-space: nowrap; opacity: 0.7; pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, #000 40%, transparent 92%);
+  mask-image: linear-gradient(90deg, #000 40%, transparent 92%);
 }
 
 .card-footer {
@@ -687,8 +699,83 @@
 .featured-top-tag {
   font-size: 0.72rem; font-weight: 600; letter-spacing: 0.02em;
   padding: 3px 10px; border-radius: 12px; white-space: nowrap;
-  font-family: var(--body-font);
+  font-family: var(--body-font); text-decoration: none; display: inline-block;
   background: rgba(255,255,255,0.16); color: #fff; border: 1px solid rgba(255,255,255,0.28);
+  transition: filter 0.15s, transform 0.15s;
+}
+a.featured-top-tag:hover { filter: brightness(1.12); transform: translateY(-1px); color: #fff; }
+/* A 4th tag clipped + faded off the edge, hinting more topics exist
+   (full list shows in the episode modal). */
+.featured-top-tag--more {
+  max-width: 52px; overflow: hidden; opacity: 0.65; pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, #000 38%, transparent 92%);
+  mask-image: linear-gradient(90deg, #000 38%, transparent 92%);
+}
+
+/* ---- Browse by Topic directory (dark zebra band) ---- */
+.topic-directory {
+  background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 100%), var(--podcast-zebra-bg) center/cover no-repeat;
+  padding: 48px 0;
+}
+.topic-directory .section-header { margin-bottom: 24px; }
+.topic-directory .section-header h2 { color: #fff; }
+.topic-directory .section-header p { color: rgba(255,255,255,0.82); }
+.topic-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.topic-tile {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 13px 16px 13px 20px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.topic-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.28);
+}
+.topic-stripe {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 4px;
+  background: var(--topic-color, var(--primary));
+}
+.topic-tile h3 {
+  font-family: var(--heading-font);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--topic-color, var(--primary-dark));
+  margin: 0 0 2px;
+}
+.topic-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.topic-desc {
+  font-size: 0.78rem;
+  color: var(--text-light);
+  line-height: 1.45;
+  margin: 5px 0 0;
+}
+.topic-browse-all {
+  background: #fff;
+  color: var(--primary-dark);
+  border-color: #fff;
+}
+@media (max-width: 760px) {
+  .topic-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .topic-grid { grid-template-columns: 1fr; }
 }
 .featured-description { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .featured-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
