@@ -8,8 +8,10 @@
     "website": "https://whyyouhurt.com/",
     "linkedin": "https://www.linkedin.com/company/evidence-in-motion-eim-",
     "twitter": "https://www.twitter.com/EIMTeam",
-    "instagram": "https://www.instagram.com/eimteam/",
-    "facebook": "https://www.facebook.com/EIMTeam"
+    "more": {
+      "instagram": "https://www.instagram.com/eimteam/",
+      "facebook": "https://www.facebook.com/EIMTeam"
+    }
   },
   "image": "/Guests/Adriaan_Louw.jpg",
   "lastEpisode": "2025-08-12"

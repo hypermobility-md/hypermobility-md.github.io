@@ -60,10 +60,14 @@ module.exports = function () {
               { field: 'tiktok', label: 'TikTok' },
               { field: 'wikipedia', label: 'Wikipedia' },
             ];
+            // The 4 primary links sit on `socials`; the rest now live under
+            // `socials.more` (CMS dropdown). Older profiles kept everything flat
+            // on `socials` (or even at the top level), so check all three.
             const socials = rest.socials || {};
+            const more = socials.more || {};
             const links = [];
             socialFields.forEach(({ field, label }) => {
-              const url = socials[field] || rest[field];
+              const url = socials[field] || more[field] || rest[field];
               if (url) {
                 links.push({ url, label });
               }

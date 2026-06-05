@@ -65,15 +65,26 @@ function parseRSS(xml) {
 
 /** Extract episode number from title. Handles both formats:
  *  - New: "Topic (Ep 188)" or "(BEN 172)"
- *  - Old: "95. Topic with Guest" */
+ *  - Old: "95. Topic with Guest"
+ *  The new-format matcher is deliberately tolerant of the punctuation/spacing
+ *  drift the feed has actually used — "(Ep 188)", "(Ep. 199)", "(EP188)",
+ *  "(Episode 200)", "(Ep #201)", "(BEN. 172)". A missed number here silently
+ *  demotes a real episode to a "bonus" (num:null), which then gets skipped by
+ *  the YouTube backfill, so keep this forgiving. */
 function parseEpNumber(title) {
-  // New format: (Ep 188), (EP 171), (BEN 172)
-  const newFmt = title.match(/\((?:Ep|EP|BEN)\s*(\d+)\)\s*$/i);
+  // New format: (Ep 188), (EP. 199), (Episode 200), (BEN 172), (Ep #201)
+  const newFmt = title.match(/\((?:Ep(?:isode)?|BEN)\.?\s*#?\s*(\d+)\)\s*$/i);
   if (newFmt) return parseInt(newFmt[1], 10);
   // Old format: "95. Topic..." at the start
   const oldFmt = title.match(/^(\d+)\.\s+/);
   if (oldFmt) return parseInt(oldFmt[1], 10);
   return null;
+}
+
+/** Whole-day signed difference between two YYYY-MM-DD strings (a - b). */
+function daysBetween(a, b) {
+  const ms = new Date(`${a}T00:00:00Z`) - new Date(`${b}T00:00:00Z`);
+  return Math.round(ms / 86400000);
 }
 
 // ── Host / cohost filtering ─────────────────────────────────────────────
@@ -242,12 +253,17 @@ function loadExistingEpisodes() {
       audioUrls.add(baseUrl);
     }
 
-    // Track episodes that need YouTube backfill (skip ep 0 — intro/trailer)
-    if (!data.videoUrl && data.num != null && data.num > 0) {
+    // Track episodes that need a YouTube match: no video yet, a usable date,
+    // and not the ep-0 trailer. Bonus/unnumbered episodes (num:null) ARE
+    // included — they're real uploads and match on publish date like any
+    // other. (Previously they were excluded, which is why "(Ep. 199)" — mis-
+    // parsed as a bonus — never got its video.)
+    const epYmd = toYMD(data.date);
+    if (!data.videoUrl && data.num !== 0 && epYmd) {
       episodesNeedingVideo.push({
-        num: data.num,
+        num: data.num ?? null,
         title: data.title || '',
-        date: toYMD(data.date),
+        date: epYmd,
         slug,
         filePath: join(EPISODES_DIR, f),
         hasTranscript: content.trim().length > 100,
@@ -580,9 +596,10 @@ async function main() {
 
   let videosMatched = 0;
   if (!RSS_ONLY) {
-    // Combine new episodes (no video yet) with existing episodes needing video
+    // Combine new episodes (no video yet) with existing episodes needing video.
+    // Include unnumbered/bonus episodes too — they match on date.
     const needsVideo = [
-      ...newEpisodes.filter(e => !e.videoUrl && e.num !== null),
+      ...newEpisodes.filter(e => !e.videoUrl && toYMD(e.date)),
       ...episodesNeedingVideo,
     ];
 
@@ -593,30 +610,65 @@ async function main() {
       if (ytVideos.length > 0) {
         console.log(`   Found ${ytVideos.length} videos in playlist\n`);
 
+        // Never assign the same upload to two episodes.
+        const usedVideoIds = new Set();
+        const today = toYMD(new Date());
+        const RECENT_DAYS = 21; // warn loudly if a recent episode stays unmatched
+
         for (const ep of needsVideo) {
           const epDate = toYMD(ep.date);
 
-          // Date-primary match: the podcast pubDate and the YouTube publish date
-          // are 1:1 in practice. Episode number is only a fallback for older
-          // numbered uploads — many recent video titles have no number.
+          // 1. Exact date match — the podcast pubDate and the YouTube publish
+          //    date are 1:1 in practice (verified zero offset). This is the
+          //    primary key: many recent video titles carry no episode number.
           let ytMatch = epDate
-            ? ytVideos.find(v => v.uploadDate && v.uploadDate === epDate)
+            ? ytVideos.find(v => v.uploadDate === epDate && !usedVideoIds.has(v.id))
             : null;
           let matchedBy = 'date';
+
+          // 2. Episode-number fallback — older numbered uploads.
           if (!ytMatch && ep.num != null) {
-            ytMatch = ytVideos.find(v => v.epNum === ep.num);
+            ytMatch = ytVideos.find(v => v.epNum === ep.num && !usedVideoIds.has(v.id));
             matchedBy = 'number';
           }
-          if (!ytMatch) continue;
+
+          // 3. ±1 day fallback — tolerates an occasional timezone/scheduling
+          //    drift between the feed and YouTube. Only used when exactly ONE
+          //    unmatched video sits within a day, so we never guess between
+          //    two candidates.
+          if (!ytMatch && epDate) {
+            const near = ytVideos.filter(v =>
+              v.uploadDate && !usedVideoIds.has(v.id) &&
+              Math.abs(daysBetween(v.uploadDate, epDate)) <= 1
+            );
+            if (near.length === 1) {
+              ytMatch = near[0];
+              matchedBy = 'date±1d';
+            }
+          }
+
+          if (!ytMatch) {
+            // Surface recent misses — an unmatched episode from the last few
+            // weeks is the case worth a human glance (not yet on YouTube, or
+            // drifted >1 day from the feed).
+            if (epDate && daysBetween(today, epDate) <= RECENT_DAYS) {
+              console.warn(`   ⚠ No YouTube match for recent episode (${ep.num ?? ep.slug ?? epDate}). Not published yet, or its publish date drifted >1 day from the feed.`);
+            }
+            continue;
+          }
+          usedVideoIds.add(ytMatch.id);
 
           const videoUrl = `https://youtu.be/${ytMatch.id}`;
-          console.log(`   🔗 YouTube match (by ${matchedBy}): Ep ${ep.num} → ${videoUrl}`);
+          const epLabel = ep.num != null ? `Ep ${ep.num}` : (ep.slug || ep.title || epDate);
+          console.log(`   🔗 YouTube match (by ${matchedBy}): ${epLabel} → ${videoUrl}`);
           videosMatched++;
 
-          // Is this a new episode from Pass 1?
-          const newEp = newEpisodes.find(e => e.num === ep.num);
-          if (newEp) {
-            newEp.videoUrl = videoUrl;
+          // Items spread in from newEpisodes are the live episode objects (no
+          // filePath yet — written later); existing episodes carry a filePath.
+          // Match by identity rather than num, so bonus episodes (num:null)
+          // don't collide.
+          if (!ep.filePath) {
+            ep.videoUrl = videoUrl;
           } else {
             // Existing episode — update its file
             if (!DRY_RUN) {

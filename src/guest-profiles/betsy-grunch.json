@@ -8,10 +8,12 @@
     "website": "https://www.drgrunch.com/",
     "linkedin": "https://www.linkedin.com/in/drgrunch/",
     "twitter": "https://www.x.com/ladyspinedoc",
-    "instagram": "https://www.instagram.com/ladyspinedoc",
-    "facebook": "https://www.facebook.com/ladyspinedoc",
-    "youtube": "https://www.youtube.com/@ladyspinedoc",
-    "tiktok": "https://www.tiktok.com/@ladyspinedoc"
+    "more": {
+      "instagram": "https://www.instagram.com/ladyspinedoc",
+      "facebook": "https://www.facebook.com/ladyspinedoc",
+      "youtube": "https://www.youtube.com/@ladyspinedoc",
+      "tiktok": "https://www.tiktok.com/@ladyspinedoc"
+    }
   },
   "image": "/Guests/Betsy_Grunch.jpg",
   "lastEpisode": "2025-10-16"

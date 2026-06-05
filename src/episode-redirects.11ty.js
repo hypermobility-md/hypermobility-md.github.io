@@ -8,7 +8,7 @@
 function slugifyTitle(title) {
   if (!title) return "";
   const cleaned = String(title)
-    .replace(/\s*\((?:Ep|EP|BEN)\s*\d+\)\s*$/i, "")
+    .replace(/\s*\((?:Ep(?:isode)?|BEN)\.?\s*#?\s*\d+\)\s*$/i, "")
     .replace(/^\d+\.\s+/, "")
     .toLowerCase()
     .replace(/&/g, " and ")

@@ -6,7 +6,9 @@
   "affiliation": "St. Louis Vascular Surgical Specialists",
   "socials": {
     "website": "https://stlvascular.com/about/dr-robert-hacker/",
-    "instagram": "https://www.instagram.com/stlvascular/"
+    "more": {
+      "instagram": "https://www.instagram.com/stlvascular/"
+    }
   },
   "image": "/Guests/Robert_Hacker.jpg",
   "lastEpisode": "2026-01-08"

@@ -6,8 +6,10 @@
   "affiliation": "Cutchins Cardiovascular Medicine",
   "socials": {
     "website": "https://cutchinscvm.com/",
-    "instagram": "https://www.instagram.com/drcutchins/",
-    "youtube": "https://youtube.com/@DrCutchins"
+    "more": {
+      "instagram": "https://www.instagram.com/drcutchins/",
+      "youtube": "https://youtube.com/@DrCutchins"
+    }
   },
   "image": "/Guests/Alexis_Cutchins.jpg",
   "lastEpisode": "2025-12-18"

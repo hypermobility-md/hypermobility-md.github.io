@@ -6,7 +6,9 @@
   "affiliation": "Sydney Oncoplastic Surgery",
   "socials": {
     "website": "https://www.oncoplasticsurgery.com.au/",
-    "facebook": "https://www.facebook.com/profile.php?id=100067473308969"
+    "more": {
+      "facebook": "https://www.facebook.com/profile.php?id=100067473308969"
+    }
   },
   "image": "/Guests/Eva_Nagy.jpg",
   "lastEpisode": "2025-06-12"

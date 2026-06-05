@@ -6,9 +6,11 @@
   "socials": {
     "website": "https://linktr.ee/bepatientbook",
     "linkedin": "https://www.linkedin.com/in/tillyrose/",
-    "instagram": "https://www.instagram.com/thattillyrose/",
-    "facebook": "https://www.facebook.com/people/Tilly-Rose-Author/61575923876707/",
-    "tiktok": "https://www.tiktok.com/@thattillyrose"
+    "more": {
+      "instagram": "https://www.instagram.com/thattillyrose/",
+      "facebook": "https://www.facebook.com/people/Tilly-Rose-Author/61575923876707/",
+      "tiktok": "https://www.tiktok.com/@thattillyrose"
+    }
   },
   "image": "/Guests/Tilly_Rose.jpg",
   "lastEpisode": "2025-10-30"

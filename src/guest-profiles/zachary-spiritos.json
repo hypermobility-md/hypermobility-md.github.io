@@ -7,8 +7,10 @@
   "socials": {
     "website": "https://everbettermedicine.health",
     "website2": "https://www.everbettermedicine.health",
-    "instagram": "https://www.instagram.com/drzacspiritos/",
-    "facebook": "https://www.facebook.com/zachary.spiritos/"
+    "more": {
+      "instagram": "https://www.instagram.com/drzacspiritos/",
+      "facebook": "https://www.facebook.com/zachary.spiritos/"
+    }
   },
   "image": "/Guests/Zachary_Spiritos.jpg",
   "lastEpisode": "2025-07-10"

@@ -46,11 +46,14 @@ jobs:
       - name: Sync guest profile images
         run: node scripts/sync-guest-profile-images.mjs
 
+      - name: Refresh episode thumbnails from guest photos
+        run: node scripts/backfill-episode-display-fields.mjs
+
       - name: Commit and push if changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/guest-profiles/
+          git add src/guest-profiles/ src/episodes/
           if git diff --cached --quiet; then
             echo "No guest profile changes."
           else

@@ -6,7 +6,9 @@
   "affiliation": "Rachel Rubin MD Urology and Sexual Medicine",
   "socials": {
     "website": "https://www.rachelrubinmd.com/",
-    "youtube": "https://www.youtube.com/c/DrRachelRubin"
+    "more": {
+      "youtube": "https://www.youtube.com/c/DrRachelRubin"
+    }
   },
   "image": "/Guests/Rachel_Rubin.jpg",
   "lastEpisode": "2026-02-12"

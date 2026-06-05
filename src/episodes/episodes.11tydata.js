@@ -2,7 +2,7 @@
 function slugifyTitle(title) {
   if (!title) return '';
   const cleaned = String(title)
-    .replace(/\s*\((?:Ep|EP|BEN)\s*\d+\)\s*$/i, '') // strip "(Ep 195)" suffix
+    .replace(/\s*\((?:Ep(?:isode)?|BEN)\.?\s*#?\s*\d+\)\s*$/i, '') // strip "(Ep 195)" / "(Ep. 199)" suffix
     .replace(/^\d+\.\s+/, '')                        // strip "95. " prefix
     .toLowerCase()
     .replace(/&/g, ' and ')

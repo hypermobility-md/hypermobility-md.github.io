@@ -3,10 +3,12 @@
   "name": "Kristin Flanary",
   "bio": "Kristin Flanary, known as Lady Glaucomflecken, is a speaker, writer, and advocate for humanity-centered healthcare. A co-survivor of her husband's testicular cancer and cardiac arrest, she holds a Master's in cognitive neuroscience and focuses on amplifying the co-survivor experience. She co-hosts the Knock Knock Hi podcast.",
   "socials": {
-    "instagram": "https://www.instagram.com/LGlaucomflecken/",
+    "website": "https://glaucomflecken.com/",
     "twitter": "https://x.com/lglaucomflecken",
-    "facebook": "https://www.facebook.com/LadyGlaucomflecken",
-    "website": "https://glaucomflecken.com/"
+    "more": {
+      "instagram": "https://www.instagram.com/LGlaucomflecken/",
+      "facebook": "https://www.facebook.com/LadyGlaucomflecken"
+    }
   },
   "image": "/Guests/kristin-flanary.png",
   "lastEpisode": "2025-09-22"

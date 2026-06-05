@@ -153,20 +153,27 @@ collections:
       - label: "Social & Web Links"
         name: "socials"
         widget: "object"
-        collapsed: true
+        collapsed: false
         required: false
-        hint: "The guest's website and social profiles. Collapsed to keep the form tidy — click to expand and add or edit any of these."
+        hint: "The guest's most common links, always shown. Less-common links live under 'More links' below."
         fields:
           - { label: "Website", name: "website", widget: "string", required: false, hint: "https://yourwebsite.com" }
-          - { label: "Website 2", name: "website2", widget: "string", required: false, hint: "https://secondsite.com" }
+          - { label: "Website 2", name: "website2", widget: "string", required: false, hint: "Second site — e.g. a practice they also work at, or an EDS Society page." }
           - { label: "LinkedIn", name: "linkedin", widget: "string", required: false, hint: "https://linkedin.com/in/yourprofile" }
           - { label: "Twitter / X", name: "twitter", widget: "string", required: false, hint: "https://twitter.com/yourhandle" }
-          - { label: "Substack", name: "substack", widget: "string", required: false, hint: "https://yourname.substack.com" }
-          - { label: "Instagram", name: "instagram", widget: "string", required: false, hint: "https://instagram.com/yourhandle" }
-          - { label: "Facebook", name: "facebook", widget: "string", required: false, hint: "https://facebook.com/yourpage" }
-          - { label: "YouTube", name: "youtube", widget: "string", required: false, hint: "https://youtube.com/@yourchannel" }
-          - { label: "TikTok", name: "tiktok", widget: "string", required: false, hint: "https://tiktok.com/@yourhandle" }
-          - { label: "Wikipedia", name: "wikipedia", widget: "string", required: false, hint: "https://en.wikipedia.org/wiki/Your_Name" }
+          - label: "More links"
+            name: "more"
+            widget: "object"
+            collapsed: true
+            required: false
+            hint: "Optional extra links — click to expand and add any that apply."
+            fields:
+              - { label: "Substack", name: "substack", widget: "string", required: false, hint: "https://yourname.substack.com" }
+              - { label: "Instagram", name: "instagram", widget: "string", required: false, hint: "https://instagram.com/yourhandle" }
+              - { label: "Facebook", name: "facebook", widget: "string", required: false, hint: "https://facebook.com/yourpage" }
+              - { label: "YouTube", name: "youtube", widget: "string", required: false, hint: "https://youtube.com/@yourchannel" }
+              - { label: "TikTok", name: "tiktok", widget: "string", required: false, hint: "https://tiktok.com/@yourhandle" }
+              - { label: "Wikipedia", name: "wikipedia", widget: "string", required: false, hint: "https://en.wikipedia.org/wiki/Your_Name" }
       - label: "Photo"
         name: "image"
         widget: "image"

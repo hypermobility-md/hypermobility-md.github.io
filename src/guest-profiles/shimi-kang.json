@@ -8,9 +8,11 @@
     "website": "https://www.drshimikang.com",
     "linkedin": "https://www.linkedin.com/in/drshimikang/",
     "twitter": "https://x.com/drshimikang",
-    "instagram": "https://www.instagram.com/drshimikang/",
-    "facebook": "https://www.facebook.com/drshimikang/",
-    "youtube": "https://www.youtube.com/channel/UCfqNKUKkxgM8M7Psn2f8fPA"
+    "more": {
+      "instagram": "https://www.instagram.com/drshimikang/",
+      "facebook": "https://www.facebook.com/drshimikang/",
+      "youtube": "https://www.youtube.com/channel/UCfqNKUKkxgM8M7Psn2f8fPA"
+    }
   },
   "image": "/Guests/Shimi_Kang.jpg",
   "lastEpisode": "2026-01-15"

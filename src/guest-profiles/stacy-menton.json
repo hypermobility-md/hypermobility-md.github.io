@@ -6,7 +6,9 @@
   "affiliation": "Mayo Clinic Jacksonville",
   "socials": {
     "website": "https://staceymenton.com/",
-    "facebook": "https://www.facebook.com/profile.php?id=100077671590313"
+    "more": {
+      "facebook": "https://www.facebook.com/profile.php?id=100077671590313"
+    }
   },
   "image": "/Guests/Stacey_Menton.jpg",
   "lastEpisode": "2025-07-03"

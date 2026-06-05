@@ -61,16 +61,21 @@ for (const f of readdirSync(EPISODES_DIR).filter(n => n.endsWith('.md'))) {
     changed = true;
   }
 
-  // 2. First-guest photo as guestImage (only if not already set).
-  if (!data.guestImage && Array.isArray(data.guests) && data.guests.length > 0) {
-    const firstGuest = data.guests[0];
-    const key = normalizeKey(firstGuest);
-    let photo = imagesByKey[key];
-    if (!photo) photo = findGuestFile(key, guestFiles);
+  // 2. First-guest photo as guestImage — kept in sync with the guest's current
+  //    profile photo so the CMS episode-list thumbnail never goes stale. When a
+  //    guest gets (or changes) a photo on their profile, the matching episodes'
+  //    thumbnails follow on the next run. We only overwrite to point at a known
+  //    photo — never blank an existing thumbnail just because a lookup missed.
+  if (Array.isArray(data.guests) && data.guests.length > 0) {
+    const key = normalizeKey(data.guests[0]);
+    let photo = imagesByKey[key] || findGuestFile(key, guestFiles);
     if (photo) {
-      data.guestImage = normalizeImagePath(photo);
-      imageSet++;
-      changed = true;
+      photo = normalizeImagePath(photo);
+      if (data.guestImage !== photo) {
+        data.guestImage = photo;
+        imageSet++;
+        changed = true;
+      }
     }
   }
 
