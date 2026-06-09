@@ -7,7 +7,8 @@ url: https://www.acrobaticarts.com/blog/ep-134-when-flexibility-becomes-instabil
 applePodcastsUrl: https://podcasts.apple.com/us/podcast/ep-134-when-flexibility-becomes-instability-with-dr/id1541392361?i=1000766440861
 imageUrl: /assets/appearances/acrobatic-arts.webp
 type: listen
-featured: false
+featured: true
+featuredOrder: null
 audioUrl: ''
 videoUrl: https://youtu.be/P3X987GOInM
 youtubeUrl: ''
