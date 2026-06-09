@@ -1,8 +1,8 @@
 ---
-title: "Is There a Gene for Hypermobile Ehlers-Danlos Syndrome?"
-description: "Research has identified kallikrein gene variants (KLK15) on chromosome 19 linked to hEDS. Learn what this means for diagnosis and genetic testing."
-order: 1
-blogPostUrl: "https://www.hypermobilitymd.com/post/is-there-a-gene-for-heds"
+title: Is There a Gene for Hypermobile Ehlers-Danlos Syndrome?
+order: 99
+description: Research has identified kallikrein gene variants (KLK15) on chromosome 19 linked to hEDS. Learn what this means for diagnosis and genetic testing.
+blogPostUrl: https://www.hypermobilitymd.com/post/is-there-a-gene-for-heds
 ---
 
 Research is making significant progress. In 2024, the Norris Lab at the Medical University of South Carolina published a preprint identifying variants in kallikrein genes (particularly KLK15) on chromosome 19 that appear to be associated with hypermobile EDS. In their study, about 32.8% of 197 hEDS patients carried at least one kallikrein variant.
