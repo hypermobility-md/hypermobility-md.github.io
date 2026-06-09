@@ -1,8 +1,8 @@
 ---
-title: "What Do Kallikrein Gene Findings Mean for People with hEDS?"
-description: "Early kallikrein gene research shows promising links to hEDS, including connective tissue defects in mouse models. Learn what these preliminary findings mean."
-order: 2
-blogPostUrl: "https://www.hypermobilitymd.com/post/is-there-a-gene-for-heds"
+title: What Do Kallikrein Gene Findings Mean for People with hEDS?
+order: 99
+description: Early kallikrein gene research shows promising links to hEDS, including connective tissue defects in mouse models. Learn what these preliminary findings mean.
+blogPostUrl: https://www.hypermobilitymd.com/post/is-there-a-gene-for-heds
 ---
 
 These early research findings are promising but still preliminary. In studies with genetically altered mice, researchers observed connective tissue defects and mitral valve prolapse in 83% of affected animals, supporting a biological mechanism.
