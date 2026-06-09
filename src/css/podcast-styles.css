@@ -113,6 +113,24 @@
 .podcast-hero-text .hero-subtitle {
   max-width: 500px;
 }
+.podcast-hero-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.podcast-hero-stars {
+  color: var(--primary-light);
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+}
+.podcast-hero-rating-score {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+}
 .podcast-hero-image {
   flex-shrink: 0;
   width: 45%;
