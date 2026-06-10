@@ -7,6 +7,8 @@ module.exports = {
   pageType: "article",
   tags: ["hypermobilityQuestions"],
   eleventyComputed: {
-    permalink: (data) => `/faq/${data.page.fileSlug}/`
+    permalink: (data) => `/faq/${data.page.fileSlug}/`,
+    // Branded share card generated per article by scripts/generate-page-og.mjs.
+    ogImage: (data) => `/assets/og-pages/faq-${data.page.fileSlug}.jpg`
   }
 };
