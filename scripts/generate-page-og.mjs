@@ -69,21 +69,16 @@ async function buildPortraitPanel() {
     .toBuffer();
 }
 
-function portraitText({ eyebrow, title, subtitle }) {
+function portraitText({ eyebrow, title }) {
   const x = PORTRAIT_TEXT_X;
   const w = PORTRAIT_TEXT_W;
   const parts = [];
-  parts.push(trackedLine(font, eyebrow.toUpperCase(), x, 168, 25, ACCENT, 3));
+  parts.push(trackedLine(font, eyebrow.toUpperCase(), x, 172, 26, ACCENT, 3));
+  // Title is the focus: big, filling the space between eyebrow and footer.
   const titleBlock = textBlock(font, title, {
-    x, width: w, top: 195, height: 215, color: WHITE, maxFs: 76, minFs: 40,
+    x, width: w, top: 200, height: 300, color: WHITE, maxFs: 92, minFs: 46,
   });
   parts.push(titleBlock.paths);
-  if (subtitle) {
-    const sub = textBlock(font, subtitle, {
-      x, width: w, top: 425, height: 110, color: WHITE, opacity: 0.82, maxFs: 28, minFs: 22, lineRatio: 1.3,
-    });
-    parts.push(sub.paths);
-  }
   parts.push(lineToPath(font, 'Dr. Linda Bluestein, MD', x, 575, 23, WHITE, 0.6));
   return svgLayer(parts.join(''));
 }
@@ -99,27 +94,22 @@ async function generatePortraitCard(outPath, content) {
 }
 
 // ── Template: title ─────────────────────────────────────────────────────────
-function titleText({ eyebrow, title, subtitle }) {
+function titleText({ eyebrow, title }) {
   const cx = W / 2;
   const parts = [];
   // accent rule above the eyebrow
-  parts.push(`<rect x="${cx - 40}" y="158" width="80" height="4" rx="2" fill="${ACCENT}"/>`);
+  parts.push(`<rect x="${cx - 40}" y="178" width="80" height="4" rx="2" fill="${ACCENT}"/>`);
   const eb = eyebrow.toUpperCase();
-  const ebW = trackedWidth(font, eb, 26, 4);
-  parts.push(trackedLine(font, eb, cx - ebW / 2, 212, 26, ACCENT, 4));
+  const ebW = trackedWidth(font, eb, 27, 4);
+  parts.push(trackedLine(font, eb, cx - ebW / 2, 236, 27, ACCENT, 4));
+  // Title is the focus: big, centered, filling the body of the card.
   const titleBlock = textBlock(font, title, {
-    x: 120, width: W - 240, top: 235, height: 200, align: 'center', color: WHITE, maxFs: 82, minFs: 44,
+    x: 110, width: W - 220, top: 262, height: 240, align: 'center', color: WHITE, maxFs: 100, minFs: 46,
   });
   parts.push(titleBlock.paths);
-  if (subtitle) {
-    const sub = textBlock(font, subtitle, {
-      x: 160, width: W - 320, top: 450, height: 90, align: 'center', color: WHITE, opacity: 0.82, maxFs: 28, minFs: 22, lineRatio: 1.3,
-    });
-    parts.push(sub.paths);
-  }
   const url = 'hypermobility-md.github.io';
   const urlW = trackedWidth(font, url, 22, 1);
-  parts.push(trackedLine(font, url, cx - urlW / 2, 575, 22, WHITE, 1, 0.55));
+  parts.push(trackedLine(font, url, cx - urlW / 2, 580, 22, WHITE, 1, 0.55));
   return svgLayer(parts.join(''));
 }
 
@@ -131,6 +121,8 @@ async function generateTitleCard(outPath, content) {
 }
 
 // ── Manifest: one entry per standalone page ─────────────────────────────────
+// (subtitle is retained as data but not currently rendered — the cards are
+// title-focused, matching the episode cards.)
 const PAGES = [
   { out: 'home', template: 'portrait', eyebrow: 'Hypermobility MD', title: 'Dr. Linda Bluestein', subtitle: 'Integrative pain medicine for hypermobility, EDS & complex chronic conditions.' },
   { out: 'about', template: 'portrait', eyebrow: 'About', title: 'Meet Dr. Bluestein', subtitle: 'Board-certified physician and host of the Bendy Bodies podcast, with lived experience of hEDS.' },
@@ -146,6 +138,9 @@ const PAGES = [
   { out: 'podcast-appearances', template: 'title', eyebrow: 'Bendy Bodies', title: 'Guest Appearances', subtitle: "Dr. Bluestein's appearances on other podcasts and shows." },
   { out: 'privacy', template: 'title', eyebrow: 'Legal', title: 'Privacy Policy', subtitle: 'How we handle data, cookies, and analytics.' },
   { out: '404', template: 'title', eyebrow: 'Error 404', title: 'Page Not Found', subtitle: "Sorry, we couldn't find that page." },
+
+  { out: 'ask', template: 'title', eyebrow: 'Bendy Bodies Podcast', title: 'Ask the Podcast a Question', subtitle: 'Submit a question for a future episode.' },
+  { out: 'feedback-form', template: 'title', eyebrow: 'EduCoaching', title: 'Session Feedback', subtitle: 'Share feedback on your session.' },
 ];
 
 async function render(entry, outPath) {
