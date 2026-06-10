@@ -14,18 +14,24 @@
 {% set _ogDesc = (seoOverrides.ogDescription if seoOverrides) or ogDescription %}
 {% set _ogImage = (seoOverrides.ogImage if seoOverrides) or ogImage %}
 
-{# Determine og:image with priority chain #}
+{# Determine og:image with priority chain. socialImageSized marks the branches
+   whose image is one of our generated 1200x630 cards, so we can safely declare
+   og:image:width/height — the external appearance image and the square default
+   are left unsized. #}
 {% if _ogImage %}
   {% set socialImage = _ogImage | absoluteUrl(site.url) %}
+  {% set socialImageSized = true %}
 {% elif audioUrl %}
   {# Episode pages: prefer the build-generated branded share card, fall back to
      YouTube thumbnail, then guest photo, then default. #}
   {% set epOgSlug = num if num else page.fileSlug %}
   {% set socialImage = ("/assets/og-episodes/" + epOgSlug + ".jpg") | absoluteUrl(site.url) %}
+  {% set socialImageSized = true %}
 {% elif guestName and guestData.images[guestName] %}
   {% set socialImage = (guestData.images[guestName] | guestOgImage) | absoluteUrl(site.url) %}
+  {% set socialImageSized = true %}
 {% elif showName and imageUrl %}
-  {% set socialImage = imageUrl %}
+  {% set socialImage = imageUrl | absoluteUrl(site.url) %}
 {% else %}
   {% set socialImage = site.defaultOgImage | absoluteUrl(site.url) %}
 {% endif %}
@@ -42,6 +48,11 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="{{ ogType }}">
 <meta property="og:image" content="{{ socialImage }}">
+{% if socialImageSized %}
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+{% endif %}
+<meta property="og:image:alt" content="{{ socialTitle }}">
 {% if audioUrl %}
 <meta property="og:audio" content="{{ audioUrl }}">
 {% endif %}
@@ -52,3 +63,4 @@
 <meta name="twitter:title" content="{{ socialTitle }}">
 <meta name="twitter:description" content="{{ socialDesc }}">
 <meta name="twitter:image" content="{{ socialImage }}">
+<meta name="twitter:image:alt" content="{{ socialTitle }}">
