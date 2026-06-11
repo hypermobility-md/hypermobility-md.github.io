@@ -143,7 +143,7 @@ const PAGES = [
   { out: 'book', template: 'portrait', title: 'Schedule a First Appointment' },
 
   { out: 'faq', template: 'title', title: 'FAQ' },
-  { out: 'resources', template: 'title', title: 'Guides & Tools' },
+  { out: 'resources', template: 'title', title: 'Resources' },
   { out: 'projects', template: 'title', title: 'Products We Love' },
   { out: 'podcast-episodes', template: 'title', title: 'All Episodes' },
   { out: 'podcast-guests', template: 'title', title: 'Guest Index' },
