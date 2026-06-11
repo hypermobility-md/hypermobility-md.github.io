@@ -1,0 +1,20 @@
+---
+num: null
+title: Hypermobility Then and Now | Episode 200
+date: '2026-06-11'
+duration: 1h 29m
+description: "What happens when the original voices behind Bendy Bodies come back together 200 episodes later?\n\nIn this special milestone episode, Dr. Linda Bluestein reunites with her original co-host, dance medicine specialist Jennifer Milner, and the very first guest ever featured on the podcast, Dr. Moira McCormack.\n\nLong before hypermobility became a topic of widespread discussion, Dr. McCormack was asking important questions. A former Royal Ballet dancer, former Lead Physiotherapist for The Royal Ballet, and pioneering researcher, she was among the earliest clinicians investigating joint hypermobility in dancers and the challenges that often accompany it.\n\nTogether, they reflect on more than two decades of progress in our understanding of hypermobility, Ehlers-Danlos syndromes (EDS), and Hypermobility Spectrum Disorders (HSD), while exploring the many misconceptions that still persist today.\n\nThe conversation goes far beyond flexibility. Dr. McCormack explains why many hypermobile dancers must work harder, recover more strategically, and develop greater body awareness than their peers. The discussion also dives into the often-overlooked multisystem effects of hypermobility, including fatigue, pain, dysautonomia, gastrointestinal symptoms, and mast cell activation syndrome (MCAS).\n\nDrawing on decades of experience working with elite dancers and hypermobile patients, Dr. McCormack shares practical insights on injury prevention, individualized rehabilitation, hands-on assessment, and the art of teaching movement with patience and precision.\n\nWhether you're a dancer, athlete, parent, teacher, clinician, or someone navigating hypermobility yourself, this episode offers both a fascinating look at how far the field has come and a roadmap for where we still need to go.\n\nMost importantly, it reminds us that success in a hypermobile body isn't about having the most flexibility. It's about developing the control, strength, awareness, and resilience to use that flexibility well.\n\nKey Takeaways\n\n• This episode reunites the same three people who launched Bendy Bodies with Episode 1, creating a full-circle conversation 200 episodes later.\n\n• Hypermobile dancers often work harder behind the scenes than audiences realize. Fatigue, recovery, and injury prevention are frequently bigger challenges than flexibility itself.\n\n• Flexibility without control can increase injury risk. Strength, stability, motor control, and body awareness are essential for long-term success.\n\n• Hypermobility can affect far more than the joints, contributing to symptoms involving the nervous system, gastrointestinal tract, immune system, and cardiovascular system.\n\n• Rehabilitation is rarely one-size-fits-all. Hypermobile individuals often benefit from individualized assessment, hands-on treatment, and slower, more deliberate progression.\n\n• Teachers, parents, and healthcare professionals play a critical role in recognizing early warning signs and supporting healthy development in young dancers.\n\n• One of the most powerful injury-prevention strategies may be surprisingly simple: learning to master posture and alignment before adding movement.\n\n• Moira also honors the influence of the late Professor Rodney Grahame, with whom she conducted her early research and met frequently to discuss joint hypermobility, connective tissue disorders, and the many unanswered questions that continue to shape the field today.\n\nGo to AirDoctorPro.com and use promo code\_BENDY_\_to get UP TO $300 off today!\n\nWant more Jennifer Milner?\n\nInstagram: @jennifer.milner\n\nWebsite: https://www.jennifer-milner.com/\n\nWant more Dr. Moira McCormack?\n\nhttps://iseh.co.uk/member/moira-mccormack"
+tags: []
+audioUrl: 'https://p.podderapp.com/9752035609/traffic.megaphone.fm/TCAHH9801976665.mp3'
+videoUrl: ''
+snippets: []
+guests:
+  - Dr. Moira McCormack
+  - Jennifer Milner
+guestImage: /Guests/Moira_McCormack.jpg
+guestImages:
+  - /Guests/Moira_McCormack.jpg
+  - /Guests/Jennifer_Milner.jpg
+bonus: true
+---
+
