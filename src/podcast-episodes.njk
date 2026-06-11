@@ -348,14 +348,15 @@ function buildModalGuestCard(name) {
   </div>`;
 }
 
-function buildAvatarHtml(ep, linkable, showAll) {
+function buildAvatarHtml(ep, linkable, showAll, eager) {
   if (!ep.guests || ep.guests.length === 0) return '';
   const guestsWithImages = ep.guests.map(g => ({ name: g, src: resolveGuestImage(g) })).filter(x => x.src);
   if (guestsWithImages.length === 0) return '';
   const MAX_SHOW = showAll ? guestsWithImages.length : 2;
   const isMulti = guestsWithImages.length > 1 && !showAll;
+  const load = eager ? 'eager' : 'lazy';
   let html = guestsWithImages.slice(0, MAX_SHOW).map((g) => {
-    const img = `<img class="guest-avatar-img" src="${g.src}" alt="" loading="lazy">`;
+    const img = `<img class="guest-avatar-img" src="${g.src}" alt="" loading="${load}">`;
     if (linkable) {
       return `<a href="${guestLink(g.name)}" title="${g.name}" onclick="event.stopPropagation();">${img}</a>`;
     }
@@ -368,7 +369,7 @@ function buildAvatarHtml(ep, linkable, showAll) {
   return `<div class="${classes}">${html}</div>`;
 }
 
-function buildCard(ep) {
+function buildCard(ep, cardIndex) {
   // Show active tags first, then fill remaining slots up to 3
   const activeSet = new Set(activeTags);
   const activeInEp = ep.tags.filter(t => activeSet.has(t));
@@ -435,7 +436,7 @@ function buildCard(ep) {
         ${guestLine}
         <h3>${titleHtml}</h3>
       </div>
-      ${buildAvatarHtml(ep)}
+      ${buildAvatarHtml(ep, false, false, cardIndex < 6)}
     </div>
     <div class="card-body">
       <p class="card-description">${descHtml}</p>

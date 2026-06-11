@@ -61,7 +61,7 @@ description: "Submit a question for a future Bendy Bodies Podcast episode. Selec
           <p class="form-hint">This controls how you'll be referred to if your question is selected.</p>
 
           <div class="form-option-card selected" data-attr="anonymous" onclick="selectAttribution('anonymous')">
-            <input type="radio" name="attribution" value="anonymous" checked style="display:none;">
+            <input type="radio" name="attribution" value="anonymous" checked class="sr-only">
             <div>
               <div class="form-option-title">Anonymous</div>
               <div class="form-option-desc">Your question will be read without any name</div>
@@ -69,7 +69,7 @@ description: "Submit a question for a future Bendy Bodies Podcast episode. Selec
           </div>
 
           <div class="form-option-card" data-attr="first_name" onclick="selectAttribution('first_name')">
-            <input type="radio" name="attribution" value="first_name" style="display:none;">
+            <input type="radio" name="attribution" value="first_name" class="sr-only">
             <div style="flex:1;">
               <div class="form-option-title">First name</div>
               <div class="form-option-desc">e.g. "Sarah asks&hellip;"</div>
@@ -78,7 +78,7 @@ description: "Submit a question for a future Bendy Bodies Podcast episode. Selec
           </div>
 
           <div class="form-option-card" data-attr="alias" onclick="selectAttribution('alias')">
-            <input type="radio" name="attribution" value="alias" style="display:none;">
+            <input type="radio" name="attribution" value="alias" class="sr-only">
             <div style="flex:1;">
               <div class="form-option-title">Alias</div>
               <div class="form-option-desc">Pick a nickname or handle</div>
@@ -170,6 +170,12 @@ function selectAttribution(val) {
   document.getElementById('askFirstName').style.display = val === 'first_name' ? 'block' : 'none';
   document.getElementById('askAlias').style.display = val === 'alias' ? 'block' : 'none';
 }
+
+// Keyboard support: radios are visually hidden but focusable, so arrow-key
+// selection fires `change` and drives the same visual state as a click.
+document.querySelectorAll('input[name="attribution"]').forEach(r => {
+  r.addEventListener('change', () => { if (r.checked) selectAttribution(r.value); });
+});
 
 // Submit
 document.getElementById('askForm').addEventListener('submit', async function(e) {

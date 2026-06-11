@@ -1,6 +1,7 @@
 google-apps-script*.js
 May_13_26.md
 LAUNCH-RUNBOOK.md
+launch-redirects/
 .env
 node_modules/
 _site/
@@ -20,3 +21,4 @@ Update-3/
 Ignore/
 og-samples-preview/
 scripts/experiments/out/
+src/assets/guest-thumbs/

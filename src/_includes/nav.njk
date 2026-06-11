@@ -12,12 +12,12 @@
       <span class="nav-logo" role="img" aria-label="Bendy Bodies"></span>
       Hypermobility MD
     </a>
-    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle navigation">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+    <button class="nav-toggle" onclick="var o=document.querySelector('.nav-links').classList.toggle('open');this.setAttribute('aria-expanded',o)" aria-label="Toggle navigation" aria-controls="nav-menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true">
         <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
       </svg>
     </button>
-    <ul class="nav-links">
+    <ul class="nav-links" id="nav-menu">
       {% for p in pages %}
       <li><a href="{{ p.href }}" class="{% if p.id == activePage %}active{% endif %}">{{ p.label }}</a></li>
       {% endfor %}

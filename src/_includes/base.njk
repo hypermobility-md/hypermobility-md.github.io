@@ -3,6 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  {% if not noAnalytics %}
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W4FZD9G9');</script>
+  <!-- End Google Tag Manager -->
+  {% endif %}
+
+  {% if noAnalytics %}
+  {# Sensitive form pages: send only the origin (not the full path) as the referer,
+     so the form's URL is never passed to the next page's analytics. Forms already
+     load no GTM/GA at all; this closes the reverse (leaving-the-form) path too. #}
+  <meta name="referrer" content="origin">
+  {% endif %}
   {%- set _pageTitle = (seoOverrides.ogTitle if seoOverrides) or title -%}
   {%- set _pageDesc = (seoOverrides.ogDescription if seoOverrides) or description -%}
   <title>{{ _pageTitle }} — Hypermobility MD</title>
@@ -40,10 +57,17 @@
   {% block head %}{% endblock %}
 </head>
 <body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}>
+<a href="#main" class="skip-link">Skip to content</a>
+{% if not noAnalytics %}
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W4FZD9G9"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+{% endif %}
 
 {% include "nav.njk" %}
 
-<main>
+<main id="main" tabindex="-1">
 {{ content | safe }}
 </main>
 
