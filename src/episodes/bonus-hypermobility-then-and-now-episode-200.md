@@ -13,7 +13,7 @@ tags:
   - Pain
   - Patient Advocacy
 audioUrl: 'https://p.podderapp.com/9752035609/traffic.megaphone.fm/TCAHH9801976665.mp3'
-videoUrl: ''
+videoUrl: 'https://youtu.be/nDeyT6wRMtE'
 snippets: []
 guests:
   - Dr. Moira McCormack
