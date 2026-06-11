@@ -8,6 +8,8 @@ module.exports = {
   pageType: "article",
   tags: ["resourceArticles"],
   eleventyComputed: {
-    permalink: (data) => `/resources/${data.page.fileSlug}/`
+    permalink: (data) => `/resources/${data.page.fileSlug}/`,
+    // Branded share card generated per article by scripts/generate-page-og.mjs.
+    ogImage: (data) => `/assets/og-pages/resource-${data.page.fileSlug}.jpg`
   }
 };
