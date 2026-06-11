@@ -117,9 +117,9 @@ description: "Complete this intake form to join the waiting list for a first app
         <h3 style="margin-top: 32px; margin-bottom: 20px;">Appointment Preferences</h3>
 
         <div class="form-group">
-          <label class="form-label">Which in-person location are you willing and able to travel to for your first appointment?</label>
+          <label class="form-label" id="book-location-label">Which in-person location are you willing and able to travel to for your first appointment?</label>
           <p class="form-hint">Your first appointment must be in person. If none of these locations work, <a href="/services/#coaching">coaching</a> may be a better option.</p>
-          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;" role="radiogroup" aria-labelledby="book-location-label">
             <label class="form-check">
               <input type="radio" name="location" value="Littleton, Colorado - 8091 Shaffer Parkway" required>
               <span>Littleton, Colorado &mdash; 8091 Shaffer Parkway</span>
@@ -136,9 +136,9 @@ description: "Complete this intake form to join the waiting list for a first app
         </div>
 
         <div class="form-group">
-          <label class="form-label">Which package do you feel is the best fit for you?</label>
+          <label class="form-label" id="book-package-label">Which package do you feel is the best fit for you?</label>
           <p class="form-hint">Not sure? Review our <a href="/faq/#medical">package options in the FAQ</a> or our <a href="/assets/HMD_Pricing.pdf" target="_blank" rel="noopener">pricing and packages</a>.</p>
-          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;" role="radiogroup" aria-labelledby="book-package-label">
             <label class="form-check">
               <input type="radio" name="package" value="Diamond" required>
               <span><strong>Diamond</strong> (Most Complex) &mdash; appropriate for most people who suspect EDS, HSD, POTS, or MCAS</span>

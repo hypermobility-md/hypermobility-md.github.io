@@ -31,8 +31,8 @@ description: "Submit a question for a future Bendy Bodies Podcast episode. Selec
       <form id="askForm" action="#" method="POST">
 
         <div class="form-group">
-          <label class="form-label">Topic area</label>
-          <div class="form-chips" id="topicChips">
+          <label class="form-label" id="ask-topic-label">Topic area</label>
+          <div class="form-chips" id="topicChips" role="group" aria-labelledby="ask-topic-label">
             <button type="button" class="form-chip" data-value="Daily living & management">Daily living &amp; management</button>
             <button type="button" class="form-chip" data-value="Diagnosis & testing">Diagnosis &amp; testing</button>
             <button type="button" class="form-chip" data-value="Treatment options">Treatment options</button>
@@ -56,8 +56,8 @@ description: "Submit a question for a future Bendy Bodies Podcast episode. Selec
           <div style="text-align: right; font-size: 0.78rem; color: var(--text-light); margin-top: 4px;" id="askCharCount">0 characters</div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">Name preference</label>
+        <div class="form-group" role="radiogroup" aria-labelledby="ask-attr-label">
+          <label class="form-label" id="ask-attr-label">Name preference</label>
           <p class="form-hint">This controls how you'll be referred to if your question is selected.</p>
 
           <div class="form-option-card selected" data-attr="anonymous" onclick="selectAttribution('anonymous')">
