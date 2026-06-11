@@ -23,7 +23,7 @@ import { join, basename } from 'path';
 import matter from 'gray-matter';
 import sharp from 'sharp';
 import {
-  W, H, loadFont, lineToPath, trackedLine, trackedWidth, textBlock, svgLayer, zebraBackground,
+  W, H, loadFont, measure, lineToPath, trackedLine, textBlock, svgLayer, zebraBackground,
 } from './og-card-lib.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
@@ -31,10 +31,12 @@ const ASSETS = join(ROOT, 'src', 'assets');
 const BG = join(ASSETS, 'zebra-wide.png');
 const FONT = join(ASSETS, 'fonts', 'Fraunces-SemiBold.ttf');
 const PORTRAIT = join(ASSETS, 'Linda_Main_opt.jpg');
+const LOGO = join(ASSETS, 'BBLogo.svg');
 const QUESTIONS_DIR = join(ROOT, 'src', 'hypermobility-questions');
 const OUT_DIR = join(ASSETS, 'og-pages');
 
 const ACCENT = '#e57398'; // brand pink (purple theme --accent-light)
+const TEAL = '#3dc9b8';   // brand green highlight (podcast --teal-light)
 const WHITE = '#ffffff';
 
 const FORCE = process.argv.includes('--force');
@@ -94,28 +96,50 @@ async function generatePortraitCard(outPath, content) {
 }
 
 // ── Template: title ─────────────────────────────────────────────────────────
-function titleText({ eyebrow, title }) {
+// Brand lockup: the BB monogram + "Hypermobility MD" wordmark, both in the
+// brand green, centered at the top — replaces the old eyebrow + URL.
+const LOGO_H = 66;
+const WORDMARK = 'Hypermobility MD';
+const WORDMARK_FS = 40;
+const LOCKUP_GAP = 20;
+const LOCKUP_TOP = 70;
+let cachedLogo;
+let cachedLogoW;
+
+async function buildLogo() {
+  // The logo paths carry no fill, so fill is inherited — tint it by setting
+  // fill on the root <svg> before rasterizing.
+  const svg = readFileSync(LOGO, 'utf8').replace('<svg ', `<svg fill="${TEAL}" `);
+  cachedLogo = await sharp(Buffer.from(svg)).resize({ height: LOGO_H }).png().toBuffer();
+  cachedLogoW = (await sharp(cachedLogo).metadata()).width;
+}
+
+function titleSvgWithLockup(title) {
   const cx = W / 2;
+  const wmW = measure(font, WORDMARK, WORDMARK_FS);
+  const lockupW = cachedLogoW + LOCKUP_GAP + wmW;
+  const lockupX = Math.round((W - lockupW) / 2);
+  const wmX = lockupX + cachedLogoW + LOCKUP_GAP;
+  // wordmark baseline ≈ vertically centered against the logo
+  const wmBaseline = LOCKUP_TOP + LOGO_H / 2 + WORDMARK_FS * 0.34;
+
   const parts = [];
-  // accent rule above the eyebrow
-  parts.push(`<rect x="${cx - 40}" y="178" width="80" height="4" rx="2" fill="${ACCENT}"/>`);
-  const eb = eyebrow.toUpperCase();
-  const ebW = trackedWidth(font, eb, 27, 4);
-  parts.push(trackedLine(font, eb, cx - ebW / 2, 236, 27, ACCENT, 4));
-  // Title is the focus: big, centered, filling the body of the card.
+  parts.push(lineToPath(font, WORDMARK, wmX, wmBaseline, WORDMARK_FS, TEAL));
+  // Title is the focus: big, centered, filling the body below the lockup.
   const titleBlock = textBlock(font, title, {
-    x: 110, width: W - 220, top: 262, height: 240, align: 'center', color: WHITE, maxFs: 100, minFs: 46,
+    x: 100, width: W - 200, top: 190, height: 330, align: 'center', color: WHITE, maxFs: 104, minFs: 46,
   });
   parts.push(titleBlock.paths);
-  const url = 'hypermobility-md.github.io';
-  const urlW = trackedWidth(font, url, 22, 1);
-  parts.push(trackedLine(font, url, cx - urlW / 2, 580, 22, WHITE, 1, 0.55));
-  return svgLayer(parts.join(''));
+  return { svg: svgLayer(parts.join('')), logoLeft: lockupX, logoTop: LOCKUP_TOP };
 }
 
 async function generateTitleCard(outPath, content) {
+  const { svg, logoLeft, logoTop } = titleSvgWithLockup(content.title);
   await sharp(bg)
-    .composite([{ input: titleText(content), left: 0, top: 0 }])
+    .composite([
+      { input: cachedLogo, left: logoLeft, top: logoTop },
+      { input: svg, left: 0, top: 0 },
+    ])
     .jpeg({ quality: 86 })
     .toFile(outPath);
 }
@@ -157,11 +181,13 @@ async function main() {
   font = loadFont(FONT);
   bg = await zebraBackground(BG);
   await buildPortraitPanel();
+  await buildLogo();
 
   const inputMtime = Math.max(
     statSync(BG).mtimeMs,
     statSync(FONT).mtimeMs,
     statSync(PORTRAIT).mtimeMs,
+    statSync(LOGO).mtimeMs,
     statSync(new URL(import.meta.url)).mtimeMs
   );
 
