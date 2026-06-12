@@ -661,15 +661,16 @@ p a:hover, li a:hover, td a:hover, dd a:hover, figcaption a:hover { text-decorat
   gap: 40px;
 }
 /* 3-column footer: brand + socials | links | newsletter embed */
-.footer-col-brand { flex: 1 1 300px; max-width: 380px; }
+.footer-col-brand { flex: 0 1 340px; max-width: 340px; }
 .footer-col-links {
-  flex: 1 1 240px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px 48px;
+  flex: 0 1 auto;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 8px 40px;
+  align-content: start;
 }
-.footer-col-links .footer-links { flex: 0 0 auto; }
-.footer-col-substack { flex: 0 1 360px; }
+.footer-col-links .footer-links { margin: 0; }
+.footer-col-substack { flex: 0 1 320px; }
 .footer-col-substack .footer-substack { margin-top: 0; }
 .footer-disclaimer {
   text-align: center;
