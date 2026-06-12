@@ -4,8 +4,6 @@ subtitle: "A printable, whole-body symptom checklist to help you reflect on poss
 description: "A printable symptom-review questionnaire for people considering explant surgery — a whole-body checklist covering fatigue, brain fog, joint pain, hormone shifts, and more, to support informed conversations with your care team."
 pdf: "/assets/explant-symptom-review-questionnaire.pdf"
 pdfLabel: "Download the questionnaire (PDF)"
-sourceUrl: "https://www.bendybodiespodcast.com/p/explant-symptom-review-questionnaire/"
-sourceLabel: "bendybodiespodcast.com"
 ---
 
 Wondering if your symptoms might be linked to your breast implants? This questionnaire helps you explore common signs reported by people considering explant surgery — from fatigue and brain fog to joint pain and hormone shifts. It's designed to guide self-reflection and support informed conversations with your care team.
@@ -29,7 +27,3 @@ The questionnaire walks through the whole body, with sections for:
 - **Respiratory** — congestion, cough, shortness of breath, sinus issues
 - **Nails, lymph nodes &amp; skin** — texture changes, swelling, rashes, dryness, itching
 - **Female reproductive** — menstrual, premenstrual, and hormonal symptoms
-
----
-
-*This information is purely educational and does not intend to be a substitute for personalized medical advice. Always consult with your doctor to determine what tests and treatment are right for you.*

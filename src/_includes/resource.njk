@@ -13,6 +13,11 @@ pageType: "article"
 <section class="section">
   <div class="container resource-article">
 
+    <aside class="resource-disclaimer" role="note">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <p><strong>This information is purely educational</strong> and is not a substitute for personalized medical advice. Always consult your doctor to determine what tests and treatment are right for you.</p>
+    </aside>
+
     {%- if image %}
     <figure class="resource-article-image">
       <img src="{{ image }}"{% if imageAlt %} alt="{{ imageAlt | escape }}"{% else %} alt=""{% endif %} loading="lazy">
@@ -22,8 +27,11 @@ pageType: "article"
 
     {%- if pdf %}
     <div class="resource-download">
-      <a class="btn btn-primary" href="{{ pdf }}" target="_blank" rel="noopener" download>
+      <a class="btn btn-primary" href="{{ pdf }}" download>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>{{ pdfLabel or "Download PDF" }}
+      </a>
+      <a class="btn btn-secondary" href="{{ pdf }}" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:8px;"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>View online
       </a>
     </div>
     {%- endif %}
@@ -31,10 +39,6 @@ pageType: "article"
     <div class="resource-article-content">
       {{ content | safe }}
     </div>
-
-    {%- if sourceUrl %}
-    <p class="resource-source">Original guide: <a href="{{ sourceUrl }}" target="_blank" rel="noopener">{{ sourceLabel or sourceUrl }}</a></p>
-    {%- endif %}
 
     <div class="resource-article-footer">
       <a href="/resources/" class="btn btn-secondary">&larr; Back to Resources</a>

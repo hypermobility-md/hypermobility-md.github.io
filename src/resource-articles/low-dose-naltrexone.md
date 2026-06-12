@@ -2,12 +2,8 @@
 title: "Low-Dose Naltrexone (LDN) for Chronic Pain & EDS"
 subtitle: "How an off-label, low-dose medication may help reduce inflammation, calm the immune system, and ease pain in complex conditions."
 description: "Low-Dose Naltrexone (LDN) is used off-label in tiny doses to reduce inflammation, modulate the immune system, and decrease pain in conditions like EDS, MCAS, POTS, and ME/CFS. Learn how it works and where it's studied."
-image: "/assets/ldn-infographic.jpg"
-imageAlt: "Low-Dose Naltrexone (LDN) for Chronic Pain & EDS — Bendy Bodies infographic by Dr. Linda Bluestein"
 pdf: "/assets/low-dose-naltrexone-guide.pdf"
 pdfLabel: "Download the LDN handout (PDF)"
-sourceUrl: "https://www.bendybodiespodcast.com/p/low-dose-naltrexone-ldn-for-chronic-pain-eds/"
-sourceLabel: "bendybodiespodcast.com"
 ---
 
 LDN (Low-Dose Naltrexone) is an off-label, low-dose use of a medication originally approved to treat opioid and alcohol addiction. In smaller doses (0.1–6.0 mg/day), it may help reduce inflammation, modulate the immune system, and decrease pain — especially in conditions like **Ehlers-Danlos Syndrome** and chronic musculoskeletal pain.
@@ -36,7 +32,3 @@ For patients with EDS, HSD, MCAS, POTS, and ME/CFS, pain is often widespread, co
 ## How It Works
 
 Mechanistically, LDN works by temporarily blocking opioid receptors, leading to a rebound increase in endorphins. It also inhibits Toll-Like Receptor 4 (TLR4), reducing glial activation and neuroinflammation, and modulates immune function to promote balance without causing full immunosuppression.
-
----
-
-*This information is purely educational and does not intend to be a substitute for personalized medical advice. Always consult with your doctor to determine what tests and treatment are right for you.*

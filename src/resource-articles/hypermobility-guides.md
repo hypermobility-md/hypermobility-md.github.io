@@ -3,9 +3,7 @@ title: "Hypermobility Guides: Symptoms and Treatment"
 subtitle: "Two companion guides by Dr. Linda Bluestein — recognizing symptomatic joint hypermobility, and a practical, integrative framework for treatment and daily living."
 description: "Two companion guides on symptomatic joint hypermobility: what to look for (symptoms, signs, comorbidities, and red flags) and the MENS PPMS framework for treatment and daily living."
 pdf: "/assets/hypermobility-guides.pdf"
-pdfLabel: "Download both guides (PDF)"
-sourceUrl: "https://www.bendybodiespodcast.com/p/symptomatic-joint-hypermobility-guide/"
-sourceLabel: "bendybodiespodcast.com"
+pdfLabel: "Download guide (PDF)"
 ---
 
 These two companion guides work together: the first helps you **recognize** symptomatic joint hypermobility, and the second offers a practical framework for **managing** it. Both are written in plain language for patients and providers alike.
@@ -148,7 +146,3 @@ Living with hEDS or HSD presents unique challenges. This guide builds on the Sym
 - **Stabilization exercises:** Building core strength and protecting vulnerable joints.
 - **Pelvic floor therapy:** Improving core stability and supporting the function of pelvic organs (bladder, bowel, sex organs).
 - **Pain management:** Techniques for minimizing discomfort during physical activity.
-
----
-
-*This information is purely educational and does not intend to be a substitute for personalized medical advice. Always consult with your doctor to determine what tests and treatment are right for you.*
