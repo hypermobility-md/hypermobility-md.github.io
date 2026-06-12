@@ -20,6 +20,15 @@ function slugifyTitle(title) {
   }, "");
 }
 
+// One-off legacy redirects for episodes whose URL changed outside the normal
+// {num} pattern (e.g. a bonus slug that was later promoted to a numbered ep).
+const EXTRA_REDIRECTS = [
+  {
+    from: "/episodes/bonus-hypermobility-then-and-now-episode-200/",
+    to: "/episodes/200-hypermobility-then-and-now/",
+  },
+];
+
 function derivedUrl(ep) {
   const num = ep.data.num;
   if (num == null || num === "") return null;
@@ -44,12 +53,14 @@ module.exports = class {
         data: "collections.episodes",
         size: 1,
         alias: "entry",
-        before: (episodes) =>
-          episodes
+        before: (episodes) => [
+          ...episodes
             .filter((ep) => ep.data.num != null && ep.data.num !== "")
             .flatMap((ep) =>
-              redirectsFor(ep).map((from) => ({ ep, from }))
+              redirectsFor(ep).map((from) => ({ from, to: ep.url }))
             ),
+          ...EXTRA_REDIRECTS,
+        ],
       },
       eleventyExcludeFromCollections: true,
       permalink: (data) => data.entry.from,
@@ -57,7 +68,7 @@ module.exports = class {
   }
 
   render({ entry }) {
-    const url = entry.ep.url;
+    const url = entry.to;
     return `<!doctype html>
 <html lang="en">
 <head>

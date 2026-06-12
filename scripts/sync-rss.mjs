@@ -75,10 +75,47 @@ function parseEpNumber(title) {
   // New format: (Ep 188), (EP. 199), (Episode 200), (BEN 172), (Ep #201)
   const newFmt = title.match(/\((?:Ep(?:isode)?|BEN)\.?\s*#?\s*(\d+)\)\s*$/i);
   if (newFmt) return parseInt(newFmt[1], 10);
+  // Loose drift: same label without the parentheses, anchored to the end after a
+  // separator — "… | Episode 200", "… - Ep 200", "… – Episode 200".
+  const looseFmt = title.match(/[|\-–—:]\s*(?:Ep(?:isode)?|BEN)\.?\s*#?\s*(\d+)\s*$/i);
+  if (looseFmt) return parseInt(looseFmt[1], 10);
   // Old format: "95. Topic..." at the start
   const oldFmt = title.match(/^(\d+)\.\s+/);
   if (oldFmt) return parseInt(oldFmt[1], 10);
   return null;
+}
+
+/**
+ * Last-resort number resolver for NEW items the regexes couldn't read. Keeps
+ * parseEpNumber simple and uses a cheap Haiku call to decide between "this is
+ * actually episode N, the feed just formatted the number oddly" and "this is a
+ * genuine bonus/special/trailer with no number". Returns an integer, or null
+ * for a true bonus. Only call this for brand-new, unmatched items — never in
+ * the dedupe loop — so we don't spend a token on every existing bonus episode.
+ */
+async function classifyEpNumberWithHaiku(title, description) {
+  try {
+    const anthropic = new Anthropic();
+    const response = await anthropic.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 16,
+      messages: [{
+        role: 'user',
+        content: `This is an episode of the "Bendy Bodies" podcast.
+
+Title: "${title}"
+Description: "${description.slice(0, 600)}"
+
+Feed titles sometimes put the episode number in unusual places ("(Ep 200)", "| Episode 200", "Episode 200 —", "200."). If this is a numbered main-feed episode, reply with ONLY that integer. If it is a genuine bonus, special, trailer, or Q&A with no episode number, reply with ONLY the word "bonus". No other text.`,
+      }],
+    });
+    const text = (response.content[0]?.text || '').trim().toLowerCase();
+    const m = text.match(/\d+/);
+    return m ? parseInt(m[0], 10) : null;
+  } catch (e) {
+    console.error('  ⚠ Haiku episode-number check failed, treating as bonus:', e.message);
+    return null;
+  }
 }
 
 /** Whole-day signed difference between two YYYY-MM-DD strings (a - b). */
@@ -450,7 +487,7 @@ async function main() {
 
     let consecutiveSkips = 0;
     for (const item of rssItems) {
-      const epNum = parseEpNumber(item.title);
+      let epNum = parseEpNumber(item.title);
       const isBonus = epNum === null;
 
       // Check if episode already exists (by number, slug, or audio URL)
@@ -501,6 +538,19 @@ async function main() {
       );
       if (boilerplateCut > 0) {
         cleanDesc = cleanDesc.slice(0, boilerplateCut).trim();
+      }
+
+      // If neither regex read a number, ask Haiku whether this is really a
+      // numbered episode the feed formatted oddly (e.g. "| Episode 200") or a
+      // genuine bonus. Only runs for brand-new, unmatched items.
+      if (epNum === null) {
+        console.log('   🤖 No number parsed from title — classifying with Haiku...');
+        epNum = await classifyEpNumberWithHaiku(cleanTitle, cleanDesc);
+        if (epNum !== null && existingNums.has(epNum)) {
+          console.log(`   ↪ Haiku resolved Ep ${epNum}, which already exists — skipping.`);
+          continue;
+        }
+        console.log(epNum !== null ? `   → Resolved as episode ${epNum}` : '   → Treating as bonus (no number)');
       }
 
       // Extract guest names using Haiku (handles multi-guest, host/cohost filtering)

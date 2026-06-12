@@ -116,7 +116,7 @@
 .podcast-hero-rating {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 10px;
   margin-top: 18px;
   flex-wrap: wrap;
@@ -750,12 +750,25 @@ a.featured-top-tag:hover { filter: brightness(1.12); transform: translateY(-1px)
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 13px 16px 13px 20px;
+  padding: 13px 52px 13px 20px;
   text-decoration: none;
   color: inherit;
   box-shadow: 0 6px 24px rgba(0,0,0,0.18);
   transition: transform 0.2s, box-shadow 0.2s;
 }
+.topic-icon {
+  position: absolute;
+  top: 13px;
+  right: 16px;
+  color: var(--topic-color, var(--primary));
+  opacity: 0.85;
+}
+.topic-icon svg {
+  width: 26px;
+  height: 26px;
+  display: block;
+}
+.topic-tile:hover .topic-icon { opacity: 1; }
 .topic-tile:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 32px rgba(0,0,0,0.28);

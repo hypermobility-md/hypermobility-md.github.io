@@ -278,12 +278,12 @@ permalink: /podcast/
 
 <!-- Browse by Topic -->
 {%- set topicDirectory = [
-  { tag: "POTS", color: "#3a9ec4", desc: "Dizziness, racing heart, blood-pressure swings." },
-  { tag: "MCAS", color: "#d05a9b", desc: "Mast cell triggers, testing, and treatment." },
-  { tag: "Physical Therapy", color: "#5a8fd0", desc: "Rehab, joint stability, and paced movement." },
-  { tag: "Mental Health", color: "#a98fd0", desc: "Anxiety, trauma-informed care, mind–body." },
-  { tag: "Nutrition", color: "#7aab4a", desc: "Histamine, supplements, and eating well." },
-  { tag: "Pain", color: "#d07a4a", desc: "Chronic pain, fibromyalgia, sensitization." }
+  { tag: "POTS", color: "#3a9ec4", desc: "Dizziness, racing heart, blood-pressure swings.", icon: '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M17 12h-2l-2 5-2-10-2 5H7"/>' },
+  { tag: "MCAS", color: "#d05a9b", desc: "Mast cell triggers, testing, and treatment.", icon: '<circle cx="12" cy="12" r="9"/><path d="M9 10h.01"/><path d="M14.5 9h.01"/><path d="M15 13.5h.01"/><path d="M10 14.5h.01"/><path d="M12 11.5h.01"/>' },
+  { tag: "Physical Therapy", color: "#5a8fd0", desc: "Rehab, joint stability, and paced movement.", icon: '<path d="M12.409 13.017A5 5 0 0 1 22 15c0 3.866-4 7-9 7-4.077 0-8.153-.82-10.371-2.462-.426-.316-.631-.832-.62-1.362C2.118 12.723 2.627 2 10 2a3 3 0 0 1 3 3 2 2 0 0 1-2 2c-1.105 0-1.64-.444-2-1"/><path d="M15 14a5 5 0 0 0-7.584 2"/><path d="M9.964 6.825C8.019 7.977 9.5 13 8 15"/>' },
+  { tag: "Mental Health", color: "#a98fd0", desc: "Anxiety, trauma-informed care, mind–body.", icon: '<path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/>' },
+  { tag: "Nutrition", color: "#7aab4a", desc: "Histamine, supplements, and eating well.", icon: '<path d="M12 6.528V3a1 1 0 0 1 1-1h0"/><path d="M18.237 21A15 15 0 0 0 22 11a6 6 0 0 0-10-4.472A6 6 0 0 0 2 11a15.1 15.1 0 0 0 3.763 10 3 3 0 0 0 3.648.648 5.5 5.5 0 0 1 5.178 0A3 3 0 0 0 18.237 21"/>' },
+  { tag: "Pain", color: "#d07a4a", desc: "Chronic pain, fibromyalgia, sensitization.", icon: '<path d="M10 10.01h.01"/><path d="M10 14.01h.01"/><path d="M14 10.01h.01"/><path d="M14 14.01h.01"/><path d="M18 6v12"/><path d="M6 6v12"/><rect x="2" y="6" width="20" height="12" rx="2"/>' }
 ] -%}
 <section class="section topic-directory">
   <div class="container">
@@ -295,6 +295,7 @@ permalink: /podcast/
       {%- for t in topicDirectory %}
       <a class="topic-tile" href="/podcast-episodes/?tag={{ t.tag | urlencode }}" style="--topic-color: {{ t.color }};">
         <span class="topic-stripe"></span>
+        <span class="topic-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{{ t.icon | safe }}</svg></span>
         <h3>{{ t.tag }}</h3>
         <div class="topic-count">{{ tagStats.counts[t.tag] }} episodes</div>
         <p class="topic-desc">{{ t.desc }}</p>
@@ -304,15 +305,6 @@ permalink: /podcast/
     <div style="text-align: center; margin-top: 36px;">
       <a href="/podcast-episodes/" class="btn btn-primary topic-browse-all">Browse all {{ collections.episodes.length }} episodes</a>
     </div>
-  </div>
-</section>
-
-<!-- Book Dr. Bluestein -->
-<section class="section">
-  <div class="container text-center">
-    <h2>Book the Hypermobility MD</h2>
-    <p style="color: var(--text-muted); max-width: 500px; margin: 12px auto 24px;">Invite Dr. Bluestein to speak at your studio, company, or organization. Workshops and lectures available online and in person.</p>
-    <a href="mailto:info@hypermobilitymd.com" class="btn btn-primary">Contact Us</a>
   </div>
 </section>
 
@@ -463,11 +455,30 @@ const TAG_COLORS = {
   'Exercise': '#2a5c9d', 'Diagnosis': '#7a5c2a', 'Treatment': '#2a9d8f',
   'Neurology': '#4a4a9d', 'Surgery': '#7a2a2a', 'Genetics': '#5c7a2a',
   'Hypermobility': '#4a2d7a', 'Research': '#2a4a7a',
+  'Physical Therapy': '#2a6a9d', 'Dance & Performing Arts': '#b03a6b',
+  'Injury Prevention': '#8a5a2a', 'Patient Advocacy': '#2a7a6a',
+  'Dysautonomia': '#236a8a', 'Inflammation': '#9d4a2a',
+  'Integrative Medicine': '#2a9d8f', 'Fatigue': '#7a5c9d',
 };
+
+// Fallback palette (hex, so the `${color}18` alpha suffixes below stay valid).
+const TAG_FALLBACK_COLORS = [
+  '#236a8a', '#9d2a6b', '#2a7a4a', '#6b4a9d', '#9d4a2a', '#2a5c9d',
+  '#7a5c2a', '#2a9d8f', '#4a4a9d', '#5c7a2a', '#b03a6b', '#2a7a6a',
+];
+
+// Curated color if known, otherwise a stable color derived from the tag name so
+// new/unmapped tags still render distinct (and never collapse to one default).
+function tagColor(t) {
+  if (TAG_COLORS[t]) return TAG_COLORS[t];
+  let h = 0;
+  for (let i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) % TAG_FALLBACK_COLORS.length;
+  return TAG_FALLBACK_COLORS[h];
+}
 
 function buildTagChips(tags) {
   return (tags || []).map(t => {
-    const color = TAG_COLORS[t] || '#4a2d7a';
+    const color = tagColor(t);
     return `<span class="tag-chip" style="background:${color}18; color:${color}; border-color:${color}30;">${t}</span>`;
   }).join('');
 }
@@ -480,7 +491,6 @@ function buildLatest(ep, idx) {
   const metaRow = metaStr ? `<div class="featured-meta-row"><span class="featured-meta">${metaStr}</span></div>` : '';
   const allTags = ep.tags || [];
   const topTagList = allTags.slice(0, 3);
-  const tagColor = t => TAG_COLORS[t] || '#4a2d7a';
   const tagSpans = topTagList.map(t =>
     `<a class="featured-top-tag" href="/podcast-episodes/?tag=${encodeURIComponent(t)}" style="background:${tagColor(t)};border-color:${tagColor(t)};">${t}</a>`);
   // Hint that more tags exist with a 4th chip fading off the edge

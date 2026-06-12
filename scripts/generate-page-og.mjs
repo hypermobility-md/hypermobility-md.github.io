@@ -149,6 +149,7 @@ const PAGES = [
   { out: 'podcast-guests', template: 'title', title: 'Guest Index' },
   { out: 'podcast-appearances', template: 'title', title: 'Guest Appearances' },
   { out: 'privacy', template: 'title', title: 'Privacy Policy' },
+  { out: 'legal', template: 'title', title: 'Legal' },
   { out: '404', template: 'title', title: '404: Page Not Found' },
 
   { out: 'ask', template: 'title', title: 'Ask the Podcast a Question' },

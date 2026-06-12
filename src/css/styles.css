@@ -658,7 +658,25 @@ p a:hover, li a:hover, td a:hover, dd a:hover, figcaption a:hover { text-decorat
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
-  gap: 32px;
+  gap: 40px;
+}
+/* 3-column footer: brand + socials | links | newsletter embed */
+.footer-col-brand { flex: 1 1 300px; max-width: 380px; }
+.footer-col-links {
+  flex: 1 1 240px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 48px;
+}
+.footer-col-links .footer-links { flex: 0 0 auto; }
+.footer-col-substack { flex: 0 1 360px; }
+.footer-col-substack .footer-substack { margin-top: 0; }
+.footer-disclaimer {
+  text-align: center;
+  font-size: 0.8rem;
+  opacity: 0.55;
+  max-width: 640px;
+  margin: 40px auto 0;
 }
 .footer-brand {
   font-family: var(--heading-font);
@@ -694,7 +712,7 @@ p a:hover, li a:hover, td a:hover, dd a:hover, figcaption a:hover { text-decorat
 .footer-links li { margin-bottom: 8px; }
 .footer-links a { color: var(--footer-text); font-size: 0.9rem; opacity: 0.85; }
 .footer-links a:hover { opacity: 1; color: var(--footer-text); text-decoration: underline; }
-.footer-social { display: flex; gap: 16px; flex-wrap: wrap; }
+.footer-social { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 18px; }
 .footer-social a {
   color: var(--footer-text);
   opacity: 0.75;
@@ -708,9 +726,32 @@ p a:hover, li a:hover, td a:hover, dd a:hover, figcaption a:hover { text-decorat
   border-top: 1px solid rgba(255,255,255,0.12);
   text-align: center;
   font-size: 0.8rem;
-  opacity: 0.6;
 }
+.footer-bottom > p { margin: 0; opacity: 0.6; }
 .footer-bottom a { color: var(--footer-text); }
+/* Thin legal/policy bar — centered links with middot separators */
+.footer-legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px 16px;
+  margin-bottom: 14px;
+}
+.footer-legal-links a {
+  position: relative;
+  color: var(--footer-text);
+  opacity: 0.8;
+  text-decoration: none;
+}
+.footer-legal-links a:hover { opacity: 1; text-decoration: underline; }
+.footer-legal-links a:not(:last-child)::after {
+  content: "·";
+  position: absolute;
+  right: -10px;
+  opacity: 0.5;
+  pointer-events: none;
+}
 .footer-crisis {
   text-align: center;
   margin-top: 12px;
