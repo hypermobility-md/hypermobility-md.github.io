@@ -85,6 +85,19 @@ function parseEpNumber(title) {
   return null;
 }
 
+/** Strip the trailing episode-number tag the feed appends to titles so the
+ *  stored title reads cleanly. Mirrors the new-format patterns parseEpNumber
+ *  recognizes: "Topic (Ep. 201)", "Topic | Episode 200", "Topic – Ep 200",
+ *  "Topic … (BEN 172)". Leaves the old "95. Topic" leading-number form alone. */
+function stripEpisodeNumberSuffix(title) {
+  return title
+    // Parenthesized tag, optionally preceded by a separator: " (Ep. 201)"
+    .replace(/\s*[|\-–—:]?\s*\((?:Ep(?:isode)?|BEN)\.?\s*#?\s*\d+\)\s*$/i, '')
+    // Bare tag after a separator: " | Ep. 201", " – Episode 200"
+    .replace(/\s*[|\-–—:]\s*(?:Ep(?:isode)?|BEN)\.?\s*#?\s*\d+\s*$/i, '')
+    .trim();
+}
+
 /**
  * Last-resort number resolver for NEW items the regexes couldn't read. Keeps
  * parseEpNumber simple and uses a cheap Haiku call to decide between "this is
@@ -134,6 +147,20 @@ function isHost(name) {
   return norm.includes('linda bluestein') || norm.includes('bluestein');
 }
 
+/** Drop a credential that's redundant with the "Dr." honorific. Haiku is told
+ *  to use "Dr." for doctorate-holders AND to append other credentials after a
+ *  comma, which can collide into "Dr. Morgan Groover, DPT". When the honorific
+ *  is already present it conveys the doctorate, so strip the trailing credential
+ *  ("Dr. Jane Smith, DPT" → "Dr. Jane Smith"). Non-"Dr." names like
+ *  "Jane Smith, RDN" are left untouched. */
+function normalizeGuestName(name) {
+  let n = (name || '').trim();
+  if (/^(dr\.|prof\.)\s+/i.test(n)) {
+    n = n.replace(/,\s*(?:M\.?D\.?|D\.?O\.?|Ph\.?D\.?|DPT|DC|DDS|DMD|ND|PharmD|EdD|PsyD)\s*$/i, '').trim();
+  }
+  return n;
+}
+
 /** Check if a name refers to a cohost (not the host). */
 function isCohost(name) {
   const norm = name.toLowerCase().replace(/^(dr\.|prof\.)\s+/i, '').replace(/,?\s*(md|do|phd|dpt)\b/gi, '').trim();
@@ -173,6 +200,7 @@ Credential formatting:
 - Append other credentials after a comma (e.g., "Jane Smith, DPT" or "Jane Smith, RDN")
 - Prefer the name as it appears in the TITLE over the description
 - Do NOT include "MD" or "M.D." after "Dr." — the "Dr." replaces it
+- Never combine the "Dr." prefix with a trailing doctoral credential. If you use "Dr.", do NOT also append ", MD", ", PhD", ", DPT", etc. (e.g., "Dr. Morgan Groover", NOT "Dr. Morgan Groover, DPT")
 
 Respond with ONLY a JSON array of strings (no markdown, no explanation). Examples:
 ["Dr. Jane Smith"]
@@ -512,12 +540,14 @@ async function main() {
       }
       consecutiveSkips = 0;
 
-      const cleanTitle = item.title
-        .replace(/&amp;/g, '&')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/&quot;/g, '"')
-        .replace(/&#39;/g, "'");
+      const cleanTitle = stripEpisodeNumberSuffix(
+        item.title
+          .replace(/&amp;/g, '&')
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/&quot;/g, '"')
+          .replace(/&#39;/g, "'")
+      );
 
       console.log(`✨ New episode: ${cleanTitle}`);
 
@@ -570,6 +600,8 @@ async function main() {
       if (hasNonHostGuests) {
         rssGuests = rssGuests.filter(g => !isHost(g));
       }
+      // Collapse "Dr. … , <credential>" collisions before matching/writing.
+      rssGuests = rssGuests.map(normalizeGuestName);
 
       const matchedGuests = [];
       const matchedImages = [];
