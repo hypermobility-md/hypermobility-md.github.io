@@ -49,10 +49,6 @@ description: "Submit a question for a future Bendy Bodies Podcast episode. Selec
         <div class="form-group">
           <label class="form-label" for="askQuestion">Your question</label>
           <textarea class="form-textarea" id="askQuestion" name="question" rows="5" placeholder="Frame your question as a general topic — no personal health details needed..." required></textarea>
-          <div id="phiWarning" style="display: none;" class="form-alert form-alert-warning">
-            <svg class="form-alert-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C4862B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-            <span>It looks like your question may contain personal health details. Consider rephrasing as a general question to protect your privacy.</span>
-          </div>
           <div style="text-align: right; font-size: 0.78rem; color: var(--text-light); margin-top: 4px;" id="askCharCount">0 characters</div>
         </div>
 
@@ -141,7 +137,6 @@ description: "Submit a question for a future Bendy Bodies Podcast episode. Selec
 <script src="/js/form-submit.js"></script>
 <script>
 let askAttrVal = 'anonymous';
-const PHI_RE = /\b(diagnosed|my doctor|my surgery|i have|i was told|my condition|my symptoms|my medication|my treatment)\b/i;
 
 // Topic chips
 document.querySelectorAll('#topicChips .form-chip').forEach(chip => {
@@ -152,15 +147,10 @@ document.querySelectorAll('#topicChips .form-chip').forEach(chip => {
   });
 });
 
-// PHI detection
+// Character count
 const qField = document.getElementById('askQuestion');
 qField.addEventListener('input', () => {
-  const val = qField.value;
-  document.getElementById('askCharCount').textContent = val.length + ' characters';
-  const hasPHI = PHI_RE.test(val);
-  document.getElementById('phiWarning').style.display = hasPHI ? 'flex' : 'none';
-  qField.style.borderColor = hasPHI ? '#D4A03C' : '';
-  qField.style.background = hasPHI ? '#FFFDF8' : '';
+  document.getElementById('askCharCount').textContent = qField.value.length + ' characters';
 });
 
 // Attribution selection

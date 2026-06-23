@@ -857,7 +857,7 @@ function openEpisode(idx) {
   // Audio
   const audioEl = document.getElementById('modalAudio');
   if (ep.audioUrl) {
-    audioEl.innerHTML = `<audio controls style="width:100%;" preload="none"><source src="${ep.audioUrl}" type="audio/mpeg">Your browser does not support audio.</audio>`;
+    audioEl.innerHTML = `<audio controls style="width:100%;" preload="metadata"><source src="${ep.audioUrl}" type="audio/mpeg">Your browser does not support audio.</audio>`;
     audioEl.className = '';
   } else {
     audioEl.innerHTML = 'Audio player will be embedded here';

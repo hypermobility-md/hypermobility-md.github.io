@@ -329,6 +329,14 @@ p a:hover, li a:hover, td a:hover, dd a:hover, figcaption a:hover { text-decorat
   color: var(--primary-dark);
   margin-bottom: 2px;
 }
+/* Zebra icon standing in for the "EDS" stat — sized to the height of the
+   sibling stats' numerals so the row stays visually even. */
+.hero-meta-icon {
+  display: block;
+  height: 1.8rem;
+  width: auto;
+  margin-bottom: 3px;
+}
 @media (max-width: 768px) {
   .hero-meta { justify-content: center; gap: 22px; }
 }
@@ -725,19 +733,23 @@ p a:hover, li a:hover, td a:hover, dd a:hover, figcaption a:hover { text-decorat
   margin-top: 36px;
   padding-top: 20px;
   border-top: 1px solid rgba(255,255,255,0.12);
-  text-align: center;
   font-size: 0.8rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 24px;
 }
 .footer-bottom > p { margin: 0; opacity: 0.6; }
 .footer-bottom a { color: var(--footer-text); }
-/* Thin legal/policy bar — centered links with middot separators */
+/* Thin legal/policy bar — sits on the same row as the copyright, links left,
+   copyright pushed right (wraps to its own line on narrow screens) */
 .footer-legal-links {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   align-items: center;
   gap: 4px 16px;
-  margin-bottom: 14px;
+  margin-bottom: 0;
 }
 .footer-legal-links a {
   position: relative;
@@ -761,10 +773,41 @@ p a:hover, li a:hover, td a:hover, dd a:hover, figcaption a:hover { text-decorat
 }
 .footer-crisis a { color: #f0a0bf; text-decoration: underline; }
 
+/* ---- Back-to-top button ---- */
+.back-to-top {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 60;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.28);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity .2s ease, transform .2s ease, visibility .2s ease, background .2s ease;
+}
+.back-to-top.is-visible { opacity: 1; visibility: visible; transform: translateY(0); }
+.back-to-top:hover { background: var(--primary-dark); }
+.back-to-top:focus-visible { outline: 3px solid var(--primary-light); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top { transition: opacity .2s ease, visibility .2s ease; transform: none; }
+}
+
 @media (max-width: 768px) {
   .footer-inner { flex-direction: column; align-items: center; text-align: center; }
   .footer-text { max-width: 100%; }
   .footer-social { justify-content: center; }
+  .footer-bottom { justify-content: center; text-align: center; }
+  .footer-legal-links { justify-content: center; }
 }
 
 /* Theme switcher removed — purple theme only */
@@ -1206,7 +1249,13 @@ a.logo-card:hover {
   -webkit-overflow-scrolling: touch;
   border: 1px solid var(--border);
   border-radius: 12px;
-  margin: 8px 0 4px;
+  /* Break out of the 820px reading column up to the page container width so all
+     16 condition columns fit without horizontal scrolling when there's room.
+     --matrix-w is the container inner width (1100 − 2×24 padding), capped to the
+     viewport; the negative margin re-centers the wider table over the column. */
+  --matrix-w: min(1052px, calc(100vw - 48px));
+  width: var(--matrix-w);
+  margin: 8px 0 4px calc((var(--matrix-w) - 100%) / -2);
 }
 .redflag-matrix-hint {
   font-size: 0.8rem;
@@ -1216,6 +1265,7 @@ a.logo-card:hover {
 .redflag-matrix {
   border-collapse: collapse;
   font-size: 0.78rem;
+  width: 100%;
   min-width: 880px;
 }
 .redflag-matrix th,
