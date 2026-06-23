@@ -32,7 +32,7 @@ import { readdirSync, readFileSync, existsSync, mkdirSync, statSync } from 'fs';
 import { join, basename } from 'path';
 import matter from 'gray-matter';
 import sharp from 'sharp';
-import { W, H, loadFont, lineToPath, textBlock, svgLayer, zebraBackground } from './og-card-lib.mjs';
+import { W, H, loadFont, textBlock, svgLayer, zebraBackground } from './og-card-lib.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 const EPISODES_DIR = join(ROOT, 'src', 'episodes');
@@ -97,19 +97,13 @@ async function generateCard(outPath, title) {
     .toFile(outPath);
 }
 
-// Podcast landing card: cover on the left, show name + tagline on the right.
+// Podcast landing card: cover on the left, show name on the right.
 async function generatePodcastCard(outPath) {
-  const nameSvg = titleSvg('Bendy Bodies', { top: 150, height: 170 });
-  const tagFs = 26;
-  const tagline =
-    lineToPath(font, 'Conversations about hypermobility,', TEXT_X, 396, tagFs, '#ffffff', 0.82) +
-    lineToPath(font, 'EDS, POTS, MCAS & chronic pain.', TEXT_X, 432, tagFs, '#ffffff', 0.82);
-  const taglineSvg = svgLayer(tagline);
+  const nameSvg = titleSvg('Bendy Bodies Podcast');
   await sharp(cachedBackground)
     .composite([
       { input: cachedThumb, left: COVER_X, top: COVER_Y },
       { input: nameSvg, left: 0, top: 0 },
-      { input: taglineSvg, left: 0, top: 0 },
     ])
     .jpeg({ quality: 86 })
     .toFile(outPath);

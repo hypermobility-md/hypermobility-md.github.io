@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Hypermobility MD website — Dr. Linda Bluestein",
   "scripts": {
-    "prebuild": "node scripts/generate-guest-thumbs.mjs && node scripts/generate-og-images.mjs && node scripts/generate-episode-og.mjs && node scripts/generate-page-og.mjs",
+    "prebuild": "node scripts/generate-guest-thumbs.mjs && node scripts/generate-og-images.mjs && node scripts/generate-episode-og.mjs && node scripts/generate-page-og.mjs && node scripts/generate-appearance-og.mjs",
     "build": "eleventy",
     "prestart": "node scripts/generate-guest-thumbs.mjs",
     "start": "eleventy --serve",

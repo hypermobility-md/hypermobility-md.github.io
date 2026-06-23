@@ -21,6 +21,17 @@
 {% if _ogImage %}
   {% set socialImage = _ogImage | absoluteUrl(site.url) %}
   {% set socialImageSized = true %}
+{% elif showName %}
+  {# Appearance pages: build-generated branded card (show cover over a blurred
+     copy of itself), keyed by the page slug. Checked before the audioUrl branch
+     because appearances also carry an audioUrl. Falls back to the default card
+     for any appearance whose card hasn't been generated. #}
+  {% if imageUrl %}
+    {% set socialImage = ("/assets/og-appearances/" + page.fileSlug + ".jpg") | absoluteUrl(site.url) %}
+    {% set socialImageSized = true %}
+  {% else %}
+    {% set socialImage = site.defaultOgImage | absoluteUrl(site.url) %}
+  {% endif %}
 {% elif audioUrl %}
   {# Episode pages: prefer the build-generated branded share card, fall back to
      YouTube thumbnail, then guest photo, then default. #}
@@ -30,8 +41,6 @@
 {% elif guestName and guestData.images[guestName] %}
   {% set socialImage = (guestData.images[guestName] | guestOgImage) | absoluteUrl(site.url) %}
   {% set socialImageSized = true %}
-{% elif showName and imageUrl %}
-  {% set socialImage = imageUrl | absoluteUrl(site.url) %}
 {% else %}
   {% set socialImage = site.defaultOgImage | absoluteUrl(site.url) %}
 {% endif %}
