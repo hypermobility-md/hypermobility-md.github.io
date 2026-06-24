@@ -670,7 +670,8 @@ function openLatestModal(idx) {
   // Video
   const videoEl = document.getElementById('modalVideo');
   if (ep.videoUrl) {
-    const vidEmbed = ep.videoUrl.replace('youtube.com/watch?v=', 'youtube.com/embed/').replace('youtube.com/shorts/', 'youtube.com/embed/').replace('youtu.be/', 'youtube.com/embed/');
+    const _vid = (ep.videoUrl.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]+)/) || [])[1];
+    const vidEmbed = _vid ? `https://www.youtube-nocookie.com/embed/${_vid}` : ep.videoUrl;
     videoEl.innerHTML = `<div style="aspect-ratio:16/9;border-radius:var(--radius);overflow:hidden;"><iframe src="${vidEmbed}" style="width:100%;height:100%;border:none;" allowfullscreen loading="lazy"></iframe></div>`;
     videoEl.className = '';
   } else { videoEl.innerHTML = 'Video player will be embedded here'; videoEl.className = 'embed-placeholder'; }
@@ -681,7 +682,8 @@ function openLatestModal(idx) {
   if (ep.snippets && ep.snippets.length > 0) {
     snippetsSection.style.display = 'block';
     snippetsEl.innerHTML = ep.snippets.map(url => {
-      let embedUrl = url.replace('youtube.com/watch?v=', 'youtube.com/embed/').replace('youtube.com/shorts/', 'youtube.com/embed/').replace('youtu.be/', 'youtube.com/embed/');
+      const _sid = (url.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]+)/) || [])[1];
+      let embedUrl = _sid ? `https://www.youtube-nocookie.com/embed/${_sid}` : url;
       const sep = embedUrl.includes('?') ? '&' : '?';
       embedUrl += `${sep}origin=${encodeURIComponent(window.location.origin)}`;
       return `<div class="snippet-embed"><iframe src="${embedUrl}" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>`;

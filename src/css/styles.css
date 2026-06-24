@@ -683,7 +683,8 @@ p a:hover, li a:hover, td a:hover, dd a:hover, figcaption a:hover { text-decorat
 .footer-disclaimer {
   text-align: center;
   font-size: 0.8rem;
-  opacity: 0.55;
+  /* 0.7 keeps the disclaimer de-emphasized while clearing WCAG AA 4.5:1 contrast. */
+  opacity: 0.7;
   max-width: 640px;
   margin: 40px auto 0;
 }

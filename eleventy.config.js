@@ -1,5 +1,6 @@
 // Shared guest-key normalization — single source of truth in scripts/lib.
 const { normalizeKey: normalizeGuestKey } = require("./scripts/lib/guest-keys.cjs");
+const { buildGuestIndex } = require("./scripts/lib/guest-index.cjs");
 
 const CleanCSS = require("clean-css");
 const fs = require("fs");
@@ -16,6 +17,22 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/js");
   eleventyConfig.addPassthroughCopy("src/favicon.ico");
   eleventyConfig.addPassthroughCopy("src/site.webmanifest");
+
+  // Inline a (minified) stylesheet from src/css/ into <head> (see base.njk) so the
+  // CSS is no longer a render-blocking request on the critical path. GitHub Pages
+  // caps Cache-Control at ~10min, so external caching buys little; inlining the
+  // exact same bytes improves first paint / LCP with no FOUC and no visual change.
+  // Results are cached per filename so each stylesheet is read+minified once.
+  const _inlineCssCache = {};
+  eleventyConfig.addFilter("inlineCssFile", (filename) => {
+    if (!filename) return "";
+    if (_inlineCssCache[filename] === undefined) {
+      const src = fs.readFileSync(path.join(__dirname, "src", "css", filename), "utf8");
+      const out = new CleanCSS({ level: 2 }).minify(src);
+      _inlineCssCache[filename] = out.styles || src;
+    }
+    return _inlineCssCache[filename];
+  });
 
   // Post-build: minify CSS and generate transcript files
   eleventyConfig.on("eleventy.after", () => {
@@ -384,12 +401,27 @@ module.exports = function(eleventyConfig) {
     return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '');
   });
 
+  // Build the Guest Index grid server-side (see scripts/lib/guest-index.cjs and
+  // src/podcast-guests.njk). Returns { gridHtml, letters }.
+  eleventyConfig.addFilter("guestIndex", (episodes, guestData) => {
+    const eps = (episodes || []).map(ep => ({
+      num: ep.data.num,
+      url: ep.url,
+      title: ep.data.title,
+      guests: ep.data.guests,
+    }));
+    return buildGuestIndex(eps, guestData);
+  });
+
   // YouTube URL → embed URL
   eleventyConfig.addFilter("youtubeEmbed", (url) => {
     if (!url) return '';
-    return url.replace('youtube.com/watch?v=', 'youtube.com/embed/')
-              .replace('youtube.com/shorts/', 'youtube.com/embed/')
-              .replace('youtu.be/', 'youtube.com/embed/');
+    // Use www.youtube-nocookie.com so no third-party tracking cookies are set
+    // until the user actually plays the video (privacy + Lighthouse best-practices).
+    // Extract the ID and rebuild rather than string-replacing, so www/non-www and
+    // youtu.be/shorts inputs all normalize to the same canonical embed URL.
+    const m = url.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]+)/);
+    return m ? `https://www.youtube-nocookie.com/embed/${m[1]}` : url;
   });
 
   return {

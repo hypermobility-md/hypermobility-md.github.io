@@ -551,6 +551,8 @@
 .guest-avatar-overflow { width: 52px; height: 52px; border-radius: 50%; background: var(--primary); color: #fff; font-size: 0.78rem; font-family: var(--body-font); font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid var(--teal-light); }
 
 /* ---- Guest Index ---- */
+/* Search / alphabet filter hides non-matching cards & empty letter sections. */
+.guest-card[hidden], .alpha-section[hidden] { display: none !important; }
 .guest-index { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
 .guest-card { background: var(--card-bg); border-radius: var(--radius-sm); padding: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); transition: all 0.2s; scroll-margin-top: 180px; }
 .guest-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
@@ -574,6 +576,10 @@
   padding: 2px 6px;
   border-radius: 8px;
   background: color-mix(in srgb, var(--primary) 10%, transparent);
+  /* Full-strength primary (not the 0.5 icon opacity) so the "+N" text clears
+     WCAG AA 4.5:1 against the tinted badge. */
+  opacity: 1;
+  color: var(--primary);
   vertical-align: middle;
   display: inline-flex;
   align-items: center;
