@@ -1,7 +1,7 @@
 ---
 title: How do I know if my hypermobility is a problem?
 embed: null
-order: 99
+order: 1
 description: ''
 seoOverrides: null
 ---
