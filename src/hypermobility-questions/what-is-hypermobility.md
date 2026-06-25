@@ -1,7 +1,7 @@
 ---
 title: What is hypermobility?
 embed: null
-order: 1
+order: 0
 description: ''
 seoOverrides: null
 ---
