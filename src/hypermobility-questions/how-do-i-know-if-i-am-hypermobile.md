@@ -1,7 +1,7 @@
 ---
 title: How do I know if I am hypermobile?
 embed: null
-order: 1
+order: 3
 description: ''
 seoOverrides: null
 ---
