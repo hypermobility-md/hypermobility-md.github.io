@@ -2,7 +2,7 @@
 title: What is hypermobility?
 embed: null
 order: 0
-description: Hypermobility is increased joint flexibility. While many people never develop symptoms, others experience pain, instability, and related health problems.
+description: Learn what joint hypermobility is, why some people develop symptoms, and how it relates to HSD, hypermobile Ehlers-Danlos syndrome, and connective tissue disorders.
 seoOverrides: null
 ---
 
