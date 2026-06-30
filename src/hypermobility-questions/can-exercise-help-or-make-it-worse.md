@@ -1,7 +1,7 @@
 ---
-title: Can exercise help or make it worse?
+title: Does exercise help hypermobility or make it worse?
 embed: null
-order: 60
+order: 50
 description: ''
 seoOverrides: null
 ---
