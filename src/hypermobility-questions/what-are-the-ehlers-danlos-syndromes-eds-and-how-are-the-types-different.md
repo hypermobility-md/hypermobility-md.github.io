@@ -1,7 +1,7 @@
 ---
 title: What are the Ehlers-Danlos syndromes (EDS), and how are the types different?
 embed: null
-order: 1
+order: 40
 description: ''
 seoOverrides: null
 ---
