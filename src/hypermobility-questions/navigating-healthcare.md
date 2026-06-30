@@ -1,6 +1,6 @@
 ---
 title: How Should I Navigate the Healthcare System with EDS or HSD?
-order: 40
+order: 80
 description: Strategies for navigating healthcare with EDS or HSD, including self-advocacy, documenting your history, and building a supportive care team.
 blogPostUrl: https://www.hypermobilitymd.com/post/navigating-healthcare-with-eds
 ---
