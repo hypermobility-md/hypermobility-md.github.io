@@ -1,8 +1,8 @@
 ---
 title: How do I know if I am hypermobile?
 embed: null
-order: 3
-description: ''
+order: 1
+description: Joint hypermobility means your joints move beyond the typical range of motion. Learn why some people develop symptoms while others do not.
 seoOverrides: null
 ---
 
