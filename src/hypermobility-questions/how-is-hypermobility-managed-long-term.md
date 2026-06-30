@@ -1,7 +1,7 @@
 ---
 title: How is hypermobility managed long-term?
 embed: null
-order: 60
+order: 40
 description: ''
 seoOverrides: null
 ---
