@@ -1,6 +1,6 @@
 ---
 title: What Are the Most Common Myths About EDS and HSD?
-order: 30
+order: 70
 description: "Common EDS myths debunked: it's not just flexible joints, it's not benign, you won't grow out of it, and party tricks aren't the test."
 blogPostUrl: https://www.hypermobilitymd.com/post/eds-myths
 ---
