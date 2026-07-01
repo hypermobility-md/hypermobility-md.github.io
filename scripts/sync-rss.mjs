@@ -158,6 +158,10 @@ function normalizeGuestName(name) {
   if (/^(dr\.|prof\.)\s+/i.test(n)) {
     n = n.replace(/,\s*(?:M\.?D\.?|D\.?O\.?|Ph\.?D\.?|DPT|DC|DDS|DMD|ND|PharmD|EdD|PsyD)\s*$/i, '').trim();
   }
+  // Drop the "PA-C" credential from the display name (Linda prefers PA-C guests
+  // shown by name only; the credential lives on the guest profile). Fires even
+  // without a "Dr." prefix since a PA-C won't also carry the honorific.
+  n = n.replace(/,\s*P\.?A\.?-?C\.?\s*$/i, '').trim();
   return n;
 }
 

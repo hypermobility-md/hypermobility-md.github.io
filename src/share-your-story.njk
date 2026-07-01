@@ -1,0 +1,169 @@
+---
+layout: base.njk
+title: Share Your Story
+description: "You deserve to be heard. Share your experience living with hypermobility, EDS, or another chronic illness with the Bendy Bodies community."
+permalink: /share-your-story/
+ogImage: /assets/og-pages/share-your-story.jpg
+needsRecaptcha: true
+noAnalytics: true  # collects personal stories + photos — no GTM/analytics here
+---
+
+<div class="page-header">
+  <div class="container">
+    <h1>You Deserve To Be Heard</h1>
+    <p>Do you want to share your story with others who have chronic illnesses? We believe sharing your experience can bring awareness to the challenges of living with a chronic illness and the difficulty of navigating the healthcare system.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="form-card" id="storyFormCard">
+
+      <div class="form-alert form-alert-info">
+        <svg class="form-alert-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div>
+          <strong>Please note:</strong>
+          <ul style="margin: 8px 0 0; padding-left: 20px;">
+            <li>Your story should be 300&ndash;600 words.</li>
+            <li>Include a high-resolution photo that you would like featured alongside your story.</li>
+            <li>A member of the Hypermobility MD team may contact you for further discussion.</li>
+            <li>By submitting your story, you grant us permission to publish it on our website. We may edit your story for clarity or brevity.</li>
+          </ul>
+        </div>
+      </div>
+
+      <form id="storyForm" action="#" method="POST">
+
+        <div class="form-group">
+          <label class="form-label" for="story-name">Your name</label>
+          <input class="form-input" type="text" id="story-name" name="name" placeholder="First and last name" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="story-email">Email</label>
+          <p class="form-hint">Used only so a member of our team can follow up with you about your story.</p>
+          <input class="form-input" type="email" id="story-email" name="email" placeholder="you@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="story-text">Your story</label>
+          <p class="form-hint">Share your experience with chronic illness, hypermobility, or navigating the healthcare system. Aim for 300&ndash;600 words.</p>
+          <textarea class="form-textarea" id="story-text" name="story" rows="12" placeholder="Tell us your story..." minlength="200" required></textarea>
+          <div class="story-wordcount" id="storyWordCount" aria-live="polite">0 words</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="story-photo">Photo</label>
+          <p class="form-hint">A high-resolution photo to feature alongside your story. Accepted formats: JPG, PNG, WEBP (max 10&nbsp;MB).</p>
+          <input class="form-input" type="file" id="story-photo" name="photo" accept="image/jpeg,image/png,image/webp" style="padding: 10px 16px;">
+          <div id="photo-status" class="form-hint" style="display:none; margin-top: 8px;"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-check">
+            <input type="checkbox" id="story-agree" name="agree" required>
+            <span>I confirm that I am the original creator of this content, and I grant Bendy Bodies a non-exclusive, transferable, sublicensable license to publish and publicly display my story and photo on this website and any other platform. I agree to the <a href="/legal/" target="_blank" rel="noopener">terms &amp; conditions</a>.</span>
+          </label>
+        </div>
+
+        <div class="form-disclaimer">
+          <div class="form-disclaimer-title">Privacy notice</div>
+          <div class="form-disclaimer-text">
+            Your submission is stored securely and reviewed by the Bendy Bodies team. We will only publish your story with the permission you grant above, and we may edit it for clarity or brevity. Submitting this form does not establish a patient-provider relationship.
+            This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> apply.
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="storySubmitBtn">Share my story</button>
+        </div>
+      </form>
+
+      <!-- Success state -->
+      <div class="form-success" id="storySuccess" style="display: none;">
+        <div class="form-success-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2>Story received</h2>
+        <p>Thank you for trusting us with your story. A member of the Hypermobility MD team will review it and may reach out to you for further discussion.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.story-wordcount {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  text-align: right;
+}
+.story-wordcount.in-range { color: var(--primary); font-weight: 600; }
+</style>
+
+{% block scripts %}
+<script src="/js/form-submit.js"></script>
+<script>
+// Live word counter for the story field (target 300–600 words).
+const storyText = document.getElementById('story-text');
+const wordCountEl = document.getElementById('storyWordCount');
+function countWords(str) {
+  const t = str.trim();
+  return t ? t.split(/\s+/).length : 0;
+}
+storyText.addEventListener('input', () => {
+  const n = countWords(storyText.value);
+  wordCountEl.textContent = n + (n === 1 ? ' word' : ' words');
+  wordCountEl.classList.toggle('in-range', n >= 300 && n <= 600);
+});
+
+document.getElementById('storyForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('storySubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Uploading...';
+
+  // Convert photo to base64 (same pipeline as the guest form headshot).
+  const fileInput = document.getElementById('story-photo');
+  let photoBase64 = '';
+  let photoMime = '';
+  let photoExt = '';
+  if (fileInput.files.length > 0) {
+    const file = fileInput.files[0];
+    if (file.size > 10 * 1024 * 1024) {
+      alert('Photo file must be under 10 MB.');
+      btn.disabled = false;
+      btn.textContent = 'Share my story';
+      return;
+    }
+    const status = document.getElementById('photo-status');
+    status.style.display = 'block';
+    status.textContent = 'Uploading photo...';
+    photoBase64 = await fileToBase64(file);
+    photoMime = file.type;
+    photoExt = file.name.split('.').pop().toLowerCase();
+  }
+
+  btn.textContent = 'Submitting...';
+
+  try {
+    await submitToSheet('share_story', {
+      name: document.getElementById('story-name').value,
+      email: document.getElementById('story-email').value,
+      story: document.getElementById('story-text').value,
+      word_count: countWords(storyText.value),
+      permission: 'Yes',
+      photo_base64: photoBase64,
+      photo_mime: photoMime,
+      photo_ext: photoExt
+    });
+  } catch (err) {}
+
+  document.getElementById('storyForm').style.display = 'none';
+  const alert = document.querySelector('#storyFormCard .form-alert');
+  if (alert) alert.style.display = 'none';
+  document.getElementById('storySuccess').style.display = 'block';
+  window.scrollTo({ top: document.getElementById('storyFormCard').offsetTop - 100, behavior: 'smooth' });
+});
+</script>
+{% endblock %}

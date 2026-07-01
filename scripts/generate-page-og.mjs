@@ -154,6 +154,7 @@ const PAGES = [
 
   { out: 'ask', template: 'title', title: 'Ask the Podcast a Question' },
   { out: 'feedback-form', template: 'title', title: 'Session Feedback' },
+  { out: 'share-your-story', template: 'title', title: 'Share Your Story' },
 ];
 
 async function render(entry, outPath) {
