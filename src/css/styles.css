@@ -2837,9 +2837,6 @@ form.submitted .form-check input:invalid {
   color: var(--primary-dark);
 }
 
-/* Hide reCAPTCHA badge — allowed per Google's FAQ when inline text is shown */
-.grecaptcha-badge { visibility: hidden !important; }
-
 /* ---- Print / Accessibility ---- */
 @media (prefers-reduced-motion: reduce) {
   * { transition-duration: 0s !important; }

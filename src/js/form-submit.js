@@ -1,38 +1,15 @@
 /**
- * Shared form submission helper — sends data to Google Apps Script
- * with reCAPTCHA v3 verification.
- *
- * SETUP:
- * 1. Go to https://www.google.com/recaptcha/admin
- * 2. Register your site, choose reCAPTCHA v3
- * 3. Add your domain(s) (e.g. hypermobility-md.github.io, localhost)
- * 4. Copy the SITE KEY and replace YOUR_RECAPTCHA_SITE_KEY_HERE in:
- *    - This file (RECAPTCHA_SITE_KEY below)
- *    - src/_includes/base.njk (the script tag)
- * 5. Copy the SECRET KEY and put it in the Apps Script
- *    (RECAPTCHA_SECRET_KEY variable — NOT in this file!)
+ * Shared form submission helper — sends data to a Google Apps Script,
+ * which appends a row to a private Google Sheet.
  */
 
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXGMUHDiAGu3qz2jM-WLSLQl7-JwA_YUASYl1UJbzZfcpmGx7m81lgfqdh6zceYDR49A/exec';
-const RECAPTCHA_SITE_KEY = '6LeEm5ksAAAAAJL3lpiSAZ6621GqXH_Gw4AN8fkw';
 
 /**
  * Submit form data to Google Sheets via Apps Script.
- * Automatically obtains a reCAPTCHA token before sending.
  */
 async function submitToSheet(formType, data) {
-  // Get reCAPTCHA token (invisible — no user interaction needed)
-  let recaptchaToken = '';
-  try {
-    recaptchaToken = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: formType });
-  } catch (err) {
-    console.warn('reCAPTCHA not available, submitting without token');
-  }
-
-  const payload = Object.assign({}, data, {
-    _form: formType,
-    _recaptcha: recaptchaToken
-  });
+  const payload = Object.assign({}, data, { _form: formType });
 
   // Use no-cors fetch. Apps Script redirects on POST, so we follow it.
   try {

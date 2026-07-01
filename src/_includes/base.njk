@@ -51,9 +51,6 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
   <style>{{ "styles.css" | inlineCssFile | safe }}</style>
   {% if extraCss %}<style>{{ extraCss | inlineCssFile | safe }}</style>{% endif %}
-  {% if needsRecaptcha %}
-  <script src="https://www.google.com/recaptcha/api.js?render=6LejW5AsAAAAACTV9UzbWn_qHvRQXXH6oFtMxqhe" defer></script>
-  {% endif %}
   {% block head %}{% endblock %}
 </head>
 <body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}>
