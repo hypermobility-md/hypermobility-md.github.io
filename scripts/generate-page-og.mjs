@@ -144,7 +144,7 @@ const PAGES = [
 
   { out: 'faq', template: 'title', title: 'FAQ' },
   { out: 'resources', template: 'title', title: 'Resources' },
-  { out: 'projects', template: 'title', title: 'Products We Love' },
+  { out: 'products', template: 'title', title: 'Products We Love' },
   { out: 'podcast-episodes', template: 'title', title: 'All Episodes' },
   { out: 'podcast-guests', template: 'title', title: 'Guest Index' },
   { out: 'podcast-appearances', template: 'title', title: 'Guest Appearances' },
