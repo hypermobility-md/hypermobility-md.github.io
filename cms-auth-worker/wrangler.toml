@@ -1,0 +1,26 @@
+# Cloudflare Worker: Sveltia CMS GitHub OAuth broker.
+#
+# The `name` MUST stay "sveltia-cms-auth" so this deploys to the SAME URL the
+# CMS already points at:
+#   https://sveltia-cms-auth.hypermobility-md.workers.dev
+# (that URL is <name>.<your-account-subdomain>.workers.dev — deploying under the
+# hypermobility-md Cloudflare account overwrites the existing, stale worker.)
+#
+# See README.md in this folder for the full deploy + secrets steps.
+
+name = "sveltia-cms-auth"
+main = "src/index.js"
+compatibility_date = "2023-03-24"
+
+[vars]
+# GitHub OAuth App client id. This value is public (it already appears in the
+# /auth redirect URL), so it's fine to keep it here in plaintext.
+GITHUB_CLIENT_ID = "Ov23li5o3OxXftXIkYZb"
+
+# Restrict which sites may use this auth broker. Comma-separated hostnames;
+# "*" wildcards are allowed. Old github.io 301-redirects to www, so www is the
+# only host that actually reaches /admin, but leaving the apex in is harmless.
+ALLOWED_DOMAINS = "www.hypermobilitymd.com,hypermobilitymd.com"
+
+# GITHUB_CLIENT_SECRET is a real secret — do NOT put it here.
+# Set it with:  npx wrangler secret put GITHUB_CLIENT_SECRET

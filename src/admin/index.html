@@ -505,6 +505,9 @@
 
     registerHooks();
   </script>
-  <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+  <!-- Pinned to a specific version. Loading `latest` from unpkg let the CMS
+       client update on its own and desync from the auth worker's OAuth
+       protocol (caused "Authentication aborted"). Bump this deliberately. -->
+  <script src="https://unpkg.com/@sveltia/cms@0.169.1/dist/sveltia-cms.js"></script>
 </body>
 </html>
