@@ -4,11 +4,11 @@ subtitle: "Clinical features that may point to a genetically-defined type of EDS
 description: "Red-flag features by body system that may suggest a genetically-determined type of Ehlers-Danlos syndrome or related heritable connective tissue disorder, and the conditions each points toward."
 ---
 
-Most people with hypermobility have hypermobile EDS (hEDS) or a hypermobility spectrum disorder (HSD). But certain features &mdash; "red flags" &mdash; can suggest a *genetically-defined* type of EDS or another heritable disorder of connective tissue (HDCT) that may need specific testing and monitoring.
+Most people with hypermobility have hypermobile EDS (hEDS) or a hypermobility spectrum disorder (HSD). But certain features, the "red flags," can suggest a *genetically-defined* type of EDS or another heritable disorder of connective tissue (HDCT) that may need specific testing and monitoring.
 
 This table is adapted from *Symptomatic*.<a href="#source" class="redflag-ref">[1]</a> Read the matrix below, or jump to the same data organized by [symptom](#by-symptom) or by [condition](#by-condition).
 
-It is a tool for recognizing patterns and preparing for appointments &mdash; **not a diagnostic checklist.** Always discuss your history with a knowledgeable clinician.
+It is a tool for recognizing patterns and preparing for appointments, **not a diagnostic checklist.** Always discuss your history with a knowledgeable clinician.
 
 <p class="redflag-matrix-hint">Tip: on a narrow screen, scroll the table sideways to see all conditions. Hover a column heading for its full name. A &check; marks an associated red flag.</p>
 

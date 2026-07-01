@@ -17,7 +17,7 @@ ogImage: /assets/og-pages/podcast-episodes.jpg
   <div class="container">
     <div>
       <h1>All Episodes</h1>
-      <p id="episodeCountHero">{{ collections.episodes.length }} episodes — Search by topic, guest, or keyword</p>
+      <p id="episodeCountHero">{{ collections.episodes.length }} episodes. Search by topic, guest, or keyword</p>
     </div>
     <div class="subscribe-buttons" style="margin: 0;">
       <a href="https://podcasts.apple.com/us/podcast/bendy-bodies-with-the-hypermobility-md/id1582031757" class="btn-subscribe apple" target="_blank" rel="noopener">
@@ -991,7 +991,7 @@ function openEpisodeVideo(idx) {
 }
 
 // ---- Initial Render ----
-document.getElementById('episodeCountHero').textContent = `${EPISODES.length} episodes — Search by topic, guest, or keyword`;
+document.getElementById('episodeCountHero').textContent = `${EPISODES.length} episodes. Search by topic, guest, or keyword`;
 renderEpisodes();
 
 // Click a tag chip on a card: filter to it and scroll up to the results.

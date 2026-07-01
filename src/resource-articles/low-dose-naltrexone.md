@@ -6,11 +6,11 @@ pdf: "/assets/low-dose-naltrexone-guide.pdf"
 pdfLabel: "Download the LDN handout (PDF)"
 ---
 
-LDN (Low-Dose Naltrexone) is an off-label, low-dose use of a medication originally approved to treat opioid and alcohol addiction. In smaller doses (0.1–6.0 mg/day), it may help reduce inflammation, modulate the immune system, and decrease pain — especially in conditions like **Ehlers-Danlos Syndrome** and chronic musculoskeletal pain.
+LDN (Low-Dose Naltrexone) is an off-label, low-dose use of a medication originally approved to treat opioid and alcohol addiction. In smaller doses (0.1–6.0 mg/day), it may help reduce inflammation, modulate the immune system, and decrease pain, especially in conditions like **Ehlers-Danlos Syndrome** and chronic musculoskeletal pain.
 
 ## Why Dr. Bluestein Prescribes It
 
-For patients with EDS, HSD, MCAS, POTS, and ME/CFS, pain is often widespread, complex, and frustrating to manage. In her clinical experience, LDN can be a helpful part of a multimodal strategy — not a magic bullet, but a meaningful tool.
+For patients with EDS, HSD, MCAS, POTS, and ME/CFS, pain is often widespread, complex, and frustrating to manage. In her clinical experience, LDN can be a helpful part of a multimodal strategy: not a magic bullet, but a meaningful tool.
 
 ## LDN Benefits
 

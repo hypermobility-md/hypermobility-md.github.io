@@ -1,6 +1,6 @@
 ---
 title: "Hypermobility Guides: Symptoms and Treatment"
-subtitle: "Two companion guides by Dr. Linda Bluestein — recognizing symptomatic joint hypermobility, and a practical, integrative framework for treatment and daily living."
+subtitle: "Two companion guides by Dr. Linda Bluestein: recognizing symptomatic joint hypermobility, and a practical, integrative framework for treatment and daily living."
 description: "Two companion guides on symptomatic joint hypermobility: what to look for (symptoms, signs, comorbidities, and red flags) and the MENS PPMS framework for treatment and daily living."
 pdf: "/assets/hypermobility-guides.pdf"
 pdfLabel: "Download guide (PDF)"
@@ -10,7 +10,7 @@ These two companion guides work together: the first helps you **recognize** symp
 
 ## Symptomatic Joint Hypermobility Guide
 
-*Published January 9, 2024 — © Linda Bluestein, MD, Bendy Bodies Podcast*
+*Published January 9, 2024. © Linda Bluestein, MD, Bendy Bodies Podcast*
 
 A heritable disorder of connective tissue (HDCT), EDS (Ehlers-Danlos Syndromes) includes 14 different subtypes, with hEDS (hypermobile EDS) being by far the most common (yet it does not have known genetic markers). The clinical presentation is highly variable among people with the same EDS type and between different EDS types. Core features also include hyperextensible (stretchy) skin and tissue fragility. Patients with Hypermobility Spectrum Disorders (HSD) have symptomatic joint hypermobility but do not have another condition to explain their symptoms. Dysfunction can occur in virtually any organ or tissue.
 
@@ -34,7 +34,7 @@ A heritable disorder of connective tissue (HDCT), EDS (Ehlers-Danlos Syndromes) 
 
 **Signs**
 
-- Joint hypermobility (increased joint range of motion — now or in the past)
+- Joint hypermobility (increased joint range of motion, now or in the past)
 - Recurrent injury (e.g., sprains, strains)
 - Soft, velvety and/or stretchy skin
 - Fragile tissues (skin, bone, blood vessels, organs)
@@ -67,9 +67,9 @@ A heritable disorder of connective tissue (HDCT), EDS (Ehlers-Danlos Syndromes) 
 
 ### Comorbidities
 
-**Mast Cell Activation Syndrome (MCAS)** — Symptoms may include flushing, hives, itching, wheezing, chemical/drug/food intolerances, and anaphylaxis.
+**Mast Cell Activation Syndrome (MCAS)**: Symptoms may include flushing, hives, itching, wheezing, chemical/drug/food intolerances, and anaphylaxis.
 
-**Dysautonomia (POTS, etc.)** — Symptoms may include difficulty tolerating upright posture, temperature intolerance, fast heart rate, fainting or feeling faint, brain fog, nausea, and/or vomiting.
+**Dysautonomia (POTS, etc.)**: Symptoms may include difficulty tolerating upright posture, temperature intolerance, fast heart rate, fainting or feeling faint, brain fog, nausea, and/or vomiting.
 
 ### Red Flags for Genetic Testing
 
@@ -93,7 +93,7 @@ For a fuller breakdown of red-flag features by body system, see the [Red Flags i
 
 ## Hope for Hypermobility: A Practical Guide to Treatment and Daily Living
 
-*Published January 28, 2025 — © Linda Bluestein, MD, Bendy Bodies Podcast*
+*Published January 28, 2025. © Linda Bluestein, MD, Bendy Bodies Podcast*
 
 Living with hEDS or HSD presents unique challenges. This guide builds on the Symptomatic Joint Hypermobility Guide above, offering deeper insights into managing symptoms, navigating treatments, and improving daily life through an integrative approach.
 
@@ -108,7 +108,7 @@ Living with hEDS or HSD presents unique challenges. This guide builds on the Sym
 **Education**
 
 - Learn about the physiology of joint hypermobility and its effects on the body.
-- Understand pain types — nociceptive, neuropathic, and nociplastic — and how they relate to hypermobility.
+- Understand pain types (nociceptive, neuropathic, and nociplastic) and how they relate to hypermobility.
 - Strategies for advocating for proper care and navigating medical appointments.
 
 **Nutrition**

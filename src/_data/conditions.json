@@ -4,7 +4,7 @@
       "abbr": "EDS",
       "name": "Ehlers-Danlos Syndromes",
       "tag": "",
-      "description": "A group of inherited connective-tissue disorders that affect collagen — the protein that gives structure to joints, skin, blood vessels, and organs. Features vary widely between the subtypes.",
+      "description": "A group of inherited connective-tissue disorders that affect collagen, the protein that gives structure to joints, skin, blood vessels, and organs. Features vary widely between the subtypes.",
       "signals": [
         "Joints that hyperextend or partially dislocate (sublux)",
         "Skin that bruises, stretches, or scars unusually",
@@ -64,7 +64,7 @@
       "abbr": "CRPS",
       "name": "Complex Regional Pain Syndrome",
       "tag": "Pain",
-      "description": "Severe, persistent pain — usually in a limb — that is out of proportion to any original injury, often with changes in skin color, temperature, and swelling.",
+      "description": "Severe, persistent pain, usually in a limb, that is out of proportion to any original injury, often with changes in skin color, temperature, and swelling.",
       "signals": [
         "Burning or throbbing pain in a limb",
         "Skin color or temperature changes",

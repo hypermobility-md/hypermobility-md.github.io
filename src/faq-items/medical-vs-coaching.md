@@ -15,6 +15,6 @@ order: 1
 
 - EduCoaching is provided by Dr. Bluestein or Rebecca Gluck, PA-C
 - Clients can live anywhere in the world
-- No travel is needed — all sessions are conducted virtually one-on-one
+- No travel is needed, and all sessions are conducted virtually one-on-one
 - Education and guidance are offered to support working with your local healthcare team
 - Prescriptions, lab work, and imaging cannot be ordered in this setting

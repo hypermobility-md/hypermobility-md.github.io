@@ -11,8 +11,8 @@
  * callers MUST share this so speaker-reattribution (Task 2) etc. stay identical.
  */
 
-export const PROOFREAD_MODEL_DEFAULT = 'claude-sonnet-4-6';
-export const PROOFREAD_MAX_TOKENS = 64000; // Sonnet 4.6 output ceiling
+export const PROOFREAD_MODEL_DEFAULT = 'claude-sonnet-5';
+export const PROOFREAD_MAX_TOKENS = 64000; // Sonnet 5 output ceiling
 export const LONG_CONTEXT_BETA = 'context-1m-2025-08-07';
 
 export const PROOFREAD_SYSTEM_PROMPT = `You are a professional transcript editor for the Bendy Bodies Podcast, a medical podcast about hypermobility and Ehlers-Danlos syndromes hosted by Dr. Linda Bluestein (the Hypermobility MD).

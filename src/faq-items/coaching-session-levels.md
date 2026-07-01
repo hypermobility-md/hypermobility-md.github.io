@@ -4,7 +4,7 @@ category: coaching
 order: 3
 ---
 
-**Bronze** (20 minutes) — Personalized one-on-one coaching focused on a single issue.
+**Bronze** (20 minutes): Personalized one-on-one coaching focused on a single issue.
 
 **Silver** (45 minutes)
 

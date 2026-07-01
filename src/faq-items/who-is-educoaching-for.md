@@ -8,7 +8,7 @@ EduCoaching is for individuals who are navigating complex health challenges and 
 
 - Have hypermobility, Ehlers-Danlos syndromes, or related conditions
 - Experience chronic pain, fatigue, or headaches that have been difficult to fully explain or manage
-- Have dysautonomia (including POTS), mast cell disorders (including MCAS — mast cell activation syndrome), or gastrointestinal symptoms
+- Have dysautonomia (including POTS), mast cell disorders (including MCAS, mast cell activation syndrome), or gastrointestinal symptoms
 - Are working through multiple or overlapping diagnoses
 - Feel overwhelmed by medical information or uncertain about next steps in their care
 - Want support understanding test results, treatment options, or medications
