@@ -17,6 +17,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/js");
   eleventyConfig.addPassthroughCopy("src/favicon.ico");
   eleventyConfig.addPassthroughCopy("src/site.webmanifest");
+  eleventyConfig.addPassthroughCopy("src/CNAME");
 
   // Inline a (minified) stylesheet from src/css/ into <head> (see base.njk) so the
   // CSS is no longer a render-blocking request on the critical path. GitHub Pages
