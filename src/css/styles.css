@@ -92,6 +92,24 @@ html { font-size: 16px; scroll-behavior: smooth; }
 }
 .skip-link:focus { top: 8px; }
 
+/* Consistent keyboard focus ring (WCAG 2.4.7). :focus-visible shows it only
+   for keyboard / AT users, never on mouse click. Form fields keep their own
+   box-shadow ring (see .form-input:focus), so they opt out here to avoid a
+   doubled indicator. On the dark footer a purple ring is invisible, so use
+   white there (15:1 vs 2:1 for purple-on-footer). */
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+.form-input:focus-visible,
+.form-textarea:focus-visible,
+.form-select:focus-visible {
+  outline: none;
+}
+.site-footer :focus-visible {
+  outline-color: #fff;
+}
+
 body {
   font-family: var(--body-font);
   background: var(--body-bg);
@@ -2825,4 +2843,5 @@ form.submitted .form-check input:invalid {
 /* ---- Print / Accessibility ---- */
 @media (prefers-reduced-motion: reduce) {
   * { transition-duration: 0s !important; }
+  html { scroll-behavior: auto; }
 }

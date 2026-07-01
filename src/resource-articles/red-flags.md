@@ -15,7 +15,7 @@ It is a tool for recognizing patterns and preparing for appointments &mdash; **n
 <div class="redflag-matrix-wrap">
 <table class="redflag-matrix">
 <thead>
-<tr><th scope="col" class="redflag-matrix-feature">Red-flag feature</th><th scope="col" title="Classical EDS">cEDS</th><th scope="col" title="Classical-like EDS">clEDS</th><th scope="col" title="Cardiac-valvular EDS">cvEDS</th><th scope="col" title="Vascular EDS">vEDS</th><th scope="col" title="Arthrochalasia EDS">aEDS</th><th scope="col" title="Dermatosparaxis EDS">dEDS</th><th scope="col" title="Kyphoscoliotic EDS">kEDS</th><th scope="col" title="Brittle Cornea Syndrome">BCS</th><th scope="col" title="Spondylodysplastic EDS">spEDS</th><th scope="col" title="Musculocontractural EDS">mcEDS</th><th scope="col" title="Myopathic EDS">mEDS</th><th scope="col" title="Periodontal EDS">pEDS</th><th scope="col" title="Marfan syndrome">Marfan</th><th scope="col" title="Loeys–Dietz syndrome">LDS</th><th scope="col" title="Osteogenesis imperfecta">OI</th><th scope="col" title="Stickler syndrome">Stickler</th></tr>
+<tr><th scope="col" class="redflag-matrix-feature">Red flag feature</th><th scope="col" title="Classical EDS">cEDS</th><th scope="col" title="Classical-like EDS">clEDS</th><th scope="col" title="Cardiac-valvular EDS">cvEDS</th><th scope="col" title="Vascular EDS">vEDS</th><th scope="col" title="Arthrochalasia EDS">aEDS</th><th scope="col" title="Dermatosparaxis EDS">dEDS</th><th scope="col" title="Kyphoscoliotic EDS">kEDS</th><th scope="col" title="Brittle Cornea Syndrome">BCS</th><th scope="col" title="Spondylodysplastic EDS">spEDS</th><th scope="col" title="Musculocontractural EDS">mcEDS</th><th scope="col" title="Myopathic EDS">mEDS</th><th scope="col" title="Periodontal EDS">pEDS</th><th scope="col" title="Marfan syndrome">Marfan</th><th scope="col" title="Loeys–Dietz syndrome">LDS</th><th scope="col" title="Osteogenesis imperfecta">OI</th><th scope="col" title="Stickler syndrome">Stickler</th></tr>
 </thead>
 <tbody>
   <tr class="redflag-matrix-system"><th class="redflag-matrix-system-cell" scope="rowgroup" colspan="17"><span class="redflag-matrix-system-label">General</span></th></tr>
@@ -37,7 +37,7 @@ It is a tool for recognizing patterns and preparing for appointments &mdash; **n
   <tr><th scope="row" class="redflag-matrix-feature">Gingival recession and gingival fragility</th><td></td><td></td><td></td><td class="yes" aria-label="Vascular EDS">✓</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="yes" aria-label="Periodontal EDS">✓</td><td></td><td></td><td></td><td></td></tr>
   <tr><th scope="row" class="redflag-matrix-feature">Severe periodontal disease</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="yes" aria-label="Periodontal EDS">✓</td><td></td><td></td><td></td><td></td></tr>
   <tr><th scope="row" class="redflag-matrix-feature">Dentinogenesis imperfecta (teeth with thin enamel)<span class="redflag-star">*</span></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="yes" aria-label="Osteogenesis imperfecta">✓</td><td></td></tr>
-  <tr class="redflag-matrix-system"><th class="redflag-matrix-system-cell" scope="rowgroup" colspan="17"><span class="redflag-matrix-system-label">Musculo-skeletal</span></th></tr>
+  <tr class="redflag-matrix-system"><th class="redflag-matrix-system-cell" scope="rowgroup" colspan="17"><span class="redflag-matrix-system-label">Musculoskeletal</span></th></tr>
   <tr><th scope="row" class="redflag-matrix-feature">Club foot (talipes equinovarus)</th><td></td><td></td><td></td><td class="yes" aria-label="Vascular EDS">✓</td><td></td><td></td><td class="yes" aria-label="Kyphoscoliotic EDS">✓</td><td></td><td class="yes" aria-label="Spondylodysplastic EDS">✓</td><td class="yes" aria-label="Musculocontractural EDS">✓</td><td></td><td></td><td></td><td class="yes" aria-label="Loeys–Dietz syndrome">✓</td><td></td><td></td></tr>
   <tr><th scope="row" class="redflag-matrix-feature">Congenital hip dislocation</th><td></td><td></td><td></td><td class="yes" aria-label="Vascular EDS">✓</td><td class="yes" aria-label="Arthrochalasia EDS">✓</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
   <tr><th scope="row" class="redflag-matrix-feature">Scoliosis or kyphoscoliosis</th><td></td><td></td><td></td><td></td><td class="yes" aria-label="Arthrochalasia EDS">✓</td><td></td><td class="yes" aria-label="Kyphoscoliotic EDS">✓</td><td class="yes" aria-label="Brittle Cornea Syndrome">✓</td><td></td><td class="yes" aria-label="Musculocontractural EDS">✓</td><td></td><td></td><td class="yes" aria-label="Marfan syndrome">✓</td><td class="yes" aria-label="Loeys–Dietz syndrome">✓</td><td class="yes" aria-label="Osteogenesis imperfecta">✓</td><td></td></tr>
@@ -54,7 +54,7 @@ It is a tool for recognizing patterns and preparing for appointments &mdash; **n
   <tr><th scope="row" class="redflag-matrix-feature">Redundant skin</th><td></td><td></td><td></td><td></td><td></td><td class="yes" aria-label="Dermatosparaxis EDS">✓</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
   <tr><th scope="row" class="redflag-matrix-feature">Aged-appearing hands</th><td></td><td class="yes" aria-label="Classical-like EDS">✓</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
   <tr><th scope="row" class="redflag-matrix-feature">Increased palmar wrinkling (hands)</th><td></td><td></td><td></td><td></td><td></td><td class="yes" aria-label="Dermatosparaxis EDS">✓</td><td></td><td></td><td></td><td class="yes" aria-label="Musculocontractural EDS">✓</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-  <tr class="redflag-matrix-system"><th class="redflag-matrix-system-cell" scope="rowgroup" colspan="17"><span class="redflag-matrix-system-label">Cardio-vascular</span></th></tr>
+  <tr class="redflag-matrix-system"><th class="redflag-matrix-system-cell" scope="rowgroup" colspan="17"><span class="redflag-matrix-system-label">Cardiovascular</span></th></tr>
   <tr><th scope="row" class="redflag-matrix-feature">Severe progressive valvular heart disease</th><td></td><td></td><td class="yes" aria-label="Cardiac-valvular EDS">✓</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
   <tr><th scope="row" class="redflag-matrix-feature">Aortic or arterial aneurysms, dissection or rupture</th><td></td><td></td><td></td><td class="yes" aria-label="Vascular EDS">✓</td><td></td><td></td><td class="yes" aria-label="Kyphoscoliotic EDS">✓</td><td></td><td class="yes" aria-label="Spondylodysplastic EDS">✓</td><td></td><td></td><td></td><td class="yes" aria-label="Marfan syndrome">✓</td><td class="yes" aria-label="Loeys–Dietz syndrome">✓</td><td class="yes" aria-label="Osteogenesis imperfecta">✓</td><td></td></tr>
   <tr class="redflag-matrix-system"><th class="redflag-matrix-system-cell" scope="rowgroup" colspan="17"><span class="redflag-matrix-system-label">Pulmonary</span></th></tr>
@@ -62,7 +62,7 @@ It is a tool for recognizing patterns and preparing for appointments &mdash; **n
   <tr class="redflag-matrix-system"><th class="redflag-matrix-system-cell" scope="rowgroup" colspan="17"><span class="redflag-matrix-system-label">Gastrointestinal</span></th></tr>
   <tr><th scope="row" class="redflag-matrix-feature">Bowel rupture</th><td></td><td></td><td></td><td class="yes" aria-label="Vascular EDS">✓</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
   <tr><th scope="row" class="redflag-matrix-feature">Colonic diverticula</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="yes" aria-label="Musculocontractural EDS">✓</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-  <tr class="redflag-matrix-system"><th class="redflag-matrix-system-cell" scope="rowgroup" colspan="17"><span class="redflag-matrix-system-label">Genito-urinary</span></th></tr>
+  <tr class="redflag-matrix-system"><th class="redflag-matrix-system-cell" scope="rowgroup" colspan="17"><span class="redflag-matrix-system-label">Genitourinary</span></th></tr>
   <tr><th scope="row" class="redflag-matrix-feature">Uterine rupture</th><td></td><td></td><td></td><td class="yes" aria-label="Vascular EDS">✓</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
   <tr><th scope="row" class="redflag-matrix-feature">Bladder diverticula</th><td></td><td></td><td></td><td></td><td></td><td></td><td class="yes" aria-label="Kyphoscoliotic EDS">✓</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 </tbody>
@@ -103,7 +103,7 @@ It is a tool for recognizing patterns and preparing for appointments &mdash; **n
 </ul>
 </section>
 <section class="redflag-group">
-<h2>Musculo-skeletal</h2>
+<h2>Musculoskeletal</h2>
 <ul class="redflag-list">
   <li><span class="redflag-feature">Club foot (talipes equinovarus)</span><span class="redflag-tags"><span class="redflag-tag" title="Vascular EDS">vEDS</span> <span class="redflag-tag" title="Kyphoscoliotic EDS">kEDS</span> <span class="redflag-tag" title="Spondylodysplastic EDS">spEDS</span> <span class="redflag-tag" title="Musculocontractural EDS">mcEDS</span> <span class="redflag-tag" title="Loeys–Dietz syndrome">LDS</span></span></li>
   <li><span class="redflag-feature">Congenital hip dislocation</span><span class="redflag-tags"><span class="redflag-tag" title="Vascular EDS">vEDS</span> <span class="redflag-tag" title="Arthrochalasia EDS">aEDS</span></span></li>
@@ -128,7 +128,7 @@ It is a tool for recognizing patterns and preparing for appointments &mdash; **n
 </ul>
 </section>
 <section class="redflag-group">
-<h2>Cardio-vascular</h2>
+<h2>Cardiovascular</h2>
 <ul class="redflag-list">
   <li><span class="redflag-feature">Severe progressive valvular heart disease</span><span class="redflag-tags"><span class="redflag-tag" title="Cardiac-valvular EDS">cvEDS</span></span></li>
   <li><span class="redflag-feature">Aortic or arterial aneurysms, dissection or rupture</span><span class="redflag-tags"><span class="redflag-tag" title="Vascular EDS">vEDS</span> <span class="redflag-tag" title="Kyphoscoliotic EDS">kEDS</span> <span class="redflag-tag" title="Spondylodysplastic EDS">spEDS</span> <span class="redflag-tag" title="Marfan syndrome">Marfan</span> <span class="redflag-tag" title="Loeys–Dietz syndrome">LDS</span> <span class="redflag-tag" title="Osteogenesis imperfecta">OI</span></span></li>
@@ -148,7 +148,7 @@ It is a tool for recognizing patterns and preparing for appointments &mdash; **n
 </ul>
 </section>
 <section class="redflag-group">
-<h2>Genito-urinary</h2>
+<h2>Genitourinary</h2>
 <ul class="redflag-list">
   <li><span class="redflag-feature">Uterine rupture</span><span class="redflag-tags"><span class="redflag-tag" title="Vascular EDS">vEDS</span></span></li>
   <li><span class="redflag-feature">Bladder diverticula</span><span class="redflag-tags"><span class="redflag-tag" title="Kyphoscoliotic EDS">kEDS</span></span></li>
