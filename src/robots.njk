@@ -4,9 +4,8 @@ eleventyExcludeFromCollections: true
 ---
 User-agent: *
 Allow: /
-Disallow: /admin/
-Disallow: /guest-form/
-Disallow: /feedback-form/
-Disallow: /cms-data/
+{%- for path in site.disallowPaths %}
+Disallow: {{ path }}
+{%- endfor %}
 
 Sitemap: {{ site.url }}/sitemap.xml

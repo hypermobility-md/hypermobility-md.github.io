@@ -6,7 +6,7 @@ eleventyExcludeFromCollections: true
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {%- for page in collections.all %}
 {%- set url = page.url %}
-{%- if url and url != "/js/data.js" %}
+{%- if url and url != "/js/data.js" and not (url | startsWithAny(site.disallowPaths)) %}
   <url>
     <loc>{{ site.url }}{{ url }}</loc>
     {%- if page.data.date %}

@@ -19,7 +19,7 @@
     "@type": "VideoObject",
     "name": "{{ episodeTitle | jsonEscape | safe }}",
     "description": "{{ description | truncate(300, true, '...') | jsonEscape | safe }}",
-    "uploadDate": "{{ date | isoDate }}",
+    "uploadDate": "{{ date | isoDateTime }}",
     "url": "{{ videoUrl }}"{% set vtId = videoUrl | youtubeId %}{% if vtId %},
     "thumbnailUrl": "https://img.youtube.com/vi/{{ vtId }}/maxresdefault.jpg",
     "embedUrl": "https://www.youtube.com/embed/{{ vtId }}"{% endif %}
@@ -236,7 +236,7 @@
     "@type": "VideoObject",
     "name": "{{ title | cleanTitle | jsonEscape | safe }}",
     "description": "{{ description | truncate(300, true, '...') | jsonEscape | safe }}",
-    "uploadDate": "{{ date | isoDate }}",
+    "uploadDate": "{{ date | isoDateTime }}",
     "url": "{{ videoUrl }}"{% set vtId = videoUrl | youtubeId %}{% if vtId %},
     "thumbnailUrl": "https://img.youtube.com/vi/{{ vtId }}/maxresdefault.jpg",
     "embedUrl": "https://www.youtube.com/embed/{{ vtId }}"{% endif %}

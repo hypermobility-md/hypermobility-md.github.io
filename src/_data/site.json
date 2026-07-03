@@ -6,6 +6,7 @@
   "podcastFeedUrl": "https://feeds.megaphone.fm/bendybodies",
   "twitterHandle": "@BluesteinLinda",
   "defaultOgImage": "/assets/podcast-hero-warm.png",
+  "disallowPaths": ["/admin/", "/guest-form/", "/feedback-form/", "/cms-data/"],
   "author": {
     "name": "Dr. Linda Bluestein",
     "credentials": "MD",

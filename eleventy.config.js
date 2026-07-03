@@ -231,6 +231,28 @@ module.exports = function(eleventyConfig) {
     return date.toISOString().split('T')[0];
   });
 
+  // Full ISO 8601 datetime *with timezone* — required by schema.org
+  // VideoObject.uploadDate. Google flags date-only values as "missing a
+  // timezone". Noon UTC keeps the calendar date identical in every real-world
+  // time zone (UTC-12…UTC+14), so the displayed date never shifts.
+  eleventyConfig.addFilter("isoDateTime", (date) => {
+    if (!date) return '';
+    let dateStr;
+    if (date === 'now') dateStr = new Date().toISOString().split('T')[0];
+    else if (typeof date === 'string') dateStr = date.split('T')[0];
+    else dateStr = date.toISOString().split('T')[0];
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
+    return `${dateStr}T12:00:00Z`;
+  });
+
+  // True when `url` starts with any prefix in `prefixes`. Used by sitemap.njk
+  // to keep robots-disallowed paths (site.disallowPaths) out of the sitemap,
+  // so the two never drift apart.
+  eleventyConfig.addFilter("startsWithAny", (url, prefixes) => {
+    if (!url || !Array.isArray(prefixes)) return false;
+    return prefixes.some((p) => url.startsWith(p));
+  });
+
   // Human-readable date
   eleventyConfig.addFilter("formatDate", (date) => {
     if (!date) return '';
