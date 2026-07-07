@@ -10,7 +10,7 @@ type: listen
 featured: false
 featuredOrder: null
 audioUrl: https://anchor.fm/s/10543a2f0/podcast/play/121996545/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2026-5-25%2F426835397-44100-2-14a9aa0d5e38c.mp3
-videoUrl: ''
-youtubeUrl: https://youtu.be/SJqneAk0uHQ
+videoUrl: https://youtu.be/SJqneAk0uHQ
+youtubeUrl: ''
 seoOverrides: null
 ---
