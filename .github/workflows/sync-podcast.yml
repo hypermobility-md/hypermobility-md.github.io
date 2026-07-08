@@ -2,8 +2,18 @@ name: Sync Podcast from RSS
 
 on:
   schedule:
-    # Run every 6 hours
-    - cron: '0 */6 * * *'
+    # New episodes publish weekly on Thursday (UTC): audio drops on the
+    # Megaphone RSS feed ~09:00, and the full-episode YouTube upload lands
+    # ~15:00 (6h later). Concentrate runs on Thursday so the episode page and
+    # its video embed appear with minimal lag, then keep a light daily
+    # safety net for off-schedule bonus episodes or a late video.
+    # (Minutes are offset off :00 because GitHub Actions cron slips/drops
+    # scheduled runs most at the top of the hour.)
+    - cron: '15 9 * * 4'   # Thu 09:15 UTC — new-episode audio → create page + chain transcription
+    - cron: '15 12 * * 4'  # Thu 12:15 UTC — safety net (a slipped/dropped 09:15 run)
+    - cron: '15 15 * * 4'  # Thu 15:15 UTC — YouTube upload → video backfill
+    - cron: '15 18 * * 4'  # Thu 18:15 UTC — safety net for a late video
+    - cron: '30 13 * * *'  # daily 13:30 UTC — catch-all for bonus / off-schedule drops
   workflow_dispatch: # Allow manual trigger from GitHub UI
 
 permissions:
@@ -33,6 +43,7 @@ jobs:
       - name: Sync podcast episodes
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: node scripts/sync-rss.mjs
 
       - name: Backfill episode display fields (guestImage, etc.)

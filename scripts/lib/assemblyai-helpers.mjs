@@ -20,7 +20,10 @@ export async function submitTranscription(audioUrl, speakersExpected) {
   const aai = getClient();
   const params = {
     audio_url: audioUrl,
-    speech_models: ['universal-3-pro'],
+    // AssemblyAI's most accurate async model (released 2026-07-07). Same request
+    // shape as universal-3-pro — speaker_labels/speakers_expected/language_code
+    // are model-independent transcription params.
+    speech_models: ['universal-3-5-pro'],
     speaker_labels: true,
     speakers_expected: speakersExpected,
     language_code: 'en',

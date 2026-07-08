@@ -28,7 +28,6 @@ const GUEST_IMAGES = join(ROOT, 'src', '_data', 'guestImages.json');
 // ── Config ───────────────────────────────────────────────────────────────────
 const RSS_URL = 'https://feeds.megaphone.fm/bendybodies';
 const YT_PLAYLIST = 'https://www.youtube.com/playlist?list=PLX9StmpQKW33Iak1WJjAnOXPIxq0M_w_L';
-const YT_TOP_N = 15; // check the most recent N feed entries for backfill (feed returns ~15)
 
 // ── CLI flags ────────────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
@@ -377,42 +376,76 @@ If no match is found, respond with exactly: NO_MATCH`,
   return { matched: false, canonical: rssGuestName };
 }
 
-/** Fetch recent videos from the channel's playlist RSS feed.
- *  We use the feed instead of yt-dlp because YouTube bot-blocks yt-dlp on CI
- *  runners ("Sign in to confirm you're not a bot"), which silently zeroed out
- *  every date match. The feed needs no auth, returns the latest ~15 videos with
- *  id/title/publish-date in one request, and omits private videos entirely.
- *  Episodes are matched to videos by publish date — the podcast pubDate and the
- *  YouTube publish date are a clean 1:1 weekly match (verified zero offset). */
-async function fetchYouTubePlaylist(n = YT_TOP_N) {
+/** Fetch every video in the episodes playlist via the YouTube Data API v3.
+ *
+ *  Why the Data API and not the playlist RSS feed (videos.xml?playlist_id=…):
+ *  that feed only returns the FRONT ~15 items of a playlist by position, and
+ *  this playlist is ordered oldest-first (216 videos, Ep 1 at position #1), so
+ *  the feed never reaches recent episodes — every new episode silently went
+ *  unmatched (e.g. Ep 203's video existed for days with no videoUrl). yt-dlp is
+ *  not an option either: YouTube bot-blocks it on CI runners. playlistItems.list
+ *  pages through the whole playlist, which is curated to episodes only (no
+ *  Shorts to disambiguate), and recent uploads are always reachable. ~5 units
+ *  per run against a 10k/day free quota.
+ *
+ *  Episodes are matched to videos by publish date (contentDetails.videoPublishedAt):
+ *  the podcast pubDate and the YouTube publish date are a clean 1:1 weekly match
+ *  (audio ~09:00 UTC Thu, video ~15:00 UTC Thu — same calendar date).
+ *
+ *  Needs YOUTUBE_API_KEY — a plain public-data API key (the playlist is public,
+ *  so no OAuth). A missing or failing key degrades gracefully: returns [] (or a
+ *  partial list) so new-episode creation from RSS still runs, just without the
+ *  video backfill. */
+async function fetchYouTubePlaylist() {
+  const apiKey = process.env.YOUTUBE_API_KEY || process.env.YT_API_KEY;
+  if (!apiKey) {
+    console.warn('  ⚠  YOUTUBE_API_KEY not set — skipping YouTube video backfill.');
+    return [];
+  }
   const playlistId = (YT_PLAYLIST.match(/[?&]list=([^&]+)/) || [])[1];
   if (!playlistId) {
     console.error('  ⚠  Could not parse playlist ID from YT_PLAYLIST');
     return [];
   }
-  const feedUrl = `https://www.youtube.com/feeds/videos.xml?playlist_id=${playlistId}`;
-  try {
-    const res = await fetch(feedUrl);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const xml = await res.text();
 
-    const videos = [];
-    const entryRegex = /<entry>([\s\S]*?)<\/entry>/g;
-    let m;
-    while ((m = entryRegex.exec(xml)) !== null) {
-      const block = m[1];
-      const id = (block.match(/<yt:videoId>([^<]+)<\/yt:videoId>/) || [])[1];
-      if (!id) continue;
-      const rawTitle = (block.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || '';
-      const published = (block.match(/<published>([^<]+)<\/published>/) || [])[1] || '';
-      const title = decodeXmlEntities(rawTitle).trim();
-      videos.push({ id, title, epNum: parseEpNumber(title), uploadDate: toYMD(published) });
+  const videos = [];
+  let pageToken = '';
+  const MAX_PAGES = 20; // safety cap: 20 × 50 = 1000 items
+  try {
+    for (let page = 0; page < MAX_PAGES; page++) {
+      const url = new URL('https://www.googleapis.com/youtube/v3/playlistItems');
+      url.searchParams.set('part', 'snippet,contentDetails');
+      url.searchParams.set('playlistId', playlistId);
+      url.searchParams.set('maxResults', '50');
+      url.searchParams.set('key', apiKey);
+      if (pageToken) url.searchParams.set('pageToken', pageToken);
+
+      const res = await fetch(url);
+      if (!res.ok) {
+        const body = await res.text().catch(() => '');
+        throw new Error(`HTTP ${res.status} ${body.slice(0, 200)}`);
+      }
+      const data = await res.json();
+      for (const item of data.items || []) {
+        const id = item.snippet?.resourceId?.videoId || item.contentDetails?.videoId;
+        if (!id) continue;
+        const title = decodeXmlEntities((item.snippet?.title || '').trim());
+        // videoPublishedAt is when the video went live on YouTube (matches the
+        // podcast date); snippet.publishedAt is only when it was added to the
+        // playlist. Private/deleted items omit videoPublishedAt → no date match.
+        const published = item.contentDetails?.videoPublishedAt || '';
+        videos.push({ id, title, epNum: parseEpNumber(title), uploadDate: toYMD(published) });
+      }
+      pageToken = data.nextPageToken || '';
+      if (!pageToken) break;
     }
-    return videos.slice(0, n);
   } catch (e) {
-    console.error('  ⚠  Failed to fetch YouTube playlist feed:', e.message);
-    return [];
+    console.error('  ⚠  YouTube Data API request failed:', e.message);
+    return videos; // whatever we paged so far — the matcher tolerates a partial list
   }
+  // Newest-first so the "exactly one nearby candidate" ±1-day fallback is stable.
+  videos.sort((a, b) => (b.uploadDate || '').localeCompare(a.uploadDate || ''));
+  return videos;
 }
 
 /** Build the YAML frontmatter + transcript content for an episode. */
@@ -690,8 +723,8 @@ async function main() {
     ];
 
     if (needsVideo.length > 0) {
-      console.log(`🎬 Checking YouTube playlist (top ${YT_TOP_N}) for ${needsVideo.length} episodes needing video...`);
-      const ytVideos = await fetchYouTubePlaylist(YT_TOP_N);
+      console.log(`🎬 Fetching episodes playlist (YouTube Data API) for ${needsVideo.length} episodes needing video...`);
+      const ytVideos = await fetchYouTubePlaylist();
 
       if (ytVideos.length > 0) {
         console.log(`   Found ${ytVideos.length} videos in playlist\n`);
