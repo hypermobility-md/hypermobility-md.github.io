@@ -13,7 +13,7 @@ tags:
   - Research
 audioUrl: >-
   https://p.podderapp.com/9752035609/traffic.megaphone.fm/TCAHH7535381807.mp3?updated=1725126917
-videoUrl: ''
+videoUrl: 'https://youtu.be/hu907Z4Ldk4'
 snippets: []
 guests:
   - Dr. Linda Bluestein
