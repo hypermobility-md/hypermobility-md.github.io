@@ -3,7 +3,7 @@ showName: Ballet Science
 episodeTitle: 'Hypermobility & EDS: What Every Dancer Needs To Know'
 date: 2026-07-07
 description: Many dancers are praised for their flexibility, but hypermobility isn't always an advantage. In this episode of the Ballet Science Podcast, Caroline Simpkins sit down with Dr. Linda Bluestein, physician, former ballet dancer, and internationally recognized expert in hypermobility disorders, to discuss what every dancer, teacher, and parent should know about hypermobility and hypermobile Ehlers-Danlos syndrome (hEDS).
-url: https://balletscience.blog/
+url: https://balletscience.blog/2026/07/08/hypermobility-eds-what-dancers-need-to-know-dr-linda-bluestein/
 applePodcastsUrl: https://podcasts.apple.com/us/podcast/hypermobility-eds-what-every-dancer-needs-to-know-dr/id1815952731?i=1000775795513
 imageUrl: /assets/appearances/ballet-science.webp
 type: listen
