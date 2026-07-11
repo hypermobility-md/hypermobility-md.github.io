@@ -3,7 +3,7 @@
  * which appends a row to a private Google Sheet.
  */
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXGMUHDiAGu3qz2jM-WLSLQl7-JwA_YUASYl1UJbzZfcpmGx7m81lgfqdh6zceYDR49A/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwyO98s8OgXIlYVp2-sclAiI-8m7abO3PexchGM5ib5oquF3TJuC-p80Pd5KTS8FSO6AQ/exec';
 
 /**
  * Submit form data to Google Sheets via Apps Script.
