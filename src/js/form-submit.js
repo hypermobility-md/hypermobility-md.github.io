@@ -50,17 +50,56 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Convert a File object to a base64 string.
- * Used for headshot uploads in the guest form.
+ * Downscale + recompress an image File in the browser before upload.
+ *
+ * Phone photos are routinely 5–12 MB. Sent as base64, a payload that big can
+ * exceed Google Apps Script's memory limit while it parses the request —
+ * killing the whole submission before it can even be logged. Shrinking the
+ * image here caps the payload at a few hundred KB, so that failure can't
+ * happen. Output is always JPEG (these are photos); any transparency is
+ * flattened onto white rather than the canvas default of black.
+ *
+ * @param {File} file      The user-selected image.
+ * @param {number} maxDim  Longest edge in pixels (default 1600).
+ * @param {number} quality JPEG quality, 0–1 (default 0.85).
+ * @returns {Promise<{base64: string, mime: string, ext: string}>}
  */
-function fileToBase64(file) {
+async function compressImage(file, maxDim = 1600, quality = 0.85) {
+  // Decode with EXIF orientation applied where supported, so portrait phone
+  // photos don't come out sideways. Fall back to a plain <img> decode.
+  let source;
+  try {
+    source = await createImageBitmap(file, { imageOrientation: 'from-image' });
+  } catch (e) {
+    source = await loadImageElement(file);
+  }
+
+  const sw = source.naturalWidth || source.width;
+  const sh = source.naturalHeight || source.height;
+  const scale = Math.min(1, maxDim / Math.max(sw, sh)); // only ever shrink
+  const w = Math.max(1, Math.round(sw * scale));
+  const h = Math.max(1, Math.round(sh * scale));
+
+  const canvas = document.createElement('canvas');
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#ffffff'; // flatten any transparency onto white, not black
+  ctx.fillRect(0, 0, w, h);
+  ctx.drawImage(source, 0, 0, w, h);
+  if (source.close) source.close();
+
+  const dataUrl = canvas.toDataURL('image/jpeg', quality);
+  return { base64: dataUrl.split(',')[1], mime: 'image/jpeg', ext: 'jpg' };
+}
+
+/** Fallback image decoder for browsers that reject createImageBitmap options. */
+function loadImageElement(file) {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const base64 = reader.result.split(',')[1];
-      resolve(base64);
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Image could not be decoded.')); };
+    img.src = url;
   });
 }

@@ -134,18 +134,28 @@ document.getElementById('storyForm').addEventListener('submit', async function(e
   let photoExt = '';
   if (fileInput.files.length > 0) {
     const file = fileInput.files[0];
-    if (file.size > 10 * 1024 * 1024) {
-      alert('Photo file must be under 10 MB.');
+    if (file.size > 25 * 1024 * 1024) {
+      alert('Photo file must be under 25 MB.');
       btn.disabled = false;
       btn.textContent = 'Share my story';
       return;
     }
     const status = document.getElementById('photo-status');
     status.style.display = 'block';
-    status.textContent = 'Uploading photo...';
-    photoBase64 = await fileToBase64(file);
-    photoMime = file.type;
-    photoExt = file.name.split('.').pop().toLowerCase();
+    status.textContent = 'Processing photo...';
+    try {
+      // Downscale/recompress before upload so large photos can't blow the payload size.
+      const img = await compressImage(file);
+      photoBase64 = img.base64;
+      photoMime = img.mime;
+      photoExt = img.ext;
+    } catch (imgErr) {
+      alert('That image could not be processed. Please try a different photo.');
+      status.style.display = 'none';
+      btn.disabled = false;
+      btn.textContent = 'Share my story';
+      return;
+    }
   }
 
   btn.textContent = 'Submitting...';

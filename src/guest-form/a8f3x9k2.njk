@@ -237,18 +237,28 @@ document.getElementById('guestForm').addEventListener('submit', async function(e
   let headshotExt = '';
   if (fileInput.files.length > 0) {
     const file = fileInput.files[0];
-    if (file.size > 10 * 1024 * 1024) {
-      alert('Headshot file must be under 10 MB.');
+    if (file.size > 25 * 1024 * 1024) {
+      alert('Headshot file must be under 25 MB.');
       btn.disabled = false;
       btn.textContent = 'Submit Guest Information';
       return;
     }
     const status = document.getElementById('headshot-status');
     status.style.display = 'block';
-    status.textContent = 'Uploading headshot...';
-    headshotBase64 = await fileToBase64(file);
-    headshotMime = file.type;
-    headshotExt = file.name.split('.').pop().toLowerCase();
+    status.textContent = 'Processing headshot...';
+    try {
+      // Downscale/recompress before upload so large photos can't blow the payload size.
+      const img = await compressImage(file);
+      headshotBase64 = img.base64;
+      headshotMime = img.mime;
+      headshotExt = img.ext;
+    } catch (imgErr) {
+      alert('That image could not be processed. Please try a different photo.');
+      status.style.display = 'none';
+      btn.disabled = false;
+      btn.textContent = 'Submit Guest Information';
+      return;
+    }
   }
 
   btn.textContent = 'Submitting...';
