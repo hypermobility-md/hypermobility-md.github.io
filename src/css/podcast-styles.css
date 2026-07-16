@@ -58,6 +58,10 @@
   padding: 12px 0;
   transition: background 0.4s, border-color 0.4s;
 }
+/* Podcast pages stack a second sticky bar (subnav bottom ~125px), so #id
+   deep-links (e.g. /podcast/#topics from the old category URLs) need a bigger
+   offset than the global 20px to clear both bars. */
+.podcast-page .section { scroll-margin-top: 110px; }
 .podcast-subnav .container {
   display: flex;
   gap: 8px;
