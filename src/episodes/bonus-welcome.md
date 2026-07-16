@@ -1,15 +1,19 @@
 ---
 bonus: true
 num: null
-title: Welcome, Bendy Buddies!
+title: 'Welcome, Bendy Buddies!'
 date: 2024-08-30T00:00:00.000Z
 duration: 2m
-description: Each week, join Dr. Linda Bluestein (AKA The Hypermobility MD) on her quest to demystify the wide world of symptomatic joint hypermobility. Get ready to better understand your own bendy body in our newest season – available now!
+description: >-
+  Each week, join Dr. Linda Bluestein (AKA The Hypermobility MD) on her quest to
+  demystify the wide world of symptomatic joint hypermobility. Get ready to
+  better understand your own bendy body in our newest season – available now!
 tags:
   - Patient Advocacy
   - Research
-audioUrl: https://p.podderapp.com/9752035609/traffic.megaphone.fm/TCAHH7535381807.mp3?updated=1725126917
-videoUrl: ''
+audioUrl: >-
+  https://p.podderapp.com/9752035609/traffic.megaphone.fm/TCAHH7535381807.mp3?updated=1725126917
+videoUrl: 'https://youtu.be/hu907Z4Ldk4'
 snippets: []
 guests:
   - Dr. Linda Bluestein
