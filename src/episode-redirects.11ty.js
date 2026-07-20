@@ -67,16 +67,17 @@ module.exports = class {
     };
   }
 
-  render({ entry }) {
+  // No `noindex` here: it would contradict the canonical below and can get
+  // applied to the canonical target. The canonical alone is the signal.
+  render({ entry, site }) {
     const url = entry.to;
     return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <title>Redirecting&hellip;</title>
-<link rel="canonical" href="${url}">
+<link rel="canonical" href="${site.url}${url}">
 <meta http-equiv="refresh" content="0; url=${url}">
-<meta name="robots" content="noindex">
 </head>
 <body>
 <p>This episode has moved to <a href="${url}">${url}</a>.</p>
