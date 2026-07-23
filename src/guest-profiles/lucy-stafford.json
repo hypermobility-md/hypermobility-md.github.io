@@ -1,4 +1,16 @@
 {
   "key": "lucy stafford",
+  "name": "",
+  "bio": "",
+  "credentials": "",
+  "affiliation": "",
+  "socials": {
+    "website": "",
+    "website2": "",
+    "linkedin": "",
+    "twitter": "https://x.com/LucyStaffie",
+    "more": null
+  },
+  "image": "/Guests/lucy-stafford.jpg",
   "lastEpisode": "2026-07-23"
 }
