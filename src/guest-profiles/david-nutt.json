@@ -1,4 +1,23 @@
 {
   "key": "david nutt",
+  "name": "",
+  "bio": "",
+  "credentials": "DM, MBBChir",
+  "affiliation": "Drug Science",
+  "socials": {
+    "website": "https://profiles.imperial.ac.uk/d.nutt",
+    "website2": "https://www.drugscience.org.uk/about",
+    "linkedin": "",
+    "twitter": "",
+    "more": {
+      "substack": "",
+      "instagram": "",
+      "facebook": "",
+      "youtube": "",
+      "tiktok": "",
+      "wikipedia": "https://en.wikipedia.org/wiki/David_Nutt"
+    }
+  },
+  "image": "/Guests/David-Nutt.avif",
   "lastEpisode": "2026-07-23"
 }
